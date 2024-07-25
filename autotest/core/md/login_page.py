@@ -37,14 +37,14 @@ class LoginPage(BasePage):
         self.click_sign_up_button(signup_xpath)
         time.sleep(5)
 
-    def is_dashboard_visible(self, dashboard_header_xpath):
+    def is_dashboard_visible(self, dashboard_header_xpath): #for first page; recomended page is dashboard.
         try:
             WebDriverWait(self.driver, 20).until(
                 EC.presence_of_element_located((By.XPATH, dashboard_header_xpath))
             )
             return True
         except TimeoutException:
-            print("Sahifa topilmadi")
+            print("Page no found")
             self.take_screenshot("Page_not_found")
             return False
 

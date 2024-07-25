@@ -26,10 +26,10 @@ class OrdersPage(BasePage):
                 count = ''.join(filter(str.isdigit, count_text))
                 return int(count) if count else 0
             else:
-                print("Warn: hisoblash elementi bo'sh")
+                print("Warn: the count element is empty")
                 return 0
         except Exception as e:
-            print(f"Check_count-dagi xato: {str(e)}")
+            print(f"Check_count_error: {str(e)}")
             self.take_screenshot("check_count_error")
             return 0
 

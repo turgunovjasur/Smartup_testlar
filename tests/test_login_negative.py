@@ -4,13 +4,13 @@ from utils.driver_setup import driver
 
 def run_test(driver, test_name, email, password, expect_success=False):
 
-    # XPath'lar
+    ##################################### XPath #####################################
     login_xpath = "//div/input[@placeholder='Логин@компания']"
     password_xpath = "//div/input[@placeholder='Пароль']"
     signup_xpath = "//div/button[contains(text(), 'Войти')]"
     error_message_xpath = "//div/span[@id='error']"
     dashboard_header_xpath = "//div/h3[contains(text(), 'Trade')]"
-    # XPath'lar
+    ##################################### XPath #####################################
 
     login_page = LoginPage(driver)
     login_page.login(email, password, login_xpath, password_xpath, signup_xpath)

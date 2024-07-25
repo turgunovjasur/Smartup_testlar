@@ -54,7 +54,7 @@ class BasePage:
         return self.find_element(locator).text
 
     def take_screenshot(self, name):
-        # screenshots papkasini yaratish (agar mavjud bo'lmasa)
+        # create screenshot fayle (agar mavjud bo'lmasa)
         if not os.path.exists("screenshots"):
             os.makedirs("screenshots")
         self.driver.save_screenshot(f"screenshots/{name}.png")

@@ -10,7 +10,7 @@ class FinalPage(BasePage):
         try:
             self.choice((By.XPATH, status_input_xpath), (By.XPATH, status_elem_xpath))
         except TimeoutException:
-            print("Status tanlashda xatolik yuz berdi")
+            print("An error occurred while selecting status")
             self.take_screenshot("status_selection_error")
 
     def click_save_button(self, save_button_xpath, yes_button_xpath):

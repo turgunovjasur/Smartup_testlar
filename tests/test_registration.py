@@ -13,6 +13,7 @@ from utils.driver_setup import driver
 
 def test_registration(driver):
 
+    ##################################### XPath #####################################
     # Login page
     login = "admin@test"
     password = 'greenwhite'
@@ -70,12 +71,10 @@ def test_registration(driver):
     status_elem_xpath = '//*[@id="ui-select-choices-row-1-0"]/span'
     save_button_xpath = "//span/t[contains(text(), 'Сохранить')]"
     yes_button_xpath = "//div/button[contains(text(), 'да')]"
+    ##################################### XPath #####################################
 
-
-
-
-    ######### Login #########
-
+    ##################################### TEST CASE #####################################
+    # Login
     login_page = LoginPage(driver)
     login_page.fill_registration_form(login, password, login_xpath, password_xpath)
     login_page.click_sign_up_button(signup_xpath)
@@ -121,11 +120,9 @@ def test_registration(driver):
     final_page.fill_form(payment_type, status, payment_type_input_xpath, payment_elem_xpath, status_input_xpath,
                          status_elem_xpath)
     final_page.click_save_button(save_button_xpath, yes_button_xpath)
+    ##################################### TEST CASE #####################################
 
-
-
-    ######## Cauntni tekshirish #######
-
+    ##################################### Cauntni tekshirish #####################################
     time.sleep(5)
     driver.refresh()
     time.sleep(5)
@@ -147,3 +144,4 @@ def test_registration(driver):
     except AssertionError as e:
         print(f"\033[91m{str(e)}\033[0m")  # Qizil rangda xato xabari
         raise  # Xatoni qayta ko'tarish
+    ##################################### Cauntni tekshirish #####################################
