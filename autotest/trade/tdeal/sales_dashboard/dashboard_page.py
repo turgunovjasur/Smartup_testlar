@@ -5,14 +5,14 @@ from selenium.webdriver.support.wait import WebDriverWait
 from autotest.core.md.base_page import BasePage
 
 
-class DashboartPage(BasePage):
+class DashboardPage(BasePage):
     def check_page(self, header_xpath, expected_text, error_message):
         wait = WebDriverWait(self.driver, 20)
         try:
             element = wait.until(EC.presence_of_element_located((By.XPATH, header_xpath)))
             assert expected_text in element.text, error_message
         except:
-            self.take_screenshot("dashboart_page_error")
+            self.take_screenshot("dashboard_page_error")
             raise
 
     def click_button(self, button_xpath):

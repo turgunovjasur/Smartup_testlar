@@ -8,10 +8,10 @@ from autotest.core.md.base_page import BasePage
 
 
 class CreateOrderPage(BasePage):
-    def fill_form(self, workspace, staff_unit, client, workspace_xpath, workspace_elem_xpath,
-                  staff_unit_xpath, staff_unit_elem_xpath, client_xpath, client_elem_xpath):
-        self.new_input((By.XPATH, workspace_xpath), workspace, (By.XPATH, workspace_elem_xpath))
-        self.new_input((By.XPATH, staff_unit_xpath), staff_unit, (By.XPATH, staff_unit_elem_xpath))
+    def fill_form(self, room, robot, client, room_xpath, room_elem_xpath,
+                  robot_xpath, robot_elem_xpath, client_xpath, client_elem_xpath):
+        self.new_input((By.XPATH, room_xpath), room, (By.XPATH, room_elem_xpath))
+        self.new_input((By.XPATH, robot_xpath), robot, (By.XPATH, robot_elem_xpath))
         self.new_input((By.XPATH, client_xpath), client, (By.XPATH, client_elem_xpath))
 
     def check_page(self, header_xpath, expected_text, error_message):

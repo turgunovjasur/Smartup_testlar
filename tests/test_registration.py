@@ -1,7 +1,7 @@
 import time
 
 from autotest.core.md.login_page import LoginPage
-from autotest.trade.tdeal.sales_dashboard.dashboart_page import DashboartPage
+from autotest.trade.tdeal.sales_dashboard.dashboard_page import DashboardPage
 from autotest.trade.tdeal.sales_dashboard.sales_modal import SalesModal
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersPage
 from autotest.anor.mdeal.order.order_add.goods_page import GoodsPage
@@ -45,10 +45,10 @@ def test_registration(driver):
     create_order_header_xpath = "//div/h3/t[contains(text(), 'Основное')]"
     create_order_expected_text = "Основное"
     create_order_error_message = "Create_order_page Sahifa ochilmadi"
-    workspace_xpath = "(//div/input[@placeholder='Поиск...'])[1]"
-    workspace_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[1]/div/div/div[2]/b-input/div/div[2]/div[1]/div[1]/div'
-    staff_unit_xpath = "(//div/input[@placeholder='Поиск...'])[2]"
-    staff_unit_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[1]/div/div/div[3]/div[1]/b-input/div/div[2]/div[2]/div[1]/div/div[1]'
+    room_xpath = "(//div/input[@placeholder='Поиск...'])[1]"
+    room_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[1]/div/div/div[2]/b-input/div/div[2]/div[1]/div[1]/div'
+    robot_xpath = "(//div/input[@placeholder='Поиск...'])[2]"
+    robot_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[1]/div/div/div[3]/div[1]/b-input/div/div[2]/div[2]/div[1]/div/div[1]'
     client_xpath = "(//div/input[@placeholder='Поиск...'])[3]"
     client_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[1]/div/div/div[4]/b-input/div/div[2]/div[2]/div[1]/div/div[2]'
     next_button_xpath = "//span/t[contains(text(), 'Далее')]"
@@ -80,7 +80,7 @@ def test_registration(driver):
     login_page.click_sign_up_button(signup_xpath)
 
     # Dashboard
-    dashboard_page = DashboartPage(driver)
+    dashboard_page = DashboardPage(driver)
     dashboard_page.check_page(dashboard_header_xpath, dashboard_expected_text, dashboard_error_message)
     dashboard_page.click_button(sales_button_xpath)
 
@@ -93,17 +93,17 @@ def test_registration(driver):
     orders_page = OrdersPage(driver)
     orders_page.check_page(orders_header_xpath, orders_expected_text, orders_error_message)
     count_orders = orders_page.check_count(count_xpath)
-    print(f"Boshlang'ich soni: {count_orders}")
+    print(f"First count: {count_orders}")
     orders_page.click_create_button(create_button_xpath)
 
     # Create order page
-    workspace = 'Family Group'
+    room = 'Family Group'
     staff_unit = 'BetterCall'
     client = '"SUXROB KAMOLOVICH NONLARI" OK'
     create_orders_page = CreateOrderPage(driver)
     create_orders_page.check_page(create_order_header_xpath, create_order_expected_text, create_order_error_message)
-    create_orders_page.fill_form(workspace, staff_unit, client, workspace_xpath, workspace_elem_xpath,
-                                 staff_unit_xpath, staff_unit_elem_xpath,
+    create_orders_page.fill_form(room, staff_unit, client, room_xpath, room_elem_xpath,
+                                 robot_xpath, robot_elem_xpath,
                                  client_xpath, client_elem_xpath)
     create_orders_page.click_next_button(next_button_xpath)
 
@@ -136,11 +136,11 @@ def test_registration(driver):
     check_orders_page.check_page(orders_header_xpath, orders_expected_text, orders_error_message)
     time.sleep(5)
     new_count_orders = check_orders_page.check_count(count_xpath)
-    print(f"Yangi soni: {new_count_orders}")
+    print(f"New count: {new_count_orders}")
 
     try:
-        assert new_count_orders == count_orders + 1, f"Xatolik: Kutilgan son {count_orders + 1}, ammo haqiqiy son {new_count_orders}"
-        print("\033[92mMahsulot muvaffaqiyatli qo'shildi\033[0m")  # Yashil rangda xabar
+        assert new_count_orders == count_orders + 1, f"Error: expected number {count_orders + 1}, but the expected number {new_count_orders}"
+        print("\033[92mProduct successfully added\033[0m")  # Yashil rangda xabar
     except AssertionError as e:
         print(f"\033[91m{str(e)}\033[0m")  # Qizil rangda xato xabari
         raise  # Xatoni qayta ko'tarish
