@@ -1,118 +1,55 @@
 import os
-import time
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 
 
 class BasePage:
-    def __init__(self, driver):
+    def __init__(self, driver, timeout=10):
         self.driver = driver
-        self.timeout = 10
-
-    def find_element(self, locator):
-        """Berilgan lokator bo'yicha elementni topadi."""
-
-        return self.driver.find_element(*locator)
-
-    def find_elements(self, locator):
-        """Berilgan lokator bo'yicha barcha elementlarni topadi."""
-
-        return self.driver.find_elements(*locator)
+        self.timeout = timeout
 
     def click(self, locator):
-        """Berilgan lokator bo'yicha elementni topib, unga bosadi."""
-
-        self.find_element(locator).click()
-
-    def send_keys(self, locator, text):
-        """Berilgan lokator bo'yicha elementni topib, unga matn kiritadi."""
-
-        self.find_element(locator).send_keys(text)
+        self.wait_for_element_clickable(locator).click()
 
     def clear_and_send_keys(self, locator, text):
-        """Berilgan lokator bo'yicha elementni topib,
-        uni tozalaydi va yangi matn kiritadi."""
-
-        element = self.find_element(locator)
+        element = self.wait_for_element_visible(locator)
         element.clear()
         element.send_keys(text)
 
-    def is_element_present(self, locator):
-        """Berilgan lokator bo'yicha element mavjudligini tekshiradi."""
-
-        try:
-            self.find_element(locator)
-            return True
-        except NoSuchElementException:
-            return False
-
     def wait_for_element_clickable(self, locator):
-        """Berilgan lokator bo'yicha element bosiladigan holatga kelishini kutadi."""
-        time.sleep(1)
         try:
             return WebDriverWait(self.driver, self.timeout).until(
                 EC.element_to_be_clickable(locator)
             )
         except TimeoutException:
-            print(f"Element bosilmaydigan holatda qoldi: {locator}")
+            print(f"Element not clickable within: {self.timeout} seconds: {locator}")
             return None
 
-    def wait_for_element_visible(self, locator):
-        """Berilgan lokator bo'yicha element ko'rinishini kutadi."""
-
+    def wait_for_element_visible(self, locator, timeout=None):
+        if timeout is None:
+            timeout = self.timeout
         try:
-            return WebDriverWait(self.driver, self.timeout).until(
+            return WebDriverWait(self.driver, timeout).until(
                 EC.visibility_of_element_located(locator)
             )
         except TimeoutException:
-            print(f"Element ko'rinmadi: {locator}")
+            print(f"Element not visible within: {timeout} seconds: {locator}")
             return None
 
-    def get_text(self, locator):
-        """Berilgan lokator bo'yicha element matnini oladi."""
-
-        return self.find_element(locator).text
-
-    def get_attribute(self, locator, attribute):
-        """
-        Berilgan lokator bo'yicha element atributini oladi.
-
-        :param locator: Element lokatori (tuple ko'rinishida: (By.XPATH, "xpath"))
-        :param attribute: Olinishi kerak bo'lgan atribut nomi
-        :return: Atribut qiymati
-        """
-        return self.find_element(locator).get_attribute(attribute)
-
-    # Katta funksiyalar
     def input_text(self, locator, text):
-        self.wait_for_element_clickable(locator)
-        self.find_element(locator)
         self.clear_and_send_keys(locator, text)
         self.click(locator)
 
     def input_text_elem(self, locator, elem_locator):
-        self.wait_for_element_clickable(locator)
         self.click(locator)
-        time.sleep(2)
-        self.wait_for_element_clickable(elem_locator)
-        self.click(elem_locator)
-        time.sleep(1)
+        self.wait_and_click(elem_locator)
 
     def wait_and_click(self, locator):
-        self.wait_for_element_clickable(locator)
-        self.find_element(locator)
-        time.sleep(1)
         self.click(locator)
 
-    def take_screenshot(self, name):
-        # create screenshot fayle (agar mavjud bo'lmasa)
-        if not os.path.exists("screenshots"):
-            os.makedirs("screenshots")
-        self.driver.save_screenshot(f"screenshots/{name}.png")
-
-
+    def take_screenshot(self, name, screenshot_dir="screenshot"):
+        if not os.path.exists(screenshot_dir):
+            os.makedirs("screenshot_dir")
+        self.driver.save_screenshot(f"{screenshot_dir}/{name}.png")

@@ -12,8 +12,3 @@ class FinalPage(BasePage):
     def click_save_button(self, save_button_xpath, yes_button_xpath):
         self.wait_and_click((By.XPATH, save_button_xpath))
         self.wait_and_click((By.XPATH, yes_button_xpath))
-
-
-
-
-

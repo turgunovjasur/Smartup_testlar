@@ -8,6 +8,10 @@ from autotest.anor.mdeal.order.order_add.create_order_page import CreateOrderPag
 from autotest.anor.mdeal.order.order_add.goods_page import GoodsPage
 from autotest.anor.mdeal.order.order_add.final_page import FinalPage
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
 from utils.driver_setup import driver
 
 # Login_page
@@ -117,26 +121,23 @@ def test_all(driver):
                          status_input_xpath, status_elem_xpath)
     final_page.click_save_button(save_button_xpath, yes_button_xpath)
 
-    ##################################### Cauntni tekshirish #####################################
-    time.sleep(5)
-    driver.refresh()
-    time.sleep(5)
-
+    # Check count
     orders_header_xpath = "//ul/li/a[contains(text(), 'Опросники')]"
-    orders_expected_text = "Опросники"
-    orders_error_message = "Order_page sahifa ochilmadi!"
     count_xpath = "//div[contains(@class, 'sg-cell') and contains(@class, 'col-sm-4') and contains(@class, 'ng-binding')]"
+
+    time.sleep(2)
+    driver.refresh()
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//ul/li/a[contains(text(), 'Опросники')]")))
 
     check_orders_page = OrdersPage(driver)
     check_orders_page.element_visible(orders_header_xpath)
-    time.sleep(5)
+    time.sleep(2)
     new_count_orders = check_orders_page.check_count(count_xpath)
     print(f"New count: {new_count_orders}")
 
     try:
         assert new_count_orders == count_orders + 1, f"Error: expected number {count_orders + 1}, but the expected number {new_count_orders}"
-        print("\033[92mProduct successfully added\033[0m")  # Yashil rangda xabar
+        print("\033[92mProduct successfully added\033[0m")
     except AssertionError as e:
-        print(f"\033[91m{str(e)}\033[0m")  # Qizil rangda xato xabari
-        raise  # Xatoni qayta ko'tarish
-    ##################################### Cauntni tekshirish #####################################
+        print(f"\033[91m{str(e)}\033[0m")
+        raise

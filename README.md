@@ -1,56 +1,66 @@
-# Veb-ilova avtomatlashtirilgan testi
+# SmartUp Online Test Automation
 
-Bu loyiha Python, Pytest va Selenium WebDriver yordamida veb-ilova uchun avtomatlashtirilgan testlarni o'z ichiga oladi.
+This project contains automated tests for the SmartUp Online platform. The tests cover the login process and order creation functionality.
 
-## Umumiy ma'lumot
-
-Test skripti ilovada foydalanuvchi yo'nalishini simulyatsiya qiladi, jumladan tizimga kirish, navigatsiya va buyurtma yaratish. U yo'l davomida turli sahifa elementlari va funksiyalarini tekshiradi.
-
-## Talablar
+## Requirements
 
 - Python 3.x
-- Pytest
 - Selenium WebDriver
-- Veb-brauzer drayveri (masalan: ChromeDriver, Firefox)
+- pytest
+- Chrome browser (versiya: 127.0.6533.72)
 
-## O'rnatish
+## Installation
 
-1. Ushbu repozitoriyni klonlang
-2. Kerakli paketlarni o'rnating:
-3. Tegishli veb-brauzer(versiya: 127.0.6533.72) drayverini o'rnatganingizga va u tizim PATH'ingizda ekanligiga ishonch hosil qiling
+1. Download the project files.
+2. Install the required libraries: pip install selenium pytest
+3. Download ChromeDriver and update the path in `driver_setup.py`.
 
-## Loyiha tuzilishi
+## Running Tests
 
-- `pages/`: Ilovaning turli sahifalari uchun Page Object Model sinflarini o'z ichiga oladi
-- `utils/`: Sozlash va konfiguratsiya uchun yordamchi vositalar
-- `test_all.py`: Asosiy test skripti
+Use the following commands to run the tests:
 
-## Testlarni ishga tushirish
+1. To run all tests:
+- pytest
+2. To run individual test files: 
+- pytest test_registration.py
+- pytest test_login_negative.py
+3. To obtain a report in Allure
+- allure serve reports/allure_results 
 
-Testlarni ishga tushirish uchun loyihaning asosiy katalogida quyidagi buyruqni ishga tushiring:
-1. pytest tests/test_registration.py --alluredir=reports/allure_results
-2. allure serve reports/allure_results 
-3. pytest -k "chrome" -> Chrome bilan
-4. pytest -k "firefox" -> Firefox bilan
+## Test Details
 
-## Test jarayoni
+### test_registration.py
 
-1. Ilova URL manzilini ochish (https://smartup.online/)
-2. Berilgan ma'lumotlar bilan tizimga kirish
-3. Boshqaruv paneli va Sotuvlar sahifalari orqali navigatsiya
-4. Yangi buyurtma yaratish
-5. Buyurtma tafsilotlarini to'ldirish
-6. Buyurtma yaratilganini tekshirish
+This test includes the following steps:
+1. Logging in
+2. Navigating to the dashboard
+3. Creating a new order
+4. Filling in order details
+5. Saving the order
+6. Verifying that a new order has been added
 
-## Eslatmalar
+### test_login_negative.py
 
-- Test hozirda yangi buyurtma yaratilgandan so'ng buyurtmalar soni o'zgarmasligini tekshiradi. Bu test yoki ilova logikasidagi xato bo'lishi mumkin.
-- Testni ishga tushirishdan oldin to'ldiruvchi login ma'lumotlarini haqiqiy ma'lumotlar bilan almashtirishni unutmang.
+This test checks the following scenarios:
+1. Invalid username and password
+2. Empty fields
+3. Invalid email format
+4. Very short password
+5. Correct login credentials
 
-## Hissa qo'shish
+## Important Notes
 
-Yaxshilanishlar yoki xatolarni tuzatish uchun muammolar yoki so'rovlar yuborishingiz mumkin.
+- Ensure you have a stable internet connection before running the tests.
+- Remember to adjust the ChromeDriver path in `driver_setup.py` to match your computer's setup.
+- Test results will be displayed in the console window.
 
-## Litsenziya
+## Test Structure
 
-[None]
+The tests use a Page Object Model (POM) design pattern, which separates the page structure from the tests themselves. This makes the tests more maintainable and easier to read.
+
+## Troubleshooting
+
+If you encounter any issues:
+1. Check that all dependencies are correctly installed.
+2. Ensure the ChromeDriver version matches your Chrome browser version.
+3. Verify that the URLs and XPaths in the tests are still valid for the current version of the SmartUp Online platform.
