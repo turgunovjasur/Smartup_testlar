@@ -1,21 +1,15 @@
 import time
 
-from selenium.webdriver.support import expected_conditions as EC
+from autotest.core.md.base_page import BasePage
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-
-from autotest.core.md.base_page import BasePage
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class OrdersPage(BasePage):
-    def check_page(self, header_xpath, expected_text, error_message):
-        wait = WebDriverWait(self.driver, 20)
-        try:
-            element = wait.until(EC.presence_of_element_located((By.XPATH, header_xpath)))
-            assert expected_text in element.text, error_message
-        except:
-            self.take_screenshot("Order_page_error")
-            raise
+    def element_visible(self, order_page_header_xpath):
+        self.wait_for_element_visible((By.XPATH, order_page_header_xpath))
 
     def check_count(self, count_xpath):
         wait = WebDriverWait(self.driver, 20)
@@ -33,8 +27,6 @@ class OrdersPage(BasePage):
             self.take_screenshot("check_count_error")
             return 0
 
-    def click_create_button(self, button_xpath):
-        time.sleep(2)
-        self.click_element((By.XPATH, button_xpath))
-
-
+    def click_button(self, create_button_xpath):
+        time.sleep(5)
+        self.wait_and_click((By.XPATH, create_button_xpath))
