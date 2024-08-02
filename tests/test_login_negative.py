@@ -1,23 +1,21 @@
+import time
 from autotest.core.md.login_page import LoginPage
+from element_xpath.xpaths import Xpath
 from utils.driver_setup import driver
 
 
 def run_test(driver, test_name, email, password, expect_success=False):
-    login_xpath = "//div/input[@placeholder='Логин@компания']"
-    password_xpath = "//div/input[@placeholder='Пароль']"
-    signup_xpath = "//div/button[contains(text(), 'Войти')]"
-    error_message_xpath = "//div/span[@id='error']"
-    dashboard_header_xpath = "//div/h3[contains(text(), 'Trade')]"
 
     login_page = LoginPage(driver)
-    login_page.login(email, password, login_xpath, password_xpath, signup_xpath)
+    time.sleep(2)
+    login_page.login(email, password, Xpath.email_xpath, Xpath.password_xpath, Xpath.signup_xpath)
 
     if expect_success:
-        result = login_page.is_dashboard_visible(dashboard_header_xpath)
+        result = login_page.is_dashboard_visible(Xpath.dashboard_header_xpath)
         success_message = "Log in Successful!"
         failure_message = "Log in Failed!"
     else:
-        result = login_page.is_error_message_displayed(error_message_xpath)
+        result = login_page.is_error_message_displayed(Xpath.error_message_xpath)
         success_message = "Error message displayed"
         failure_message = "Failed to display error message"
 

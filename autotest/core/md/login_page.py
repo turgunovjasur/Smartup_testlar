@@ -12,8 +12,8 @@ class LoginPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    def fill_form(self, email, password, login_xpath, password_xpath):
-        self.input_text((By.XPATH, login_xpath), email)
+    def fill_form(self, email, password, email_xpath, password_xpath):
+        self.input_text((By.XPATH, email_xpath), email)
         self.input_text((By.XPATH, password_xpath), password)
 
     def click_button(self, signup_xpath):
