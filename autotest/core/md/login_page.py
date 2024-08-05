@@ -12,16 +12,29 @@ class LoginPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
+    ##############################################################################
+    email = 'admin@test'
+    password = 'greenwhite'
+    email_xpath = "//div/input[@placeholder='Логин@компания']"
+    password_xpath = "//div/input[@placeholder='Пароль']"
+
     def fill_form(self, email, password, email_xpath, password_xpath):
         self.input_text((By.XPATH, email_xpath), email)
         self.input_text((By.XPATH, password_xpath), password)
 
+    ##############################################################################
+    signup_xpath = "//div/button[contains(text(), 'Войти')]"
+
     def click_button(self, signup_xpath):
         self.click((By.XPATH, signup_xpath))
+
+    ##############################################################################
+    error_message_xpath = "//div/span[@id='error']"
 
     def is_error_message_displayed(self, error_message_xpath):
         return self.is_element_visible((By.XPATH, error_message_xpath))
 
+    ##############################################################################
     def is_element_visible(self, locator, timeout=10):
         try:
             WebDriverWait(self.driver, timeout).until(
