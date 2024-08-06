@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 
 from autotest.core.md.base_page import BasePage
@@ -16,7 +18,8 @@ class MainPage(BasePage):
     order = ""
     operation_template = ""
     vendor = "(//input[@placeholder= 'Поиск...'])[2]"
-    vendor_elem_xpath = "//div[@class= 'ng-scope']//div[@class= 'hint-item ng-scope'][1]"
+    vendor_elem_xpath = "//div[@id='anor289-inputs-binput-reftypes']/div/div/following-sibling::div[2]/div/div/b-input/div/div/following-sibling::div/div/div[1]"
+    # vendor_elem_xpath = '"UZUM TEZKOR" MCHJ XK'
     contract = ""
     payment_type = ""
     project = ""
@@ -24,10 +27,14 @@ class MainPage(BasePage):
     invoice_no = ""
     invoice_date = ""
     inventory_receipt = ""
-    input_extra_costs = "(//div[@class= 'tbl-cell']//div[@class= 'simple']/input)[1]"
+    input_extra_costs = ""
 
     def fill_form(self, vendor, vendor_elem_xpath):
         self.input_text_elem((By.XPATH, vendor), (By.XPATH, vendor_elem_xpath))
+        # time.sleep(2)
+        # self.extra_click_after_selection(vendor_elem_xpath)
+        # time.sleep(2)
+
 
     ##############################################################################
     main_page_next_button_xpath = "//div[@class= 'd-flex flex-column']/div/div/div/following-sibling::div"

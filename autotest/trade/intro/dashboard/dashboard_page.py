@@ -11,6 +11,14 @@ class DashboardPage(BasePage):
         self.wait_for_element_visible((By.XPATH, dashboard_header_xpath))
 
     ##############################################################################
+    organizations_menu = "//div[@class='pt-3 px-2']"
+    organizations_xpath = "//div[@class= 'menus']/child::li[2]/child::a[3]"
+
+    def click_organizations_button(self, organizations_menu, organizations_xpath):
+        self.wait_and_click((By.XPATH, organizations_menu))
+        self.wait_and_click((By.XPATH, organizations_xpath))
+
+    ##############################################################################
     sales_button_xpath = "//li/a/span[contains(text(), 'Продажа')]"
 
     def click_sales_button(self, sales_button_xpath):

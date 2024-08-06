@@ -11,6 +11,7 @@ def driver(request):
         options = webdriver.ChromeOptions()
         driver = webdriver.Chrome(service=service, options=options)
     driver.maximize_window()
-    driver.get("https://smartup.online/")
+    driver.get("http://localhost:8080/smartup5x_trade/")
+    # driver.get("https://smartup.online/")
     yield driver
     driver.quit()

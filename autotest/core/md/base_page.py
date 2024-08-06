@@ -1,5 +1,6 @@
 import os
 
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
@@ -53,3 +54,13 @@ class BasePage:
         if not os.path.exists(screenshot_dir):
             os.makedirs("screenshot_dir")
         self.driver.save_screenshot(f"{screenshot_dir}/{name}.png")
+
+    def extra_click_after_selection(self, locator):
+        try:
+            element = self.wait_for_element_clickable((By.XPATH, locator))
+            if element:
+                element.click()
+            else:
+                print(f"Element not clickable: {locator}")
+        except Exception as e:
+            print(f"Error clicking element after selection: {e}")

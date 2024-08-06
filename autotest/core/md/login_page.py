@@ -13,8 +13,8 @@ class LoginPage(BasePage):
         super().__init__(driver)
 
     ##############################################################################
-    email = 'admin@test'
-    password = 'greenwhite'
+    email = 'admin@gws'
+    password = ''
     email_xpath = "//div/input[@placeholder='Логин@компания']"
     password_xpath = "//div/input[@placeholder='Пароль']"
 
