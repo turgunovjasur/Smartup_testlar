@@ -16,7 +16,10 @@ def test_purchase(driver):
     # Login_page
     login_page = LoginPage(driver)
     time.sleep(2)
-    login_page.fill_form(LoginPage.email, LoginPage.password, LoginPage.email_xpath, LoginPage.password_xpath)
+    login_page.fill_form(LoginPage.email,
+                         LoginPage.password,
+                         LoginPage.email_xpath,
+                         LoginPage.password_xpath)
     login_page.click_button(LoginPage.signup_xpath)
 
     # Dashboard_page
@@ -44,7 +47,8 @@ def test_purchase(driver):
     purchase_main = MainPage(driver)
     time.sleep(2)
     purchase_main.element_visible(MainPage.main_page_header_xpath)
-    purchase_main.fill_form(MainPage.vendor, MainPage.vendor_elem_xpath)
+    purchase_main.fill_form(MainPage.vendor,
+                            MainPage.vendor_elem_xpath)
     purchase_main.click_button(MainPage.main_page_next_button_xpath)
 
     # Inventory_page
@@ -53,7 +57,13 @@ def test_purchase(driver):
     inventory_page.element_visible(InventoryPage.inventory_page_header_xpath)
     inventory_page.fill_form(InventoryPage.inventory_input, InventoryPage.inventory,
                              InventoryPage.qty_input, InventoryPage.qty,
-                             InventoryPage.price_input, InventoryPage.price)
+                             InventoryPage.price_input, InventoryPage.price,
+                             InventoryPage.side_scrolling_xpath,
+                             InventoryPage.margin_vat,
+                             InventoryPage.margin_value_input, InventoryPage.margin_value,
+                             InventoryPage.vat_input, InventoryPage.vat,
+                             InventoryPage.count_xpath, InventoryPage.margin_count_xpath,
+                             InventoryPage.vat_amount_xpath, InventoryPage.total_amount_xpath)
     inventory_page.click_button(InventoryPage.inventory_page_next_button_xpath)
 
 

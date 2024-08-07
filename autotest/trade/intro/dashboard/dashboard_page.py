@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 
 from autotest.core.md.base_page import BasePage
@@ -16,6 +18,7 @@ class DashboardPage(BasePage):
 
     def click_organizations_button(self, organizations_menu, organizations_xpath):
         self.wait_and_click((By.XPATH, organizations_menu))
+        time.sleep(2)
         self.wait_and_click((By.XPATH, organizations_xpath))
 
     ##############################################################################
