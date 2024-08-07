@@ -120,3 +120,21 @@ class BasePage:
             print(f"Error: {str(e)}")
             self.take_screenshot("calculations_error")
             return []
+
+    def compare_values(self, xpath1, xpath2):
+        try:
+            value1 = self.extract_count(xpath1)
+            value2 = self.extract_count(xpath2)
+
+            is_equal = value1 == value2
+            result = "teng" if is_equal else "teng emas"
+
+            print(f"Qiymat 1 ({xpath1}): {value1}")
+            print(f"Qiymat 2 ({xpath2}): {value2}")
+            print(f"Natija: Qiymatlar {result}")
+
+            return is_equal, value1, value2
+        except Exception as e:
+            print(f"Qiymatlarni solishtrishda xatolik yuz berdi: {str(e)}")
+            self.take_screenshot("compare_values_error")
+            return False, None, None
