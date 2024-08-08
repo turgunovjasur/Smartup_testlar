@@ -91,18 +91,9 @@ class BasePage:
         actions.move_to_element(element).perform()
         time.sleep(duration / 1000)
 
-    def extract_count(self, xpath):
-        element = self.wait_for_element_visible((By.XPATH, xpath), timeout=20)
-        if element and element.text.strip():
-            count = ''.join(filter(str.isdigit, element.text.strip()))
-            return int(count) if count else 0
-        else:
-            print(f"Ogohlantirish: {xpath} uchun element bo'sh yoki topilmadi")
-            return 0
-
     def check_counts(self, *xpaths):
         try:
-            return [self.extract_count(xpath) for xpath in xpaths]
+            return [self.get_element_value(xpath, as_int=True) for xpath in xpaths]
         except Exception as e:
             print(f"Check counts error: {str(e)}")
             self.take_screenshot("check_counts_error")
@@ -114,17 +105,50 @@ class BasePage:
             results = []
             for expected, actual, label in zip(expected_values, actual_values, labels):
                 result = "True" if expected == actual else "False"
-                results.append(f"Hisoblangan {label}: {expected}, Tekshirilgan qiymat: {actual}, {label} {result}")
+                results.append(f"Calculated {label}: {expected}, Checked value: {actual}, {label} {result}")
             return results
         except Exception as e:
             print(f"Error: {str(e)}")
             self.take_screenshot("calculations_error")
             return []
 
-    def compare_values(self, xpath1, xpath2):
+    def get_element_value(self, xpath, as_int=False):
+        """
+        Berilgan XPath orqali elementning matnini qaytaradi yoki integer qiymat sifatida qaytaradi.
+        :param xpath: elementning XPath'i
+        :param as_int: True bo'lsa, matnni integer qiymatga aylantirib qaytaradi
+        :return: element matni yoki integer qiymati
+        """
         try:
-            value1 = self.extract_count(xpath1)
-            value2 = self.extract_count(xpath2)
+            element = self.wait_for_element_visible((By.XPATH, xpath), timeout=20)
+            if element:
+                text = element.text.strip()
+                if as_int:
+                    return int(''.join(filter(str.isdigit, text))) if text else 0
+                else:
+                    return text
+            else:
+                print(f"Ogohlantirish: {xpath} uchun element topilmadi")
+                return 0 if as_int else ""
+        except ValueError:
+            print(f"Ogohlantirish: {xpath} uchun element matni integerga aylantirib bo'lmadi")
+            return 0
+        except Exception as e:
+            print(f"Xatolik yuz berdi: {str(e)}")
+            self.take_screenshot("get_element_value_error")
+            return 0 if as_int else ""
+
+    def elements_equal(self, xpath1, xpath2, as_int=False):
+        """
+        Ikki elementning qiymatlarini solishtiradi va ularning tengligini tekshiradi.
+        :param xpath1: birinchi elementning XPath'i
+        :param xpath2: ikkinchi elementning XPath'i
+        :param as_int: True bo'lsa, qiymatlarni integer sifatida solishtiradi
+        :return: True agar qiymatlar teng bo'lsa, aks holda False
+        """
+        try:
+            value1 = self.get_element_value(xpath1, as_int)
+            value2 = self.get_element_value(xpath2, as_int)
 
             is_equal = value1 == value2
             result = "teng" if is_equal else "teng emas"
@@ -133,8 +157,8 @@ class BasePage:
             print(f"Qiymat 2 ({xpath2}): {value2}")
             print(f"Natija: Qiymatlar {result}")
 
-            return is_equal, value1, value2
+            return is_equal
         except Exception as e:
-            print(f"Qiymatlarni solishtrishda xatolik yuz berdi: {str(e)}")
-            self.take_screenshot("compare_values_error")
-            return False, None, None
+            print(f"Qiymatlarni solishtirishda xatolik yuz berdi: {str(e)}")
+            self.take_screenshot("compare_elements_error")
+            return False

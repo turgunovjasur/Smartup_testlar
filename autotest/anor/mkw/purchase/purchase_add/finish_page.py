@@ -11,6 +11,13 @@ class FinishPage(BasePage):
         self.wait_for_element_visible((By.XPATH, finish_page_header_xpath))
 
     ##############################################################################
+    status = "//div[@id='anor289-uiselect-status']/div/div/div/span"
+    status_elem = "//li[@id='ui-select-choices-5' and @class='ui-select-choices-group']/div[4]/span"
+
+    def fill_form(self, status, status_elem):
+        self.input_text_elem((By.XPATH, status), (By.XPATH, status_elem))
+
+    ##############################################################################
     finish_page_save_button_xpath = "//button[@id= 'anor289-button-save']"
     finish_page_yes_button_xpath = "//div[@id= 'biruniConfirm']/descendant::button[contains(text(), 'да')]"
 

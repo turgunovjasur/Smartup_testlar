@@ -73,9 +73,9 @@ class InventoryPage(BasePage):
             print(result)
 
     ##############################################################################
-    inventory_page_next_button_xpath = "//div[@id= 'anor289-wizard-finishing']"
+    extra_cost_page_next_button_xpath = "//div[@id='anor289-wizard-extracosts']"
 
-    def click_button(self, inventory_page_next_button_xpath):
-        self.wait_and_click((By.XPATH, inventory_page_next_button_xpath))
+    def click_button(self, extra_cost_page_next_button_xpath):
+        self.wait_and_click((By.XPATH, extra_cost_page_next_button_xpath))
     ##############################################################################
 

@@ -6,13 +6,13 @@ from autotest.trade.intro.dashboard.warehouse_modal import WarehouseModal
 from autotest.anor.mkw.purchase.purchase_list.purchase_list import PurchaseList
 from autotest.anor.mkw.purchase.purchase_add.main_page import MainPage
 from autotest.anor.mkw.purchase.purchase_add.inventory_page import InventoryPage
+from autotest.anor.mkw.purchase.purchase_add.extra_cost_page import ExtraCostPage
 from autotest.anor.mkw.purchase.purchase_add.finish_page import FinishPage
 
 from utils.driver_setup import driver
 
 
 def test_purchase(driver):
-
     # Login_page
     login_page = LoginPage(driver)
     time.sleep(2)
@@ -48,7 +48,13 @@ def test_purchase(driver):
     time.sleep(2)
     purchase_main.element_visible(MainPage.main_page_header_xpath)
     purchase_main.fill_form(MainPage.vendor,
-                            MainPage.vendor_elem_xpath)
+                            MainPage.vendor_elem_xpath,
+                            MainPage.inventory_receipt,
+                            MainPage.payment_type,
+                            MainPage.payment_type_elem,
+                            MainPage.warehouse,
+                            MainPage.warehouse_elem,
+                            MainPage.input_extra_costs)
     purchase_main.click_button(MainPage.main_page_next_button_xpath)
 
     # Inventory_page
@@ -64,15 +70,28 @@ def test_purchase(driver):
                              InventoryPage.vat_input, InventoryPage.vat,
                              InventoryPage.count_xpath, InventoryPage.margin_count_xpath,
                              InventoryPage.vat_amount_xpath, InventoryPage.total_amount_xpath)
-    inventory_page.click_button(InventoryPage.inventory_page_next_button_xpath)
+    inventory_page.click_button(InventoryPage.extra_cost_page_next_button_xpath)
 
+    # Extra_cost_page
+    extra_cost_page = ExtraCostPage(driver)
+    time.sleep(2)
+    extra_cost_page.element_visible(ExtraCostPage.extra_cost_page_header_xpath)
+    extra_cost_page.click_button(ExtraCostPage.finish_page_next_button_xpath)
 
     # Final_page
-    final_page = FinishPage(driver)
+    finish_page = FinishPage(driver)
     time.sleep(2)
-    final_page.element_visible(FinishPage.finish_page_header_xpath)
-    final_page.click_button(FinishPage.finish_page_save_button_xpath,
-                            FinishPage.finish_page_yes_button_xpath)
+    finish_page.element_visible(FinishPage.finish_page_header_xpath)
+    # finish_page.fill_form(FinishPage.status,
+    #                       FinishPage.status_elem)
+    finish_page.click_button(FinishPage.finish_page_save_button_xpath,
+                             FinishPage.finish_page_yes_button_xpath)
 
 
-
+    # Check_purchase
+    # Purchase_list
+    purchase_list = PurchaseList(driver)
+    time.sleep(2)
+    purchase_list.element_visible(PurchaseList.purchase_list_header_xpath)
+    purchase_list.check_purchase_list(PurchaseList.purchase_list_1,
+                                      PurchaseList.list_view)
