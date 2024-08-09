@@ -56,21 +56,32 @@ class InventoryPage(BasePage):
                                            qty, price, vat, margin_value)
 
     ##############################################################################
+
     def check_counts_and_calculations(self, count_xpath, margin_count_xpath, vat_amount_xpath, total_amount_xpath,
                                       qty, price, vat, margin_value):
-        xpaths = [count_xpath, margin_count_xpath, vat_amount_xpath, total_amount_xpath]
-
+        # Kutilyotgan qiymatlarni hisoblash
         amount = int(qty) * int(price)
         margin_amount = int(qty) * int(margin_value)
         vat_amount = ((int(qty) * int(price)) + (int(qty) * int(margin_value))) * int(vat) / 100
         total_amount = (int(qty) * int(price)) + (int(qty) * int(margin_value)) + int(vat_amount)
 
-        expected_values = [amount, margin_amount, total_amount, vat_amount]
-        labels = ["Amount", "Margin Amount", "TOTAL amount", "VAT Amount"]
+        # Har bir qiymatni olish va solishtirish
+        actual_amount = self.get_element_value(count_xpath, as_int=True)
+        actual_margin_amount = self.get_element_value(margin_count_xpath, as_int=True)
+        actual_vat_amount = self.get_element_value(vat_amount_xpath, as_int=True)
+        actual_total_amount = self.get_element_value(total_amount_xpath, as_int=True)
 
-        results = self.check_calculations(expected_values, xpaths, labels)
-        for result in results:
-            print(result)
+        expected_values = [amount, margin_amount, total_amount, vat_amount]
+        actual_values = [actual_amount, actual_margin_amount, actual_vat_amount, actual_total_amount]
+        labels = ["Amount", "Margin Amount", "VAT Amount", "Total Amount"]
+
+        for label, expected, actual in zip(labels, expected_values, actual_values):
+            if expected == actual:
+                print(f"{label} tekshiruvi muvaffaqiyatli o'tdi: {actual}")
+            else:
+                print(f"{label} tekshiruvi muvaffaqiyatsiz: Kutilyotgan {expected}, ammo mavjud {actual}")
+
+        return all([expected == actual for expected, actual in zip(expected_values, actual_values)])
 
     ##############################################################################
     extra_cost_page_next_button_xpath = "//div[@id='anor289-wizard-extracosts']"

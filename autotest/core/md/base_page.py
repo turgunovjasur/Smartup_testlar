@@ -91,27 +91,6 @@ class BasePage:
         actions.move_to_element(element).perform()
         time.sleep(duration / 1000)
 
-    def check_counts(self, *xpaths):
-        try:
-            return [self.get_element_value(xpath, as_int=True) for xpath in xpaths]
-        except Exception as e:
-            print(f"Check counts error: {str(e)}")
-            self.take_screenshot("check_counts_error")
-            return [0] * len(xpaths)
-
-    def check_calculations(self, expected_values, actual_xpaths, labels):
-        try:
-            actual_values = self.check_counts(*actual_xpaths)
-            results = []
-            for expected, actual, label in zip(expected_values, actual_values, labels):
-                result = "True" if expected == actual else "False"
-                results.append(f"Calculated {label}: {expected}, Checked value: {actual}, {label} {result}")
-            return results
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            self.take_screenshot("calculations_error")
-            return []
-
     def get_element_value(self, xpath, as_int=False):
         """
         Berilgan XPath orqali elementning matnini qaytaradi yoki integer qiymat sifatida qaytaradi.
