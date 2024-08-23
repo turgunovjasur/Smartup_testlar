@@ -11,15 +11,15 @@
 
     # Dashboard_page
     # dashboard_header_xpath = "//div/h3[contains(text(), 'Trade')]"
-    # sales_button_xpath = "//li/a/span[contains(text(), 'Продажа')]"
+    # sales_button = "//li/a/span[contains(text(), 'Продажа')]"
 
     # Sales_modal
-    # sales_modal_header_xpath = "//h3/span[contains(text(), 'Продажа')]"
+    # sales_navbar_header_xpath = "//h3/span[contains(text(), 'Продажа')]"
     # orders_button_xpath = "//a/span[contains(text(), 'Заказы')]"
 
     # Order_page
     # order_page_header_xpath = "//ul/li/a[contains(text(), 'Опросники')]"
-    # create_button_xpath = "//div/button[contains(text(), 'Создать')]"
+    # add_button = "//div/button[contains(text(), 'Создать')]"
     # count_xpath = "//div[contains(@class, 'sg-cell') and contains(@class, 'col-sm-4') and contains(@class, 'ng-binding')]"
 
 
@@ -50,7 +50,7 @@
     # payment_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[3]/div/div[2]/div/div/div[2]/b-input/div/div[2]/div[1]/div/div'
     # status_input_xpath = "(//div/span[@class = 'btn btn-default form-control ui-select-toggle'])[3]"
     # status_elem_xpath = '//*[@id="ui-select-choices-row-1-0"]/span'
-    # save_button_xpath = "//span/t[contains(text(), 'Сохранить')]"
+    # save_button = "//span/t[contains(text(), 'Сохранить')]"
     # yes_button_xpath = "//div/button[contains(text(), 'да')]"
 
 

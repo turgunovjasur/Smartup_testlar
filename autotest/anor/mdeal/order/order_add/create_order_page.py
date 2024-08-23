@@ -31,5 +31,5 @@ class CreateOrderPage(BasePage):
     create_order_next_button_xpath = "//span/t[contains(text(), 'Далее')]"
 
     def click_button(self, create_order_next_button_xpath):
-        self.wait_and_click((By.XPATH, create_order_next_button_xpath))
+        self.click((By.XPATH, create_order_next_button_xpath))
     ##############################################################################

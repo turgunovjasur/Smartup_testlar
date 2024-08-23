@@ -1,6 +1,7 @@
 import time
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
+from utils.driver_setup import driver
 
 
 def run_test(driver, test_name, email, password, expect_success=False):
@@ -43,4 +44,4 @@ def test_login_with_short_password(driver):
 
 
 def test_login_with_valid_credentials(driver):
-    run_test(driver, "Correct login and password test", "admin@test", "greenwhite", expect_success=True)
+    run_test(driver, "Correct login and password test", "admin@gws", "", expect_success=True)

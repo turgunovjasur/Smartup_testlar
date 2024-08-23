@@ -8,30 +8,32 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 class BasePage:
-    def __init__(self, driver, timeout=10):
+    def __init__(self, driver):
         self.driver = driver
-        self.timeout = timeout
+        self.default_timeout = 10
 
-    def click(self, locator):
-        self.wait_for_element_clickable(locator).click()
+    def click(self, locator, timeout=None):
+        self.wait_for_element_clickable(locator, timeout).click()
 
     def clear_and_send_keys(self, locator, text):
         element = self.wait_for_element_visible(locator)
         element.clear()
         element.send_keys(text)
 
-    def wait_for_element_clickable(self, locator):
+    def wait_for_element_clickable(self, locator, timeout=None):
+        if timeout is None:
+            timeout = self.default_timeout
         try:
-            return WebDriverWait(self.driver, self.timeout).until(
+            return WebDriverWait(self.driver, timeout).until(
                 EC.element_to_be_clickable(locator)
             )
         except TimeoutException:
-            print(f"Element not clickable within: {self.timeout} seconds: {locator}")
+            print(f"Element not clickable within: {timeout} seconds: {locator}")
             return None
 
     def wait_for_element_visible(self, locator, timeout=None):
         if timeout is None:
-            timeout = self.timeout
+            timeout = self.default_timeout
         try:
             return WebDriverWait(self.driver, timeout).until(
                 EC.visibility_of_element_located(locator)
@@ -46,12 +48,10 @@ class BasePage:
 
     def input_text_elem(self, locator, elem_locator):
         self.click(locator)
-        self.wait_and_click(elem_locator)
-
-    def wait_and_click(self, locator):
-        self.click(locator)
+        self.click(elem_locator)
 
     def take_screenshot(self, filename):
+        filename = str(filename)
         screenshot_dir = "screenshot_dir"
         if not os.path.exists(screenshot_dir):
             os.makedirs(screenshot_dir)
@@ -59,15 +59,10 @@ class BasePage:
         self.driver.save_screenshot(screenshot_path)
         print(f"Screenshot saved at {screenshot_path}")
 
-    def extra_click_after_selection(self, locator):
-        try:
-            element = self.wait_for_element_clickable((By.XPATH, locator))
-            if element:
-                element.click()
-            else:
-                print(f"Element not clickable: {locator}")
-        except Exception as e:
-            print(f"Error clicking element after selection: {e}")
+    def click_multiple_time(self, locator, click_count=2, delay=1, timeout=None):
+        for _ in range(click_count):
+            self.click(locator, timeout)
+            time.sleep(delay)
 
     def get_element(self, locator):
         return WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located(locator))
@@ -92,12 +87,6 @@ class BasePage:
         time.sleep(duration / 1000)
 
     def get_element_value(self, xpath, as_int=False):
-        """
-        Berilgan XPath orqali elementning matnini qaytaradi yoki integer qiymat sifatida qaytaradi.
-        :param xpath: elementning XPath'i
-        :param as_int: True bo'lsa, matnni integer qiymatga aylantirib qaytaradi
-        :return: element matni yoki integer qiymati
-        """
         try:
             element = self.wait_for_element_visible((By.XPATH, xpath), timeout=20)
             if element:
@@ -107,37 +96,48 @@ class BasePage:
                 else:
                     return text
             else:
-                print(f"Ogohlantirish: {xpath} uchun element topilmadi")
+                print(f"Warning: {xpath} not found")
                 return 0 if as_int else ""
         except ValueError:
-            print(f"Ogohlantirish: {xpath} uchun element matni integerga aylantirib bo'lmadi")
+            print(f"Warning: {xpath} could not convert text to number")
             return 0
         except Exception as e:
-            print(f"Xatolik yuz berdi: {str(e)}")
+            print(f"Error occurred: {str(e)}")
             self.take_screenshot("get_element_value_error")
             return 0 if as_int else ""
 
     def elements_equal(self, xpath1, xpath2, as_int=False):
-        """
-        Ikki elementning qiymatlarini solishtiradi va ularning tengligini tekshiradi.
-        :param xpath1: birinchi elementning XPath'i
-        :param xpath2: ikkinchi elementning XPath'i
-        :param as_int: True bo'lsa, qiymatlarni integer sifatida solishtiradi
-        :return: True agar qiymatlar teng bo'lsa, aks holda False
-        """
+
         try:
-            value1 = self.get_element_value(xpath1, as_int)
-            value2 = self.get_element_value(xpath2, as_int)
+            value1 = self.get_element_value(xpath1, as_int=True)
+            value2 = self.get_element_value(xpath2, as_int=True)
 
             is_equal = value1 == value2
-            result = "teng" if is_equal else "teng emas"
+            result = "equal" if is_equal else "not equal"
 
-            print(f"Qiymat 1 ({xpath1}): {value1}")
-            print(f"Qiymat 2 ({xpath2}): {value2}")
-            print(f"Natija: Qiymatlar {result}")
+            print(f"Result: {result}")
 
             return is_equal
         except Exception as e:
-            print(f"Qiymatlarni solishtirishda xatolik yuz berdi: {str(e)}")
+            print(f"Error comparing values: {str(e)}")
             self.take_screenshot("compare_elements_error")
             return False
+
+    def check_count(self, count_xpath):
+        try:
+            element = self.wait_for_element_visible((By.XPATH, count_xpath), timeout=20)
+            if element:
+                count_text = element.text.strip()
+                if count_text:
+                    count = ''.join(filter(str.isdigit, count_text))
+                    return int(count) if count else 0
+                else:
+                    print("Warn: the count element is empty")
+                    return 0
+            else:
+                print("Warn: count element not found")
+                return 0
+        except Exception as e:
+            print(f"Check_count_error: {str(e)}")
+            self.take_screenshot("check_count_error")
+            return 0

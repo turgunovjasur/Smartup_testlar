@@ -2,7 +2,7 @@ import time
 
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
-from autotest.trade.intro.dashboard.sales_modal import SalesModal
+from autotest.trade.intro.dashboard.sales_navbar import SalesNavbar
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersPage
 from autotest.anor.mdeal.order.order_add.create_order_page import CreateOrderPage
 from autotest.anor.mdeal.order.order_add.goods_page import GoodsPage
@@ -27,12 +27,12 @@ def test_all(driver):
     dashboard_page = DashboardPage(driver)
     time.sleep(2)
     dashboard_page.element_visible(dashboard_page.dashboard_header_xpath)
-    dashboard_page.click_sales_button(dashboard_page.sales_button_xpath)
+    dashboard_page.click_sales_button(dashboard_page.sales_button)
 
     # Sales_modal
-    sales_modal = SalesModal(driver)
+    sales_modal = SalesNavbar(driver)
     time.sleep(2)
-    sales_modal.element_visible(sales_modal.sales_modal_header_xpath)
+    sales_modal.element_visible(sales_modal.sales_navbar_header_xpath)
     sales_modal.click_button(sales_modal.orders_button_xpath)
 
     # Order_page

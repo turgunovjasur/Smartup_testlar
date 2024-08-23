@@ -37,5 +37,5 @@ class OrdersPage(BasePage):
     create_button_xpath = "//div/button[contains(text(), 'Создать')]"
 
     def click_button(self, create_button_xpath):
-        self.wait_and_click((By.XPATH, create_button_xpath))
+        self.click((By.XPATH, create_button_xpath))
     ##############################################################################

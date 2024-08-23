@@ -24,5 +24,5 @@ class GoodsPage(BasePage):
     goods_page_next_button_xpath = "//span/t[contains(text(), 'Далее')]"
 
     def click_button(self, goods_page_next_button_xpath):
-        self.wait_and_click((By.XPATH, goods_page_next_button_xpath))
+        self.click((By.XPATH, goods_page_next_button_xpath))
 ##############################################################################
