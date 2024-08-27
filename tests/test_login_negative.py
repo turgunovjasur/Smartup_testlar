@@ -5,13 +5,14 @@ from utils.driver_setup import driver
 
 
 def run_test(driver, test_name, email, password, expect_success=False):
-
+    email = 'admin@auto_test'
+    password = ''
     login_page = LoginPage(driver)
     time.sleep(2)
     login_page.login(email, password, LoginPage.email_xpath, LoginPage.password_xpath, LoginPage.signup_xpath)
 
     if expect_success:
-        result = login_page.is_dashboard_visible(DashboardPage.dashboard_header_xpath)
+        result = login_page.is_dashboard_visible(DashboardPage.dashboard_header)
         success_message = "Log in Successful!"
         failure_message = "Log in Failed!"
     else:

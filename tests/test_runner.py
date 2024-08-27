@@ -1,6 +1,7 @@
 import unittest
 from HtmlTestRunner import HTMLTestRunner
-from tests import test_registration, test_login_negative, test_purchases
+from tests import test_registration, test_login_negative
+from tests.tests_reference import test_purchases
 
 if __name__ == "__main__":
     test_suite = unittest.TestSuite([

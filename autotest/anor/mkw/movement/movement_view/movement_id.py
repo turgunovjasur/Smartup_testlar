@@ -4,24 +4,24 @@ from selenium.webdriver.common.by import By
 
 class MovementId(BasePage):
     ##############################################################################
-    movement_id_header = "//div[@id='anor374-card_title-main']"
+    card_title_header = "//div[@id='anor374-card_title-main']"
 
-    def element_visible(self, movement_id_header):
-        self.wait_for_element_visible((By.XPATH, movement_id_header))
+    def element_visible(self, card_title_header):
+        self.wait_for_element_visible((By.XPATH, card_title_header))
 
     ##############################################################################
-    number = "//span[@id='anor374-span-movement_number']"
+    movement_number = "//span[@id='anor374-span-movement_number']"
 
     def get_elements(self):
-        number = self.check_count(self.number)
+        movement_number = self.check_count(self.movement_number)
         return {
-            'number': number
+            'movement_number': movement_number
         }
 
     ##############################################################################
-    inventory_button_xpath = "//t[contains(text(), 'ТМЦ')]"
+    navi_inventory_button = "//t[contains(text(), 'ТМЦ')]"
 
-    def fill_form(self, inventory_button_xpath):
-        self.click((By.XPATH, inventory_button_xpath))
+    def fill_form(self, navi_inventory_button):
+        self.click((By.XPATH, navi_inventory_button))
 
     ##############################################################################

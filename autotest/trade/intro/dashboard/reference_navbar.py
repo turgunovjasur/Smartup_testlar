@@ -1,17 +1,16 @@
 from selenium.webdriver.common.by import By
-
 from autotest.core.md.base_page import BasePage
 
 
-class SalesNavbar(BasePage):
+class ReferenceNavbar(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    sales_navbar_header = "//h3/span[contains(text(), 'Продажа')]"
+    reference_navbar_header = "(//span[contains(text(), 'Справочники')])[3]"
 
-    def element_visible(self, sales_navbar_header):
-        self.wait_for_element_visible((By.XPATH, sales_navbar_header))
+    def element_visible(self, reference_navbar_header):
+        self.wait_for_element_visible((By.XPATH, reference_navbar_header))
     # ------------------------------------------------------------------------------------------------------------------
-    orders_button = "//a/span[contains(text(), 'Заказы')]"
+    reference_button = "//span[text()='ТМЦ']"
 
-    def click_button(self, orders_button):
-        self.click((By.XPATH, orders_button))
+    def click_button_reference(self, reference_button):
+        self.click((By.XPATH, reference_button))
     # ------------------------------------------------------------------------------------------------------------------

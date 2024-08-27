@@ -1,16 +1,14 @@
 from autotest.core.md.base_page import BasePage
-
 from selenium.webdriver.common.by import By
 
 
 class OrdersPage(BasePage):
-    ##############################################################################
+    # ------------------------------------------------------------------------------------------------------------------
     order_page_header_xpath = "//ul/li/a[contains(text(), 'Опросники')]"
 
     def element_visible(self, order_page_header_xpath):
         self.wait_for_element_visible((By.XPATH, order_page_header_xpath))
-
-    ##############################################################################
+    # ------------------------------------------------------------------------------------------------------------------
     count_xpath = "//div[contains(@class, 'sg-cell') and contains(@class, 'col-sm-4') and contains(@class, " \
                   "'ng-binding')]"
 
@@ -32,10 +30,9 @@ class OrdersPage(BasePage):
             print(f"Check_count_error: {str(e)}")
             self.take_screenshot("check_count_error")
             return 0
-
-    ##############################################################################
+    # ------------------------------------------------------------------------------------------------------------------
     create_button_xpath = "//div/button[contains(text(), 'Создать')]"
 
     def click_button(self, create_button_xpath):
         self.click((By.XPATH, create_button_xpath))
-    ##############################################################################
+    # ------------------------------------------------------------------------------------------------------------------

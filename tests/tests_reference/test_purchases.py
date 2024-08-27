@@ -1,4 +1,3 @@
-import time
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.warehouse_navbar import WarehouseNavbar
@@ -12,58 +11,58 @@ from utils.driver_setup import driver
 
 
 def test_purchase(driver):
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Login_page
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     email = 'admin@auto_test'
-    password = ''
-    ##############################################################################
+    password = 'greenwhite'
+    # __________________________________________________________________________________________________________________
     login_page = LoginPage(driver)
     login_page.fill_form(email, password,
                          LoginPage.email_xpath,
                          LoginPage.password_xpath)
     login_page.click_button(LoginPage.signup_xpath)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Dashboard_page
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     dashboard_page = DashboardPage(driver)
     try:
         dashboard_page.element_visible_session(DashboardPage.active_session_header)
         dashboard_page.click_button_delete_session(DashboardPage.delete_session_button)
     except:
         pass
-    dashboard_page.element_visible(dashboard_page.dashboard_header_xpath)
+    dashboard_page.element_visible(dashboard_page.dashboard_header)
     dashboard_page.click_hover_show_button(DashboardPage.hover_show_button, DashboardPage.filial_button)
     dashboard_page.click_warehouse_button(dashboard_page.warehouse_button)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Warehouse_navbar
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     warehouse_navbar = WarehouseNavbar(driver)
     warehouse_navbar.element_visible(warehouse_navbar.warehouse_navbar_header)
     warehouse_navbar.click_button_purchases(WarehouseNavbar.purchases_button)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Purchase_list
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     purchase_list = PurchaseList(driver)
     purchase_list.element_visible(PurchaseList.purchase_list_header)
     purchase_list.click_button(PurchaseList.add_button)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Main_page
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     purchase_main = MainPage(driver)
     purchase_main.element_visible(MainPage.main_page_header)
     purchase_main.fill_form(MainPage.ref_types_input, MainPage.ref_types_element, MainPage.payment_type_input,
                             MainPage.payment_type_element, MainPage.with_input_input, MainPage.warehouse_input,
                             MainPage.warehouse_element, MainPage.with_extra_costs_button)
     purchase_main.click_button(MainPage.next_step_button)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Inventory_page
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     quantity = "10"
     price = "120000"
     margin_value = "20"
     vat_percent = "12"
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     inventory_page = InventoryPage(driver)
     inventory_page.element_visible(InventoryPage.inventory_page_header)
     inventory_page.fill_form(InventoryPage.fast_search_input,
@@ -84,33 +83,33 @@ def test_purchase(driver):
     start_vat_amount = numbers['start_vat_amount']  # 144_024
     start_total_amount = numbers['start_total_amount']  # 1_344_224
     inventory_page.click_button(InventoryPage.next_step_button)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Extra_cost_page
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     extra_cost_page = ExtraCostPage(driver)
     extra_cost_page.element_visible(ExtraCostPage.extra_cost_page_header)
     extra_cost_page.click_button(ExtraCostPage.next_step_button)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Final_page
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     finish_page = FinishPage(driver)
     finish_page.element_visible(FinishPage.finish_page_header)
     random_number = finish_page.random_number(FinishPage.purchase_number_input)
     print(f"random_number:{random_number}")
     finish_page.click_button(FinishPage.finish_page_save_button,
                              FinishPage.finish_page_yes_button)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Check_purchase
     # Purchase_list
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     purchase_list = PurchaseList(driver)
     purchase_list.element_visible(PurchaseList.purchase_list_header)
     purchase_list.click_2x(PurchaseList.barcode_button)
     purchase_list.open_purchase_list(PurchaseList.first_list_purchase,
                                      PurchaseList.view_button)
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     # Purchase_id
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
     purchase_id = PurchaseId(driver)
     purchase_id.element_visible(PurchaseId.purchase_id_header_xpath)
     purchase_number = purchase_id.get_purchase_number()
@@ -125,4 +124,4 @@ def test_purchase(driver):
     except AssertionError as e:
         print(f"{str(e)}")
         raise
-    ##############################################################################
+    # __________________________________________________________________________________________________________________
