@@ -107,6 +107,7 @@ def test_inventories(driver):
     # Inventory_list --- (Filter product)
     # ------------------------------------------------------------------------------------------------------------------
     product_filter = InventoryList(driver)
+    driver.refresh()
     time.sleep(2)
     product_filter.click_filter_button(InventoryList.filter_button)
     product_filter.click_show_all_button(InventoryList.show_all_button)

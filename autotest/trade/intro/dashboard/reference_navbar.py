@@ -14,3 +14,8 @@ class ReferenceNavbar(BasePage):
     def click_button_reference(self, reference_button):
         self.click((By.XPATH, reference_button))
     # ------------------------------------------------------------------------------------------------------------------
+    prices_button = "//span[text()='Цены']"
+
+    def click_button_prices(self, prices_button):
+        self.click((By.XPATH, prices_button))
+    # ------------------------------------------------------------------------------------------------------------------
