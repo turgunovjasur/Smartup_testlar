@@ -1,15 +1,16 @@
 import time
+
+from autotest.anor.mr.product.service_add.service_add import ServiceAdd
+from autotest.anor.mr.product.service_list.service_list import ServicesList
+from autotest.anor.mr.product.service_view.product_id import ProductIdView
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
-from autotest.anor.mkr.price_type_add.price_type_add import PriceTypeAdd
-from autotest.anor.mkr.price_type_edit.price_type_id import PriceTypeIdEdit
-from autotest.anor.mkr.price_type_list.price_type_list import PriceTypeList
-from autotest.anor.mkr.price_type_view.price_type_id import PriceTypeIdView
+
 from autotest.trade.intro.dashboard.reference_navbar import ReferenceNavbar
 from utils.driver_setup import driver
 
 
-def test_prices(driver):
+def test_services(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Login_page
     # ------------------------------------------------------------------------------------------------------------------
@@ -38,41 +39,41 @@ def test_prices(driver):
     reference_navbar = ReferenceNavbar(driver)
     time.sleep(2)
     reference_navbar.element_visible(ReferenceNavbar.reference_navbar_header)
-    reference_navbar.click_button_prices(ReferenceNavbar.prices_button)
+    reference_navbar.click_button_services(ReferenceNavbar.services_button)
     # ------------------------------------------------------------------------------------------------------------------
     # List
     # ------------------------------------------------------------------------------------------------------------------
-    list = PriceTypeList(driver)
+    list = ServicesList(driver)
     time.sleep(2)
-    list.element_visible(PriceTypeList.list_header)
-    list.click_add_button(PriceTypeList.add_button)
+    list.element_visible(ServicesList.list_header)
+    list.click_add_button(ServicesList.add_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Add
     # ------------------------------------------------------------------------------------------------------------------
-    code = "1"
+    order = "1"
     name = "add_1"
     # ------------------------------------------------------------------------------------------------------------------
-    add = PriceTypeAdd(driver)
+    add = ServiceAdd(driver)
     time.sleep(2)
-    add.element_visible(PriceTypeAdd.header)
-    add.input_code(PriceTypeAdd.code_input, code)
-    add.input_name(PriceTypeAdd.name_input, name)
-    add.input_currency_name(PriceTypeAdd.currency_name_input,
-                            PriceTypeAdd.currency_name)
-    add.click_save_button(PriceTypeAdd.save_button)
+    add.element_visible(ServiceAdd.header)
+    add.input_name(ServiceAdd.name_input, name)
+    add.input_measurement(ServiceAdd.measure_input,
+                          ServiceAdd.measure_elem)
+    add.input_order(ServiceAdd.order_input, order)
+    add.click_save_button(ServiceAdd.save_button)
     print('Price: Add')
     # ------------------------------------------------------------------------------------------------------------------
     # View
     # ------------------------------------------------------------------------------------------------------------------
+    list = ServicesList(driver)
     time.sleep(2)
-    list.element_visible(PriceTypeList.list_header)
-    list.click_code_button(PriceTypeList.code_button)
-    list.click_first_elem_button(PriceTypeList.list_first_elem)
-    list.click_view_button(PriceTypeList.view_button)
+    list.element_visible(ServicesList.list_header)
+    list.click_first_elem_button(ServicesList.list_first_elem)
+    list.click_view_button(ServicesList.view_button)
     # ------------------------------------------------------------------------------------------------------------------
-    view = PriceTypeIdView(driver)
-    view.element_visible(PriceTypeIdView.card_title_header)
-    view.click_close_button(PriceTypeIdView.close_button)
+    view = ProductIdView(driver)
+    view.element_visible(ProductIdView.card_title_header)
+    view.click_close_button(ProductIdView.close_button)
     print('Price: View')
     # ------------------------------------------------------------------------------------------------------------------
     # Edit

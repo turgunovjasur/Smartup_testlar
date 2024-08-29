@@ -19,3 +19,8 @@ class ReferenceNavbar(BasePage):
     def click_button_prices(self, prices_button):
         self.click((By.XPATH, prices_button))
     # ------------------------------------------------------------------------------------------------------------------
+    services_button = ""
+
+    def click_button_services(self, services_button):
+        self.click((By.XPATH, services_button))
+    # ------------------------------------------------------------------------------------------------------------------
