@@ -1,11 +1,10 @@
 import time
-
-from autotest.anor.mr.product.service_add.service_add import ServiceAdd
-from autotest.anor.mr.product.service_list.service_list import ServicesList
-from autotest.anor.mr.product.service_view.product_id import ProductIdView
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
-
+from autotest.anor.mr.product.service_list.service_list import ServicesList
+from autotest.anor.mr.product.service_add.service_add import ServiceAdd
+from autotest.anor.mr.product.service_view.product_id import ProductIdView
+from autotest.anor.mr.product.service_edit.product_id import ProductIdEdit
 from autotest.trade.intro.dashboard.reference_navbar import ReferenceNavbar
 from utils.driver_setup import driver
 
@@ -78,102 +77,111 @@ def test_services(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Edit
     # ------------------------------------------------------------------------------------------------------------------
+    list = ServicesList(driver)
     time.sleep(2)
-    list.element_visible(PriceTypeList.list_header)
-    list.click_first_elem_button(PriceTypeList.list_first_elem)
-    list.click_edit_button(PriceTypeList.edit_button)
+    list.element_visible(ServicesList.list_header)
+    list.click_first_elem_button(ServicesList.list_first_elem)
+    list.click_edit_button(ServicesList.edit_button)
     # ------------------------------------------------------------------------------------------------------------------
     name_text = "add_1_edit"
     # ------------------------------------------------------------------------------------------------------------------
-    edit = PriceTypeIdEdit(driver)
+    edit = ProductIdEdit(driver)
     time.sleep(2)
-    edit.element_visible(PriceTypeIdEdit.card_title_header)
-    edit.input_name_edit(PriceTypeIdEdit.name_input, name_text)
-    edit.click_save_button(PriceTypeIdEdit.save_button)
+    edit.element_visible(ProductIdEdit.card_title_header)
+    edit.input_name_edit(ProductIdEdit.name_input, name_text)
+    edit.click_save_button(ProductIdEdit.save_button)
     print('Price: Edit')
     # ------------------------------------------------------------------------------------------------------------------
     # Status (inactive)
     # ------------------------------------------------------------------------------------------------------------------
+    list = ServicesList(driver)
     time.sleep(2)
-    list.element_visible(PriceTypeList.list_header)
-    list.click_first_elem_button(PriceTypeList.list_first_elem)
-    list.click_status_one_button(PriceTypeList.status_one_button,
-                                 PriceTypeList.click_yes_button)
+    list.element_visible(ServicesList.list_header)
+    list.click_first_elem_button(ServicesList.list_first_elem)
+    list.click_status_one_button(ServicesList.status_one_button,
+                                 ServicesList.click_yes_button)
     driver.refresh()
-    list.click_filter_button(PriceTypeList.filter_button)
-    list.click_show_all_button(PriceTypeList.show_all_button)
+    list.click_filter_button(ServicesList.filter_button)
+    list.click_show_all_button(ServicesList.show_all_button,
+                               ServicesList.show_all_header)
     print('Price: inactive')
     # ------------------------------------------------------------------------------------------------------------------
     # Status (active)
     # ------------------------------------------------------------------------------------------------------------------
+    list = ServicesList(driver)
     time.sleep(2)
-    list.element_visible(PriceTypeList.list_header)
-    list.click_code_button(PriceTypeList.code_button)
-    list.click_first_elem_button(PriceTypeList.list_first_elem)
-    list.click_status_one_button(PriceTypeList.status_one_button,
-                                 PriceTypeList.click_yes_button)
+    list.element_visible(ServicesList.list_header)
+    list.click_first_elem_button(ServicesList.list_first_elem)
+    list.click_status_one_button(ServicesList.status_one_button,
+                                 ServicesList.click_yes_button)
+    # driver.refresh()
     print('Price: active')
     # ------------------------------------------------------------------------------------------------------------------
     # Delete
     # ------------------------------------------------------------------------------------------------------------------
+    list = ServicesList(driver)
     time.sleep(2)
-    list.element_visible(PriceTypeList.list_header)
-    list.click_first_elem_button(PriceTypeList.list_first_elem)
-    list.click_delete_one_button(PriceTypeList.product_delete_one_button,
-                                 PriceTypeList.click_yes_delete_button)
+    list.element_visible(ServicesList.list_header)
+    list.click_first_elem_button(ServicesList.list_first_elem)
+    list.click_delete_one_button(ServicesList.product_delete_one_button,
+                                 ServicesList.click_yes_delete_button)
     print('Price: Delete')
     # ------------------------------------------------------------------------------------------------------------------
     # Add-2
     # ------------------------------------------------------------------------------------------------------------------
+    list = ServicesList(driver)
     time.sleep(2)
-    list.element_visible(PriceTypeList.list_header)
-    list.click_add_button(PriceTypeList.add_button)
+    list.element_visible(ServicesList.list_header)
+    list.click_add_button(ServicesList.add_button)
     # ------------------------------------------------------------------------------------------------------------------
-    code = "1"
+    order = "1"
     name = "add_2"
     # ------------------------------------------------------------------------------------------------------------------
-    driver.refresh()
-    time.sleep(1)
-    add.element_visible(PriceTypeAdd.header)
-    add.input_code(PriceTypeAdd.code_input, code)
-    add.input_name(PriceTypeAdd.name_input, name)
-    add.input_currency_name(PriceTypeAdd.currency_name_input,
-                            PriceTypeAdd.currency_name)
-    add.click_save_button(PriceTypeAdd.save_button)
+    add = ServiceAdd(driver)
+    time.sleep(2)
+    add.element_visible(ServiceAdd.header)
+    add.input_name(ServiceAdd.name_input, name)
+    add.input_measurement(ServiceAdd.measure_input,
+                          ServiceAdd.measure_elem)
+    add.input_order(ServiceAdd.order_input, order)
+    add.click_save_button(ServiceAdd.save_button)
     print('Price: Add-2')
     # ------------------------------------------------------------------------------------------------------------------
     # Status (inactive) (many)
     # ------------------------------------------------------------------------------------------------------------------
+    list = ServicesList(driver)
     time.sleep(2)
-    list.element_visible(PriceTypeList.list_header)
-    list.click_code_button(PriceTypeList.code_button)
-    list.click_checkbox_button(PriceTypeList.checkbox_button)
-    list.click_status_many_button(PriceTypeList.status_many_button,
-                                  PriceTypeList.passive_many_button,
-                                  PriceTypeList.click_status_yes_button)
+    list.element_visible(ServicesList.list_header)
+    list.click_checkbox_button(ServicesList.checkbox_button)
+    list.click_status_many_button(ServicesList.status_many_button,
+                                  ServicesList.passive_many_button,
+                                  ServicesList.status_yes_button)
     driver.refresh()
-    list.click_filter_button(PriceTypeList.filter_button)
-    list.click_show_all_button(PriceTypeList.show_all_button)
+    list.click_filter_button(ServicesList.filter_button)
+    list.click_show_all_button(ServicesList.show_all_button,
+                               ServicesList.show_all_header)
     print('Price: inactive (many)')
     # ------------------------------------------------------------------------------------------------------------------
     # Status (active) (many)
     # ------------------------------------------------------------------------------------------------------------------
-    list.element_visible(PriceTypeList.list_header)
-    list.click_code_button(PriceTypeList.code_button)
-    list.click_checkbox_button(PriceTypeList.checkbox_button)
-    list.click_status_many_button(PriceTypeList.status_many_button,
-                                  PriceTypeList.passive_many_button,
-                                  PriceTypeList.click_status_yes_button)
+    list = ServicesList(driver)
+    time.sleep(2)
+    list.element_visible(ServicesList.list_header)
+    list.click_checkbox_button(ServicesList.checkbox_button)
+    list.click_status_many_button(ServicesList.status_many_button,
+                                  ServicesList.passive_many_button,
+                                  ServicesList.status_yes_button)
+    # driver.refresh()
     print('Price: active (many)')
     # ------------------------------------------------------------------------------------------------------------------
     # Delete (many)
     # ------------------------------------------------------------------------------------------------------------------
-    driver.refresh()
-    list.element_visible(PriceTypeList.list_header)
-    list.click_code_button(PriceTypeList.code_button)
-    list.click_checkbox_button(PriceTypeList.checkbox_button)
-    list.click_delete_many_button(PriceTypeList.delete_many_button,
-                                  PriceTypeList.click_delete_yes_button)
+    list = ServicesList(driver)
+    time.sleep(2)
+    list.element_visible(ServicesList.list_header)
+    list.click_checkbox_button(ServicesList.checkbox_button)
+    list.click_delete_many_button(ServicesList.delete_many_button,
+                                  ServicesList.delete_yes_button)
     driver.close()
     print('Price: Delete (many)')
     # ------------------------------------------------------------------------------------------------------------------

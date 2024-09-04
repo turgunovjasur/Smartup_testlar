@@ -10,7 +10,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.default_timeout = 10
+        self.default_timeout = 20
 
     def click(self, locator, timeout=None):
         self.wait_for_element_clickable(locator, timeout).click()

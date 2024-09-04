@@ -14,7 +14,7 @@ class ProductIdView(BasePage):
     def get_elements(self, service_name):
         self.get_element_value(service_name, as_int=True)
     # ------------------------------------------------------------------------------------------------------------------
-    close_button = ""
+    close_button = "id('anor694-button-close')"
 
     def click_close_button(self, close_button):
         self.click((By.XPATH, close_button))

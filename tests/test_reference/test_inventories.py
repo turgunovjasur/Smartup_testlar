@@ -102,7 +102,7 @@ def test_inventories(driver):
     inventory_list.click_first_elem_button(InventoryList.inventory_list_first_elem)
     inventory_list.click_status_one_button(InventoryList.status_one_button,
                                            InventoryList.click_yes_button)
-    print('product ne_active')
+    print('product no_active')
     # ------------------------------------------------------------------------------------------------------------------
     # Inventory_list --- (Filter product)
     # ------------------------------------------------------------------------------------------------------------------
@@ -110,6 +110,7 @@ def test_inventories(driver):
     driver.refresh()
     time.sleep(2)
     product_filter.click_filter_button(InventoryList.filter_button)
+    time.sleep(2)
     product_filter.click_show_all_button(InventoryList.show_all_button)
     print('product status show all')
     # ------------------------------------------------------------------------------------------------------------------
@@ -172,6 +173,7 @@ def test_inventories(driver):
     product_filter = InventoryList(driver)
     time.sleep(2)
     product_filter.click_filter_button(InventoryList.filter_button)
+    time.sleep(2)
     product_filter.click_show_all_button(InventoryList.show_all_button)
     print('product status show all (many)')
     # ------------------------------------------------------------------------------------------------------------------
