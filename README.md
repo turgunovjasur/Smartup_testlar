@@ -24,7 +24,8 @@ Use the following commands to run the tests:
 2. To run individual test files: 
 - pytest test_purchases.py
 3. To obtain a report in Allure
-- allure serve reports/allure_results 
+- allure serve reports/allure_results
+- allure generate ./allure-results --clean
 
 ## Test Details
 

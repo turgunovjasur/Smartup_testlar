@@ -12,24 +12,31 @@ from selenium.webdriver.common.by import By
 from utils.driver_setup import driver
 
 
-def test_all(driver):
+def test_orders(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Login_page
     # ------------------------------------------------------------------------------------------------------------------
-    email = 'admin@auto_test'
-    password = ''
+    email = 'admin@test'
+    password = 'greenwhite'
     # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    time.sleep(2)
-    login_page.fill_form(email, password, LoginPage.email_xpath, LoginPage.password_xpath)
+    login_page.fill_form(email,
+                         password,
+                         LoginPage.email_xpath,
+                         LoginPage.password_xpath)
     login_page.click_button(LoginPage.signup_xpath)
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_page = DashboardPage(driver)
-    time.sleep(2)
+    try:
+        dashboard_page.element_visible_session(DashboardPage.active_session_header)
+        dashboard_page.click_button_delete_session(DashboardPage.delete_session_button)
+    except:
+        pass
     dashboard_page.element_visible(dashboard_page.dashboard_header)
-    dashboard_page.click_sales_button(dashboard_page.sales_button)
+    # dashboard_page.click_hover_show_button(DashboardPage.hover_show_button, DashboardPage.filial_fmg_button)
+    dashboard_page.click_warehouse_button(dashboard_page.sales_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Sales_modal
     # ------------------------------------------------------------------------------------------------------------------

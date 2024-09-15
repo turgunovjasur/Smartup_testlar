@@ -12,6 +12,7 @@ class DashboardPage(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     hover_show_button = "//div[@class='pt-3 px-2']"
     filial_button = "//div[@class= 'menus']/child::li[2]/child::a[2]"
+    filial_fmg_button = "//div[@class= 'menus']/child::li[2]/child::a[4]"
 
     def click_hover_show_button(self, hover_show_button, filial_button):
         self.click((By.XPATH, hover_show_button))
