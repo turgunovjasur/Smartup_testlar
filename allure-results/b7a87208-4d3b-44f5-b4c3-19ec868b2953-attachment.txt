@@ -1,0 +1,9 @@
+Element not visible within: 1 seconds: ('xpath', "//h3/t[contains(text(),'Активные сеансы')]")
+Amount values match: 1200000 == 1200000
+Margin amount values match: 200 == 200
+VAT amount values match: 144024.0 == 144024
+Total amount values match: 1344224.0 == 1344224
+All values are correct
+random_number:3841
+purchase_number: 3841
+Successfully!

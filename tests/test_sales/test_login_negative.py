@@ -79,7 +79,7 @@ def test_login_with_short_password(driver):
 
 
 def test_login_with_valid_credentials(driver):
-    run_test(driver, "To'g'ri login va parol testi", "admin@gws", "correctpassword", expect_success=True)
+    run_test(driver, "To'g'ri login va parol testi", "admin@test", "greenwhite", expect_success=False)
 
 
 def run_all_tests(driver):

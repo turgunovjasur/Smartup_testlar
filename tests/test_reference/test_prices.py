@@ -15,6 +15,8 @@ def test_prices(driver):
     # ------------------------------------------------------------------------------------------------------------------
     email = 'admin@auto_test'
     password = 'greenwhite'
+    # email = 'admin@test'
+    # password = 'greenwhite'
     # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
     login_page.fill_form(email, password,

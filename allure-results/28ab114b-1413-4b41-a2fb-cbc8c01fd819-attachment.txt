@@ -1,0 +1,9 @@
+random son:6623
+Price values match: 120000 == 120000
+Margin values match: 20 == 20
+Vat values match: 12 == 12
+Amount values match: 120000 == 120000
+All values are correct
+start_total_amount: 120000
+quantity: 1
+Successfully!

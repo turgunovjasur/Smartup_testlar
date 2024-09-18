@@ -1,0 +1,4 @@
+Element not visible within: 1 seconds: ('xpath', "//h3/t[contains(text(),'Активные сеансы')]")
+random_number: 5149
+movement_number: 5149
+Successfully!
