@@ -1,5 +1,0 @@
-Element not visible within: 1 seconds: ('xpath', "//h3/t[contains(text(),'Активные сеансы')]")
-Element not clickable within: 1 seconds: ('xpath', "(//button[@class='btn btn-icon btn-danger'])[1]")
-First count: 214
-New count: 215
-Product successfully added

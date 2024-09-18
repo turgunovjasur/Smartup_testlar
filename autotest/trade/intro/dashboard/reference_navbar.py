@@ -9,6 +9,7 @@ class ReferenceNavbar(BasePage):
     def element_visible(self, reference_navbar_header):
         self.wait_for_element_visible((By.XPATH, reference_navbar_header))
     # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
     reference_button = "//span[text()='ТМЦ']"
 
     def click_button_reference(self, reference_button):
@@ -23,4 +24,14 @@ class ReferenceNavbar(BasePage):
 
     def click_button_services(self, services_button):
         self.click((By.XPATH, services_button))
+    # ------------------------------------------------------------------------------------------------------------------
+    action_button = "//li/a/span[contains(text(), 'Акции')]"
+
+    def click_action_button(self, action_button):
+        self.click((By.XPATH, action_button))
+    # ------------------------------------------------------------------------------------------------------------------
+    overload_button = "//li/a/span[contains(text(), 'Нагрузки')]"
+
+    def click_overload_button(self, overload_button):
+        self.click((By.XPATH, overload_button))
     # ------------------------------------------------------------------------------------------------------------------
