@@ -39,7 +39,7 @@ def test_prices(driver):
     # ------------------------------------------------------------------------------------------------------------------
     reference_navbar = ReferenceNavbar(driver)
     time.sleep(2)
-    reference_navbar.element_visible(ReferenceNavbar.reference_navbar_header)
+    reference_navbar.element_visible(ReferenceNavbar.header)
     reference_navbar.click_button_prices(ReferenceNavbar.prices_button)
     # ------------------------------------------------------------------------------------------------------------------
     # List

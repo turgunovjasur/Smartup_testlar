@@ -38,8 +38,8 @@ def test_inventories(driver):
     # Reference_navbar
     # ------------------------------------------------------------------------------------------------------------------
     reference_navbar = ReferenceNavbar(driver)
-    reference_navbar.element_visible(ReferenceNavbar.reference_navbar_header)
-    reference_navbar.click_button_reference(ReferenceNavbar.reference_button)
+    reference_navbar.element_visible(ReferenceNavbar.header)
+    reference_navbar.click_button_inventories(ReferenceNavbar.inventories_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Inventory_list
     # ------------------------------------------------------------------------------------------------------------------

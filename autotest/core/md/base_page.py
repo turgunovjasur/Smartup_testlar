@@ -12,13 +12,22 @@ class BasePage:
         self.driver = driver
         self.default_timeout = 20
 
+    # ------------------------------------------------------------------------------------------------------------------
     def click(self, locator, timeout=None):
         self.wait_for_element_clickable(locator, timeout).click()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def click_js(self, locator, timeout=None):
+        element = self.wait_for_element_clickable(locator, timeout)
+        self.driver.execute_script("arguments[0].click();", element)
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     def clear_and_send_keys(self, locator, text):
         element = self.wait_for_element_visible(locator)
         element.clear()
         element.send_keys(text)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def wait_for_element_clickable(self, locator, timeout=None):
         if timeout is None:
@@ -30,6 +39,7 @@ class BasePage:
         except TimeoutException:
             print(f"Element not clickable within: {timeout} seconds: {locator}")
             return None
+    # ------------------------------------------------------------------------------------------------------------------
 
     def wait_for_element_visible(self, locator, timeout=None):
         if timeout is None:
@@ -41,14 +51,22 @@ class BasePage:
         except TimeoutException:
             print(f"Element not visible within: {timeout} seconds: {locator}")
             return None
+    # ------------------------------------------------------------------------------------------------------------------
 
     def input_text(self, locator, text):
         self.clear_and_send_keys(locator, text)
         self.click(locator)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def input_text_elem(self, locator, elem_locator):
         self.click(locator)
         self.click(elem_locator)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def input_text_elem_js(self, locator, elem_locator):
+        self.click_js(locator)
+        self.click_js(elem_locator)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def take_screenshot(self, filename):
         filename = str(filename)
@@ -58,14 +76,17 @@ class BasePage:
         screenshot_path = os.path.join(screenshot_dir, f"{filename}.png")
         self.driver.save_screenshot(screenshot_path)
         print(f"Screenshot saved at {screenshot_path}")
+    # ------------------------------------------------------------------------------------------------------------------
 
     def click_multiple_time(self, locator, click_count=2, delay=1, timeout=None):
         for _ in range(click_count):
             self.click(locator, timeout)
             time.sleep(delay)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def get_element(self, locator):
         return WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located(locator))
+    # ------------------------------------------------------------------------------------------------------------------
 
     def long_press(self, locator, duration=1000):
         element = self.get_element(locator)
@@ -79,12 +100,14 @@ class BasePage:
                 element.dispatchEvent(mouseUpEvent);
             }, duration);
         """, element, duration)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def hover_and_hold(self, locator, duration=2000):
         element = self.get_element(locator)
         actions = ActionChains(self.driver)
         actions.move_to_element(element).perform()
         time.sleep(duration / 1000)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def get_element_value(self, xpath, as_int=False):
         try:
@@ -105,6 +128,7 @@ class BasePage:
             print(f"Error occurred: {str(e)}")
             self.take_screenshot("get_element_value_error")
             return 0 if as_int else ""
+    # ------------------------------------------------------------------------------------------------------------------
 
     def elements_equal(self, xpath1, xpath2, as_int=False):
 
@@ -122,6 +146,7 @@ class BasePage:
             print(f"Error comparing values: {str(e)}")
             self.take_screenshot("compare_elements_error")
             return False
+    # ------------------------------------------------------------------------------------------------------------------
 
     def check_count(self, count_xpath):
         try:
@@ -141,3 +166,4 @@ class BasePage:
             print(f"Check_count_error: {str(e)}")
             self.take_screenshot("check_count_error")
             return 0
+    # ------------------------------------------------------------------------------------------------------------------

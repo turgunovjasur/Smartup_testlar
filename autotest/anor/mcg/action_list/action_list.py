@@ -6,14 +6,14 @@ class ActionList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # Header text: Action list
     # ------------------------------------------------------------------------------------------------------------------
-    header = ""
+    header = "//button[@ng-if='fi.add']"
 
     def element_visible(self, header):
         self.wait_for_element_visible((By.XPATH, header))
     # ------------------------------------------------------------------------------------------------------------------
     # Toolbar: Add, Status, Delete many
     # ------------------------------------------------------------------------------------------------------------------
-    add_button = ""
+    add_button = "//button[@ng-if='fi.add']"
 
     def click_add_button(self, add_button):
         self.click((By.XPATH, add_button))
@@ -53,7 +53,7 @@ class ActionList(BasePage):
         self.click((By.XPATH, change_state_button))
         self.click((By.XPATH, click_yes_button))
     # ------------------------------------------------------------------------------------------------------------------
-    action_delete_one_button = ""
+    action_delete_one_button = "id('anor717-button-delete_one')"
     click_yes_delete_button = "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_delete_one_button(self, action_delete_one_button, click_yes_delete_button):

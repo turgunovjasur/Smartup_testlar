@@ -1,7 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","2297","test_login_with_invalid_email_format[chrome]","tests.test_sales","Sun Sep 15 14:55:23 UZT 2024","passed","Sun Sep 15 14:55:25 UZT 2024","","test_login_negative","",""
-"","2344","test_login_with_empty_fields[chrome]","tests.test_sales","Sun Sep 15 14:55:11 UZT 2024","passed","Sun Sep 15 14:55:13 UZT 2024","","test_login_negative","",""
-"","2303","test_login_with_short_password[chrome]","tests.test_sales","Sun Sep 15 14:55:34 UZT 2024","passed","Sun Sep 15 14:55:37 UZT 2024","","test_login_negative","",""
-"","25534","test_orders[chrome]","tests.test_sales","Sun Sep 15 14:55:57 UZT 2024","passed","Sun Sep 15 14:56:23 UZT 2024","","test_orders","",""
-"","2311","test_login_with_valid_credentials[chrome]","tests.test_sales","Sun Sep 15 14:55:46 UZT 2024","passed","Sun Sep 15 14:55:48 UZT 2024","","test_login_negative","",""
-"","2270","test_login_with_invalid_credentials[chrome]","tests.test_sales","Sun Sep 15 14:55:01 UZT 2024","passed","Sun Sep 15 14:55:03 UZT 2024","","test_login_negative","",""

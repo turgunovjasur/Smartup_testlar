@@ -1,0 +1,3 @@
+Element not visible within: 1 seconds: ('xpath', "//h3/t[contains(text(),'Активные сеансы')]")
+click_save_button
+click_delete_one_button
