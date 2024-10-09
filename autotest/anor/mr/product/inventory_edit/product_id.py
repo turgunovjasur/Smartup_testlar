@@ -4,18 +4,18 @@ from selenium.webdriver.common.by import By
 
 class ProductId(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    card_title_header = "id('anor66-button-save')"
+    card_title_header = By.XPATH, "id('anor66-button-save')"
 
-    def element_visible(self, card_title_header):
-        self.wait_for_element_visible((By.XPATH, card_title_header))
+    def element_visible(self):
+        self.wait_for_element_visible(self.card_title_header)
     # ------------------------------------------------------------------------------------------------------------------
-    name_input = "id('anor66-input-text-name')/input"
+    name_input = By.XPATH, "id('anor66-input-text-name')/input"
 
-    def input_name_edit(self, name_input, name_text):
-        self.input_text((By.XPATH, name_input), name_text)
+    def input_name_edit(self, name_text):
+        self.input_text(self.name_input, name_text)
     # ------------------------------------------------------------------------------------------------------------------
-    save_button = "id('anor66-button-save')"
+    save_button = By.XPATH, "id('anor66-button-save')"
 
-    def click_save_button(self, save_button):
-        self.click((By.XPATH, save_button))
+    def click_save_button(self):
+        self.click(self.save_button)
     # ------------------------------------------------------------------------------------------------------------------

@@ -3,16 +3,14 @@ from autotest.core.md.base_page import BasePage
 
 
 class ExtraCostPage(BasePage):
-    ##############################################################################
-    extra_cost_page_header = "//div/descendant::div/h3/t[contains(text(), 'Основное')]"
+    # ------------------------------------------------------------------------------------------------------------------
+    extra_cost_page_header = (By.XPATH, "//div/descendant::div/h3/t[contains(text(), 'Основное')]")
 
-    def element_visible(self, extra_cost_page_header):
-        self.wait_for_element_visible((By.XPATH, extra_cost_page_header))
+    def element_visible(self):
+        self.wait_for_element_visible(self.extra_cost_page_header)
+    # ------------------------------------------------------------------------------------------------------------------
+    next_step_button = (By.XPATH, "//div[@id= 'anor289-wizard-finishing']")
 
-    ##############################################################################
-    next_step_button = "//div[@id= 'anor289-wizard-finishing']"
-
-    def click_button(self, next_step_button, ):
-        self.click((By.XPATH, next_step_button))
-
-    ##############################################################################
+    def click_button(self):
+        self.click(self.next_step_button)
+    # ------------------------------------------------------------------------------------------------------------------

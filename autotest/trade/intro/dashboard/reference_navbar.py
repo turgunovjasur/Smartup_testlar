@@ -4,34 +4,34 @@ from autotest.core.md.base_page import BasePage
 
 class ReferenceNavbar(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = "(//span[contains(text(), 'Справочники')])[3]"
+    header = By.XPATH, "(//span[contains(text(), 'Справочники')])[3]"
 
-    def element_visible(self, header):
-        self.wait_for_element_visible((By.XPATH, header))
+    def element_visible(self):
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    inventories_button = "//span[text()='ТМЦ']"
+    inventories_button = By.XPATH, "//span[text()='ТМЦ']"
 
-    def click_button_inventories(self, inventories_button):
-        self.click((By.XPATH, inventories_button))
+    def click_button_inventories(self):
+        self.click(self.inventories_button)
     # ------------------------------------------------------------------------------------------------------------------
-    prices_button = "//span[text()='Цены']"
+    prices_button = By.XPATH, "//span[text()='Цены']"
 
-    def click_button_prices(self, prices_button):
-        self.click((By.XPATH, prices_button))
+    def click_button_prices(self):
+        self.click(self.prices_button)
     # ------------------------------------------------------------------------------------------------------------------
-    services_button = "//span[text()='Услуги']"
+    services_button = By.XPATH, "//span[text()='Услуги']"
 
-    def click_button_services(self, services_button):
-        self.click((By.XPATH, services_button))
+    def click_button_services(self):
+        self.click(self.services_button)
     # ------------------------------------------------------------------------------------------------------------------
-    action_button = "//li/a/span[contains(text(), 'Акции')]"
+    action_button = By.XPATH, "//li/a/span[contains(text(), 'Акции')]"
 
-    def click_action_button(self, action_button):
-        self.click((By.XPATH, action_button))
+    def click_action_button(self):
+        self.click(self.action_button)
     # ------------------------------------------------------------------------------------------------------------------
-    overload_button = "//li/a/span[contains(text(), 'Нагрузки')]"
+    overload_button = By.XPATH, "//li/a/span[contains(text(), 'Нагрузки')]"
 
-    def click_overload_button(self, overload_button):
-        self.click((By.XPATH, overload_button))
+    def click_overload_button(self):
+        self.click(self.overload_button)
     # ------------------------------------------------------------------------------------------------------------------

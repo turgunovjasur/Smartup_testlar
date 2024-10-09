@@ -1,4 +1,6 @@
+import random
 import time
+import pytest
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.sales_navbar import SalesNavbar
@@ -6,90 +8,94 @@ from autotest.trade.tdeal.order.order_list.orders_page import OrdersPage
 from autotest.anor.mdeal.order.order_add.create_order_page import CreateOrderPage
 from autotest.anor.mdeal.order.order_add.goods_page import GoodsPage
 from autotest.anor.mdeal.order.order_add.final_page import FinalPage
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from utils.driver_setup import driver
 
 
-def test_orders(driver):
+def run_test(driver, number_range):
     # ------------------------------------------------------------------------------------------------------------------
     # Login_page
     # ------------------------------------------------------------------------------------------------------------------
-    email = 'admin@test'
-    password = 'greenwhite'
+    email, password = 'admin@auto_test', 'greenwhite'
     # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    login_page.fill_form(email,
-                         password,
-                         LoginPage.email_xpath,
-                         LoginPage.password_xpath)
-    login_page.click_button(LoginPage.signup_xpath)
+    login_page.fill_form(email, password)
+    login_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_page = DashboardPage(driver)
     try:
-        dashboard_page.element_visible_session(DashboardPage.active_session_header)
-        dashboard_page.click_button_delete_session(DashboardPage.delete_session_button)
+        dashboard_page.element_visible_session()
+        dashboard_page.click_button_delete_session()
     except:
         pass
-    dashboard_page.element_visible(dashboard_page.dashboard_header)
-    # dashboard_page.click_hover_show_button(DashboardPage.hover_show_button, DashboardPage.filial_fmg_button)
-    dashboard_page.click_warehouse_button(dashboard_page.sales_button)
+    dashboard_page.element_visible()
+    dashboard_page.click_hover_show_button()
+    dashboard_page.click_sales_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Sales_modal
     # ------------------------------------------------------------------------------------------------------------------
-    sales_modal = SalesNavbar(driver)
+    sales_navbar = SalesNavbar(driver)
     time.sleep(2)
-    sales_modal.element_visible(sales_modal.sales_navbar_header)
-    sales_modal.click_button(sales_modal.orders_button)
+    sales_navbar.element_visible()
+    sales_navbar.click_orders_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Order_page
     # ------------------------------------------------------------------------------------------------------------------
     orders_page = OrdersPage(driver)
     time.sleep(2)
-    orders_page.element_visible(orders_page.order_page_header_xpath)
-    count_orders = orders_page.check_count(orders_page.count_xpath)
-    print(f"First count: {count_orders}")
-    orders_page.click_button(orders_page.create_button_xpath)
+    orders_page.element_visible()
+    count_orders = orders_page.check_order()
+    orders_page.click_add_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Create_order_page
     # ------------------------------------------------------------------------------------------------------------------
     create_order_page = CreateOrderPage(driver)
     time.sleep(2)
-    create_order_page.element_visible(create_order_page.create_order_header_xpath)
-    create_order_page.fill_form(create_order_page.order_request, create_order_page.order_request_xpath,
-                                create_order_page.room_xpath, create_order_page.robot_xpath, create_order_page.client_xpath,
-                                create_order_page.room_elem_xpath, create_order_page.robot_elem_xpath, create_order_page.client_elem_xpath)
-    create_order_page.click_button(create_order_page.create_order_next_button_xpath)
+    create_order_page.element_visible()
+    create_order_page.fill_form()
+    create_order_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
-    # Goods_page
+    # Goods_page / Action / Overload
+    # ------------------------------------------------------------------------------------------------------------------
+    number = random.randint(*number_range)
     # ------------------------------------------------------------------------------------------------------------------
     goods_page = GoodsPage(driver)
     time.sleep(2)
-    goods_page.element_visible(GoodsPage.goods_page_header_xpath)
-    goods_page.fill_form(GoodsPage.name_input_xpath, GoodsPage.name_elem_xpath, GoodsPage.qty_input_xpath, GoodsPage.qty)
-    goods_page.click_button(GoodsPage.goods_page_next_button_xpath)
+    goods_page.element_visible()
+    goods_page.fill_form(number)
+    # ------------------------------------------------------------------------------------------------------------------
+    # Overload
+    # ------------------------------------------------------------------------------------------------------------------
+    if number >= 10:
+        goods_page.click_overload_button()
+        goods_page.overload_is_visible()
+    # ------------------------------------------------------------------------------------------------------------------
+    # Action
+    # ------------------------------------------------------------------------------------------------------------------
+    if number >= 10:
+        goods_page.click_action_button()
+        goods_page.action_is_visible()
+    # ------------------------------------------------------------------------------------------------------------------
+    goods_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Final page
     # ------------------------------------------------------------------------------------------------------------------
     final_page = FinalPage(driver)
     time.sleep(2)
-    final_page.fill_form(FinalPage.payment_type_input_xpath, FinalPage.payment_elem_xpath,
-                         FinalPage.status_input_xpath, FinalPage.status_elem_xpath)
-    final_page.click_save_button(FinalPage.save_button_xpath, FinalPage.yes_button_xpath)
+    final_page.fill_form()
+    final_page.click_save_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Check count
     # ------------------------------------------------------------------------------------------------------------------
+    orders_page = OrdersPage(driver)
     time.sleep(2)
-    driver.refresh()
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, orders_page.order_page_header_xpath)))
-
-    check_orders_page = OrdersPage(driver)
-    check_orders_page.element_visible(orders_page.order_page_header_xpath)
-    time.sleep(2)
-    new_count_orders = check_orders_page.check_count(orders_page.count_xpath)
+    if orders_page.element_visible():
+        driver.refresh()
+    orders_page.element_visible()
+    new_count_orders = orders_page.check_order()
+    time.sleep(0.5)
+    print(f"First count: {count_orders}")
     print(f"New count: {new_count_orders}")
 
     try:
@@ -98,4 +104,11 @@ def test_orders(driver):
     except AssertionError as e:
         print(f"{str(e)}")
         raise
-    # ------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("number_range", [(1, 9), (10, 20)])
+def test_order(driver, number_range):
+    print(f"Testing with numbers from {number_range[0]} to {number_range[1]}")
+    run_test(driver, number_range)
+# ------------------------------------------------------------------------------------------------------------------

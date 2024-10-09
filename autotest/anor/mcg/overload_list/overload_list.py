@@ -1,3 +1,5 @@
+import time
+
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -6,82 +8,109 @@ class OverloadList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # Header text: Overload list
     # ------------------------------------------------------------------------------------------------------------------
-    header = "id('anor723-button-add')"
+    header = (By.XPATH, "//button[@id='anor723-button-add' and contains(text(), 'Создать')]")
 
-    def element_visible(self, header):
-        self.wait_for_element_visible((By.XPATH, header))
+    def element_visible(self):
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     # Toolbar: Add, Status, Delete many
     # ------------------------------------------------------------------------------------------------------------------
-    add_button = "id('anor723-button-add')"
+    add_button = (By.XPATH, "id('anor723-button-add')")
 
-    def click_add_button(self, add_button):
-        self.click((By.XPATH, add_button))
+    def click_add_button(self):
+        self.click(self.add_button)
     # ------------------------------------------------------------------------------------------------------------------
-    status_many_button = ""
-    passive_many_button = ""
-    click_status_yes_button = "//button[@ng-click='a.bConfirm.clickYes()']"
+    status_many_button = (By.XPATH, "id('anor723-button-change_state_many')")
+    passive_many_button = (By.XPATH, "id('anor723-button-change_state_many')/following-sibling::div/a[1]")
+    click_status_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
-    def click_status_many_button(self, status_button, passive_many_button, click_status_yes_button):
-        self.click((By.XPATH, status_button))
-        self.click((By.XPATH, passive_many_button))
-        self.click((By.XPATH, click_status_yes_button))
+    def click_status_many_button(self):
+        self.click(self.status_many_button)
+        self.click(self.passive_many_button)
+        self.click(self.click_status_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
-    delete_many_button = ""
-    click_delete_yes_button = "//button[@ng-click='a.bConfirm.clickYes()']"
+    delete_many_button = (By.XPATH, "id('anor723-button-delete_many')")
+    click_delete_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
-    def click_delete_many_button(self, delete_many_button, click_delete_yes_button):
-        self.click((By.XPATH, delete_many_button))
-        self.click((By.XPATH, click_delete_yes_button))
+    def click_delete_many_button(self):
+        self.click(self.delete_many_button)
+        self.click(self.click_delete_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: View, Edit, Inactive, Delete one
     # ------------------------------------------------------------------------------------------------------------------
-    view_button = ""
+    view_button = (By.XPATH, "id('anor723-button-view')")
 
-    def click_view_button(self, view_button):
-        self.click((By.XPATH, view_button))
+    def click_view_button(self):
+        self.click(self.view_button)
     # ------------------------------------------------------------------------------------------------------------------
-    edit_button = ""
+    edit_button = (By.XPATH, "id('anor723-button-edit')")
 
-    def click_edit_button(self, edit_button):
-        self.click((By.XPATH, edit_button))
+    def click_edit_button(self):
+        self.click(self.edit_button)
     # ------------------------------------------------------------------------------------------------------------------
-    status_one_button = ""
-    click_yes_button = "//button[@ng-click='a.bConfirm.clickYes()']"
+    status_one_button = (By.XPATH, "id('anor723-button-change_state_one')")
+    click_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
-    def click_status_one_button(self, change_state_button, click_yes_button):
-        self.click((By.XPATH, change_state_button))
-        self.click((By.XPATH, click_yes_button))
+    def click_status_one_button(self):
+        self.click(self.status_one_button)
+        self.click(self.click_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
-    delete_one_button = "id('anor723-button-delete_one')"
-    click_yes_delete_button = "//button[@ng-click='a.bConfirm.clickYes()']"
+    delete_one_button = (By.XPATH, "id('anor723-button-delete_one')")
+    click_yes_delete_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
-    def click_delete_one_button(self, delete_one_button, click_yes_delete_button):
-        self.click((By.XPATH, delete_one_button))
-        self.click((By.XPATH, click_yes_delete_button))
+    def click_delete_one_button(self):
+        self.click(self.delete_one_button)
+        self.click(self.click_yes_delete_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: First element, Checkbox
     # ------------------------------------------------------------------------------------------------------------------
-    list_first_elem = "(//div[@class='tbl-row']/div[3])[1]"
+    row_button = (By.CSS_SELECTOR, ".tbl-header-cell:nth-child(2) > .tbl-header-txt")
 
-    def click_first_elem_button(self, list_first_elem):
-        self.click((By.XPATH, list_first_elem))
+    def click_row_button(self):
+        time.sleep(2)
+        element = self.find_element(self.row_button)
+        self.driver.execute_script("arguments[0].click();", element)
     # ------------------------------------------------------------------------------------------------------------------
-    checkbox_button = ".tbl-row:nth-child(1) span"
+    list_first_elem = (By.XPATH, "(//div[@class='tbl-row']/div[2])[1]")
+
+    def click_first_elem_button(self):
+        time.sleep(2)
+        self.click(self.list_first_elem)
+    # ------------------------------------------------------------------------------------------------------------------
+    checkbox_button = ".tbl-cell span"
 
     def click_checkbox_button(self, checkbox_button):
+        time.sleep(2)
         element = self.driver.find_element(By.CSS_SELECTOR, checkbox_button)
         self.driver.execute_script("arguments[0].click();", element)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: Filter, Show all
     # ------------------------------------------------------------------------------------------------------------------
-    filter_button = "//button[@ng-click='openFilter()']"
+    filter_button = (By.XPATH, "//button[@ng-click='openFilter()']")
 
-    def click_filter_button(self, filter_button, timeout=10):
-        self.click((By.XPATH, filter_button), timeout)
+    def click_filter_button(self):
+        time.sleep(2)
+        self.click(self.filter_button)
     # ------------------------------------------------------------------------------------------------------------------
-    show_all_button = "//button[@ng-click='a.bGridFilter.showAll()']"
+    show_all_button = (By.XPATH, "//button[@ng-click='a.bGridFilter.showAll()']")
 
-    def click_show_all_button(self, show_all_button, timeout=10):
-        self.click((By.XPATH, show_all_button), timeout)
+    def click_show_all_button(self):
+        self.click(self.show_all_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    table_list = (By.XPATH, "//div[@class='tbl-body']")
+    product = (By.XPATH, "(//div[@class='tbl-row']/div[2])[1]")
+
+    def click_product_by_name(self, product_name):
+        rows = self.find_elements(self.table_list)
+        self.get_text(self.product)
+
+        for row in rows:
+            product = row.find_element(self.product)  # Mahsulot nomini olish
+            if product.text == product_name:
+                product.click()
+                print(f"{product_name} mahsulotiga bosildi.")
+                return
+
+        print(f"{product_name} mahsulot topilmadi.")
+
     # ------------------------------------------------------------------------------------------------------------------

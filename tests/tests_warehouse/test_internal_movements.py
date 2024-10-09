@@ -1,5 +1,3 @@
-import time
-
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.warehouse_navbar import WarehouseNavbar
@@ -21,29 +19,26 @@ def test_internal_movements(driver):
     # password = 'greenwhite'
     # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    login_page.fill_form(email,
-                         password,
-                         LoginPage.email_xpath,
-                         LoginPage.password_xpath)
-    login_page.click_button(LoginPage.signup_xpath)
+    login_page.fill_form(email, password)
+    login_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_page = DashboardPage(driver)
     try:
-        dashboard_page.element_visible_session(DashboardPage.active_session_header)
-        dashboard_page.click_button_delete_session(DashboardPage.delete_session_button)
+        dashboard_page.element_visible_session()
+        dashboard_page.click_button_delete_session()
     except:
         pass
-    dashboard_page.element_visible(dashboard_page.dashboard_header)
-    dashboard_page.click_hover_show_button(DashboardPage.hover_show_button, DashboardPage.filial_button)
-    dashboard_page.click_warehouse_button(dashboard_page.warehouse_button)
+    dashboard_page.element_visible()
+    dashboard_page.click_hover_show_button()
+    dashboard_page.click_warehouse_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Warehouse_modal
     # ------------------------------------------------------------------------------------------------------------------
     warehouse_modal = WarehouseNavbar(driver)
-    warehouse_modal.element_visible(warehouse_modal.warehouse_navbar_header)
-    warehouse_modal.click_button_internal_movements(WarehouseNavbar.internal_movements_button)
+    warehouse_modal.element_visible()
+    warehouse_modal.click_button_internal_movements()
     # ------------------------------------------------------------------------------------------------------------------
     # Movement_list
     # ------------------------------------------------------------------------------------------------------------------
@@ -100,13 +95,11 @@ def test_internal_movements(driver):
     movement_id = MovementId(driver)
     movement_id.element_visible(MovementId.card_title_header)
     movement_id.fill_form(MovementId.navi_inventory_button)
-    elements = movement_id.get_elements()
-    time.sleep(1)
-    movement_number = elements['movement_number']
-    print(f"movement_number: {movement_number}")
+    elements = movement_id.check_number()
+    print(f"movement_number: {elements}")
 
     try:
-        assert random_number == movement_number, f"Random and ID not equal! {random_number} not equal {movement_number}"
+        assert random_number == elements, f"Random and ID not equal! {random_number} not equal {elements}"
         print("Successfully!")
     except AssertionError as e:
         print(f"{str(e)}")

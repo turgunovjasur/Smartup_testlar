@@ -1,35 +1,33 @@
+import random
 from selenium.webdriver.common.by import By
-
 from autotest.core.md.base_page import BasePage
 
 
 class CreateOrderPage(BasePage):
-    ##############################################################################
-    create_order_header_xpath = "//div/h3/t[contains(text(), 'Основное')]"
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.number = 13
+    # ------------------------------------------------------------------------------------------------------------------
+    header = (By.XPATH, "//div/h3/t[contains(text(), 'Основное')]")
 
-    def element_visible(self, create_order_header_xpath):
-        self.wait_for_element_visible((By.XPATH, create_order_header_xpath))
+    def element_visible(self):
+        self.wait_for_element_visible(self.header)
 
-    ##############################################################################
-    order_request = '1'
-    order_request_xpath = "(//div/input[@placeholder = 'Поиск...'])[1]"
-    room_xpath = "(//div/input[@placeholder='Поиск...'])[2]"
-    robot_xpath = "(//div/input[@placeholder='Поиск...'])[3]"
-    client_xpath = "(//div/input[@placeholder='Поиск...'])[4]"
-    room_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[1]/div/div/div[3]/b-input/div/div[2]/div[1]/div[8]'
-    robot_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[1]/div/div/div[4]/div[1]/b-input/div/div[2]/div[2]/div[1]'
-    client_elem_xpath = '//*[@id="kt_content"]/div[2]/div/b-page/div/div/div/div/div/form[1]/div/div/div[5]/b-input/div/div[2]/div[2]/div[1]'
+    # ------------------------------------------------------------------------------------------------------------------
+    order_request_input = (By.XPATH, "(//div[@id='anor279-input-b_input-request_number']//input)[2]")
+    room_input = (By.XPATH, "(//div[@id='anor279-input-b_input-room_name']//input)[2]")
+    room_elem = (By.XPATH, "//div[@id='anor279-input-b_input-room_name']//div[@class='hint-body ng-scope']/div[1]")
+    robot_input = (By.XPATH, "(//div[@id='anor279-input-b_input-robot_name']//input)[2]")
+    robot_elem = (By.XPATH, "//div[@id='anor279-input-b_input-robot_name']//b-input//div[@class='hint-body ng-scope']/div[1]")
 
-    def fill_form(self, order_request, order_request_xpath, room_xpath, robot_xpath, client_xpath,
-                  room_elem, robot_elem, client_elem):
-        self.input_text((By.XPATH, order_request_xpath), order_request)
-        self.input_text_elem((By.XPATH, room_xpath), (By.XPATH, room_elem))
-        self.input_text_elem((By.XPATH, robot_xpath), (By.XPATH, robot_elem))
-        self.input_text_elem((By.XPATH, client_xpath), (By.XPATH, client_elem))
+    def fill_form(self, timeout=2):
+        self.number = random.randint(1, 9999)
+        self.input_text(self.order_request_input, self.number)
+        self.input_text_elem(self.room_input, self.room_elem, timeout=timeout)
+        self.input_text_elem(self.robot_input, self.robot_elem, timeout=timeout)
+    # ------------------------------------------------------------------------------------------------------------------
+    next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
-    ##############################################################################
-    create_order_next_button_xpath = "//span/t[contains(text(), 'Далее')]"
-
-    def click_button(self, create_order_next_button_xpath):
-        self.click((By.XPATH, create_order_next_button_xpath))
-    ##############################################################################
+    def click_button(self,):
+        self.click(self.next_step_button)
+    # ------------------------------------------------------------------------------------------------------------------

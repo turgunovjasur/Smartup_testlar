@@ -4,18 +4,18 @@ from selenium.webdriver.common.by import By
 
 class ProductId(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    card_title_header = "//h5/t[contains(text(),'Основная информация')]"
+    card_title_header = By.XPATH, "//h5/t[contains(text(),'Основная информация')]"
 
-    def element_visible(self, card_title_header):
-        self.wait_for_element_visible((By.XPATH, card_title_header))
+    def element_visible(self):
+        self.wait_for_element_visible(self.card_title_header)
     # ------------------------------------------------------------------------------------------------------------------
-    product_name = "(id('anor393-span-name')/span/text())[1]"
+    product_name = By.XPATH, "(id('anor393-span-name')/span/text())[1]"
 
-    def get_elements(self, product_name):
-        self.get_element_value(product_name, as_int=True)
+    def get_elements(self):
+        self.get_text(self.product_name)
     # ------------------------------------------------------------------------------------------------------------------
-    close_button = "id('anor393-button-close')"
+    close_button = By.XPATH, "id('anor393-button-close')"
 
-    def click_close_button(self, close_button):
-        self.click((By.XPATH, close_button))
+    def click_close_button(self):
+        self.click(self.close_button)
     # ------------------------------------------------------------------------------------------------------------------

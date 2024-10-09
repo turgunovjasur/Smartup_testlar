@@ -1,112 +1,186 @@
 import time
 
-from autotest.anor.mcg.action_add.action_add import ActionAdd
-from autotest.anor.mcg.action_list.action_list import ActionList
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.reference_navbar import ReferenceNavbar
 
+from autotest.anor.mcg.action_list.action_list import ActionList
+from autotest.anor.mcg.action_add.action_add import ActionAdd
+from autotest.anor.mcg.action_view.action_view import ActionIdView
+from autotest.anor.mcg.action_edit.action_edit import ActionIdEdit
+
 from utils.driver_setup import driver
 
 
-def test_action(driver):
+def test_actions(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Login_page:
     # ------------------------------------------------------------------------------------------------------------------
     email = 'admin@auto_test'
     password = 'greenwhite'
-    # email = 'admin@test'
-    # password = 'greenwhite'
     # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    login_page.fill_form(email, password,
-                         LoginPage.email_xpath,
-                         LoginPage.password_xpath)
-    login_page.click_button(LoginPage.signup_xpath)
+    login_page.fill_form(email, password)
+    login_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page:
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_page = DashboardPage(driver)
     try:
-        dashboard_page.element_visible_session(DashboardPage.active_session_header)
-        dashboard_page.click_button_delete_session(DashboardPage.delete_session_button)
+        dashboard_page.element_visible_session()
+        dashboard_page.click_button_delete_session()
     except:
         pass
-    dashboard_page.element_visible(dashboard_page.dashboard_header)
-    dashboard_page.click_hover_show_button(DashboardPage.hover_show_button, DashboardPage.filial_button)
-    dashboard_page.click_reference_button(dashboard_page.reference_button)
+
+    dashboard_page.element_visible()
+    dashboard_page.click_hover_show_button()
+    dashboard_page.click_reference_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Reference_navbar
     # ------------------------------------------------------------------------------------------------------------------
     reference_navbar = ReferenceNavbar(driver)
-    reference_navbar.click_action_button(ReferenceNavbar.action_button)
+    reference_navbar.click_action_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Action list:
     # ------------------------------------------------------------------------------------------------------------------
     action_list = ActionList(driver)
-    action_list.element_visible(ActionList.header)
-    action_list.click_add_button(ActionList.add_button)
+    action_list.element_visible()
+    action_list.click_add_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Action add:
     # ------------------------------------------------------------------------------------------------------------------
+    name_elem = 'action_add'
+    end_date = '31.12.2024'
+    inventory_quantity_elem = '10'
+    bonus_inventory_quantity_elem = '1'
+    # ------------------------------------------------------------------------------------------------------------------
     action_add = ActionAdd(driver)
-    action_add.element_visible(ActionAdd.header)
-    action_add.input_name(ActionAdd.name_input,
-                          ActionAdd.name_elem)
-    action_add.input_bonus_warehouse(ActionAdd.bonus_warehouse_input,
-                                     ActionAdd.bonus_warehouse_elem)
-    action_add.click_step_button(ActionAdd.next_step_button)
-    action_add.input_type_condition(ActionAdd.type_condition_input,
-                                    ActionAdd.type_condition_elem)
-    action_add.input_inventory(ActionAdd.inventory_input,
-                               ActionAdd.inventory_elem)
-    action_add.input_inventory_quantity(ActionAdd.inventory_quantity_input,
-                                        ActionAdd.inventory_quantity_elem)
-    action_add.input_bonus_inventory(ActionAdd.bonus_inventory_input,
-                                     ActionAdd.bonus_inventory_elem)
-    action_add.input_bonus_inventory_quantity(ActionAdd.bonus_inventory_quantity_input,
-                                              ActionAdd.bonus_inventory_quantity_elem)
-    action_add.click_save_button(ActionAdd.save_button,
-                                 ActionAdd.yes_button)
-    print('click_save_button')
+    action_add.element_visible()
+    action_add.input_name(name_elem)
+    action_add.input_end_date(end_date)
+    action_add.input_room()
+    action_add.input_bonus_warehouse()
+    action_add.click_step_button()
+    action_add.input_type_condition()
+    action_add.input_inventory()
+    action_add.input_inventory_quantity(inventory_quantity_elem)
+    action_add.input_bonus_inventory()
+    action_add.input_bonus_inventory_quantity(bonus_inventory_quantity_elem)
+    action_add.click_save_button()
+    print('Action add:')
+    # ------------------------------------------------------------------------------------------------------------------
+    # Action view:
+    # ------------------------------------------------------------------------------------------------------------------
+    action_list.click_first_elem_button()
+    action_list.click_view_button()
+    # ------------------------------------------------------------------------------------------------------------------
+    action_view = ActionIdView(driver)
+    time.sleep(2)
+    action_view.element_visible()
+    name = action_view.get_elements()
+    try:
+        assert name_elem == name, f"Add: {name_elem}, View: {name}"
+        print(f"Successfully! Added: {name_elem}, Seen: {name}")
+    except AssertionError as e:
+        print(f"{str(e)}")
+        raise
+
+    action_view.click_close_button()
+    print('Action view:')
+    # ------------------------------------------------------------------------------------------------------------------
+    # Action edit:
+    # ------------------------------------------------------------------------------------------------------------------
+    action_list.click_first_elem_button()
+    action_list.click_edit_button()
+    # ------------------------------------------------------------------------------------------------------------------
+    name_text = "action_edit"
+    inventory_quantity_elem = '11'
+    bonus_inventory_quantity_elem = '2'
+    # ------------------------------------------------------------------------------------------------------------------
+    action_edit = ActionIdEdit(driver)
+    action_edit.element_visible()
+    action_edit.input_name(name_text)
+    action_edit.click_step_button()
+    action_edit.input_inventory_quantity(inventory_quantity_elem)
+    action_edit.input_bonus_inventory_quantity(bonus_inventory_quantity_elem)
+    action_edit.click_save_button()
+    print('Action edit:')
+    # ------------------------------------------------------------------------------------------------------------------
+    # Action inactive:
+    # ------------------------------------------------------------------------------------------------------------------
+    action_list.click_first_elem_button()
+    action_list.click_status_one_button()
+    print('Action inactive:')
+    # ------------------------------------------------------------------------------------------------------------------
+    # Action active:
+    # ------------------------------------------------------------------------------------------------------------------
+    action_list = ActionList(driver)
+    action_list.element_visible()
+    action_list.click_filter_button()
+    action_list.click_show_all_button()
+    action_list.click_first_elem_button()
+    action_list.click_status_one_button()
+    print('Action active:')
     # ------------------------------------------------------------------------------------------------------------------
     # Action delete:
     # ------------------------------------------------------------------------------------------------------------------
-    action_list = ActionList(driver)
-    action_list.element_visible(ActionList.header)
-    action_list.click_first_elem_button(ActionList.action_list_first_elem)
-    action_list.click_delete_one_button(ActionList.action_delete_one_button,
-                                        ActionList.click_yes_delete_button)
-    print('click_delete_one_button')
+    action_list.click_first_elem_button()
+    action_list.click_delete_one_button()
+    print('Action delete:')
     # ------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # Action add_2:
+    # ------------------------------------------------------------------------------------------------------------------
+    name_elem = 'action_add'
+    inventory_quantity_elem = '10'
+    bonus_inventory_quantity_elem = '1'
+    # ------------------------------------------------------------------------------------------------------------------
+    driver.refresh()
+    action_list = ActionList(driver)
+    action_list.element_visible()
+    action_list.click_add_button()
+    # ------------------------------------------------------------------------------------------------------------------
+    action_add = ActionAdd(driver)
+    action_add.element_visible()
+    action_add.input_name(name_elem)
+    action_add.input_end_date(end_date)
+    action_add.input_room()
+    action_add.input_bonus_warehouse()
+    action_add.click_step_button()
+    action_add.input_type_condition()
+    action_add.input_inventory()
+    action_add.input_inventory_quantity(inventory_quantity_elem)
+    action_add.input_bonus_inventory()
+    action_add.input_bonus_inventory_quantity(bonus_inventory_quantity_elem)
+    action_add.click_save_button()
+    print('Action add_2:')
+    # ------------------------------------------------------------------------------------------------------------------
+    # Action inactive (many):
+    # ------------------------------------------------------------------------------------------------------------------
+    action_list = ActionList(driver)
+    time.sleep(2)
+    action_list.element_visible()
+    action_list.click_checkbox_button(ActionList.checkbox_button)
+    action_list.click_status_many_button()
+    print('Action inactive (many):')
+    # ------------------------------------------------------------------------------------------------------------------
+    # Action active (many):
+    # ------------------------------------------------------------------------------------------------------------------
+    action_list = ActionList(driver)
+    time.sleep(2)
+    action_list.element_visible()
+    action_list.click_filter_button()
+    action_list.click_show_all_button()
+    time.sleep(2)
+    action_list.click_checkbox_button(ActionList.checkbox_button)
+    action_list.click_status_many_button()
+    print('Action active (many):')
+    # ------------------------------------------------------------------------------------------------------------------
+    # Action delete (many):
+    # ------------------------------------------------------------------------------------------------------------------
+    action_list = ActionList(driver)
+    time.sleep(2)
+    action_list.element_visible()
+    action_list.click_checkbox_button(ActionList.checkbox_button)
+    action_list.click_delete_many_button()
+    print('Action delete (many):')
     # ------------------------------------------------------------------------------------------------------------------

@@ -12,7 +12,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.default_timeout = 10
+        self.default_timeout = 20
         self.wait = WebDriverWait(self.driver, self.default_timeout)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -21,15 +21,10 @@ class BasePage:
             timeout = self.default_timeout
         try:
             wait = WebDriverWait(self.driver, timeout)
-            wait.until(EC.presence_of_element_located(locator))
+            return wait.until(EC.element_to_be_clickable(locator))
+
         except TimeoutException:
-            print(f"Element not found in the DOM within: {timeout} seconds: {locator}")
-            return None
-        try:
-            element = wait.until(EC.element_to_be_clickable(locator))
-            return element
-        except TimeoutException:
-            print(f"Element found but not clickable within: {timeout} seconds: {locator}")
+            print(f"Element not clickable within: {timeout} seconds: {locator}")
             # self.take_screenshot("element_not_clickable_error")
             return None
     # ------------------------------------------------------------------------------------------------------------------
@@ -62,8 +57,6 @@ class BasePage:
         element = self.wait_for_element_clickable(locator, timeout=timeout)
         if element:
             element.click()
-        else:
-            print(f"Cannot click on the element: {locator}")
     # ------------------------------------------------------------------------------------------------------------------
 
     def input_text(self, locator, text):

@@ -2,20 +2,20 @@ from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
-class ProductIdEdit(BasePage):
+class OrderView(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    card_title_header = By.XPATH, "id('anor85-button-save')"
+    header = (By.XPATH, "//div[@class='card-title']/h5/t")
 
     def element_visible(self):
-        self.wait_for_element_visible(self.card_title_header)
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    name_input = By.XPATH, "id('anor85-input-text-name')/input"
+    order_id = (By.XPATH, "(//div[@class='card-body']/div/div/div/div[@class='col-sm'])[1]")
 
-    def input_name_edit(self, name_text):
-        self.input_text(self.name_input, name_text)
+    def get_elements(self):
+        return self.get_numeric_value(self.order_id)
     # ------------------------------------------------------------------------------------------------------------------
-    save_button = By.XPATH, "id('anor85-button-save')"
+    close_button = (By.XPATH, "//button[@id='trade82-button-close']")
 
-    def click_save_button(self):
-        self.click(self.save_button)
+    def click_close_button(self):
+        self.click(self.close_button)
     # ------------------------------------------------------------------------------------------------------------------

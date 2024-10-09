@@ -4,18 +4,18 @@ from selenium.webdriver.common.by import By
 
 class ProductIdView(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    card_title_header = "//h5/t[contains(text(),'Основная информация')]"
+    card_title_header = By.XPATH, "//h5/t[contains(text(),'Основная информация')]"
 
-    def element_visible(self, card_title_header):
-        self.wait_for_element_visible((By.XPATH, card_title_header))
+    def element_visible(self):
+        self.wait_for_element_visible(self.card_title_header)
     # ------------------------------------------------------------------------------------------------------------------
-    service_name = ""
+    service_name = By.XPATH, ""
 
-    def get_elements(self, service_name):
-        self.get_element_value(service_name, as_int=True)
+    def get_elements(self):
+        self.get_text(self.service_name)
     # ------------------------------------------------------------------------------------------------------------------
-    close_button = "id('anor694-button-close')"
+    close_button = By.XPATH, "id('anor694-button-close')"
 
-    def click_close_button(self, close_button):
-        self.click((By.XPATH, close_button))
+    def click_close_button(self):
+        self.click(self.close_button)
     # ------------------------------------------------------------------------------------------------------------------

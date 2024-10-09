@@ -4,18 +4,18 @@ from selenium.webdriver.common.by import By
 
 class OverloadIdView(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = ""
+    header = By.XPATH, "//div[@class='card-title']/h5/t"
 
-    def element_visible(self, header):
-        self.wait_for_element_visible((By.XPATH, header))
+    def element_visible(self):
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    overload_name = ""
+    overload_name = (By.XPATH, "id('anor1274-navbar-header-information')/div/span")
 
-    def get_elements(self, action_name):
-        self.get_element_value(action_name, as_int=True)
+    def get_elements(self):
+        return self.get_text(self.overload_name)
     # ------------------------------------------------------------------------------------------------------------------
-    close_button = ""
+    close_button = By.XPATH, "id('anor1274-button-close')"
 
-    def click_close_button(self, close_button):
-        self.click((By.XPATH, close_button))
+    def click_close_button(self):
+        self.click(self.close_button)
     # ------------------------------------------------------------------------------------------------------------------

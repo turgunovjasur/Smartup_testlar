@@ -1,4 +1,3 @@
-import time
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.anor.mr.product.service_list.service_list import ServicesList
@@ -19,35 +18,31 @@ def test_services(driver):
     # password = 'greenwhite'
     # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    login_page.fill_form(email, password,
-                         LoginPage.email_xpath,
-                         LoginPage.password_xpath)
-    login_page.click_button(LoginPage.signup_xpath)
+    login_page.fill_form(email, password)
+    login_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_page = DashboardPage(driver)
     try:
-        dashboard_page.element_visible_session(DashboardPage.active_session_header)
-        dashboard_page.click_button_delete_session(DashboardPage.delete_session_button)
+        dashboard_page.element_visible_session()
+        dashboard_page.click_button_delete_session()
     except:
         pass
-    dashboard_page.element_visible(dashboard_page.dashboard_header)
-    dashboard_page.click_reference_button(dashboard_page.reference_button)
+    dashboard_page.element_visible()
+    dashboard_page.click_reference_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Reference_navbar
     # ------------------------------------------------------------------------------------------------------------------
     reference_navbar = ReferenceNavbar(driver)
-    time.sleep(2)
-    reference_navbar.element_visible(ReferenceNavbar.header)
-    reference_navbar.click_button_services(ReferenceNavbar.services_button)
+    reference_navbar.element_visible()
+    reference_navbar.click_button_services()
     # ------------------------------------------------------------------------------------------------------------------
     # List
     # ------------------------------------------------------------------------------------------------------------------
     list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
-    list.click_add_button(ServicesList.add_button)
+    list.element_visible()
+    list.click_add_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Add
     # ------------------------------------------------------------------------------------------------------------------
@@ -55,135 +50,101 @@ def test_services(driver):
     name = "add_1"
     # ------------------------------------------------------------------------------------------------------------------
     add = ServiceAdd(driver)
-    time.sleep(2)
-    add.element_visible(ServiceAdd.header)
-    add.input_name(ServiceAdd.name_input, name)
-    add.input_measurement(ServiceAdd.measure_input,
-                          ServiceAdd.measure_elem)
-    add.input_order(ServiceAdd.order_input, order)
-    add.click_save_button(ServiceAdd.save_button)
+    add.element_visible()
+    add.input_name(name)
+    add.input_measurement()
+    add.input_order(order)
+    add.click_save_button()
     print('Price: Add')
     # ------------------------------------------------------------------------------------------------------------------
     # View
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
-    list.click_first_elem_button(ServicesList.list_first_elem)
-    list.click_view_button(ServicesList.view_button)
+    list.element_visible()
+    list.click_first_elem_button()
+    list.click_view_button()
     # ------------------------------------------------------------------------------------------------------------------
     view = ProductIdView(driver)
-    view.element_visible(ProductIdView.card_title_header)
-    view.click_close_button(ProductIdView.close_button)
+    view.element_visible()
+    view.click_close_button()
     print('Price: View')
     # ------------------------------------------------------------------------------------------------------------------
     # Edit
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
-    list.click_first_elem_button(ServicesList.list_first_elem)
-    list.click_edit_button(ServicesList.edit_button)
+    list.element_visible()
+    list.click_first_elem_button()
+    list.click_edit_button()
     # ------------------------------------------------------------------------------------------------------------------
     name_text = "add_1_edit"
     # ------------------------------------------------------------------------------------------------------------------
     edit = ProductIdEdit(driver)
-    time.sleep(2)
-    edit.element_visible(ProductIdEdit.card_title_header)
-    edit.input_name_edit(ProductIdEdit.name_input, name_text)
-    edit.click_save_button(ProductIdEdit.save_button)
+    edit.element_visible()
+    edit.input_name_edit(name_text)
+    edit.click_save_button()
     print('Price: Edit')
     # ------------------------------------------------------------------------------------------------------------------
     # Status (inactive)
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
-    list.click_first_elem_button(ServicesList.list_first_elem)
-    list.click_status_one_button(ServicesList.status_one_button,
-                                 ServicesList.click_yes_button)
+    list.element_visible()
+    list.click_first_elem_button()
+    list.click_status_one_button()
     driver.refresh()
-    list.click_filter_button(ServicesList.filter_button)
-    list.click_show_all_button(ServicesList.show_all_button,
-                               ServicesList.show_all_header)
+    list.click_filter_button()
+    list.click_show_all_button()
     print('Price: inactive')
     # ------------------------------------------------------------------------------------------------------------------
     # Status (active)
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
-    list.click_first_elem_button(ServicesList.list_first_elem)
-    list.click_status_one_button(ServicesList.status_one_button,
-                                 ServicesList.click_yes_button)
-    # driver.refresh()
+    list.element_visible()
+    list.click_first_elem_button()
+    list.click_status_one_button()
     print('Price: active')
     # ------------------------------------------------------------------------------------------------------------------
     # Delete
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
-    list.click_first_elem_button(ServicesList.list_first_elem)
-    list.click_delete_one_button(ServicesList.product_delete_one_button,
-                                 ServicesList.click_yes_delete_button)
+    list.element_visible()
+    list.click_first_elem_button()
+    list.click_delete_one_button()
     print('Price: Delete')
     # ------------------------------------------------------------------------------------------------------------------
     # Add-2
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
-    list.click_add_button(ServicesList.add_button)
+    driver.refresh()
+    list.element_visible()
+    list.click_add_button()
     # ------------------------------------------------------------------------------------------------------------------
     order = "1"
     name = "add_2"
     # ------------------------------------------------------------------------------------------------------------------
     add = ServiceAdd(driver)
-    time.sleep(2)
-    add.element_visible(ServiceAdd.header)
-    add.input_name(ServiceAdd.name_input, name)
-    add.input_measurement(ServiceAdd.measure_input,
-                          ServiceAdd.measure_elem)
-    add.input_order(ServiceAdd.order_input, order)
-    add.click_save_button(ServiceAdd.save_button)
+    add.element_visible()
+    add.input_name(name)
+    add.input_measurement()
+    add.input_order(order)
+    add.click_save_button()
     print('Price: Add-2')
     # ------------------------------------------------------------------------------------------------------------------
     # Status (inactive) (many)
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
+    list.element_visible()
     list.click_checkbox_button(ServicesList.checkbox_button)
-    list.click_status_many_button(ServicesList.status_many_button,
-                                  ServicesList.passive_many_button,
-                                  ServicesList.status_yes_button)
+    list.click_status_many_button()
     driver.refresh()
-    list.click_filter_button(ServicesList.filter_button)
-    list.click_show_all_button(ServicesList.show_all_button,
-                               ServicesList.show_all_header)
+    list.click_filter_button()
+    list.click_show_all_button()
     print('Price: inactive (many)')
     # ------------------------------------------------------------------------------------------------------------------
     # Status (active) (many)
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
+    list.element_visible()
     list.click_checkbox_button(ServicesList.checkbox_button)
-    list.click_status_many_button(ServicesList.status_many_button,
-                                  ServicesList.passive_many_button,
-                                  ServicesList.status_yes_button)
-    # driver.refresh()
+    list.click_status_many_button()
     print('Price: active (many)')
     # ------------------------------------------------------------------------------------------------------------------
     # Delete (many)
     # ------------------------------------------------------------------------------------------------------------------
-    list = ServicesList(driver)
-    time.sleep(2)
-    list.element_visible(ServicesList.list_header)
+    list.element_visible()
     list.click_checkbox_button(ServicesList.checkbox_button)
-    list.click_delete_many_button(ServicesList.delete_many_button,
-                                  ServicesList.delete_yes_button)
+    list.click_delete_many_button()
     driver.close()
     print('Price: Delete (many)')
     # ------------------------------------------------------------------------------------------------------------------

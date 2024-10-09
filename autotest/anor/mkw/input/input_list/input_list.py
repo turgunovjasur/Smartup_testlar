@@ -3,30 +3,28 @@ from autotest.core.md.base_page import BasePage
 
 
 class InputList(BasePage):
-    ##############################################################################
-    input_list_header = "//div[@id='kt_content']/descendant::h6"
+    # ------------------------------------------------------------------------------------------------------------------
+    input_list_header = (By.XPATH, "//div[@id='kt_content']/descendant::h6")
 
-    def element_visible(self, input_list_header):
-        self.wait_for_element_visible((By.XPATH, input_list_header))
+    def element_visible(self):
+        self.wait_for_element_visible(self.input_list_header)
+    # ------------------------------------------------------------------------------------------------------------------
+    create_button = (By.XPATH, "//button[@id='anor113-button-add']")
 
-    ##############################################################################
-    create_button = "//button[@id='anor113-button-add']"
-
-    def click_button(self, create_button):
-        self.click((By.XPATH, create_button))
-
-    ##############################################################################
+    def click_button(self):
+        self.click(self.create_button)
+    # ------------------------------------------------------------------------------------------------------------------
     # Input_id
-    ##############################################################################
-    date_button = "//div[contains(text(), 'Время')]"
-    first_element = "//div[@class='tbl-row'][1]/div[3]"
-    view_button = "//button[@id='anor113-button-view']"
+    # ------------------------------------------------------------------------------------------------------------------
+    date_button = (By.XPATH, "//div[contains(text(), 'Время')]")
 
-    def click_2x(self, date_button):
-        self.click_multiple_time((By.XPATH, date_button), click_count=2, delay=1)
+    def click_2x(self):
+        self.click_multiple_time(self.date_button, click_count=2, delay=1)
+        # ------------------------------------------------------------------------------------------------------------------
+    first_element = (By.XPATH, "//div[@class='tbl-row'][1]/div[3]")
+    view_button = (By.XPATH, "//button[@id='anor113-button-view']")
 
-    def fill_form(self, first_element, view_button):
-        self.click((By.XPATH, first_element))
-        self.click((By.XPATH, view_button))
-
-    ##############################################################################
+    def fill_form(self):
+        self.click(self.first_element)
+        self.click(self.view_button)
+    # ------------------------------------------------------------------------------------------------------------------
