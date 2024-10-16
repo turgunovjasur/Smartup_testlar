@@ -24,7 +24,7 @@ class PriceTypeList(BasePage):
     click_status_yes_button = By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_status_many_button(self):
-        self.click(self.status_many_button)
+        self.click_circle(self.status_many_button)
         self.click(self.passive_many_button)
         self.click(self.click_status_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ class PriceTypeList(BasePage):
     click_delete_yes_button = By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_delete_many_button(self):
-        self.click(self.delete_many_button)
+        self.click_circle(self.delete_many_button)
         self.click(self.click_delete_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: View, Edit, Inactive, Delete one
@@ -51,14 +51,14 @@ class PriceTypeList(BasePage):
     click_yes_button = By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_status_one_button(self):
-        self.click(self.status_one_button)
+        self.click_circle(self.status_one_button)
         self.click(self.click_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
     product_delete_one_button = By.XPATH, "id('anor182-button-delete_one')"
     click_yes_delete_button = By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_delete_one_button(self):
-        self.click(self.product_delete_one_button)
+        self.click_circle(self.product_delete_one_button)
         self.click(self.click_yes_delete_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: First element, Checkbox
@@ -66,8 +66,7 @@ class PriceTypeList(BasePage):
     list_first_elem = By.XPATH, "//div[@class='tbl-row'][1]/div[3]"
 
     def click_first_elem_button(self):
-        time.sleep(2)
-        self.click(self.list_first_elem)
+        self.click_circle(self.list_first_elem)
     # ------------------------------------------------------------------------------------------------------------------
     code_button = By.CSS_SELECTOR, ".tbl-header-cell:nth-child(2) > .tbl-header-txt"
 
@@ -88,11 +87,10 @@ class PriceTypeList(BasePage):
     filter_button = By.XPATH, "//button[@ng-click='openFilter()']"
 
     def click_filter_button(self):
-        time.sleep(2)
-        self.click(self.filter_button)
+        self.click_circle(self.filter_button)
     # ------------------------------------------------------------------------------------------------------------------
     show_all_button = By.XPATH, "//button[@ng-click='a.bGridFilter.showAll()']"
 
     def click_show_all_button(self):
-        self.click(self.show_all_button)
+        self.click_circle(self.show_all_button)
     # ------------------------------------------------------------------------------------------------------------------

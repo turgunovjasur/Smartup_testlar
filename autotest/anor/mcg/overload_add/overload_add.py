@@ -16,7 +16,7 @@ class OverloadAdd(BasePage):
         self.input_text(self.name_input, name_elem)
     # ------------------------------------------------------------------------------------------------------------------
     product_input = By.XPATH, "id('anor724-input-b_input-product_name')//input[@ng-model='d.product_name']"
-    product_elem = By.XPATH, "id('anor724-input-b_input-product_name')//div[@class='hint-body ng-scope']/div[1]"
+    product_elem = By.XPATH, "id('anor724-input-b_input-product_name')//div[@class='hint-body ng-scope']/div[3]"
 
     def input_product(self):
         self.input_text_elem(self.product_input, self.product_elem)

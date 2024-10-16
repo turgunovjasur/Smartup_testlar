@@ -1,5 +1,4 @@
 import time
-
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -28,7 +27,7 @@ class ActionList(BasePage):
     click_status_yes_button = By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_status_many_button(self):
-        self.click(self.status_many_button)
+        self.click_circle(self.status_many_button)
         self.click(self.passive_many_button)
         self.click(self.click_status_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
@@ -36,7 +35,7 @@ class ActionList(BasePage):
     click_delete_yes_button = By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_delete_many_button(self):
-        self.click(self.delete_many_button)
+        self.click_circle(self.delete_many_button)
         self.click(self. click_delete_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: View, Edit, Inactive, Delete one
@@ -56,7 +55,7 @@ class ActionList(BasePage):
     click_yes_button = By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_status_one_button(self):
-        self.click(self.status_one_button)
+        self.click_circle(self.status_one_button)
         self.click(self.click_inactive_button)
         self.click(self.click_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
@@ -64,7 +63,7 @@ class ActionList(BasePage):
     click_yes_delete_button = By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']"
 
     def click_delete_one_button(self):
-        self.click(self.action_delete_one_button)
+        self.click_circle(self.action_delete_one_button)
         self.click(self.click_yes_delete_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: First element, Checkbox
@@ -72,8 +71,7 @@ class ActionList(BasePage):
     action_list_first_elem = By.XPATH, "(//div[@class='tbl-row']/div[3])[1]"
 
     def click_first_elem_button(self):
-        time.sleep(2)
-        self.click(self.action_list_first_elem)
+        self.click_circle(self.action_list_first_elem)
     # ------------------------------------------------------------------------------------------------------------------
     checkbox_button = ".tbl-row:nth-child(1) span"
 
@@ -87,12 +85,17 @@ class ActionList(BasePage):
     filter_button = By.XPATH, "//button[@ng-click='openFilter()']"
 
     def click_filter_button(self):
-        time.sleep(2)
-        self.click(self.filter_button)
-
+        self.click_circle(self.filter_button)
     # ------------------------------------------------------------------------------------------------------------------
     show_all_button = By.XPATH, "//button[@ng-click='a.bGridFilter.showAll()']"
 
     def click_show_all_button(self):
-        self.click(self.show_all_button)
+        self.click_circle(self.show_all_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    row_button = (By.CSS_SELECTOR, ".tbl-header-cell:nth-child(2) > .tbl-header-txt")
+
+    def click_row_button(self):
+        time.sleep(2)
+        element = self.find_element(self.row_button)
+        self.driver.execute_script("arguments[0].click();", element)
     # ------------------------------------------------------------------------------------------------------------------

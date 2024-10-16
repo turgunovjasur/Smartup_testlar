@@ -1,7 +1,4 @@
-import time
-
 from selenium.common import TimeoutException
-
 from autotest.anor.mcg.overload_add.overload_add import OverloadAdd
 from autotest.anor.mcg.overload_edit.overload_edit import OverloadIdEdit
 from autotest.anor.mcg.overload_list.overload_list import OverloadList
@@ -9,7 +6,6 @@ from autotest.anor.mcg.overload_view.overload_view import OverloadIdView
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.reference_navbar import ReferenceNavbar
-
 from utils.driver_setup import driver
 
 
@@ -27,6 +23,7 @@ def test_overload(driver):
     # Dashboard_page:
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_page = DashboardPage(driver)
+
     try:
         dashboard_page.element_visible_session()
         dashboard_page.click_button_delete_session()
@@ -75,6 +72,7 @@ def test_overload(driver):
     overload_view = OverloadIdView(driver)
     overload_view.element_visible()
     name = overload_view.get_elements()
+
     try:
         assert name_elem == name, f"Add: {name_elem}, View: {name}"
         print(f"Successfully! Added: {name_elem}, Seen: {name}")
@@ -114,10 +112,8 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
-    time.sleep(1)
     overload_list.click_filter_button()
     overload_list.click_show_all_button()
-
     overload_list.element_visible()
     overload_list.click_row_button()
     overload_list.click_row_button()
@@ -158,7 +154,6 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
-    driver.refresh()
     overload_list.click_checkbox_button(OverloadList.checkbox_button)
     overload_list.click_status_many_button()
     print('Overload inactive (many):')
@@ -166,13 +161,12 @@ def test_overload(driver):
     # Overload active (many):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
-    driver.refresh()
     overload_list.element_visible()
     overload_list.click_filter_button()
     overload_list.click_show_all_button()
     overload_list.element_visible()
-    # overload_list.click_row_button()
-    # overload_list.click_row_button()
+    overload_list.click_row_button()
+    overload_list.click_row_button()
     overload_list.click_checkbox_button(OverloadList.checkbox_button)
     overload_list.click_status_many_button()
     print('Overload active (many):')

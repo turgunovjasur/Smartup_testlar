@@ -1,5 +1,4 @@
 import time
-
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -25,7 +24,7 @@ class OverloadList(BasePage):
     click_status_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_status_many_button(self):
-        self.click(self.status_many_button)
+        self.click_circle(self.status_many_button)
         self.click(self.passive_many_button)
         self.click(self.click_status_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
@@ -33,7 +32,7 @@ class OverloadList(BasePage):
     click_delete_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_delete_many_button(self):
-        self.click(self.delete_many_button)
+        self.click_circle(self.delete_many_button)
         self.click(self.click_delete_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: View, Edit, Inactive, Delete one
@@ -52,14 +51,14 @@ class OverloadList(BasePage):
     click_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_status_one_button(self):
-        self.click(self.status_one_button)
+        self.click_circle(self.status_one_button)
         self.click(self.click_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
     delete_one_button = (By.XPATH, "id('anor723-button-delete_one')")
     click_yes_delete_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_delete_one_button(self):
-        self.click(self.delete_one_button)
+        self.click_circle(self.delete_one_button)
         self.click(self.click_yes_delete_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Button: First element, Checkbox
@@ -74,8 +73,7 @@ class OverloadList(BasePage):
     list_first_elem = (By.XPATH, "(//div[@class='tbl-row']/div[2])[1]")
 
     def click_first_elem_button(self):
-        time.sleep(2)
-        self.click(self.list_first_elem)
+        self.click_circle(self.list_first_elem)
     # ------------------------------------------------------------------------------------------------------------------
     checkbox_button = ".tbl-cell span"
 
@@ -89,28 +87,11 @@ class OverloadList(BasePage):
     filter_button = (By.XPATH, "//button[@ng-click='openFilter()']")
 
     def click_filter_button(self):
-        time.sleep(2)
-        self.click(self.filter_button)
+        self.click_circle(self.filter_button)
     # ------------------------------------------------------------------------------------------------------------------
     show_all_button = (By.XPATH, "//button[@ng-click='a.bGridFilter.showAll()']")
 
     def click_show_all_button(self):
-        self.click(self.show_all_button)
+        self.click_circle(self.show_all_button)
     # ------------------------------------------------------------------------------------------------------------------
-    table_list = (By.XPATH, "//div[@class='tbl-body']")
-    product = (By.XPATH, "(//div[@class='tbl-row']/div[2])[1]")
 
-    def click_product_by_name(self, product_name):
-        rows = self.find_elements(self.table_list)
-        self.get_text(self.product)
-
-        for row in rows:
-            product = row.find_element(self.product)  # Mahsulot nomini olish
-            if product.text == product_name:
-                product.click()
-                print(f"{product_name} mahsulotiga bosildi.")
-                return
-
-        print(f"{product_name} mahsulot topilmadi.")
-
-    # ------------------------------------------------------------------------------------------------------------------

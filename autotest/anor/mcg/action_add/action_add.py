@@ -45,7 +45,7 @@ class ActionAdd(BasePage):
         self.input_text_elem(self.type_condition_input, self.type_condition_elem)
     # ------------------------------------------------------------------------------------------------------------------
     inventory_input = By.XPATH, "id('rule_products')//input"
-    inventory_elem = By.XPATH, "id('rule_products')//div[@class='hint-body ng-scope']/div[1]"
+    inventory_elem = By.XPATH, "id('rule_products')//div[@class='hint-body ng-scope']/div[3]"
 
     def input_inventory(self):
         self.input_text_elem(self.inventory_input, self.inventory_elem)

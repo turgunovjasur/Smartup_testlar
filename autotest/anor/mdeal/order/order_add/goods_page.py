@@ -17,10 +17,11 @@ class GoodsPage(BasePage):
     name_elem = (By.XPATH, "//b-input[@id='anor279_input-b_input-product_name_goods0']//div[@class='hint-body ng-scope']/div[1]")
     quantity_input = (By.XPATH, "//input[@id='anor279_input-b_pg_col-quantity_0']")
 
-    def fill_form(self, number):
+    def fill_form(self, quantity_order):
         self.input_text_elem(self.name_input, self.name_elem)
         time.sleep(0.5)
-        self.input_text(self.quantity_input, number)
+        self.input_text(self.quantity_input, quantity_order)
+        time.sleep(0.5)
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
@@ -40,8 +41,10 @@ class GoodsPage(BasePage):
         element = self.wait_for_element_visible(self.check_action, timeout=2)
         if element is None:
             print('Action inactive!')
+            return False
         else:
             print('Action active!')
+            return True
     # ------------------------------------------------------------------------------------------------------------------
     # Overload
     # ------------------------------------------------------------------------------------------------------------------
@@ -56,6 +59,15 @@ class GoodsPage(BasePage):
         element = self.wait_for_element_visible(self.check_overload, timeout=2)
         if element is None:
             print('Overload inactive!')
+            return False
         else:
             print('Overload active!')
+            return True
+    # ------------------------------------------------------------------------------------------------------------------
+    # Inventory
+    # ------------------------------------------------------------------------------------------------------------------
+    inventory_button = (By.XPATH, "//ul[@id='anor279-ul-nav_tablist']/li[1]/a")
+
+    def click_inventory_button(self):
+        self.click(self.inventory_button)
     # ------------------------------------------------------------------------------------------------------------------

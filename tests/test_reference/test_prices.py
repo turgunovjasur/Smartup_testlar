@@ -1,4 +1,3 @@
-import time
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.anor.mkr.price_type_add.price_type_add import PriceTypeAdd
@@ -15,8 +14,6 @@ def test_prices(driver):
     # ------------------------------------------------------------------------------------------------------------------
     email = 'admin@auto_test'
     password = 'greenwhite'
-    # email = 'admin@test'
-    # password = 'greenwhite'
     # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
     login_page.fill_form(email, password)

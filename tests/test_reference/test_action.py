@@ -16,11 +16,8 @@ def test_actions(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Login_page:
     # ------------------------------------------------------------------------------------------------------------------
-    email = 'admin@auto_test'
-    password = 'greenwhite'
-    # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    login_page.fill_form(email, password)
+    login_page.fill_form('admin@auto_test', 'greenwhite')
     login_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page:
@@ -31,7 +28,6 @@ def test_actions(driver):
         dashboard_page.click_button_delete_session()
     except:
         pass
-
     dashboard_page.element_visible()
     dashboard_page.click_hover_show_button()
     dashboard_page.click_reference_button()
@@ -71,6 +67,7 @@ def test_actions(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Action view:
     # ------------------------------------------------------------------------------------------------------------------
+    action_list.click_row_button()
     action_list.click_first_elem_button()
     action_list.click_view_button()
     # ------------------------------------------------------------------------------------------------------------------
@@ -157,7 +154,6 @@ def test_actions(driver):
     # Action inactive (many):
     # ------------------------------------------------------------------------------------------------------------------
     action_list = ActionList(driver)
-    time.sleep(2)
     action_list.element_visible()
     action_list.click_checkbox_button(ActionList.checkbox_button)
     action_list.click_status_many_button()
@@ -166,11 +162,10 @@ def test_actions(driver):
     # Action active (many):
     # ------------------------------------------------------------------------------------------------------------------
     action_list = ActionList(driver)
-    time.sleep(2)
     action_list.element_visible()
     action_list.click_filter_button()
     action_list.click_show_all_button()
-    time.sleep(2)
+    action_list.click_row_button()
     action_list.click_checkbox_button(ActionList.checkbox_button)
     action_list.click_status_many_button()
     print('Action active (many):')
@@ -178,7 +173,6 @@ def test_actions(driver):
     # Action delete (many):
     # ------------------------------------------------------------------------------------------------------------------
     action_list = ActionList(driver)
-    time.sleep(2)
     action_list.element_visible()
     action_list.click_checkbox_button(ActionList.checkbox_button)
     action_list.click_delete_many_button()

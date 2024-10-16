@@ -29,18 +29,18 @@ class DashboardPage(BasePage):
     def element_visible_session(self, timeout=1):
         self.wait_for_element_visible(self.active_session_header, timeout=timeout)
     # ------------------------------------------------------------------------------------------------------------------
-    delete_session_button = By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]"
+    delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 
     def click_button_delete_session(self, timeout=2):
         self.click(self.delete_session_button, timeout=timeout)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    sales_button = By.XPATH, "//li/a/span[contains(text(), 'Продажа')]"
+    sales_button = (By.XPATH, "//li/a/span[contains(text(), 'Продажа')]")
 
     def click_sales_button(self):
         self.click(self.sales_button)
     # ------------------------------------------------------------------------------------------------------------------
-    warehouse_button = By.XPATH, "//ul/li[3]/a[@class='menu-link menu-toggle']"
+    warehouse_button = (By.XPATH, "//ul/li[3]/a[@class='menu-link menu-toggle']")
 
     def click_warehouse_button(self):
         self.click(self.warehouse_button)

@@ -71,8 +71,13 @@ class OrdersHistoryList(BasePage):
     count_info = (By.XPATH, "//div[@id='trade83-sg_header-info']")
 
     def check_order_history(self):
-        if self.find_element(self.count_info):
+        if self.find_element(self.count_info, timeout=2):
             return self.get_numeric_value(self.count_number)
         else:
             return 0
+    # -----------------------------------------------------------------------------------------------------------------
+    return_button = (By.XPATH, "//button[@id='trade83-button-return_deal']")
+
+    def click_return_button(self):
+        self.click(self.return_button)
     # -----------------------------------------------------------------------------------------------------------------

@@ -13,13 +13,8 @@ def test_internal_movements(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Login_page
     # ------------------------------------------------------------------------------------------------------------------
-    email = 'admin@auto_test'
-    password = 'greenwhite'
-    # email = 'admin@test'
-    # password = 'greenwhite'
-    # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    login_page.fill_form(email, password)
+    login_page.fill_form('admin@auto_test', 'greenwhite')
     login_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page

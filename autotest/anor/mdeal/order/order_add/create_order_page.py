@@ -6,7 +6,6 @@ from autotest.core.md.base_page import BasePage
 class CreateOrderPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
-        self.number = 13
     # ------------------------------------------------------------------------------------------------------------------
     header = (By.XPATH, "//div/h3/t[contains(text(), 'Основное')]")
 
@@ -20,11 +19,13 @@ class CreateOrderPage(BasePage):
     robot_input = (By.XPATH, "(//div[@id='anor279-input-b_input-robot_name']//input)[2]")
     robot_elem = (By.XPATH, "//div[@id='anor279-input-b_input-robot_name']//b-input//div[@class='hint-body ng-scope']/div[1]")
 
-    def fill_form(self, timeout=2):
-        self.number = random.randint(1, 9999)
-        self.input_text(self.order_request_input, self.number)
-        self.input_text_elem(self.room_input, self.room_elem, timeout=timeout)
-        self.input_text_elem(self.robot_input, self.robot_elem, timeout=timeout)
+    def fill_form(self, order_request_number):
+        self.input_text(self.order_request_input, order_request_number)
+        try:
+            self.input_text_elem(self.room_input, self.room_elem, timeout=2)
+            self.input_text_elem(self.robot_input, self.robot_elem, timeout=2)
+        except:
+            pass
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 

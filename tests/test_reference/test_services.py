@@ -14,8 +14,6 @@ def test_services(driver):
     # ------------------------------------------------------------------------------------------------------------------
     email = 'admin@auto_test'
     password = 'greenwhite'
-    # email = 'admin@test'
-    # password = 'greenwhite'
     # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
     login_page.fill_form(email, password)
@@ -29,6 +27,7 @@ def test_services(driver):
         dashboard_page.click_button_delete_session()
     except:
         pass
+
     dashboard_page.element_visible()
     dashboard_page.click_reference_button()
     # ------------------------------------------------------------------------------------------------------------------
