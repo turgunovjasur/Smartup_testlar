@@ -13,11 +13,8 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Login_page
     # ------------------------------------------------------------------------------------------------------------------
-    email = 'admin@auto_test'
-    password = 'greenwhite'
-    # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    login_page.fill_form(email, password)
+    login_page.fill_form('admin@auto_test', 'greenwhite')
     login_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page
@@ -45,7 +42,7 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Inventory_new --- (Add product)
     # ------------------------------------------------------------------------------------------------------------------
-    name_elem = "olma_test_add"
+    name_elem = "test"
     product_order = "1"
     # ------------------------------------------------------------------------------------------------------------------
     inventory_new = InventoryNew(driver)
@@ -62,13 +59,20 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
     inventory_list.element_visible()
-    inventory_list.click_first_elem_button()
+    inventory_list.find_and_click_checkbox(name_elem)
     inventory_list.click_view_button()
     # ------------------------------------------------------------------------------------------------------------------
     product_id = ProductView(driver)
     product_id.element_visible()
-    # product_name = product_id.get_elements(ProductView.product_name)
-    # print(f"product name: {product_name}")
+    get_name = product_id.get_elements()
+
+    try:
+        assert name_elem == get_name, f"Add: {name_elem}, View: {get_name}"
+        print(f"Successfully! Added: {name_elem}, Seen: {get_name}")
+    except AssertionError as e:
+        print(f"{str(e)}")
+        raise
+
     product_id.click_close_button()
     print('product view')
     # ------------------------------------------------------------------------------------------------------------------
@@ -76,10 +80,10 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
     inventory_list.element_visible()
-    inventory_list.click_first_elem_button()
+    inventory_list.find_and_click_checkbox(name_elem)
     inventory_list.click_edit_button()
     # ------------------------------------------------------------------------------------------------------------------
-    name_text = "olma_test_edit"
+    name_text = "test"
     # ------------------------------------------------------------------------------------------------------------------
     product_id = ProductEdit(driver)
     product_id.element_visible()
@@ -91,7 +95,7 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
     inventory_list.element_visible()
-    inventory_list.click_first_elem_button()
+    inventory_list.find_and_click_checkbox(name_text)
     inventory_list.click_status_one_button()
     print('product no_active')
     # ------------------------------------------------------------------------------------------------------------------
@@ -107,7 +111,7 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
     inventory_list.element_visible()
-    inventory_list.click_first_elem_button()
+    inventory_list.find_and_click_checkbox(name_text)
     inventory_list.click_status_one_button()
     print('product active')
     # ------------------------------------------------------------------------------------------------------------------
@@ -115,20 +119,20 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
     inventory_list.element_visible()
-    inventory_list.click_first_elem_button()
+    inventory_list.find_and_click_checkbox(name_text)
     inventory_list.click_delete_one_button()
     print('product delete')
     # ------------------------------------------------------------------------------------------------------------------
     # Inventory_list
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
-    time.sleep(2)
+    driver.refresh()
     inventory_list.element_visible()
     inventory_list.click_add_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Inventory_list --- (Add product (many))
     # ------------------------------------------------------------------------------------------------------------------
-    name_elem = "olma_test2_add"
+    name_elem = "test"
     product_order = "1"
     # ------------------------------------------------------------------------------------------------------------------
     inventory_new = InventoryNew(driver)
@@ -145,7 +149,7 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
     inventory_list.element_visible()
-    inventory_list.click_checkbox_button(InventoryList.checkbox_button)
+    inventory_list.find_and_click_checkbox(name_elem, checkbox=True)
     inventory_list.click_status_many_button()
     print('product no-active (many)')
     # ------------------------------------------------------------------------------------------------------------------
@@ -158,7 +162,7 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
     inventory_list.element_visible()
-    inventory_list.click_checkbox_button(InventoryList.checkbox_button)
+    inventory_list.find_and_click_checkbox(name_elem, checkbox=True)
     inventory_list.click_status_many_button()
     print('product active (many)')
     # ------------------------------------------------------------------------------------------------------------------
@@ -166,7 +170,7 @@ def test_inventories(driver):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_list = InventoryList(driver)
     inventory_list.element_visible()
-    inventory_list.click_checkbox_button(InventoryList.checkbox_button)
+    inventory_list.find_and_click_checkbox(name_elem, checkbox=True)
     inventory_list.click_delete_many_button()
     print('product delete (many)')
     # ------------------------------------------------------------------------------------------------------------------

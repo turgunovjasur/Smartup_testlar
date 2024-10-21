@@ -11,7 +11,12 @@ class InventoryPage(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     fast_search_input = By.XPATH, "//b-input[@id= 'anor289-input-binput-fastsearchquery-G-0']/descendant::input[@placeholder= 'Поиск...']"
     fast_search_element = By.XPATH, "//div[@class= 'tbl-cell']/b-input[@id= 'anor289-input-binput-fastsearchquery-G-0']/descendant::div[@class= 'hint-body ng-scope']/div[1]"
+    quantity_input = By.XPATH, "//input[@id= 'anor289-input-text-quantity-G-0']"
+    price_input = By.XPATH, "//input[@id= 'anor289-input-text-price-G-0']"
     side_scrolling = By.XPATH, "//b-pg-grid[@id='anor289-bpggrid-productsG']/descendant::div[@class='tbl']/following-sibling::div[2]/span/i"
+    margin_value_button = By.XPATH, "//button[@id='anor289-button-changemarginpercent-G-0']"
+    margin_value_input = By.XPATH, "//input[@id='anor289-input-text-margin-G-0']"
+    vat_percent_input = By.XPATH, "//input[@id='anor289-input-text-vatpercent-G-0']"
 
     def fill_form(self, quantity, price, margin_value, vat_percent):
         self.input_text_elem(self.fast_search_input, self.fast_search_element)
@@ -21,13 +26,6 @@ class InventoryPage(BasePage):
         self.click(self.margin_value_button)
         self.input_text(self.margin_value_input, margin_value)
         self.input_text(self.vat_percent_input, vat_percent)
-
-    # ------------------------------------------------------------------------------------------------------------------
-    quantity_input = By.XPATH, "//input[@id= 'anor289-input-text-quantity-G-0']"
-    price_input = By.XPATH, "//input[@id= 'anor289-input-text-price-G-0']"
-    margin_value_button = By.XPATH, "//button[@id='anor289-button-changemarginpercent-G-0']"
-    margin_value_input = By.XPATH, "//input[@id='anor289-input-text-margin-G-0']"
-    vat_percent_input = By.XPATH, "//input[@id='anor289-input-text-vatpercent-G-0']"
     # ------------------------------------------------------------------------------------------------------------------
     get_amount = By.XPATH, "//b-pg-grid[@id='anor289-bpggrid-productsG']/following-sibling::div/descendant::div[@class='sg-cell col-3 ng-binding'][1]"
     get_margin_amount = By.XPATH, "//b-pg-grid[@id='anor289-bpggrid-productsG']/following-sibling::div/descendant::div[@class='sg-cell col-3 ng-binding'][2]"

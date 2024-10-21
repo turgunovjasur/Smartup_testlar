@@ -1,3 +1,5 @@
+import time
+
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.warehouse_navbar import WarehouseNavbar
@@ -80,21 +82,66 @@ def test_purchase(driver):
     # ------------------------------------------------------------------------------------------------------------------
     purchase_list = PurchaseList(driver)
     purchase_list.element_visible()
-    purchase_list.click_2x()
-    purchase_list.open_purchase_list()
+    # purchase_list.click_2x()
+    purchase_list.click_row_list()
+    time.sleep(5)
+
+    purchase_list.click_view_button()
+    time.sleep(5)
+    print('click_view_button')
+
     # ------------------------------------------------------------------------------------------------------------------
     # Purchase_id
     # ------------------------------------------------------------------------------------------------------------------
     purchase_id = PurchaseId(driver)
     purchase_id.element_visible()
+    time.sleep(5)
+
     purchase_number = purchase_id.get_purchase_number()
+    time.sleep(5)
+
     print(f"purchase_number: {purchase_number}")
     purchase_id.fill_form()
+    time.sleep(5)
+
 
     try:
-        assert random_number == purchase_number, f"Error random number: {random_number} != {purchase_number}"
+        assert random_number == purchase_number, \
+            f"Error random number: {random_number} != {purchase_number}"
         print("Successfully!")
     except AssertionError as e:
         print(f"{str(e)}")
         raise
+    purchase_id.click_close_button()
+    time.sleep(5)
+    print('click_close_button')
+
+    purchase_list.element_visible()
+    time.sleep(5)
+    print('element_visible')
+
+    # driver.refresh()
+    # time.sleep(5)
+    # print('refresh')
+
+    # ------------------------------------------------------------------------------------------------------------------
+    purchase_list.click_row_list()
+    time.sleep(5)
+    print('click_row_list')
+
+
+    purchase_list.click_status_one_button()
+    time.sleep(5)
+    print('click_status_one_button')
+
+
+    purchase_list.click_row_list()
+    time.sleep(5)
+    print('click_row_list')
+
+    purchase_list.click_delete_one_button()
+    time.sleep(5)
+    print('click_delete_one_button')
+
+
     # ------------------------------------------------------------------------------------------------------------------

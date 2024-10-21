@@ -13,11 +13,8 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Login_page:
     # ------------------------------------------------------------------------------------------------------------------
-    email = 'admin@auto_test'
-    password = 'greenwhite'
-    # ------------------------------------------------------------------------------------------------------------------
     login_page = LoginPage(driver)
-    login_page.fill_form(email, password)
+    login_page.fill_form('admin@auto_test', 'greenwhite')
     login_page.click_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Dashboard_page:
@@ -40,15 +37,13 @@ def test_overload(driver):
     reference_navbar = ReferenceNavbar(driver)
     reference_navbar.click_overload_button()
     # ------------------------------------------------------------------------------------------------------------------
-    # Overload list:
-    # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
     overload_list.click_add_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Overload add:
     # ------------------------------------------------------------------------------------------------------------------
-    name_elem = 'overload_add'
+    name_elem = 'test'
     conditions_quantity = '10'
     overload_product_quantity = '1'
     # ------------------------------------------------------------------------------------------------------------------
@@ -64,7 +59,7 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
-    overload_list.click_first_elem_button()
+    overload_list.find_and_click_checkbox(name_elem)
     overload_list.click_view_button()
     # ------------------------------------------------------------------------------------------------------------------
     # Overload view:
@@ -78,8 +73,7 @@ def test_overload(driver):
         print(f"Successfully! Added: {name_elem}, Seen: {name}")
 
     except AssertionError as e:
-        # print(f"{str(e)}")
-        # raise
+        print(f"{str(e)}")
         pass
 
     overload_view.click_close_button()
@@ -89,10 +83,10 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
-    overload_list.click_first_elem_button()
+    overload_list.find_and_click_checkbox(name_elem)
     overload_list.click_edit_button()
     # ------------------------------------------------------------------------------------------------------------------
-    name_elem = 'overload_edit'
+    name_elem = 'test'
     # ------------------------------------------------------------------------------------------------------------------
     overload_edit = OverloadIdEdit(driver)
     overload_edit.element_visible()
@@ -104,7 +98,7 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
-    overload_list.click_first_elem_button()
+    overload_list.find_and_click_checkbox(name_elem)
     overload_list.click_status_one_button()
     print('Overload inactive:')
     # ------------------------------------------------------------------------------------------------------------------
@@ -115,9 +109,7 @@ def test_overload(driver):
     overload_list.click_filter_button()
     overload_list.click_show_all_button()
     overload_list.element_visible()
-    overload_list.click_row_button()
-    overload_list.click_row_button()
-    overload_list.click_first_elem_button()
+    overload_list.find_and_click_checkbox(name_elem)
     overload_list.click_status_one_button()
     print('Overload active:')
     # ------------------------------------------------------------------------------------------------------------------
@@ -125,7 +117,7 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
-    overload_list.click_first_elem_button()
+    overload_list.find_and_click_checkbox(name_elem)
     overload_list.click_delete_one_button()
     print('Overload delete:')
     # ------------------------------------------------------------------------------------------------------------------
@@ -136,7 +128,7 @@ def test_overload(driver):
     overload_list.element_visible()
     overload_list.click_add_button()
     # ------------------------------------------------------------------------------------------------------------------
-    name_elem = 'overload_add_2'
+    name_elem = 'test_2'
     conditions_quantity = '10'
     overload_product_quantity = '1'
     # ------------------------------------------------------------------------------------------------------------------
@@ -154,7 +146,7 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
-    overload_list.click_checkbox_button(OverloadList.checkbox_button)
+    overload_list.find_and_click_checkbox(name_elem, checkbox=True)
     overload_list.click_status_many_button()
     print('Overload inactive (many):')
     # ------------------------------------------------------------------------------------------------------------------
@@ -165,9 +157,7 @@ def test_overload(driver):
     overload_list.click_filter_button()
     overload_list.click_show_all_button()
     overload_list.element_visible()
-    overload_list.click_row_button()
-    overload_list.click_row_button()
-    overload_list.click_checkbox_button(OverloadList.checkbox_button)
+    overload_list.find_and_click_checkbox(name_elem, checkbox=True)
     overload_list.click_status_many_button()
     print('Overload active (many):')
     # ------------------------------------------------------------------------------------------------------------------
@@ -175,8 +165,7 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     overload_list = OverloadList(driver)
     overload_list.element_visible()
-    overload_list.click_checkbox_button(OverloadList.checkbox_button)
-    overload_list.element_visible()
+    overload_list.find_and_click_checkbox(name_elem, checkbox=True)
     overload_list.click_delete_many_button()
     driver.quit()
     print('Overload delete (many):')

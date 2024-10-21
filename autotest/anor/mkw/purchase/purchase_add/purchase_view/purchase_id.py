@@ -9,7 +9,7 @@ class PurchaseId(BasePage):
     def element_visible(self):
         self.wait_for_element_visible(self.purchase_id_header_xpath)
     # ------------------------------------------------------------------------------------------------------------------
-    purchase_number = (By.XPATH, "//span[@id='anor377-span-purchase_number']/t")
+    purchase_number = (By.XPATH, "//span[@id='anor377-span-purchase_number']")
 
     def get_purchase_number(self):
         return self.get_numeric_value(self.purchase_number)
@@ -25,5 +25,9 @@ class PurchaseId(BasePage):
 
     def get_elements(self):
         return self.check_count(self.total_amount_margin)
+    # ------------------------------------------------------------------------------------------------------------------
+    close_button = (By.XPATH, "//button[@ng-click='page.close()']")
 
+    def click_close_button(self):
+        self.click(self.inventory_button)
     # ------------------------------------------------------------------------------------------------------------------

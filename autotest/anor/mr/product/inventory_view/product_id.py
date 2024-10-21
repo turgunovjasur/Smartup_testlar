@@ -9,10 +9,10 @@ class ProductId(BasePage):
     def element_visible(self):
         self.wait_for_element_visible(self.card_title_header)
     # ------------------------------------------------------------------------------------------------------------------
-    product_name = By.XPATH, "(id('anor393-span-name')/span/text())[1]"
+    product_name = By.XPATH, "//div[@id='anor393-span-name']/span[1]"
 
     def get_elements(self):
-        self.get_text(self.product_name)
+        return self.get_text(self.product_name)
     # ------------------------------------------------------------------------------------------------------------------
     close_button = By.XPATH, "id('anor393-button-close')"
 

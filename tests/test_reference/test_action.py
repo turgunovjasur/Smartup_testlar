@@ -1,14 +1,11 @@
 import time
-
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.reference_navbar import ReferenceNavbar
-
 from autotest.anor.mcg.action_list.action_list import ActionList
 from autotest.anor.mcg.action_add.action_add import ActionAdd
 from autotest.anor.mcg.action_view.action_view import ActionIdView
 from autotest.anor.mcg.action_edit.action_edit import ActionIdEdit
-
 from utils.driver_setup import driver
 
 
@@ -67,12 +64,10 @@ def test_actions(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Action view:
     # ------------------------------------------------------------------------------------------------------------------
-    action_list.click_row_button()
-    action_list.click_first_elem_button()
+    action_list.find_and_click_checkbox(name_elem)
     action_list.click_view_button()
     # ------------------------------------------------------------------------------------------------------------------
     action_view = ActionIdView(driver)
-    time.sleep(2)
     action_view.element_visible()
     name = action_view.get_elements()
     try:
@@ -87,7 +82,7 @@ def test_actions(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Action edit:
     # ------------------------------------------------------------------------------------------------------------------
-    action_list.click_first_elem_button()
+    action_list.find_and_click_checkbox(name_elem)
     action_list.click_edit_button()
     # ------------------------------------------------------------------------------------------------------------------
     name_text = "action_edit"
@@ -105,7 +100,7 @@ def test_actions(driver):
     # ------------------------------------------------------------------------------------------------------------------
     # Action inactive:
     # ------------------------------------------------------------------------------------------------------------------
-    action_list.click_first_elem_button()
+    action_list.find_and_click_checkbox(name_text)
     action_list.click_status_one_button()
     print('Action inactive:')
     # ------------------------------------------------------------------------------------------------------------------
@@ -115,13 +110,13 @@ def test_actions(driver):
     action_list.element_visible()
     action_list.click_filter_button()
     action_list.click_show_all_button()
-    action_list.click_first_elem_button()
+    action_list.find_and_click_checkbox(name_text)
     action_list.click_status_one_button()
     print('Action active:')
     # ------------------------------------------------------------------------------------------------------------------
     # Action delete:
     # ------------------------------------------------------------------------------------------------------------------
-    action_list.click_first_elem_button()
+    action_list.find_and_click_checkbox(name_text)
     action_list.click_delete_one_button()
     print('Action delete:')
     # ------------------------------------------------------------------------------------------------------------------
@@ -155,7 +150,7 @@ def test_actions(driver):
     # ------------------------------------------------------------------------------------------------------------------
     action_list = ActionList(driver)
     action_list.element_visible()
-    action_list.click_checkbox_button(ActionList.checkbox_button)
+    action_list.find_and_click_checkbox(name_elem, checkbox=True)
     action_list.click_status_many_button()
     print('Action inactive (many):')
     # ------------------------------------------------------------------------------------------------------------------
@@ -166,7 +161,7 @@ def test_actions(driver):
     action_list.click_filter_button()
     action_list.click_show_all_button()
     action_list.click_row_button()
-    action_list.click_checkbox_button(ActionList.checkbox_button)
+    action_list.find_and_click_checkbox(name_elem, checkbox=True)
     action_list.click_status_many_button()
     print('Action active (many):')
     # ------------------------------------------------------------------------------------------------------------------
@@ -174,7 +169,7 @@ def test_actions(driver):
     # ------------------------------------------------------------------------------------------------------------------
     action_list = ActionList(driver)
     action_list.element_visible()
-    action_list.click_checkbox_button(ActionList.checkbox_button)
+    action_list.find_and_click_checkbox(name_elem, checkbox=True)
     action_list.click_delete_many_button()
     print('Action delete (many):')
     # ------------------------------------------------------------------------------------------------------------------

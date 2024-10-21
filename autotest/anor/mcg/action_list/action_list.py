@@ -1,4 +1,5 @@
-import time
+from time import time
+from selenium.common import StaleElementReferenceException
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -76,7 +77,6 @@ class ActionList(BasePage):
     checkbox_button = ".tbl-row:nth-child(1) span"
 
     def click_checkbox_button(self, checkbox_button):
-        time.sleep(2)
         element = self.driver.find_element(By.CSS_SELECTOR, checkbox_button)
         self.driver.execute_script("arguments[0].click();", element)
     # ------------------------------------------------------------------------------------------------------------------
@@ -95,7 +95,46 @@ class ActionList(BasePage):
     row_button = (By.CSS_SELECTOR, ".tbl-header-cell:nth-child(2) > .tbl-header-txt")
 
     def click_row_button(self):
-        time.sleep(2)
         element = self.find_element(self.row_button)
         self.driver.execute_script("arguments[0].click();", element)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def find_and_click_checkbox(self, element_name, checkbox=False):
+        find_elems_name_xpath = "//div[@class='tbl-body']//div[@class='tbl-row']//div[@class='tbl-cell'][1]"
+
+        start_time = time()
+        timeout_duration = 20
+
+        while time() - start_time < timeout_duration:
+            try:
+                elements = self.driver.find_elements(By.XPATH, find_elems_name_xpath)
+                # print("Element list:")
+
+                found = False
+                for elem in elements:
+                    # print(f"Element text: {elem.text.strip()}")
+
+                    if elem.text.strip() == element_name:
+                        found = True
+                        self.click(elem)
+                        # print(f"'{element_name}' item found and pressed.")
+
+                        # Checkbox
+                        if checkbox:
+                            parent_row = elem.find_element(By.XPATH, "./ancestor::div[contains(@class, 'tbl-row')]")
+                            try:
+                                checkbox_span = parent_row.find_element(By.CSS_SELECTOR, ".tbl-cell span")
+                                self.driver.execute_script("arguments[0].click();", checkbox_span)
+                                # print(f"'{element_name}' checkbox pressed.")
+                            except StaleElementReferenceException:
+                                print(f"'{element_name}' for checkbox stale element reference.")
+                        return
+
+                if not found:
+                    print(f"'{element_name}' item not found, wanted again...")
+
+            except StaleElementReferenceException:
+                print("StaleElementReferenceException, elements updated...")
+
+        print(f"'{element_name}' item not found, search deadline.")
     # ------------------------------------------------------------------------------------------------------------------

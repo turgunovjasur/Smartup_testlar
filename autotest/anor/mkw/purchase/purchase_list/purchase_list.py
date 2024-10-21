@@ -23,11 +23,28 @@ class PurchaseList(BasePage):
         self.click_multiple_time(self.barcode_button, click_count=2, delay=1)
     # ------------------------------------------------------------------------------------------------------------------
     first_list_purchase = (By.XPATH, "//b-grid[@id='anor288-bgrid-table']//div[@class='tbl-row']/div[2]")
-    view_button = (By.XPATH, "//div[@class='tbl-row-action']/div/button[1]")
 
-    def open_purchase_list(self):
-        time.sleep(2)
+    def click_row_list(self):
         self.click(self.first_list_purchase)
-        time.sleep(2)
+    # ------------------------------------------------------------------------------------------------------------------
+    view_button = (By.XPATH, "//button[@id='anor288-button-view']")
+
+    def click_view_button(self):
         self.click(self.view_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    status_one_button = (By.XPATH, "//button[@id='anor288-button-changestatus']")
+    status_draft_button = (By.XPATH, "//div[@id='statusDropDown']//div[@class='card-body p-0']/a[1]")
+    status_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
+
+    def click_status_one_button(self):
+        self.click(self.status_one_button)
+        self.click(self.status_draft_button)
+        self.click(self.status_yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    delete_one_button = (By.XPATH, "//button[@id='anor288-button-delete']")
+    delete_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
+
+    def click_delete_one_button(self):
+        self.click(self.delete_one_button)
+        self.click(self.delete_yes_button)
     # ------------------------------------------------------------------------------------------------------------------

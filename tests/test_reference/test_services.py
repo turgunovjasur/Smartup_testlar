@@ -59,7 +59,7 @@ def test_services(driver):
     # View
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_first_elem_button()
+    list.find_and_click_checkbox(name)
     list.click_view_button()
     # ------------------------------------------------------------------------------------------------------------------
     view = ProductIdView(driver)
@@ -70,7 +70,7 @@ def test_services(driver):
     # Edit
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_first_elem_button()
+    list.find_and_click_checkbox(name)
     list.click_edit_button()
     # ------------------------------------------------------------------------------------------------------------------
     name_text = "add_1_edit"
@@ -84,7 +84,7 @@ def test_services(driver):
     # Status (inactive)
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_first_elem_button()
+    list.find_and_click_checkbox(name_text)
     list.click_status_one_button()
     driver.refresh()
     list.click_filter_button()
@@ -94,14 +94,14 @@ def test_services(driver):
     # Status (active)
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_first_elem_button()
+    list.find_and_click_checkbox(name_text)
     list.click_status_one_button()
     print('Price: active')
     # ------------------------------------------------------------------------------------------------------------------
     # Delete
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_first_elem_button()
+    list.find_and_click_checkbox(name_text)
     list.click_delete_one_button()
     print('Price: Delete')
     # ------------------------------------------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ def test_services(driver):
     # Status (inactive) (many)
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_checkbox_button(ServicesList.checkbox_button)
+    list.find_and_click_checkbox(name, checkbox=True)
     list.click_status_many_button()
     driver.refresh()
     list.click_filter_button()
@@ -135,14 +135,14 @@ def test_services(driver):
     # Status (active) (many)
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_checkbox_button(ServicesList.checkbox_button)
+    list.find_and_click_checkbox(name, checkbox=True)
     list.click_status_many_button()
     print('Price: active (many)')
     # ------------------------------------------------------------------------------------------------------------------
     # Delete (many)
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_checkbox_button(ServicesList.checkbox_button)
+    list.find_and_click_checkbox(name, checkbox=True)
     list.click_delete_many_button()
     driver.close()
     print('Price: Delete (many)')
