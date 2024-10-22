@@ -1,4 +1,3 @@
-import time
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.reference_navbar import ReferenceNavbar

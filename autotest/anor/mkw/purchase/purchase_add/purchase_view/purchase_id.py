@@ -16,7 +16,7 @@ class PurchaseId(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     inventory_button = (By.XPATH, "//div[@id='anor377-navbar_item-items']/a")
 
-    def fill_form(self):
+    def click_inventory_button(self):
         self.click(self.inventory_button)
     # ------------------------------------------------------------------------------------------------------------------
     total_quantity = (By.XPATH, "//div[@id='anor377-navbar-total-information']//div[@class='sg-sub-row']/div[2]")
@@ -29,5 +29,6 @@ class PurchaseId(BasePage):
     close_button = (By.XPATH, "//button[@ng-click='page.close()']")
 
     def click_close_button(self):
-        self.click(self.inventory_button)
+        self.click_circle(self.inventory_button)
+
     # ------------------------------------------------------------------------------------------------------------------

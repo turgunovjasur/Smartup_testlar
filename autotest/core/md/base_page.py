@@ -85,6 +85,11 @@ class BasePage:
             raise Exception("Submit button not clickable or page not loaded")
     # ------------------------------------------------------------------------------------------------------------------
 
+    def click_js(self, locator, timeout=None):
+        element = self.wait_for_element_clickable(locator, timeout=timeout)
+        self.driver.execute_script("arguments[0].click();", element)
+    # ------------------------------------------------------------------------------------------------------------------
+
     def click_circle(self, locator, max_attempts=None):
         if max_attempts is None:
             max_attempts = 3

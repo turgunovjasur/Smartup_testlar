@@ -9,6 +9,8 @@ class MainPage(BasePage):
     def element_visible(self):
         self.wait_for_element_visible(self.main_page_header)
     # ------------------------------------------------------------------------------------------------------------------
+    order_number_input = By.XPATH, "//input[@ng-model='d.order_number']"
+
     ref_types_input = By.XPATH, "//div[@id='anor289-inputs-binput-reftypes']//input"
     ref_types_element = By.XPATH, "//div[@id='anor289-inputs-binput-reftypes']//div[@class='hint-item ng-scope active']"
     payment_type_input = By.XPATH, "//div[@id='anor289-inputs-binput-reftypes'][3]/descendant::input"
@@ -19,7 +21,8 @@ class MainPage(BasePage):
     warehouse_element = By.XPATH, "//div[@id='anor289-input-binput-warehouse']/b-input/div/div[2]/div/div[2]"
     with_extra_costs_button = By.XPATH, "//div[@id='anor289-input-checkbox-extracostenabled']/label[2]/span"
 
-    def fill_form(self):
+    def fill_form(self, order_number):
+        self.input_text(self.order_number_input, order_number)
         self.input_text_elem(self.ref_types_input, self.ref_types_element)
         self.input_text_elem(self.payment_type_input, self.payment_type_element)
         self.click(self.with_input_input)

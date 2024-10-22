@@ -18,7 +18,7 @@ class ActionList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # Toolbar: Add, Status, Delete many
     # ------------------------------------------------------------------------------------------------------------------
-    add_button = By.XPATH, "id('anor717-button-add')"
+    add_button = By.XPATH, "//button[@id='anor717-button-add']"
 
     def click_add_button(self):
         self.click(self.add_button)

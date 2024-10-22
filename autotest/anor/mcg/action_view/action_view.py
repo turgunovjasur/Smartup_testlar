@@ -9,7 +9,7 @@ class ActionIdView(BasePage):
     def element_visible(self):
         self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    action_name = (By.XPATH, "id('anor1199-action_information')/div/span[contains(text(), 'action')]")
+    action_name = (By.XPATH, "id('anor1199-action_information')/div/span[1]")
 
     def get_elements(self):
         return self.get_text(self.action_name)
