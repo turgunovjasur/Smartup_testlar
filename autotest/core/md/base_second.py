@@ -2,11 +2,12 @@ import os
 import time
 import re
 import allure
+import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 
 
 class BasePage:
@@ -14,49 +15,93 @@ class BasePage:
         self.driver = driver
         self.default_timeout = 20
         self.wait = WebDriverWait(self.driver, self.default_timeout)
+        self.logger = logging.getLogger(__name__)
 
+    def wait_for_element_clickable(self, locator, timeout=None, poll_frequency=0.5):
+        timeout = timeout or self.default_timeout
+        start_time = time.time()
+
+        while time.time() - start_time < timeout:
+            try:
+                # Sahifaning yuklanishini tekshirish
+                page_state = self.driver.execute_script('return document.readyState')
+                if page_state != 'complete':
+                    self.logger.debug("Page is still loading, waiting...")
+                    time.sleep(poll_frequency)
+                    continue
+
+                # Element bosilishi mumkinligini tekshirish
+                element = WebDriverWait(self.driver, poll_frequency).until(
+                    EC.element_to_be_clickable(locator)
+                )
+                return element
+            except StaleElementReferenceException:
+                self.logger.debug(f"Stale element, retrying: {locator}")
+            except TimeoutException:
+                self.logger.debug(f"Element not clickable, retrying: {locator}")
+            except Exception as e:
+                self.logger.error(f"Unexpected error while waiting for element: {e}")
+
+        self.logger.error(f"Element not clickable or page not loaded within {timeout} seconds: {locator}")
+        self.take_screenshot("page_load_or_element_not_clickable_error")
+        return None
     # ------------------------------------------------------------------------------------------------------------------
-    def wait_for_element_clickable(self, locator, timeout=None):
-        if timeout is None:
-            timeout = self.default_timeout
-        try:
-            wait = WebDriverWait(self.driver, timeout)
-            return wait.until(EC.element_to_be_clickable(locator))
 
-        except TimeoutException:
-            print(f"Element not clickable within: {timeout} seconds: {locator}")
-            # self.take_screenshot("element_not_clickable_error")
-            return None
-    # ------------------------------------------------------------------------------------------------------------------
+    def wait_for_element_visible(self, locator, timeout=None, poll_frequency=0.5):
+        timeout = timeout or self.default_timeout
+        start_time = time.time()
 
-    def wait_for_element_visible(self, locator, timeout=None):
-        if timeout is None:
-            timeout = self.default_timeout
-        try:
-            wait = WebDriverWait(self.driver, timeout)
-            return wait.until(EC.visibility_of_element_located(locator))
-        except TimeoutException:
-            print(f"Element not visible within: {timeout} seconds: {locator}")
-            # self.take_screenshot("element_not_visible_error")
-            return None
-    # ------------------------------------------------------------------------------------------------------------------
+        while time.time() - start_time < timeout:
+            try:
+                # Sahifaning yuklanishini tekshirish
+                page_state = self.driver.execute_script('return document.readyState')
+                if page_state != 'complete':
+                    self.logger.debug("Page is still loading, waiting...")
+                    time.sleep(poll_frequency)
+                    continue
 
-    def wait_for_all_elements_visible(self, locator, timeout=None):
-        if timeout is None:
-            timeout = self.default_timeout
-        try:
-            wait = WebDriverWait(self.driver, timeout)
-            return wait.until(EC.visibility_of_all_elements_located(locator))
-        except TimeoutException:
-            print(f"Elements not visible within: {timeout} seconds: {locator}")
-            # self.take_screenshot("elements_not_visible_error")
-            return None
+                # Elementning ko'rinishini tekshirish
+                element = WebDriverWait(self.driver, poll_frequency).until(
+                    EC.visibility_of_element_located(locator)
+                )
+                return element
+            except StaleElementReferenceException:
+                self.logger.debug(f"Stale element, retrying: {locator}")
+            except TimeoutException:
+                self.logger.debug(f"Element not visible, retrying: {locator}")
+            except Exception as e:
+                self.logger.error(f"Unexpected error while waiting for element: {e}")
+
+        self.logger.error(f"Element not visible or page not loaded within {timeout} seconds: {locator}")
+        self.take_screenshot("page_load_or_element_not_visible_error")
+        return None
     # ------------------------------------------------------------------------------------------------------------------
 
     def click(self, locator, timeout=None):
         element = self.wait_for_element_clickable(locator, timeout=timeout)
         if element:
             element.click()
+        else:
+            raise Exception("Submit button not clickable or page not loaded")
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def click_js(self, locator, timeout=None):
+        element = self.wait_for_element_clickable(locator, timeout=timeout)
+        self.driver.execute_script("arguments[0].click();", element)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def click_circle(self, locator, max_attempts=None):
+        if max_attempts is None:
+            max_attempts = 3
+
+        for attempt in range(1, max_attempts + 1):
+            try:
+                element = self.wait_for_element_clickable(locator)
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+                element.click()
+                break
+            except StaleElementReferenceException:
+                print(f"Attempt {attempt}: Trying to click again...")
     # ------------------------------------------------------------------------------------------------------------------
 
     def input_text(self, locator, text):
@@ -71,11 +116,7 @@ class BasePage:
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_element(self, locator, timeout=None):
-        return self.wait_for_element_clickable(locator, timeout=timeout)
-    # ------------------------------------------------------------------------------------------------------------------
-
-    def find_elements(self, locator):
-        return self.wait_for_all_elements_visible(locator)
+        return self.wait_for_element_visible(locator, timeout=timeout)
     # ------------------------------------------------------------------------------------------------------------------
 
     def get_element(self, locator):
@@ -141,3 +182,18 @@ class BasePage:
             print(f"Check_count_error: {str(e)}")
             self.take_screenshot("check_count_error")
             return 0
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def get_current_url(self):
+        return self.driver.current_url
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def cut_url(self):
+        current_url = self.get_current_url()
+        parts = current_url.split('/')
+        if len(parts) > 6:
+            base_url = '/'.join(parts[:6]) + '/'
+        else:
+            base_url = current_url
+        return base_url
+    # ------------------------------------------------------------------------------------------------------------------

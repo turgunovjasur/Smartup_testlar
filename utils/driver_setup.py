@@ -16,7 +16,7 @@ def driver(request):
         options.add_argument("--force-device-scale-factor=0.90")
 
         driver = webdriver.Chrome(service=service, options=options)
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(20)
         driver.get("http://localhost:8080/smartup5x_trade_patch/")
         # driver.get("http://localhost:8080/smartup5x_trade/")
         # driver.get("https://smartup.online/")

@@ -129,3 +129,8 @@ class InventoryList(BasePage):
 
         print(f"'{element_name}' item not found, search deadline.")
     # ------------------------------------------------------------------------------------------------------------------
+    set_price_button = (By.XPATH, "//button[@ng-click='set_price(row)']")
+
+    def click_set_price_button(self):
+        self.click_circle(self.set_price_button)
+    # ------------------------------------------------------------------------------------------------------------------

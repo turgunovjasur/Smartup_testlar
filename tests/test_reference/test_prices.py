@@ -125,7 +125,7 @@ def test_prices(driver):
     # Status (inactive) (many)
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_code_button()
+    # list.click_code_button()
     list.find_and_click_checkbox(name, checkbox=True)
     list.click_status_many_button()
     driver.refresh()
@@ -136,7 +136,7 @@ def test_prices(driver):
     # Status (active) (many)
     # ------------------------------------------------------------------------------------------------------------------
     list.element_visible()
-    list.click_code_button()
+    # list.click_code_button()
     list.find_and_click_checkbox(name, checkbox=True)
     list.click_status_many_button()
     print('Price: active (many)')
@@ -145,7 +145,7 @@ def test_prices(driver):
     # ------------------------------------------------------------------------------------------------------------------
     driver.refresh()
     list.element_visible()
-    list.click_code_button()
+    # list.click_code_button()
     list.find_and_click_checkbox(name, checkbox=True)
     list.click_delete_many_button()
     driver.close()

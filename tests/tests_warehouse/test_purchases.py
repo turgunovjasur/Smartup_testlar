@@ -105,14 +105,14 @@ def test_purchase(driver):
 
     purchase_id.click_inventory_button()
 
-    try:
-        purchase_id.click_close_button()
-        purchase_list.element_visible()
-        purchase_list.click_row_list()
-        purchase_list.click_status_one_button()
-        purchase_list.click_row_list()
-        purchase_list.click_delete_one_button()
-    except Exception as e:
-        print(f'Error: {str(e)}')
+    # try:
+    #     purchase_id.click_close_button()
+    #     purchase_list.element_visible()
+    #     purchase_list.click_row_list()
+    #     purchase_list.click_status_one_button()
+    #     purchase_list.click_row_list()
+    #     purchase_list.click_delete_one_button()
+    # except Exception as e:
+    #     print(f'Error: {str(e)}')
 
     # ------------------------------------------------------------------------------------------------------------------

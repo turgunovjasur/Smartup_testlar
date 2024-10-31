@@ -16,6 +16,12 @@ class BasePage:
         self.default_timeout = 20
         self.wait = WebDriverWait(self.driver, self.default_timeout)
         self.logger = logging.getLogger(__name__)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def is_element_visible(self, locator, timeout=20):
+        element = WebDriverWait(self.driver, timeout=timeout).until(EC.visibility_of_element_located(locator))
+        return bool(element)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def wait_for_element_clickable(self, locator, timeout=None, poll_frequency=0.5):
         timeout = timeout or self.default_timeout
@@ -43,7 +49,7 @@ class BasePage:
                 self.logger.error(f"Unexpected error while waiting for element: {e}")
 
         self.logger.error(f"Element not clickable or page not loaded within {timeout} seconds: {locator}")
-        self.take_screenshot("page_load_or_element_not_clickable_error")
+        # self.take_screenshot("page_load_or_element_not_clickable_error")
         return None
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -73,7 +79,7 @@ class BasePage:
                 self.logger.error(f"Unexpected error while waiting for element: {e}")
 
         self.logger.error(f"Element not visible or page not loaded within {timeout} seconds: {locator}")
-        self.take_screenshot("page_load_or_element_not_visible_error")
+        # self.take_screenshot("page_load_or_element_not_visible_error")
         return None
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -186,14 +192,19 @@ class BasePage:
 
     def get_current_url(self):
         return self.driver.current_url
-    # ------------------------------------------------------------------------------------------------------------------
 
+    # ------------------------------------------------------------------------------------------------------------------
     def cut_url(self):
         current_url = self.get_current_url()
-        parts = current_url.split('/')
-        if len(parts) > 6:
-            base_url = '/'.join(parts[:6]) + '/'
+        keywords = ["anor/", "trade/", "core/"]
+        positions = [current_url.find(keyword) for keyword in keywords if current_url.find(keyword) != -1]
+
+        if positions:
+            min_position = min(positions)
+            cut_url = current_url[:min_position]
         else:
-            base_url = current_url
-        return base_url
+            cut_url = current_url
+
+        return cut_url
     # ------------------------------------------------------------------------------------------------------------------
+

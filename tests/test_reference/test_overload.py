@@ -1,3 +1,5 @@
+import time
+
 from selenium.common import TimeoutException
 from autotest.anor.mcg.overload_add.overload_add import OverloadAdd
 from autotest.anor.mcg.overload_edit.overload_edit import OverloadIdEdit
@@ -21,14 +23,12 @@ def test_overload(driver):
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_page = DashboardPage(driver)
 
-    try:
+    if dashboard_page.element_visible():
+        dashboard_page.click_hover_show_button()
+    else:
         dashboard_page.element_visible_session()
         dashboard_page.click_button_delete_session()
-    except TimeoutException:
-        print(f"Active session not visible")
-        return None
 
-    dashboard_page.element_visible()
     dashboard_page.click_hover_show_button()
     dashboard_page.click_reference_button()
     # ------------------------------------------------------------------------------------------------------------------

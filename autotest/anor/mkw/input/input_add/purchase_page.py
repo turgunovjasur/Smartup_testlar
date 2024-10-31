@@ -31,7 +31,7 @@ class PurchasePage(BasePage):
         amount_xpath = self.get_numeric_value(self.amount_xpath)
         try:
             assert amount == amount_xpath, f"Expected amount: {amount}, but got: {amount_xpath}"
-            print(f"Successful!: {amount} = {amount_xpath}")
+            print(f"Successful!: Total price {amount} = {amount_xpath}")
 
         except AssertionError:
             self.take_screenshot("amount_error")

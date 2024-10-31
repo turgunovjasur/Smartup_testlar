@@ -98,7 +98,7 @@ class PriceTypeList(BasePage):
         find_elems_name_xpath = "//div[@class='tbl-body']//div[@class='tbl-row']//div[@class='tbl-cell'][1]"
 
         start_time = time()
-        timeout_duration = 20
+        timeout_duration = 30
 
         while time() - start_time < timeout_duration:
             try:

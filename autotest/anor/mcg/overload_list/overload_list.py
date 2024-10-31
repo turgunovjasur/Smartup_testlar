@@ -89,6 +89,11 @@ class OverloadList(BasePage):
         self.click_circle(self.show_all_button)
 
     # ------------------------------------------------------------------------------------------------------------------
+    list_first_elem = (By.XPATH, "(//div[@class='tbl-row']/div[2])[1]")
+
+    def click_first_elem_button(self):
+        self.click_circle(self.list_first_elem)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def find_and_click_checkbox(self, element_name, checkbox=False):
         find_elems_name_xpath = "//div[@class='tbl-body']//div[@class='tbl-row']//div[@class='tbl-cell'][1]"

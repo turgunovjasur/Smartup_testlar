@@ -268,19 +268,12 @@ def test_box_quant(driver):
     delete_many(driver, name_text)
 
 
-def test_all(driver):
+def run_all_tests(driver):
     try:
         test_action_quant(driver)
-        print("✅ test_action_quant passed.\n")
-
         test_amount(driver)
-        print("✅ test_amount passed.\n")
-
         test_weight(driver)
-        print("✅ test_weight passed.\n")
-
         test_box_quant(driver)
-        print("✅ test_box_quant passed.\n")
     except Exception as e:
         print(f"❌ An error occurred: {e}")
 
@@ -289,6 +282,6 @@ if __name__ == "__main__":
     from selenium import webdriver
     driver = webdriver.Chrome()
     try:
-        test_all(driver)
+        run_all_tests(driver)
     finally:
         driver.quit()
