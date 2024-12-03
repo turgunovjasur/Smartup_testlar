@@ -1,31 +1,42 @@
-import time
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
 
-class GoodsPage(BasePage):
-    def __init__(self, driver):
-        super().__init__(driver)
-        self.number = None
+class OrderAddProduct(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     header_text = (By.XPATH, "//div/h3/t[contains(text(), 'ТМЦ')]")
 
     def element_visible(self):
-        self.wait_for_element_visible(self.header_text)
+        return self.wait_for_element_visible(self.header_text)
     # ------------------------------------------------------------------------------------------------------------------
-    name_input = (By.XPATH, "(//b-input[@id='anor279_input-b_input-product_name_goods0']//input)[1]")
-    name_elem = (By.XPATH, "//b-input[@id='anor279_input-b_input-product_name_goods0']//div[@class='hint-body ng-scope']/div[1]")
+    product_text = (By.XPATH, '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
+
+    def get_product_text(self):
+        """Sahifadagi mahsulot nomini olish"""
+        self.click(self.name_input)
+        full_text = self.get_text(self.product_text)
+        return full_text.split()[0]
+    # ------------------------------------------------------------------------------------------------------------------
+    name_input = (By.XPATH, '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[@class="simple"]/input')
+    name_options = (By.XPATH, '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
+
+    def input_name(self, product_name):
+        self.click(self.name_input)
+        element = self.wait_for_element_visible(self.name_options)
+        element_text = element.text
+
+        first_text = element_text.split()[0]
+        assert first_text == product_name, f"Error: {first_text} != {product_name}"
+        self.click(self.name_options)
+    # ------------------------------------------------------------------------------------------------------------------
     quantity_input = (By.XPATH, "//input[@id='anor279_input-b_pg_col-quantity_0']")
 
-    def fill_form(self, quantity_order):
-        self.input_text_elem(self.name_input, self.name_elem)
-        time.sleep(0.5)
-        self.input_text(self.quantity_input, quantity_order)
-        time.sleep(0.5)
+    def input_quantity(self, product_quantity):
+        self.input_text(self.quantity_input, product_quantity)
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
-    def click_button(self):
+    def click_next_step_button(self):
         self.click(self.next_step_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Action

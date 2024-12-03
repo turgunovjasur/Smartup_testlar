@@ -1,34 +1,37 @@
-import random
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
 
-class CreateOrderPage(BasePage):
-    def __init__(self, driver):
-        super().__init__(driver)
+class OrderAddMain(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = (By.XPATH, "//div/h3/t[contains(text(), 'Основное')]")
+    header = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
     def element_visible(self):
-        self.wait_for_element_visible(self.header)
-
+        return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    order_request_input = (By.XPATH, "(//div[@id='anor279-input-b_input-request_number']//input)[2]")
-    room_input = (By.XPATH, "(//div[@id='anor279-input-b_input-room_name']//input)[2]")
-    room_elem = (By.XPATH, "//div[@id='anor279-input-b_input-room_name']//div[@class='hint-body ng-scope']/div[1]")
-    robot_input = (By.XPATH, "(//div[@id='anor279-input-b_input-robot_name']//input)[2]")
-    robot_elem = (By.XPATH, "//div[@id='anor279-input-b_input-robot_name']//b-input//div[@class='hint-body ng-scope']/div[1]")
+    rooms_input = (By.XPATH, "//div[@id='anor279-input-b_input-room_name']//input")
+    options_room = (By.XPATH, '//div[@id="anor279-input-b_input-room_name"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
-    def fill_form(self, order_request_number):
-        self.input_text(self.order_request_input, order_request_number)
-        try:
-            self.input_text_elem(self.room_input, self.room_elem, timeout=2)
-            self.input_text_elem(self.robot_input, self.robot_elem, timeout=2)
-        except:
-            pass
+    def click_rooms_input(self, room_name):
+        self.clear_element(self.rooms_input)
+        self.click_options(self.rooms_input, self.options_room, room_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    robots_input = (By.XPATH, '//div[@id="anor279-input-b_input-robot_name"]//b-input[@name="robots"]//input')
+    options_robot = (By.XPATH, '//div[@id="anor279-input-b_input-robot_name"]//b-input[@name="robots"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
+
+    def click_robots_input(self, robot_name):
+        self.clear_element(self.robots_input)
+        self.click_options(self.robots_input, self.options_robot, robot_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    persons_input = (By.XPATH, '//div[@id="anor279-input-b_input-person_name"]//b-input[@name="persons"]//input')
+    options_person = (By.XPATH, '//b-input[@name="persons"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def click_persons_input(self, client_name):
+        self.clear_element(self.persons_input)
+        self.click_options(self.persons_input, self.options_person, client_name)
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
-    def click_button(self,):
+    def click_next_step_button(self,):
         self.click(self.next_step_button)
     # ------------------------------------------------------------------------------------------------------------------

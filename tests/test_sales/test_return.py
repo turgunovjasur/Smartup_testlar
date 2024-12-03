@@ -39,7 +39,7 @@ def test_order_return(driver):
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_page = DashboardPage(driver)
     try:
-        dashboard_page.element_visible_session()
+        dashboard_page.element_visible_session(timeout=2)
         dashboard_page.click_button_delete_session()
     except:
         pass

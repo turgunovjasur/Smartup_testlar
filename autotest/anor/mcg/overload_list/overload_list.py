@@ -104,7 +104,7 @@ class OverloadList(BasePage):
         while time() - start_time < timeout_duration:
             try:
                 elements = self.driver.find_elements(By.XPATH, find_elems_name_xpath)
-                print("Element list:")
+                # print("Element list:")
 
                 found = False
                 for elem in elements:

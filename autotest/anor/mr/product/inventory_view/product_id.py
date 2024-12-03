@@ -7,7 +7,7 @@ class ProductId(BasePage):
     card_title_header = By.XPATH, "//h5/t[contains(text(),'Основная информация')]"
 
     def element_visible(self):
-        self.wait_for_element_visible(self.card_title_header)
+        return self.wait_for_element_visible(self.card_title_header)
     # ------------------------------------------------------------------------------------------------------------------
     product_name = By.XPATH, "//div[@id='anor393-span-name']/span[1]"
 

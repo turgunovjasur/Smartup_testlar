@@ -55,3 +55,4 @@ If you encounter any issues:
 1. Check that all dependencies are correctly installed.
 2. Ensure the ChromeDriver version matches your Chrome browser version.
 3. Verify that the URLs and XPaths in the tests are still valid for the current version of the SmartUp Online platform.
+

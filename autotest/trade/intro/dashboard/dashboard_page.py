@@ -4,10 +4,10 @@ from autotest.core.md.base_page import BasePage
 
 class DashboardPage(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    dashboard_header = By.XPATH, "//div/h3[contains(text(), 'Trade')]"
+    dashboard_header = (By.XPATH, "//div/h3[contains(text(), 'Trade')]")
 
-    def element_visible(self, timeout=5):
-        self.wait_for_element_visible(self.dashboard_header, timeout=timeout)
+    def element_visible(self, timeout=None):
+        return self.wait_for_element_visible(self.dashboard_header, timeout=timeout)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     error_massage = (By.XPATH, "//span[@id='error']")
@@ -15,52 +15,31 @@ class DashboardPage(BasePage):
     def wait_for_element_error(self, timeout=2):
         self.wait_for_element_visible(self.error_massage, timeout=timeout)
     # ------------------------------------------------------------------------------------------------------------------
+    filial_list_button = (By.XPATH, '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')
+
+    def find_filial(self, filial_name):
+        self.click(self.filial_list_button)
+        self.find_row_and_click(element_name="filial_name",
+                                xpath_pattern=f"//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), '{filial_name}')]")
     # ------------------------------------------------------------------------------------------------------------------
-    # hover_show_button = By.XPATH, "//div[@class='pt-3 px-2']"
-    # filial_button = By.XPATH, "//div[@class= 'menus']/child::li[2]/child::a[2]"
-    #
-    # def click_hover_show_button(self):
-    #     self.click(self.hover_show_button)
-    #     self.click(self.filial_button)
+    # visible_session
     # ------------------------------------------------------------------------------------------------------------------
-    hover_show_button = By.XPATH, "//div[@class='pt-3 px-2']"
-    filial_lists = By.XPATH, '//li[@class="filial-list rounded-0"]/a'
-    filial_button = By.XPATH, "//div[@class= 'menus']/child::li[2]/child::a[2]"
+    active_session_header = (By.XPATH, "//h3/t[contains(text(),'Активные сеансы')]")
 
-    def click_hover_show_button(self, filial_name=None):
-        self.click(self.hover_show_button)
-        if filial_name is None:
-            self.click(self.filial_button)
-
-        if filial_name:
-            filial_lists = self.driver.find_elements(*self.filial_lists)
-            found = False
-            filial_name_str = str(filial_name).strip()
-
-            for filial in filial_lists:
-                filial_name = filial.text.strip()
-                print(f"Filial text: {filial_name}")
-
-                if filial_name == filial_name_str:
-                    filial.click()
-                    print(f"Clicked filial: {filial_name}")
-                    found = True
-                    break
-
-            if not found:
-                print("Filial not found!")
-    # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
-    active_session_header = By.XPATH, "//h3/t[contains(text(),'Активные сеансы')]"
-
-    def element_visible_session(self, timeout=5):
-        self.wait_for_element_visible(self.active_session_header, timeout=timeout)
+    def element_visible_session(self):
+        self.wait_for_element_visible(self.active_session_header, timeout=2, retries=2, retry_delay=0.5)
     # ------------------------------------------------------------------------------------------------------------------
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 
-    def click_button_delete_session(self, timeout=1):
-        self.click(self.delete_session_button, timeout=timeout)
+    def click_button_delete_session(self):
+        self.click(self.delete_session_button)
     # ------------------------------------------------------------------------------------------------------------------
+    # navbar buttons
+    # ------------------------------------------------------------------------------------------------------------------
+    main_button = (By.XPATH, "//li/a/span[contains(text(), 'Главное')]")
+
+    def click_main_button(self):
+        self.click(self.main_button)
     # ------------------------------------------------------------------------------------------------------------------
     sales_button = (By.XPATH, "//li/a/span[contains(text(), 'Продажа')]")
 
@@ -72,7 +51,7 @@ class DashboardPage(BasePage):
     def click_warehouse_button(self):
         self.click(self.warehouse_button)
     # ------------------------------------------------------------------------------------------------------------------
-    reference_button = By.XPATH, "//li/a/span[contains(text(), 'Справочники')]"
+    reference_button = (By.XPATH, "//li/a/span[contains(text(), 'Справочники')]")
 
     def click_reference_button(self):
         self.click(self.reference_button)

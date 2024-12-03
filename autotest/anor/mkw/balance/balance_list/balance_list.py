@@ -1,15 +1,29 @@
 from selenium.common import StaleElementReferenceException
-
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
 class BalanceList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    balance_header = (By.XPATH, "//ul/li/a[contains(text(), 'Настройки сроков годности')]")
+    balance_header = (By.XPATH, '//button[@ng-if="fi.detail"]')
 
     def element_visible(self):
-        assert "Настройки сроков годности" in self.get_text(self.balance_header), "'Balance' page did not open!"
+        return self.wait_for_element_visible(self.balance_header)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def find_row(self, product_name):
+        self.find_row_and_click(product_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    detail_button = (By.XPATH, '//button[@ng-click="detailOne(row)"]')
+
+    def click_detail_button(self):
+        self.click(self.detail_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    get_balance_quantity = (By.XPATH, '//div[contains(@class, "tbl-row")]/div[@class="tbl-cell"][10]')
+
+    def check_balance_quantity(self):
+        return self.get_numeric_value(self.get_balance_quantity)
+    # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     count_number = (By.XPATH, "//div[@class='tbl-body']/div[@class='tbl-row'][3]/div[9]")
 

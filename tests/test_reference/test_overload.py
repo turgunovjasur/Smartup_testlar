@@ -110,7 +110,12 @@ def test_overload(driver):
     overload_list.click_show_all_button()
     overload_list.element_visible()
     overload_list.find_and_click_checkbox(name_elem)
-    overload_list.click_status_one_button()
+    try:
+        overload_list.click_status_one_button()
+    except:
+        overload_list.click_row_button()
+        overload_list.find_and_click_checkbox(name_elem)
+        overload_list.click_status_one_button()
     print('Overload active:')
     # ------------------------------------------------------------------------------------------------------------------
     # Overload delete:
@@ -118,7 +123,12 @@ def test_overload(driver):
     overload_list = OverloadList(driver)
     overload_list.element_visible()
     overload_list.find_and_click_checkbox(name_elem)
-    overload_list.click_delete_one_button()
+    try:
+        overload_list.click_delete_one_button()
+    except:
+        overload_list.click_row_button()
+        overload_list.find_and_click_checkbox(name_elem)
+        overload_list.click_delete_one_button()
     print('Overload delete:')
     # ------------------------------------------------------------------------------------------------------------------
     # Overload add_2:
@@ -158,7 +168,12 @@ def test_overload(driver):
     overload_list.click_show_all_button()
     overload_list.element_visible()
     overload_list.find_and_click_checkbox(name_elem, checkbox=True)
-    overload_list.click_status_many_button()
+    try:
+        overload_list.click_status_many_button()
+    except:
+        overload_list.click_row_button()
+        overload_list.find_and_click_checkbox(name_elem, checkbox=True)
+        overload_list.click_status_many_button()
     print('Overload active (many):')
     # ------------------------------------------------------------------------------------------------------------------
     # Overload delete (many):
@@ -166,7 +181,12 @@ def test_overload(driver):
     overload_list = OverloadList(driver)
     overload_list.element_visible()
     overload_list.find_and_click_checkbox(name_elem, checkbox=True)
-    overload_list.click_delete_many_button()
+    try:
+        overload_list.click_delete_many_button()
+    except:
+        overload_list.click_row_button()
+        overload_list.find_and_click_checkbox(name_elem, checkbox=True)
+        overload_list.click_delete_many_button()
     driver.quit()
     print('Overload delete (many):')
     # ------------------------------------------------------------------------------------------------------------------

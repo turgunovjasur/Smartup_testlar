@@ -1,20 +1,19 @@
-import time
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
-class OrdersPage(BasePage):
+class OrdersList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    order_page_header = (By.XPATH, "//ul/li/a[contains(text(), 'Опросники')]")
+    header = (By.XPATH, '//button[@id="trade81-button-add"]')
 
     def element_visible(self):
-        assert "Опросники" in self.get_text(self.order_page_header), "'order_page' page did not open!"
+        return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     count_number = (By.XPATH, "//div[@id='trade81-sg_header-info']//div[@class='sg-sub-row ng-scope']/div[1]")
     count_info = (By.XPATH, "//div[@id='trade81-sg_header-info']")
 
     def check_order(self):
-        if self.find_element(self.count_info, timeout=2):
+        if self.get_element(self.count_info):
             return self.get_numeric_value(self.count_number)
         else:
             return 0
@@ -29,26 +28,21 @@ class OrdersPage(BasePage):
     def click_view_button(self):
         self.click(self.view_button)
     # ------------------------------------------------------------------------------------------------------------------
-    list_first_elem = (By.XPATH, "(//div[@class='tbl-row']/div[2])[1]")
+    edit_button = (By.XPATH, '//button[@id="trade81-button-edit"]')
 
-    def click_first_elem_button(self):
-        time.sleep(2)
-        self.click(self.list_first_elem)
+    def click_edit_button(self):
+        self.click(self.edit_button)
     # ------------------------------------------------------------------------------------------------------------------
-    # change_status_one
+
+    def find_row(self, client_name):
+        self.find_row_and_click(element_name=client_name)
     # -----------------------------------------------------------------------------------------------------------------
     change_status_one_button = (By.XPATH, "//button[@id='trade81-button-change_status_one']")
-    status_button_6 = (By.XPATH, "//button[@id='trade81-button-change_status_one']/following-sibling::div/a[6]")
-    status_button_7 = (By.XPATH, "//button[@id='trade81-button-change_status_one']/following-sibling::div/a[7]")
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
-    def click_change_status_one_button(self, index=None):
+    def click_change_status_button(self, status_name):
         self.click(self.change_status_one_button)
-        if index is None or index == 6:
-            self.click(self.status_button_6)
-        elif index == 7:
-            self.click(self.status_button_7)
-        else:
-            raise ValueError("Error index. Only 6 or 7 button allowed.")
+        status_button = (By.XPATH, f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
+        self.click(status_button)
         self.click(self.yes_button)
     # -----------------------------------------------------------------------------------------------------------------

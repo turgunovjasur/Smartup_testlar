@@ -14,6 +14,8 @@ from utils.driver_setup import driver
 ])
 # ------------------------------------------------------------------------------------------------------------------
 def test_login(driver, email, password, test_name, expect_success):
+    driver.implicitly_wait(2)
+
     login_page = LoginPage(driver)
     login_page.fill_form(email, password)
     login_page.click_button()
@@ -23,14 +25,14 @@ def test_login(driver, email, password, test_name, expect_success):
     # ------------------------------------------------------------------------------------------------------------------
 
     try:
-        if dashboard_page.element_visible_session() or dashboard_page.element_visible():
+        if dashboard_page.element_visible_session(timeout=2) or dashboard_page.element_visible(timeout=2):
             if expect_success:
                 print("Successfully logged in with correct information")
             else:
                 print("Logged in with incorrect information")
                 dashboard_page.take_screenshot(test_name)
         else:
-            error_element = dashboard_page.wait_for_element_error()
+            error_element = dashboard_page.wait_for_element_error(timeout=2)
             if error_element:
                 print("Attempted to log in with incorrect information")
             else:
@@ -39,4 +41,6 @@ def test_login(driver, email, password, test_name, expect_success):
     except NoSuchElementException:
         print("Unable to log in")
         dashboard_page.take_screenshot(test_name)
+
+    # driver.implicitly_wait(20)
     # ------------------------------------------------------------------------------------------------------------------
