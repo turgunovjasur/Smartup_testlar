@@ -9,18 +9,13 @@ class RoleEdit(BasePage):
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
-
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    checkbox_text = (By.XPATH, '//form[@name="form"]//div[@class="form-row"][2]//span/tdev[@key]')
+    checkbox_text = (By.XPATH, '(//label/span)[2]/t')
 
     def check_checkbox(self):
-        element = self.driver.find_element(self.checkbox_text)
-        try:
-            key_value = element.get_attribute('key')
-            return key_value.lower() == 'yes'
-        except:
-            return False
+        text = self.get_text(self.checkbox_text)
+        return text.lower() == 'да'
     # ------------------------------------------------------------------------------------------------------------------
 
     def click_checkboxes(self):

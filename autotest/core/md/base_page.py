@@ -188,28 +188,6 @@ class BasePage:
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    # def wait_for_element_visible(self, locator, timeout=None):
-    #     wait = self._get_wait(timeout)
-    #
-    #     try:
-    #         element = wait.until(lambda driver:
-    #                              driver.execute_script("return document.readyState") == "complete"
-    #                              and EC.presence_of_element_located(locator)(driver)
-    #                              and EC.visibility_of_element_located(locator)(driver))
-    #
-    #         if element:
-    #             self.driver.execute_script(
-    #                 "arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});", element)
-    #             wait.until(lambda x: element.is_displayed() and element.is_enabled())
-    #
-    #         return element
-    #
-    #     except TimeoutException:
-    #         raise TimeoutException(f"Element {locator} {timeout if timeout else self.default_timeout} sekund ichida topilmadi yoki ko'rinmadi")
-    #     except Exception as e:
-    #         raise WebDriverException(f"Kutilmagan xatolik: {str(e)}")
-    # ------------------------------------------------------------------------------------------------------------------
-
     def input_text(self, locator, text):
         try:
             element = self.wait_for_element_visible(locator)
@@ -543,50 +521,59 @@ class BasePage:
         return False
 
     # ------------------------------------------------------------------------------------------------------------------
-
     def wait_for_page_load(self, timeout=None):
         timeout = timeout if timeout else self.default_timeout
         wait = self._get_wait(timeout)
         start_time = current_time()
 
         try:
-            # 1. Async operatsiyalarni tekshirish
-            is_ready = wait.until(lambda driver:
-                                  driver.execute_script("return document.readyState") == "complete"
-                                  and driver.execute_script(
-                                      "return typeof jQuery !== 'undefined' ? jQuery.active === 0 : true;"
-                                  )
-                                  and driver.execute_script("""
-                    return window.performance
-                        .getEntriesByType('resource')
-                        .filter(r => !r.responseEnd && 
-                            (r.initiatorType === 'fetch' || 
-                             r.initiatorType === 'xmlhttprequest')
-                        ).length === 0;
-                """)
-                                  )
-
-            if not is_ready:
-                logging.warning("Sahifa async operatsiyalari tugamadi")
+            # 1. Async operatsiyalarni kutish - shart bajarilishi bilan darhol qaytadi
+            try:
+                wait.until(lambda driver:
+                           driver.execute_script("return document.readyState") == "complete" and
+                           driver.execute_script(
+                               "return typeof jQuery !== 'undefined' ? jQuery.active === 0 : true;") and
+                           driver.execute_script("""
+                        return window.performance
+                            .getEntriesByType('resource')
+                            .filter(r => !r.responseEnd && 
+                                (r.initiatorType === 'fetch' || 
+                                r.initiatorType === 'xmlhttprequest')
+                            ).length === 0;
+                    """)
+                           )
+            except TimeoutException:
+                logging.warning("Async operatsiyalar kutish vaqti tugadi")
                 return False
 
-            # 2. Loading indikatorlarni tekshirish
+            # 2. Loading indikatorlarni tekshirish - darhol
             loading_indicators = [
                 ".loading", ".loader", "#loading",
                 "[class*='loading']", "[class*='spinner']",
                 "[id*='loading']", ".preloader", "#spinner"
             ]
 
+            elements = []
             for indicator in loading_indicators:
-                # Har bir loading indikator uchun tez tekshirish (0.5 sekund)
                 try:
-                    elements = self.driver.find_elements(By.CSS_SELECTOR, indicator)
-                    if any(element.is_displayed() for element in elements):
-                        logging.warning(f"Loading indikator topildi: {indicator}")
-                        return False
+                    # Darhol tekshirish
+                    elements.extend(self.driver.find_elements(By.CSS_SELECTOR, indicator))
                 except Exception as e:
                     logging.debug(f"Loading indikatorni tekshirishda xatolik: {str(e)}")
                     continue
+
+            # Agar ko'rinadigan loading indikatorlar topilsa, ularning yo'qolishini kutamiz
+            visible_loaders = [e for e in elements if e.is_displayed()]
+            if visible_loaders:
+                try:
+                    # Faqat ko'rinadigan loading indikatorlar yo'qolishini kutish
+                    wait.until(lambda driver:
+                               not any(loader.is_displayed() for loader in visible_loaders
+                                       if self._is_element_still_attached(loader))
+                               )
+                except TimeoutException:
+                    logging.warning("Loading indikatorlar yo'qolmadi")
+                    return False
 
             # 3. Asosiy kontentni tekshirish
             main_selectors = [
@@ -594,18 +581,32 @@ class BasePage:
                 "article", ".content", "#app", "#root", "body"
             ]
 
+            # Avval mavjud elementlarni tezkor tekshirish
             for selector in main_selectors:
                 try:
                     elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
-                    if elements and any(len(e.text.strip()) > 0 for e in elements):
+                    if any(e.is_displayed() and len(e.text.strip()) > 0 for e in elements):
                         elapsed_time = current_time() - start_time
                         logging.info(f"Sahifa {elapsed_time:.1f} sekund ichida yuklandi")
                         return True
+                except Exception:
+                    continue
+
+            # Agar tezkor tekshiruvda topilmasa, kutish rejimiga o'tish
+            for selector in main_selectors:
+                try:
+                    wait.until(lambda driver:
+                               any(e.is_displayed() and len(e.text.strip()) > 0
+                                   for e in driver.find_elements(By.CSS_SELECTOR, selector))
+                               )
+                    elapsed_time = current_time() - start_time
+                    logging.info(f"Sahifa {elapsed_time:.1f} sekund ichida yuklandi")
+                    return True
                 except Exception as e:
                     logging.debug(f"Kontentni tekshirishda xatolik: {str(e)}")
                     continue
 
-            logging.warning("Sahifada asosiy kontent topilmadi")
+            logging.warning("Asosiy kontent topilmadi")
             return False
 
         except TimeoutException:
@@ -613,9 +614,93 @@ class BasePage:
             logging.error(f"Sahifa {elapsed_time:.1f} sekund kutildi, lekin yuklanmadi")
             self.take_screenshot("page_load_timeout")
             return False
-
         except Exception as e:
             elapsed_time = current_time() - start_time
             logging.error(f"Sahifani tekshirishda xatolik ({elapsed_time:.1f}s): {str(e)}")
             self.take_screenshot("page_load_error")
             return False
+
+    def _is_element_still_attached(self, element):
+        """Elementning hali ham DOMda mavjudligini tekshirish"""
+        try:
+            element.is_enabled()
+            return True
+        except Exception:
+            return False
+    # ------------------------------------------------------------------------------------------------------------------
+
+    # def wait_for_page_load_2(self, timeout=None):
+    #     timeout = timeout if timeout else self.default_timeout
+    #     wait = self._get_wait(timeout)
+    #     start_time = current_time()
+    #
+    #     try:
+    #         # 1. Async operatsiyalarni tekshirish
+    #         is_ready = wait.until(lambda driver:
+    #                               driver.execute_script("return document.readyState") == "complete"
+    #                               and driver.execute_script(
+    #                                   "return typeof jQuery !== 'undefined' ? jQuery.active === 0 : true;"
+    #                               )
+    #                               and driver.execute_script("""
+    #                 return window.performance
+    #                     .getEntriesByType('resource')
+    #                     .filter(r => !r.responseEnd &&
+    #                         (r.initiatorType === 'fetch' ||
+    #                          r.initiatorType === 'xmlhttprequest')
+    #                     ).length === 0;
+    #             """)
+    #                               )
+    #
+    #         if not is_ready:
+    #             logging.warning("Sahifa async operatsiyalari tugamadi")
+    #             return False
+    #
+    #         # 2. Loading indikatorlarni tekshirish
+    #         loading_indicators = [
+    #             ".loading", ".loader", "#loading",
+    #             "[class*='loading']", "[class*='spinner']",
+    #             "[id*='loading']", ".preloader", "#spinner"
+    #         ]
+    #
+    #         for indicator in loading_indicators:
+    #             # Har bir loading indikator uchun tez tekshirish (0.5 sekund)
+    #             try:
+    #                 elements = self.driver.find_elements(By.CSS_SELECTOR, indicator)
+    #                 if any(element.is_displayed() for element in elements):
+    #                     logging.warning(f"Loading indikator topildi: {indicator}")
+    #                     return False
+    #             except Exception as e:
+    #                 logging.debug(f"Loading indikatorni tekshirishda xatolik: {str(e)}")
+    #                 continue
+    #
+    #         # 3. Asosiy kontentni tekshirish
+    #         main_selectors = [
+    #             "main", "#main", "#content", ".main-content",
+    #             "article", ".content", "#app", "#root", "body"
+    #         ]
+    #
+    #         for selector in main_selectors:
+    #             try:
+    #                 elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
+    #                 if elements and any(len(e.text.strip()) > 0 for e in elements):
+    #                     elapsed_time = current_time() - start_time
+    #                     logging.info(f"Sahifa {elapsed_time:.1f} sekund ichida yuklandi")
+    #                     return True
+    #             except Exception as e:
+    #                 logging.debug(f"Kontentni tekshirishda xatolik: {str(e)}")
+    #                 continue
+    #
+    #         logging.warning("Sahifada asosiy kontent topilmadi")
+    #         return False
+    #
+    #     except TimeoutException:
+    #         elapsed_time = current_time() - start_time
+    #         logging.error(f"Sahifa {elapsed_time:.1f} sekund kutildi, lekin yuklanmadi")
+    #         self.take_screenshot("page_load_timeout")
+    #         return False
+    #
+    #     except Exception as e:
+    #         elapsed_time = current_time() - start_time
+    #         logging.error(f"Sahifani tekshirishda xatolik ({elapsed_time:.1f}s): {str(e)}")
+    #         self.take_screenshot("page_load_error")
+    #         return False

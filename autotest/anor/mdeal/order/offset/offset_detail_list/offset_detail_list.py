@@ -19,3 +19,8 @@ class OffsetDetailList(BasePage):
     def click_offset_button(self):
         self.click(self.offset_button)
     # ------------------------------------------------------------------------------------------------------------------
+    payment_button = (By.XPATH, '//button[@ng-click="paymentOne(row)"]')
+
+    def click_payment_button(self):
+        self.click(self.payment_button)
+    # ------------------------------------------------------------------------------------------------------------------

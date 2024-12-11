@@ -1,6 +1,6 @@
 import time
 from tests.test_base.test_base import get_driver
-from tests.test_order.test_cashin import test_cashin_add_A, test_offset_add_A
+from tests.test_order.test_cashin import test_cashin_add_A, test_offset_add_A, test_offset_add_B
 
 # Import all test functions
 from tests.test_order.test_life_cycle import (
@@ -49,55 +49,59 @@ from utils.driver_setup import driver
 # All ------------------------------------------------------------------------------------------------------------------
 
 # pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html
+# pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html --alluredir=./allure-results
+
 def test_all():
     """All test runner"""
     tests = [
-        # # Base setup
-        # {"name": "Legal Person Add", "func": test_legal_person_add},
-        # {"name": "Filial Create", "func": test_filial_creat},
-        # {"name": "Room Add", "func": test_room_add},
-        # {"name": "Robot Add", "func": test_robot_add},
-        #
-        # # User management
-        # {"name": "Natural Person Add", "func": test_natural_person_add},
-        # {"name": "User Create", "func": test_user_creat},
-        # {"name": "Adding Permissions", "func": test_adding_permissions_to_user},
-        # {"name": "User Change Password", "func": test_user_change_password},
-        #
-        # # Product setup
-        # {"name": "Price Type Add", "func": test_price_type_add},
-        # {"name": "Payment Type Add", "func": test_payment_type_add},
-        # {"name": "Sector Add", "func": test_sector_add},
-        # {"name": "Product Add", "func": test_product_add},
-        #
-        # # Client setup
-        # {"name": "Natural Person Client Add-A", "func": test_natural_person_client_add_A},
-        # {"name": "Natural Person Client Add-B", "func": test_natural_person_client_add_B},
-        # {"name": "Natural Person Client Add-C", "func": test_natural_person_client_add_C},
-        # {"name": "Client Add-A", "func": test_client_add_A},
-        # {"name": "Client Add-B", "func": test_client_add_B},
-        # {"name": "Client Add-C", "func": test_client_add_C},
-        #
-        # # Attachment setup
-        # {"name": "Room Attachment", "func": test_room_attachment},
-        # {"name": "Init Balance", "func": test_init_balance},
-        #
-        # # Contract setup
-        # {"name": "Contract Add-A", "func": test_contract_add_A},
-        # {"name": "Contract Add-B", "func": test_contract_add_B},
+        # Base setup
+        {"name": "Legal Person Add", "func": test_legal_person_add},
+        {"name": "Filial Create", "func": test_filial_creat},
+        {"name": "Room Add", "func": test_room_add},
+        {"name": "Robot Add", "func": test_robot_add},
+
+        # User management
+        {"name": "Natural Person Add", "func": test_natural_person_add},
+        {"name": "User Create", "func": test_user_creat},
+        {"name": "Adding Permissions", "func": test_adding_permissions_to_user},
+        {"name": "User Change Password", "func": test_user_change_password},
+
+        # Product setup
+        {"name": "Price Type Add", "func": test_price_type_add},
+        {"name": "Payment Type Add", "func": test_payment_type_add},
+        {"name": "Sector Add", "func": test_sector_add},
+        {"name": "Product Add", "func": test_product_add},
+
+        # Client setup
+        {"name": "Natural Person Client Add-A", "func": test_natural_person_client_add_A},
+        {"name": "Natural Person Client Add-B", "func": test_natural_person_client_add_B},
+        {"name": "Natural Person Client Add-C", "func": test_natural_person_client_add_C},
+        {"name": "Client Add-A", "func": test_client_add_A},
+        {"name": "Client Add-B", "func": test_client_add_B},
+        {"name": "Client Add-C", "func": test_client_add_C},
+
+        # Attachment setup
+        {"name": "Room Attachment", "func": test_room_attachment},
+        {"name": "Init Balance", "func": test_init_balance},
+
+        # Contract setup
         # {"name": "Contract Add-C", "func": test_contract_add_C},
 
-        # Test-A: Add -> Edit -> Status -> Cashin_Add -> Offset_Add
-        # {"name": "Order Add-A", "func": test_order_add_A},
-        # {"name": "Order Edit-A", "func": test_order_edit_A},
-        # {"name": "Order Change Status-A", "func": test_order_change_status_A},
-        # {"name": "Cashin Add-A", "func": test_cashin_add_A},
-        # {"name": "Offset Add-A", "func": test_offset_add_A},
+        # Test-A:
+        # Contract -> Order(Add, Edit, Status) -> Cashin_Add -> Offset_Add
+        {"name": "Contract Add-A", "func": test_contract_add_A},
+        {"name": "Order Add-A", "func": test_order_add_A},
+        {"name": "Order Edit-A", "func": test_order_edit_A},
+        {"name": "Order Change Status-A", "func": test_order_change_status_A},
+        {"name": "Cashin Add-A", "func": test_cashin_add_A},
+        {"name": "Offset Add-A", "func": test_offset_add_A},
 
-        # Test-B: Add -> Edit -> Status -> Cashin_Add -> Offset_Add
+        # Test-B:
+        # Contract -> Order(Add, Edit, Status) -> Offset_Add -> Check: Cashin_Add
+        {"name": "Contract Add-B", "func": test_contract_add_B},
         {"name": "Order Add-B", "func": test_order_add_B},
         {"name": "Order Change Status-B", "func": test_order_change_status_B},
-
+        {"name": "Offset Add-B", "func": test_offset_add_B}
     ]
 
     passed_tests = []
@@ -115,13 +119,13 @@ def test_all():
             test['func'](driver)
             passed_tests.append(test['name'])
             print(f"✅ {test['name']}: PASSED")
-            print("*" * 50)
-            print("*" * 50)
+            print("*" * 70)
+            print("*" * 70)
         except Exception as e:
             failed_tests.append({"name": test['name'], "error": str(e)})
             print(f"❌ {test['name']}: FAILED")
-            print("*" * 50)
-            print("*" * 50)
+            print("*" * 70)
+            print("*" * 70)
         finally:
             if driver:
                 driver.quit()

@@ -15,7 +15,7 @@ from utils.driver_setup import driver
 
 # Add ------------------------------------------------------------------------------------------------------------------
 
-def order_add(driver, client_name=None, contract_name=None, product_quantity=None):
+def order_add(driver, client_name=None, contract_name=None, product_quantity=None, error_massage=False, return_quantity=None):
     # Test data
     data = test_data()["data"]
 
@@ -28,6 +28,7 @@ def order_add(driver, client_name=None, contract_name=None, product_quantity=Non
     contract_name = contract_name if contract_name is not None else data["contract_name"]
     product_name = data["product_name"]
     product_quantity = product_quantity if product_quantity is not None else data["product_quantity"]
+    return_quantity = return_quantity if return_quantity is not None else product_quantity
     product_price = data["product_price"]
     payment_type_name = data["payment_type_name"]
 
@@ -71,6 +72,19 @@ def order_add(driver, client_name=None, contract_name=None, product_quantity=Non
     order_add_final.click_save_button()
     time.sleep(2)
 
+    if error_massage is True:
+        error_massage = order_add_final.error_massage()
+        assert error_massage == data["error_massage_1"], f'Error: "error_massage_1" not visible!'
+        print(f'Test error_massage: successfully!')
+
+        order_add_final.click_error_close_button()
+        order_add_final.click_prev_step_button()
+        order_add_product.input_quantity(return_quantity)
+        order_add_product.click_next_step_button()
+        assert order_add_final.element_visible(), 'OrderAddFinal not open!'
+        order_add_final.click_save_button()
+        time.sleep(2)
+
     # Orders List
     assert order_list.element_visible(), 'OrdersList not open!'
     order_list.find_row(client_name)
@@ -82,8 +96,15 @@ def order_add(driver, client_name=None, contract_name=None, product_quantity=Non
 
     order_id = order_view.check_order_id()
     get_quantity, get_price = order_view.check_items()
-    assert get_quantity == product_quantity, f'Error: get_quantity: {get_quantity} != product_quantity: {product_quantity}'
-    assert get_price == product_quantity * product_price, f'Error: {get_quantity} != {product_quantity} * {product_price}'
+
+    if error_massage is True:
+        assert get_quantity == return_quantity, f'Error: get_quantity: {get_quantity} != return_quantity: {return_quantity}'
+        assert get_price == return_quantity * product_price, f'Error: {get_quantity} != {return_quantity} * {product_price}'
+
+    if error_massage is False:
+        assert get_quantity == product_quantity, f'Error: get_quantity: {get_quantity} != product_quantity: {product_quantity}'
+        assert get_price == product_quantity * product_price, f'Error: {get_quantity} != {product_quantity} * {product_price}'
+
     print("-" * 50)
     print(f'Order Product Add: \nOrder ID: {order_id} \nProduct quantity: {get_quantity} \nProduct price: {get_price}')
     print("-" * 50)
@@ -105,11 +126,14 @@ def test_order_add_B(driver):
     data = test_data()["data"]
     client_name = f"{data['client_name']}-B"
     contract_name = f"{data['contract_name']}-B"
-    product_quantity = 10
+    product_quantity = 101
+    return_quantity = 15
     order_add(driver,
               client_name=client_name,
               contract_name=contract_name,
-              product_quantity=product_quantity)
+              product_quantity=product_quantity,
+              return_quantity=return_quantity,
+              error_massage=True)
 
 
 def test_order_add_C(driver):

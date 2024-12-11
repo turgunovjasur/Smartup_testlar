@@ -441,7 +441,10 @@ def test_adding_permissions_to_user(driver):
     time.sleep(2)
     role_edit = RoleEdit(driver)
     assert role_edit.element_visible(), 'RoleEdit not open!'
-    role_edit.click_checkboxes()
+
+    if not role_edit.check_checkbox():
+        role_edit.click_checkboxes()
+
     role_edit.click_save_button()
 
     # Role List

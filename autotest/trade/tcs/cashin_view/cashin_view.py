@@ -15,6 +15,18 @@ class CashinView(BasePage):
     def check_cashin_number(self):
         return self.get_numeric_value(self.get_cashin_number)
     # ------------------------------------------------------------------------------------------------------------------
+    get_client_name = (By.XPATH, '//div[@class="form-group"]/label/t[normalize-space(text())="Клиент"]'
+                                 '/ancestor::label/following-sibling::span')
+
+    def check_client_name(self):
+        return self.get_text(self.get_client_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    get_total_price = (By.XPATH, '//div[@class="col-sm"]/label/t[normalize-space(text())="Сумма"]'
+                                 '/ancestor::label/following-sibling::span')
+
+    def check_total_price(self):
+        return self.get_numeric_value(self.get_total_price)
+    # ------------------------------------------------------------------------------------------------------------------
     close_button = (By.XPATH, '//button[@ng-click="page.close()"]')
 
     def click_close_button(self):

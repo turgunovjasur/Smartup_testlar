@@ -13,6 +13,7 @@ class RoleView(BasePage):
     navbar_button = (By.XPATH, '(//div[@class="navi-item mb-2"])[3]/a')
 
     def click_navbar_button(self):
+        self.wait_for_page_load()
         self.click(self.navbar_button)
     # ------------------------------------------------------------------------------------------------------------------
     get_text_role = (By.XPATH, '(//div[@class="card-body pt-4"]//span[text()])[1]')

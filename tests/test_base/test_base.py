@@ -19,7 +19,7 @@ def test_data():
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
-        "cod": 8,
+        "cod": 10,
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -60,6 +60,9 @@ def test_data():
         "Delivered": "Доставлен",
         "Archive": "Архив"
     }
+    error_massage = {
+        "error_massage_1": "H02-ANOR279-015",
+    }
     return {
         "data": {
             **base_data,
@@ -67,6 +70,7 @@ def test_data():
             **user_data,
             **product_data,
             **order_status,
+            **error_massage
         }
     }
 
