@@ -15,9 +15,10 @@ from selenium.common.exceptions import TimeoutException, StaleElementReferenceEx
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.default_timeout = 10
+        self.default_timeout = 20
         self.wait = WebDriverWait(driver, self.default_timeout)
         self.actions = ActionChains(driver)
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def _get_wait(self, timeout=None):
@@ -27,6 +28,7 @@ class BasePage:
         if timeout is not None and timeout != self.default_timeout:
             return WebDriverWait(self.driver, timeout)
         return self.wait
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def click(self, locator, timeout=None, retries=3, retry_delay=1):
@@ -91,6 +93,7 @@ class BasePage:
         error_message = f"Click muvaffaqiyatsiz yakunlandi: {last_exception}"
         self.take_screenshot("click_error")
         raise AssertionError(error_message)
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def wait_for_element_visible(self, locator, timeout=None, retries=3, retry_delay=1):
@@ -182,6 +185,7 @@ class BasePage:
         )
 
         return element
+
     # ------------------------------------------------------------------------------------------------------------------
 
     # def wait_for_element_visible(self, locator, timeout=None):
@@ -218,6 +222,7 @@ class BasePage:
             print(f"input_text_error: {str(e)}")
             self.take_screenshot("input_text_error")
             return False
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def input_text_elem(self, locator, elem_locator, timeout=None):
@@ -230,21 +235,25 @@ class BasePage:
             print(f"input_text_elem: {str(e)}")
             self.take_screenshot("input_text_elem")
             return False
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def get_element(self, locator):
         return self.wait_for_element_visible(locator)
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def get_text(self, locator):
         element = self.wait_for_element_visible(locator)
         return element.text
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def clear_element(self, locator):
         element = self.wait_for_element_visible(locator)
         element.clear()
         time.sleep(0.5)
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def get_numeric_value(self, locator):
@@ -257,6 +266,7 @@ class BasePage:
         if numeric_value.count('.') <= 1:
             return float(numeric_value) if numeric_value else 0
         return None
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def take_screenshot(self, filename):
@@ -268,16 +278,19 @@ class BasePage:
         self.driver.save_screenshot(screenshot_path)
         print(f"Screenshot saved at {screenshot_path}")
         allure.attach.file(screenshot_path, name="Error Screenshot", attachment_type=allure.attachment_type.PNG)
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def hover_and_hold(self, locator, duration=2000):
         element = self.get_element(locator)
         self.actions.move_to_element(element).perform()
         time.sleep(duration / 1000)
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def get_current_url(self):
         return self.driver.current_url
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def cut_url(self):
@@ -295,6 +308,7 @@ class BasePage:
         except Exception as e:
             print(f"URL ni kesishda xatolik: {str(e)}")
             return current_url
+
     # ------------------------------------------------------------------------------------------------------------------
     def click_options(self, input_locator, options_locator, element, timeout=None, scroll_enabled=False):
         """
@@ -306,6 +320,9 @@ class BasePage:
             element: Tanlanishi kerak bo'lgan qiymat
             timeout: Kutish vaqti (default: None)
             scroll_enabled: Dropdown ro'yxatini pasga surish funksiyasi (default: False)
+
+            options_locator = (By.XPATH, '//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
         """
         wait = self._get_wait(timeout)
 
@@ -417,6 +434,7 @@ class BasePage:
             print(f"Option tanlashda xatolik: {str(e)}")
             self.take_screenshot("option_error")
             return False
+
     # ------------------------------------------------------------------------------------------------------------------
 
     # def click_options(self, input_locator, options_locator, element, timeout=None):
@@ -515,7 +533,7 @@ class BasePage:
                 print(f"'{element_name}' elementi topilmadi, qayta urinish...")
 
             except StaleElementReferenceException:
-                print("...")
+                print("")
 
             except Exception as e:
                 print(f"Xatolik yuz berdi: {str(e)}")

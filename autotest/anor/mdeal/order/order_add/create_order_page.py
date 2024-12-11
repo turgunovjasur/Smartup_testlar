@@ -30,6 +30,13 @@ class OrderAddMain(BasePage):
         self.clear_element(self.persons_input)
         self.click_options(self.persons_input, self.options_person, client_name)
     # ------------------------------------------------------------------------------------------------------------------
+    contract_input = (By.XPATH, '//div[@id="anor279-input-b_input-contract_name"]//b-input[@name="contracts"]//input')
+    options_contract = (By.XPATH, '//div[@id="anor279-input-b_input-contract_name"]//b-input[@name="contracts"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
+
+    def click_contract_input(self, contract_name):
+        self.clear_element(self.contract_input)
+        self.click_options(self.contract_input, self.options_contract, contract_name)
+    # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
     def click_next_step_button(self,):

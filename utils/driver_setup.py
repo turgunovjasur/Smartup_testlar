@@ -25,6 +25,7 @@ def driver(request):
 
     # Test URL ga o'tish
     driver.get("http://gw.greenwhite.uz:8081/xtrade/login.html")
+
     # Alternativ URLlar:
     # driver.get("http://localhost:8080/smartup5x_trade_patch/")
     # driver.get("https://smartup.online/login.html")

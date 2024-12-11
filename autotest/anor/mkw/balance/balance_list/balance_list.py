@@ -19,6 +19,11 @@ class BalanceList(BasePage):
     def click_detail_button(self):
         self.click(self.detail_button)
     # ------------------------------------------------------------------------------------------------------------------
+    reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
+
+    def click_reload_button(self):
+        self.click(self.reload_button)
+    # ------------------------------------------------------------------------------------------------------------------
     get_balance_quantity = (By.XPATH, '//div[contains(@class, "tbl-row")]/div[@class="tbl-cell"][10]')
 
     def check_balance_quantity(self):
@@ -29,11 +34,6 @@ class BalanceList(BasePage):
 
     def check_balance(self):
         return self.get_numeric_value(self.count_number)
-    # ------------------------------------------------------------------------------------------------------------------
-    reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
-
-    def click_reload_button(self):
-        self.click(self.reload_button)
     # ------------------------------------------------------------------------------------------------------------------
     list_balance = (By.XPATH, "//div[@class='tbl-body']//div[@class='tbl-row']//div[@class='tbl-cell'][3]")
     name_elem = "test_life_cycle"

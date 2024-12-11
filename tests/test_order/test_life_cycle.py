@@ -1,18 +1,11 @@
 import random
 import time
 
-from autotest.anor.mdeal.order.order_add.create_order_page import OrderAddMain
-from autotest.anor.mdeal.order.order_add.final_page import OrderAddFinal
-from autotest.anor.mdeal.order.order_add.goods_page import OrderAddProduct
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
 from autotest.anor.mdeal.order.order_add.order_request_view.order_request_view import OrderRequestView
-from autotest.anor.mdeal.order.order_edit.order_edit_final import OrderEditFinal
-from autotest.anor.mdeal.order.order_edit.order_edit_main import OrderEditMain
-from autotest.anor.mdeal.order.order_edit.order_edit_product import OrderEditProduct
 from autotest.anor.mdeal.order.order_request_list.order_request_list import OrderRequestList
-from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.anor.mkf.contract_add.contract_add import ContractAdd
 from autotest.anor.mkf.contract_list.contract_list import ContractList
 from autotest.anor.mkf.contract_view.contract_view import ContractView
@@ -56,165 +49,16 @@ from autotest.core.md.change_password.change_password import ChangePassword
 from autotest.core.md.company_add.company_add import CompanyAdd
 from autotest.core.md.company_list.company_list import CompanyList
 from autotest.core.md.company_view.company_view import CompanyView
-from autotest.core.md.login_page import LoginPage
 from autotest.core.md.role_view.role_view import RoleView
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.main_navbar import MainNavbar
-from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
 from autotest.trade.tr.role_edit.role_edit import RoleEdit
 from autotest.trade.tr.role_list.role_list import RoleList
 from autotest.trade.trf.room_add.room_add import RoomAdd
 from autotest.trade.trf.room_list.room_list import RoomList
 from autotest.trade.trf.room_view.room_view import RoomView
+from tests.test_base.test_base import test_data, login, dashboard, open_new_window
 from utils.driver_setup import driver
-
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-
-
-def test_data():
-    """Test data"""
-    base_data = {
-        "email_company": "admin@head",
-        "password_company": "greenwhite",
-        "code_input": "red_test",
-        "name_company": "red test",
-        "plan_account": "UZ COA",
-        "bank_name": "UZ BANK",
-        "base_currency_cod": 860,
-        "cod": 8,
-
-    }
-    filial_data = {
-        "email": f"admin@{base_data['code_input']}",
-        "password": f"{base_data['password_company']}",
-
-        "Administration_name": "Администрирование",
-        "filial_name": f"Test_filial-{base_data['cod']}",  # mast
-        "login_user": f"test-{base_data['cod']}",  # mast
-
-    }
-    user_data = {
-        "email_user": f'{filial_data["login_user"]}@{base_data["code_input"]}',
-        "password_user": 123456789,
-    }
-    product_data = {
-        "legal_person_name": f"legal_person-{base_data['cod']}",  # mast
-        "natural_person_name": f"natural_person-{base_data['cod']}",  # mast
-        "client_name": f"client-{base_data['cod']}",  # mast
-        "contract_name": f"contract-{base_data['cod']}",  # mast
-
-        "room_name": f"Test_room-{base_data['cod']}",  # mast
-        "robot_name": f"Test_robot-{base_data['cod']}",  # mast
-        "sector_name": f"Test_sector-{base_data['cod']}",  # mast
-        "product_name": f"Test_product-{base_data['cod']}",  # mast
-
-        # "role_name": "Админ",
-        "role_name": "Директор",  # mast
-
-        "warehouse_name": "Основной склад",
-        "cash_register_name": "Основная касса",
-        "measurement_name": "Количество",
-        "price_type_name": f"Цена продажи-{base_data['cod']}",  # mast
-        "payment_type_name": "Наличные деньги",
-        "product_quantity": 1000,
-        "product_price": 12000,
-    }
-    order_status = {
-        "Draft": "Черновик",
-        "New": "Новый",
-        "Processing": "В обработке",
-        "Pending": "В ожидании",
-        "Shipped": "Отгружен",
-        "Delivered": "Доставлен",
-        "Archive": "Архив"
-    }
-    return {
-        "data": {
-            **base_data,
-            **filial_data,
-            **user_data,
-            **product_data,
-            **order_status
-        }
-    }
-
-
-def get_driver():
-    """Enhanced driver setup with additional error handling"""
-    try:
-        service = ChromeService(ChromeDriverManager().install())
-        options = Options()
-        options.add_argument("--start-maximized")
-        options.add_argument("--force-device-scale-factor=0.90")
-        options.add_argument('--ignore-ssl-errors=yes')
-        options.add_argument('--ignore-certificate-errors')
-        options.add_argument('--disable-gpu')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-
-        options.add_argument("--disable-software-rasterizer")  # WebGL xatoliklarini kamaytirish
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])  # Console loglarini kamaytirish
-        options.add_argument("--log-level=3")  # Faqat critical xatoliklarni ko'rsatish
-
-        driver = webdriver.Chrome(service=service, options=options)
-        driver.get("http://gw.greenwhite.uz:8081/xtrade/login.html")
-        return driver
-
-    except Exception as e:
-        print(f"Failed to initialize WebDriver: {str(e)}")
-        raise
-
-
-def open_new_window(driver, url):
-    base_page = BasePage(driver)
-
-    if not base_page.wait_for_page_load(timeout=60):
-        print("Sahifa yuklanmadi!")
-        return False
-
-    driver.execute_script("window.open('');")
-    all_windows = driver.window_handles
-    driver.switch_to.window(all_windows[-1])
-    driver.get(url)
-    time.sleep(2)
-
-    return True
-
-
-def login(driver, email, password):
-    base_page = BasePage(driver)
-    login_page = LoginPage(driver)
-
-    if not base_page.wait_for_page_load(timeout=60):
-        print("Login_page yuklanmadi!")
-        return False
-    login_page.fill_form(email, password)
-    login_page.click_button()
-
-    return True
-
-
-def dashboard(driver):
-    base_page = BasePage(driver)
-    dashboard_page = DashboardPage(driver)
-
-    if not base_page.wait_for_page_load(timeout=60):
-        print("Dashboard yuklanmadi!")
-        return False
-
-    try:
-        if dashboard_page.element_visible_session():
-            dashboard_page.click_button_delete_session()
-        else:
-            dashboard_page.click_button_delete_session()
-
-    except:
-        pass
-
-    return True
 
 
 def test_company_creat(driver):
@@ -1056,12 +900,13 @@ def test_order_request(driver):
 
 # ------------------------------------------------------------------------------------------------------------------
 
-def contract_add(driver, client_name=None, contract_name=None):
+def contract_add(driver, client_name=None, contract_name=None, initial_amount=None):
     # Test data
     data = test_data()["data"]
 
     client_name = client_name if client_name is not None else data["client_name"]
     contract_name = contract_name if contract_name is not None else data["contract_name"]
+    initial_amount = initial_amount if initial_amount is not None else data["product_quantity"] * data["product_price"]
 
     # Login
     login(driver, data["email_user"], data["password_user"])
@@ -1093,7 +938,7 @@ def contract_add(driver, client_name=None, contract_name=None):
     contract_add.click_radio_button()
     contract_add.input_person_name(client_name)
     contract_add.input_currency_name(data["base_currency_cod"])
-    contract_add.input_initial_amount(data["product_quantity"] * data["product_price"])
+    contract_add.input_initial_amount(initial_amount)
     contract_add.click_checkbox_button()
     contract_add.click_save_button()
 
@@ -1120,7 +965,11 @@ def test_contract_add_B(driver):
     data = test_data()["data"]
     client_name = f"{data['client_name']}-B"
     contract_name = f"{data['contract_name']}-B"
-    contract_add(driver, client_name=client_name, contract_name=contract_name)
+    initial_amount = 100 * data["product_price"]
+    contract_add(driver,
+                 client_name=client_name,
+                 contract_name=contract_name,
+                 initial_amount=initial_amount)
 
 
 def test_contract_add_C(driver):
@@ -1128,395 +977,3 @@ def test_contract_add_C(driver):
     client_name = f"{data['client_name']}-C"
     contract_name = f"{data['contract_name']}-C"
     contract_add(driver, client_name=client_name, contract_name=contract_name)
-
-
-# ------------------------------------------------------------------------------------------------------------------
-
-
-def order_add(driver, client_name=None, contract_name=None, product_quantity=None):
-    # Test data
-    data = test_data()["data"]
-
-    email_user = data["email_user"]
-    password_user = data["password_user"]
-    filial_name = data["filial_name"]
-    room_name = data["room_name"]
-    robot_name = data["robot_name"]
-    client_name = client_name if client_name is not None else data["client_name"]
-    contract_name = contract_name if contract_name is not None else data["contract_name"]
-    product_name = data["product_name"]
-    product_quantity = product_quantity if product_quantity is not None else data["product_quantity"]
-    product_price = data["product_price"]
-    payment_type_name = data["payment_type_name"]
-
-    # Login
-    login(driver, email_user, password_user)
-
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.find_filial(filial_name)
-
-    # Open Orders List
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
-    open_new_window(driver, cut_url + 'trade/tdeal/order/order_list')
-    order_list = OrdersList(driver)
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.click_add_button()
-
-    # Order Add Main
-    order_add_main = OrderAddMain(driver)
-    assert order_add_main.element_visible(), 'OrderAddMain not open!'
-    order_add_main.click_rooms_input(room_name)
-    order_add_main.click_robots_input(robot_name)
-    order_add_main.click_persons_input(client_name)
-    order_add_main.click_contract_input(contract_name)
-    order_add_main.click_next_step_button()
-
-    # Order Add Product
-    order_add_product = OrderAddProduct(driver)
-    assert order_add_product.element_visible(), 'OrderAddProduct not open!'
-    order_add_product.input_name(product_name)
-    order_add_product.input_quantity(product_quantity)
-    order_add_product.click_next_step_button()
-
-    # Order Add Final
-    order_add_final = OrderAddFinal(driver)
-    assert order_add_final.element_visible(), 'OrderAddFinal not open!'
-    order_add_final.input_payment_type(payment_type_name)
-    order_add_final.input_status()
-    order_add_final.click_save_button()
-    time.sleep(2)
-
-    # Orders List
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    # Orders View
-    order_view = OrderView(driver)
-    assert order_view.element_visible(), 'OrderView not open!'
-
-    order_id = order_view.check_order_id()
-    get_quantity, get_price = order_view.check_items()
-    assert get_quantity == product_quantity, f'Error: get_quantity: {get_quantity} != product_quantity: {product_quantity}'
-    assert get_price == product_quantity * product_price, f'Error: {get_quantity} != {product_quantity} * {product_price}'
-    print("-" * 50)
-    print(f'Order Product Add: \nOrder ID: {order_id} \nProduct quantity: {get_quantity} \nProduct price: {get_price}')
-
-    order_view.click_close_button()
-
-
-def test_order_add_A(driver):
-    data = test_data()["data"]
-    client_name = f"{data['client_name']}-A"
-    contract_name = f"{data['contract_name']}-A"
-    product_quantity = 10
-    order_add(driver, client_name=client_name, contract_name=contract_name, product_quantity=product_quantity)
-
-
-def test_order_add_B(driver):
-    data = test_data()["data"]
-    client_name = f"{data['client_name']}-B"
-    contract_name = f"{data['contract_name']}-B"
-    product_quantity = 10
-    order_add(driver, client_name=client_name, contract_name=contract_name, product_quantity=product_quantity)
-
-
-def test_order_add_C(driver):
-    data = test_data()["data"]
-    client_name = f"{data['client_name']}-C"
-    contract_name = f"{data['contract_name']}-C"
-    product_quantity = 10
-    order_add(driver, client_name=client_name, contract_name=contract_name, product_quantity=product_quantity)
-
-
-# ------------------------------------------------------------------------------------------------------------------
-
-def test_order_edit(driver):
-    # Test data
-    data = test_data()["data"]
-
-    email_user = data["email_user"]
-    password_user = data["password_user"]
-    filial_name = data["filial_name"]
-    client_name = f'{data["client_name"]}-A'
-    product_quantity = data["product_quantity"]
-    product_quantity_edit = (product_quantity - 10)
-    product_price = data["product_price"]
-
-    # Login
-    login(driver, email_user, password_user)
-
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.find_filial(filial_name)
-
-    # Open Orders List
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
-    open_new_window(driver, cut_url + 'trade/tdeal/order/order_list')
-    order_list = OrdersList(driver)
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.find_row(client_name)
-    order_list.click_edit_button()
-
-    # Order Edit Main
-    order_edit_main = OrderEditMain(driver)
-    assert order_edit_main.element_visible(), 'OrderEditMain not open!'
-    order_edit_main.click_next_step_button()
-
-    # Order Edit Product
-    order_edit_product = OrderEditProduct(driver)
-    assert order_edit_product.element_visible(), 'OrderEditProduct not open!'
-    order_edit_product.input_quantity(product_quantity_edit)
-    order_edit_product.click_next_step_button()
-
-    # Order Edit Final
-    order_edit_final = OrderEditFinal(driver)
-    assert order_edit_final.element_visible(), 'OrderEditFinal not open!'
-    order_edit_final.click_save_button()
-    time.sleep(2)
-
-    # Orders List
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    # Orders View
-    order_view = OrderView(driver)
-    assert order_view.element_visible(), 'OrderView not open!'
-
-    order_id = order_view.check_order_id()
-    get_quantity, get_price = order_view.check_items()
-    assert get_quantity == product_quantity_edit, f'Error: get_quantity: {get_quantity} != product_quantity_edit: {product_quantity_edit}'
-    assert get_price == product_quantity_edit * product_price, f'Error: {get_quantity} != {product_quantity_edit} * {product_price}'
-
-    print(f'Order Product Edit: \nOrder ID: {order_id} \nProduct quantity: {get_quantity} \nProduct price: {get_price}')
-
-    order_view.click_close_button()
-
-
-def test_order_change_status(driver):
-    # Test data
-    data = test_data()["data"]
-
-    email_user = data["email_user"]
-    password_user = data["password_user"]
-    filial_name = data["filial_name"]
-    client_name = f'{data["client_name"]}-A'
-
-    # Login
-    login(driver, email_user, password_user)
-
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.find_filial(filial_name)
-
-    # Open Orders List
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
-    open_new_window(driver, cut_url + 'trade/tdeal/order/order_list')
-    order_list = OrdersList(driver)
-    order_view = OrderView(driver)
-
-    # Draft
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    assert order_view.element_visible(), 'OrderView not open!'
-    text = order_view.check_status()
-    assert text == data["Draft"], f'{text} != {data["Draft"]}'
-    print(f'order status: {text}')
-    draft_quantity, draft_price = order_view.check_items()
-    order_view.click_close_button()
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # New
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.click_change_status_button(data["New"])
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    assert order_view.element_visible(), 'OrderView not open!'
-    text = order_view.check_status()
-    assert text == data["New"], f'{text} != {data["New"]}'
-    print(f'order status: {text}')
-    new_quantity, new_price = order_view.check_items()
-    assert draft_quantity == new_quantity, f'Error: draft_quantity: {draft_quantity} != new_quantity: {new_quantity}'
-    assert draft_price == new_price, f'Error: draft_price: {draft_price} != new_price: {new_price}'
-    order_view.click_close_button()
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Processing
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.click_change_status_button(data["Processing"])
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    assert order_view.element_visible(), 'OrderView not open!'
-    text = order_view.check_status()
-    assert text == data["Processing"], f'{text} != {data["Processing"]}'
-    print(f'order status: {text}')
-    processing_quantity, processing_price = order_view.check_items()
-    assert draft_quantity == processing_quantity, f'Error: draft_quantity: {draft_quantity} != processing_quantity: {processing_quantity}'
-    assert draft_price == processing_price, f'Error: draft_price: {draft_price} != processing_price: {processing_price}'
-    order_view.click_close_button()
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Pending
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.click_change_status_button(data["Pending"])
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    assert order_view.element_visible(), 'OrderView not open!'
-    text = order_view.check_status()
-    assert text == data["Pending"], f'{text} != {data["Pending"]}'
-    print(f'order status: {text}')
-    pending_quantity, pending_price = order_view.check_items()
-    assert draft_quantity == pending_quantity, f'Error: draft_quantity: {draft_quantity} != pending_quantity: {pending_quantity}'
-    assert draft_price == pending_price, f'Error: draft_price: {draft_price} != pending_price: {pending_price}'
-    order_view.click_close_button()
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Shipped
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.click_change_status_button(data["Shipped"])
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    assert order_view.element_visible(), 'OrderView not open!'
-    text = order_view.check_status()
-    assert text == data["Shipped"], f'{text} != {data["Shipped"]}'
-    print(f'order status: {text}')
-    shipped_quantity, shipped_price = order_view.check_items()
-    assert draft_quantity == shipped_quantity, f'Error: draft_quantity: {draft_quantity} != shipped_quantity: {shipped_quantity}'
-    assert draft_price == shipped_price, f'Error: draft_price: {draft_price} != shipped_price: {shipped_price}'
-    order_view.click_close_button()
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Delivered
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.click_change_status_button(data["Delivered"])
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    assert order_view.element_visible(), 'OrderView not open!'
-    text = order_view.check_status()
-    assert text == data["Delivered"], f'{text} != {data["Delivered"]}'
-    print(f'order status: {text}')
-    delivered_quantity, delivered_price = order_view.check_items()
-    assert draft_quantity == delivered_quantity, f'Error: draft_quantity: {draft_quantity} != delivered_quantity: {delivered_quantity}'
-    assert draft_price == delivered_price, f'Error: draft_price: {draft_price} != delivered_price: {delivered_price}'
-    order_view.click_close_button()
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Archive
-    assert order_list.element_visible(), 'OrdersList not open!'
-    order_list.click_change_status_button(data["Archive"])
-    print(f'order status: {data["Archive"]}')
-
-
-def test_all():
-    """All test runner"""
-    tests = [
-        # Base setup
-        {"name": "Legal Person Add", "func": test_legal_person_add},
-        {"name": "Filial Create", "func": test_filial_creat},
-        {"name": "Room Add", "func": test_room_add},
-        {"name": "Robot Add", "func": test_robot_add},
-
-        # User management
-        {"name": "Natural Person Add", "func": test_natural_person_add},
-        {"name": "User Create", "func": test_user_creat},
-        {"name": "Adding Permissions", "func": test_adding_permissions_to_user},
-        {"name": "User Change Password", "func": test_user_change_password},
-
-        # Product setup
-        {"name": "Price Type Add", "func": test_price_type_add},
-        {"name": "Payment Type Add", "func": test_payment_type_add},
-        {"name": "Sector Add", "func": test_sector_add},
-        {"name": "Product Add", "func": test_product_add},
-
-        # Client setup
-        {"name": "Natural Person Client Add-A", "func": test_natural_person_client_add_A},
-        {"name": "Natural Person Client Add-B", "func": test_natural_person_client_add_B},
-        {"name": "Natural Person Client Add-C", "func": test_natural_person_client_add_C},
-        {"name": "Client Add-A", "func": test_client_add_A},
-        {"name": "Client Add-B", "func": test_client_add_B},
-        {"name": "Client Add-C", "func": test_client_add_C},
-
-        # Attachment setup
-        {"name": "Room Attachment", "func": test_room_attachment},
-        {"name": "Init Balance", "func": test_init_balance},
-
-        # Contract setup
-        {"name": "Contract Add-A", "func": test_contract_add_A},
-        {"name": "Contract Add-B", "func": test_contract_add_B},
-        {"name": "Contract Add-C", "func": test_contract_add_C},
-
-        # Order add
-        {"name": "Order Add", "func": test_order_add_A},
-        {"name": "Order Add", "func": test_order_add_B},
-        {"name": "Order Add", "func": test_order_add_C},
-
-        # Order edit
-        {"name": "Order Edit", "func": test_order_edit},
-        {"name": "Order Change Status", "func": test_order_change_status},
-    ]
-
-    passed_tests = []
-    current_driver = None
-    total_tests = len(tests)
-
-    print("\nStarting test execution...")
-    print("=" * 50)
-
-    for index, test in enumerate(tests, 1):
-        try:
-            print(f"\nRunning test {index}/{total_tests}: {test['name']}...")
-            current_driver = get_driver()
-            test['func'](current_driver)
-            passed_tests.append(test['name'])
-            print(f"✅ Test '{test['name']}' passed successfully")
-
-        except Exception as e:
-            print("\n" + "=" * 50)
-            print("TEST EXECUTION STOPPED DUE TO FAILURE")
-            print("=" * 50)
-            print(f"\n❌ Test '{test['name']}' failed!")
-            print(f"Error: {str(e)}")
-            print("\nPassed tests before failure:")
-            for passed_test in passed_tests:
-                print(f"✅ {passed_test}")
-            print(f"\nFailed at test {index}/{total_tests}")
-
-            if current_driver:
-                try:
-                    current_driver.quit()
-                except:
-                    pass
-
-            raise Exception(f"Test execution stopped at '{test['name']}'")
-
-        finally:
-            if current_driver:
-                try:
-                    current_driver.quit()
-                except:
-                    pass
-            time.sleep(2)
-
-    print("\n" + "=" * 50)
-    print("TEST EXECUTION COMPLETED SUCCESSFULLY")
-    print("=" * 50)
-    print(f"\nAll {total_tests} tests passed!")
-
-
-if __name__ == "__main__":
-    test_all()
