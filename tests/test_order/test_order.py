@@ -6,44 +6,28 @@ from autotest.anor.mdeal.order.order_edit.order_edit_final import OrderEditFinal
 from autotest.anor.mdeal.order.order_edit.order_edit_main import OrderEditMain
 from autotest.anor.mdeal.order.order_edit.order_edit_product import OrderEditProduct
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
-from autotest.core.md.base_page import BasePage
-from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
-from tests.test_base.test_base import test_data, login, dashboard, open_new_window, get_driver
+from tests.test_base.test_base import test_data, login_user
 from utils.driver_setup import driver
 
 
-# Add ------------------------------------------------------------------------------------------------------------------
+# Order Add ------------------------------------------------------------------------------------------------------------
 
 def order_add(driver, client_name=None, contract_name=None, product_quantity=None, error_massage=False, return_quantity=None):
     # Test data
     data = test_data()["data"]
-
-    email_user = data["email_user"]
-    password_user = data["password_user"]
-    filial_name = data["filial_name"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
-    client_name = client_name if client_name is not None else data["client_name"]
-    contract_name = contract_name if contract_name is not None else data["contract_name"]
     product_name = data["product_name"]
-    product_quantity = product_quantity if product_quantity is not None else data["product_quantity"]
-    return_quantity = return_quantity if return_quantity is not None else product_quantity
     product_price = data["product_price"]
     payment_type_name = data["payment_type_name"]
+    client_name = client_name if client_name is not None else data["client_name"]
+    contract_name = contract_name if contract_name is not None else data["contract_name"]
+    product_quantity = product_quantity if product_quantity is not None else data["product_quantity"]
+    return_quantity = return_quantity if return_quantity is not None else product_quantity
 
-    # Login
-    login(driver, email_user, password_user)
+    login_user(driver, url='trade/tdeal/order/order_list')
 
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.find_filial(filial_name)
-
-    # Open Orders List
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
-    open_new_window(driver, cut_url + 'trade/tdeal/order/order_list')
     order_list = OrdersList(driver)
     assert order_list.element_visible(), 'OrdersList not open!'
     order_list.click_add_button()
@@ -152,27 +136,13 @@ def test_order_add_C(driver):
 def order_edit(driver, client_name=None, product_quantity_edit=None):
     # Test data
     data = test_data()["data"]
-
-    email_user = data["email_user"]
-    password_user = data["password_user"]
-    filial_name = data["filial_name"]
-    client_name = client_name if client_name is not None else data["client_name"]
-    product_quantity = data["product_quantity"]
-    product_quantity_edit = product_quantity_edit if product_quantity_edit is not None else (product_quantity - 1)
     product_price = data["product_price"]
+    product_quantity = data["product_quantity"]
+    client_name = client_name if client_name is not None else data["client_name"]
+    product_quantity_edit = product_quantity_edit if product_quantity_edit is not None else (product_quantity - 1)
 
-    # Login
-    login(driver, email_user, password_user)
+    login_user(driver, url='trade/tdeal/order/order_list')
 
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.find_filial(filial_name)
-
-    # Open Orders List
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
-    open_new_window(driver, cut_url + 'trade/tdeal/order/order_list')
     order_list = OrdersList(driver)
     assert order_list.element_visible(), 'OrdersList not open!'
     order_list.find_row(client_name)
@@ -228,24 +198,10 @@ def test_order_edit_A(driver):
 def order_change_status(driver, client_name=None, status=True):
     # Test data
     data = test_data()["data"]
-
-    email_user = data["email_user"]
-    password_user = data["password_user"]
-    filial_name = data["filial_name"]
     client_name = client_name if client_name is not None else data["client_name"]
 
-    # Login
-    login(driver, email_user, password_user)
+    login_user(driver, url='trade/tdeal/order/order_list')
 
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.find_filial(filial_name)
-
-    # Open Orders List
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
-    open_new_window(driver, cut_url + 'trade/tdeal/order/order_list')
     order_list = OrdersList(driver)
     order_view = OrderView(driver)
 
@@ -373,64 +329,3 @@ def test_order_change_status_C(driver):
     order_change_status(driver,
                         client_name=client_name,
                         status=False)
-
-
-# All ------------------------------------------------------------------------------------------------------------------
-
-# pytest tests/test_order/test_order.py::test_all -v --html=report.html --self-contained-html
-def test_all():
-    """Order test runner"""
-    tests = [
-        # Add
-        {"name": "Order Add-A", "func": test_order_add_A},
-        {"name": "Order Add-B", "func": test_order_add_B},
-        {"name": "Order Add-C", "func": test_order_add_C},
-
-        # Edit
-        {"name": "Order Edit-A", "func": test_order_edit_A},
-
-        # Status
-        {"name": "Order Change Status-A", "func": test_order_change_status_A},
-        {"name": "Order Change Status-B", "func": test_order_change_status_B},
-        {"name": "Order Change Status-C", "func": test_order_change_status_C},
-    ]
-
-    passed_tests = []
-    failed_tests = []
-    total_tests = len(tests)
-
-    print("\n=== Test Execution Summary ===")
-
-    for test in tests:
-        try:
-            driver = get_driver()
-            if driver is None:
-                raise Exception("WebDriver initialization failed")
-
-            test['func'](driver)
-            passed_tests.append(test['name'])
-            print(f"✅ {test['name']}: PASSED")
-            print("*" * 50)
-        except Exception as e:
-            failed_tests.append({"name": test['name'], "error": str(e)})
-            print(f"❌ {test['name']}: FAILED")
-            print(f"   Error: {str(e)}")
-            print("*" * 50)
-        finally:
-            if driver:
-                driver.quit()
-            time.sleep(1)
-
-    print("\n=== Final Results ===")
-    print(f"Total Tests: {total_tests}")
-    print(f"Passed: {len(passed_tests)}")
-    print(f"Failed: {len(failed_tests)}")
-
-    if failed_tests:
-        print("\nFailed Tests Details:")
-        for test in failed_tests:
-            print(f"❌ {test['name']}")
-            print(f"   Error: {test['error']}\n")
-
-    # Agar birorta test muvaffaqiyatsiz bo'lsa, pytest uchun xatolikni ko'rsatamiz
-    assert len(failed_tests) == 0, "Some tests failed"

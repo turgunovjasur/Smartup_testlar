@@ -11,6 +11,7 @@ class LegalPersonList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, '//button[@ng-click="q.oa.firstFn()"]')
+    # add_button = (By.XPATH, '//sdllsklfk')
 
     def click_add_button(self):
         self.click(self.add_button)
@@ -23,4 +24,12 @@ class LegalPersonList(BasePage):
 
     def click_view_button(self):
         self.click(self.view_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    limit_button = (By.XPATH, '//button[@class="btn btn-default rounded-0 ng-binding"]')
+
+    def click_limit_button(self, limit):
+        self.click(self.limit_button)
+
+        item_button = (By.XPATH, f'//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[{limit}]')
+        self.click(item_button)
     # ------------------------------------------------------------------------------------------------------------------

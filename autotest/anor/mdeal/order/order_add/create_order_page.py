@@ -39,6 +39,19 @@ class OrderAddMain(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
-    def click_next_step_button(self,):
+    def click_next_step_button(self):
         self.click(self.next_step_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    elements = [
+        (By.XPATH, '//input[@id="anor279-input-deal_time"]/preceding-sibling::label/t[contains(text(), "Дата заказа")]'),
+    ]
+
+    # Barcha elementlarni tekshirish
+    # for index, locator in enumerate(elements, start=1):
+    #     if self.is_element_visible(locator, timeout=10):
+    #         print(f"{index}. Element {locator} ko'rinib turibdi.")
+    #     else:
+    #         print(f"{index}. Element {locator} ko'rinmayapti.")
     # ------------------------------------------------------------------------------------------------------------------

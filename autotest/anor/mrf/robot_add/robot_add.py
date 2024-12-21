@@ -19,7 +19,7 @@ class RobotAdd(BasePage):
     role_options = (By.XPATH, '//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def input_roles(self, role_name):
-        self.click_options(self.role_input, self.role_options, role_name, scroll_enabled=True)
+        self.click_options(self.role_input, self.role_options, role_name)
     # ------------------------------------------------------------------------------------------------------------------
     person_input = (By.XPATH, '//b-input[@name="persons"]//input')
     person_options = (By.XPATH, '//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')

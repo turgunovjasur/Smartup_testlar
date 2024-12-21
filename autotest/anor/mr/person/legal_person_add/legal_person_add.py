@@ -15,6 +15,12 @@ class LegalPersonAdd(BasePage):
     def input_name(self, legal_person_name):
         self.input_text(self.name_input, legal_person_name)
     # ------------------------------------------------------------------------------------------------------------------
+    legal_persons_input = (By.XPATH, '//b-input[@name="legal_persons"]//input[@ng-model="d.parent_person_name"]')
+    options_locator = (By.XPATH, '//b-input[@name="legal_persons"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
+
+    def input_legal_persons(self, element):
+        self.click_options(self.legal_persons_input, self.options_locator, element)
+    # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 

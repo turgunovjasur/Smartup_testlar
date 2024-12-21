@@ -13,7 +13,6 @@ class RoleView(BasePage):
     navbar_button = (By.XPATH, '(//div[@class="navi-item mb-2"])[3]/a')
 
     def click_navbar_button(self):
-        self.wait_for_page_load()
         self.click(self.navbar_button)
     # ------------------------------------------------------------------------------------------------------------------
     get_text_role = (By.XPATH, '(//div[@class="card-body pt-4"]//span[text()])[1]')
@@ -24,6 +23,7 @@ class RoleView(BasePage):
     detached_button = (By.XPATH, '//button[@ng-class="q.classDetach"]')
 
     def click_detached_button(self):
+        # self._check_spinner_absence()
         self.click(self.detached_button)
     # ------------------------------------------------------------------------------------------------------------------
     checkbox_form = (By.XPATH, '//b-grid[@required="form, form_name, has_action, access_type"]//div[@class="tbl-header"]//label[@class="checkbox mt-0"]')
@@ -39,6 +39,7 @@ class RoleView(BasePage):
         self.click(self.dropdown_button)
         self.click(self.access_all_button)
         self.click(self.yes_button)
+        # self._check_spinner_absence()
     # ------------------------------------------------------------------------------------------------------------------
     close_button = (By.XPATH, '//button[@ng-click="page.close()"]')
 

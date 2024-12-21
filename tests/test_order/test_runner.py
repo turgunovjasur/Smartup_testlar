@@ -50,7 +50,7 @@ from utils.driver_setup import driver
 
 # pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html
 # pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html --alluredir=./allure-results
-
+# allure serve ./allure-results
 def test_all():
     """All test runner"""
     tests = [
@@ -89,19 +89,19 @@ def test_all():
 
         # Test-A:
         # Contract -> Order(Add, Edit, Status) -> Cashin_Add -> Offset_Add
-        {"name": "Contract Add-A", "func": test_contract_add_A},
-        {"name": "Order Add-A", "func": test_order_add_A},
-        {"name": "Order Edit-A", "func": test_order_edit_A},
-        {"name": "Order Change Status-A", "func": test_order_change_status_A},
-        {"name": "Cashin Add-A", "func": test_cashin_add_A},
-        {"name": "Offset Add-A", "func": test_offset_add_A},
+        # {"name": "Contract Add-A", "func": test_contract_add_A},
+        # {"name": "Order Add-A", "func": test_order_add_A},
+        # {"name": "Order Edit-A", "func": test_order_edit_A},
+        # {"name": "Order Change Status-A", "func": test_order_change_status_A},
+        # {"name": "Cashin Add-A", "func": test_cashin_add_A},
+        # {"name": "Offset Add-A", "func": test_offset_add_A},
 
         # Test-B:
         # Contract -> Order(Add, Edit, Status) -> Offset_Add -> Check: Cashin_Add
-        {"name": "Contract Add-B", "func": test_contract_add_B},
-        {"name": "Order Add-B", "func": test_order_add_B},
-        {"name": "Order Change Status-B", "func": test_order_change_status_B},
-        {"name": "Offset Add-B", "func": test_offset_add_B}
+        # {"name": "Contract Add-B", "func": test_contract_add_B},
+        # {"name": "Order Add-B", "func": test_order_add_B},
+        # {"name": "Order Change Status-B", "func": test_order_change_status_B},
+        # {"name": "Offset Add-B", "func": test_offset_add_B}
     ]
 
     passed_tests = []

@@ -183,118 +183,27 @@ class BasePage:
             return None
 
     # ------------------------------------------------------------------------------------------------------------------
-
-    def wait_for_element_visible(self, locator, timeout=None, retries=3, retry_delay=1):
-        """
-            Elementni ko'rinishini kutish uchun kuchaytirilgan funksiya.
-            Har bir xatolik turi uchun alohida qayta ishlash mexanizmi.
-        """
+    def wait_for_element_visible(self, locator, timeout=None):
+        """Elementni kutish: sahifa yuklanishi, mavjudligi, ko'rinishi va scroll qilish."""
         timeout = timeout or self.default_timeout
-        wait = WebDriverWait(self.driver, timeout)
-        def try_with_retries(action, stage_name):
-            attempt = 0
-            while attempt < retries:
-                try:
-                    return action()
 
-                except StaleElementReferenceException:
-                    attempt += 1
-                    if attempt == retries:
-                        error_msg = f"{stage_name}: Element yangilandi va topilmadi"
-                        logging.error(error_msg)
-                        self.take_screenshot(f"stale_element_{stage_name}")
-                        raise WebDriverException(error_msg)
-                    logging.warning(f"{stage_name}: Element yangilandi. Qayta urinish {attempt}/{retries}")
-                    time.sleep(retry_delay)
+        if not self._wait_for_page_load(timeout=timeout):
+            self.logger.warning("Sahifa to‘liq yuklanmadi. Element mavjudligi tekshirib koriladi")
 
-                except TimeoutException:
-                    attempt += 1
-                    if attempt == retries:
-                        error_msg = (f"{stage_name}: Element {locator} "
-                                     f"{timeout if timeout else self.default_timeout} "
-                                     f"sekund ichida topilmadi")
-                        logging.error(error_msg)
-                        self.take_screenshot(f"timeout_{stage_name}")
-                        raise WebDriverException(error_msg)
-                    logging.warning(f"{stage_name}: Kutish vaqti tugadi. Qayta urinish {attempt}/{retries}")
-                    time.sleep(retry_delay)
+        element = self._wait_for_presence(locator, timeout=timeout)
+        if not element:
+            self.logger.warning("Element mavjud emas: %s", locator)
+            return False
 
-                except Exception as e:
-                    attempt += 1
-                    if attempt == retries:
-                        error_msg = f"{stage_name}: Kutilmagan xatolik: {str(e)}"
-                        logging.error(error_msg)
-                        self.take_screenshot(f"unexpected_{stage_name}")
-                        raise WebDriverException(error_msg)
-                    logging.warning(f"{stage_name}: Kutilmagan xatolik. Qayta urinish {attempt}/{retries}")
-                    time.sleep(retry_delay)
+        if not self._wait_for_visibility(locator, timeout=timeout):
+            self.logger.warning("Element ko‘rinmadi: %s", locator)
+            return False
 
-        # 1. Sahifa to'liq yuklanganligi tekshirish
-        try_with_retries(
-            lambda: wait.until(
-                lambda driver: driver.execute_script("return document.readyState") == "complete"
-            ),
-            "Sahifa yuklash"
-        )
-
-        # 2. Element mavjudligi tekshirish
-        element = try_with_retries(
-            lambda: wait.until(EC.presence_of_element_located(locator)),
-            "Element mavjudligi"
-        )
-
-        # 3. Element ko'rinishi tekshirish
-        element = try_with_retries(
-            lambda: wait.until(EC.visibility_of_element_located(locator)),
-            "Element ko'rinishi"
-        )
-
-        # 4. Elementni ko'rinadigan qismga scroll qilish
-        try:
-            self.driver.execute_script(
-                "arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});",
-                element
-            )
-            time.sleep(0.5)
-        except Exception as e:
-            logging.warning(f"Elementga scroll qilishda xatolik: {str(e)}")
-
-        # 5. Element haqiqatdan ko'rinishi va faolligini tekshirish
-        element = try_with_retries(
-            lambda: wait.until(
-                lambda x: (
-                                  element.is_displayed() and
-                                  element.is_enabled() and
-                                  element.rect['height'] > 0 and
-                                  element.rect['width'] > 0
-                          ) and element
-            ),
-            "Element faolligi"
-        )
+        if not self._scroll_to_element(locator):
+            self.logger.warning("Elementga scroll qilishda xatolik yuz berdi: %s", locator)
+            return False
 
         return element
-
-    # def wait_for_element_visible(self, locator, timeout=None):
-    #     """Elementni kutish: sahifa yuklanishi, mavjudligi, ko'rinishi va scroll qilish."""
-    #     timeout = timeout or self.default_timeout
-    #
-    #     if not self._wait_for_page_load(timeout=timeout):
-    #         self.logger.warning("Sahifa to‘liq yuklanmadi. Element mavjudligi tekshirib koriladi")
-    #
-    #     element = self._wait_for_presence(locator, timeout=timeout)
-    #     if not element:
-    #         self.logger.warning("Element mavjud emas: %s", locator)
-    #         return False
-    #
-    #     if not self._wait_for_visibility(locator, timeout=timeout):
-    #         self.logger.warning("Element ko‘rinmadi: %s", locator)
-    #         return False
-    #
-    #     if not self._scroll_to_element(locator):
-    #         self.logger.warning("Elementga scroll qilishda xatolik yuz berdi: %s", locator)
-    #         return False
-    #
-    #     return element
 
     # ------------------------------------------------------------------------------------------------------------------
 

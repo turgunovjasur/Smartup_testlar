@@ -27,12 +27,20 @@ class DashboardPage(BasePage):
     active_session_header = (By.XPATH, "//h3/t[contains(text(),'Активные сеансы')]")
 
     def element_visible_session(self):
-        self.wait_for_element_visible(self.active_session_header, timeout=2, retries=2, retry_delay=0.5)
+        """Agar active_session_header ko'rinsa, delete_session_button'ni bosish."""
+        if self._wait_for_visibility(self.active_session_header, timeout=3):
+            # Agar active_session_header ko'rinsa
+            self.logger.info("active_session_header appeared, delete_session_button deleted.")
+            self.click(self.delete_session_button)
+        else:
+            # Agar active_session_header ko'rinmadi
+            self.logger.info("active_session_header no active session.")
+
     # ------------------------------------------------------------------------------------------------------------------
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 
     def click_button_delete_session(self):
-        self.click(self.delete_session_button)
+        self.click(self.delete_session_button, timeout=2)
     # ------------------------------------------------------------------------------------------------------------------
     # navbar buttons
     # ------------------------------------------------------------------------------------------------------------------

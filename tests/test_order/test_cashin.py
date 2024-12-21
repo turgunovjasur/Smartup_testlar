@@ -1,41 +1,26 @@
-import random
 import time
-
+import random
 from autotest.anor.mdeal.order.offset.offset.offset import Offset
 from autotest.anor.mdeal.order.offset.offset_detail_list.offset_detail_list import OffsetDetailList
 from autotest.anor.mdeal.order.offset.offset_list.offset_list import OffsetList
 from autotest.core.md.base_page import BasePage
-from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.tcs.cashin_add.cashin_add import CashinAdd
 from autotest.trade.tcs.cashin_list.cashin_list import CashinList
 from autotest.trade.tcs.cashin_view.cashin_view import CashinView
-from tests.test_base.test_base import test_data, login, dashboard, open_new_window, get_driver
+from tests.test_base.test_base import test_data, open_new_window, login_user
 from utils.driver_setup import driver
 
 
 def cashin_add(driver, client_name=None):
     # Test data
     data = test_data()["data"]
-
-    email_user = data["email_user"]
-    password_user = data["password_user"]
-    filial_name = data["filial_name"]
-    client_name = client_name if client_name is not None else data["client_name"]
     payment_type_name = data["payment_type_name"]
     cashbox_name = data["cash_register_name"]
+    client_name = client_name if client_name is not None else data["client_name"]
 
-    # Login
-    login(driver, email_user, password_user)
+    login_user(driver, url='trade/tcs/cashin_list')
 
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.find_filial(filial_name)
-
-    # Open Cashin List
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
-    open_new_window(driver, cut_url + 'trade/tcs/cashin_list')
+    # Cashin List
     cashin_list = CashinList(driver)
     assert cashin_list.element_visible(), 'CashinList not open!'
     cashin_list.click_add_button()
@@ -104,25 +89,11 @@ def test_cashin_add_C(driver):
 def offset_add(driver, client_name=None, payment=False):
     # Test data
     data = test_data()["data"]
-
-    email_user = data["email_user"]
-    password_user = data["password_user"]
-    filial_name = data["filial_name"]
-    client_name = client_name if client_name is not None else data["client_name"]
     cash_register_name = data["cash_register_name"]
+    client_name = client_name if client_name is not None else data["client_name"]
 
-    # Login
-    login(driver, email_user, password_user)
+    login_user(driver, url='anor/mdeal/order/offset/offset_list')
 
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.find_filial(filial_name)
-
-    # Open Offset List
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
-    open_new_window(driver, cut_url + 'anor/mdeal/order/offset/offset_list')
     offset_list = OffsetList(driver)
     assert offset_list.element_visible(), 'OffsetList not open!'
     offset_list.find_row(client_name)
@@ -163,6 +134,8 @@ def offset_add(driver, client_name=None, payment=False):
         offset.click_close_button()
 
         # Cashin List
+        base_page = BasePage(driver)
+        cut_url = base_page.cut_url()
         open_new_window(driver, cut_url + 'trade/tcs/cashin_list')
         cashin_list = CashinList(driver)
         assert cashin_list.element_visible(), 'CashinList not open!'
@@ -206,61 +179,3 @@ def test_offset_add_C(driver):
     offset_add(driver, client_name=client_name)
     print(f'Client name: "{client_name}"')
     print("-" * 50)
-
-
-# All ------------------------------------------------------------------------------------------------------------------
-
-# pytest tests/test_order/test_cashin.py::test_all -v --html=report.html --self-contained-html
-def test_all():
-    """Cashin and Offset test runner"""
-    tests = [
-        # Cashin Add
-        {"name": "Cashin Add-A", "func": test_cashin_add_A},
-        {"name": "Cashin Add-B", "func": test_cashin_add_B},
-        {"name": "Cashin Add-C", "func": test_cashin_add_C},
-
-        # Offset Add
-        {"name": "Offset Add-A", "func": test_offset_add_A},
-        {"name": "Offset Add-B", "func": test_offset_add_B},
-        {"name": "Offset Add-C", "func": test_offset_add_C},
-    ]
-
-    passed_tests = []
-    failed_tests = []
-    total_tests = len(tests)
-
-    print("\n=== Test Execution Summary ===")
-
-    for test in tests:
-        try:
-            driver = get_driver()
-            if driver is None:
-                raise Exception("WebDriver initialization failed")
-
-            test['func'](driver)
-            passed_tests.append(test['name'])
-            print(f"✅ {test['name']}: PASSED")
-            print("*" * 50)
-        except Exception as e:
-            failed_tests.append({"name": test['name'], "error": str(e)})
-            print(f"❌ {test['name']}: FAILED")
-            print(f"   Error: {str(e)}")
-            print("*" * 50)
-        finally:
-            if driver:
-                driver.quit()
-            time.sleep(1)
-
-    print("\n=== Final Results ===")
-    print(f"Total Tests: {total_tests}")
-    print(f"Passed: {len(passed_tests)}")
-    print(f"Failed: {len(failed_tests)}")
-
-    if failed_tests:
-        print("\nFailed Tests Details:")
-        for test in failed_tests:
-            print(f"❌ {test['name']}")
-            print(f"   Error: {test['error']}\n")
-
-    # Agar birorta test muvaffaqiyatsiz bo'lsa, pytest uchun xatolikni ko'rsatamiz
-    assert len(failed_tests) == 0, "Some tests failed"

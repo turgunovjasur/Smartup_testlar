@@ -44,10 +44,9 @@ class UserView(BasePage):
 
     def click_limit(self):
         self.click(self.limit_button)
-        time.sleep(2)
 
     def click_checkbox_form(self):
-        # self.wait_for_element_visible(self.checkbox_form)
+        time.sleep(2)
         self.click(self.checkbox_form)
 
     def click_attach_form(self):
@@ -64,7 +63,6 @@ class UserView(BasePage):
         self.click_attach_form()
         self.click_yes_button()
     # ------------------------------------------------------------------------------------------------------------------
-    # check_text = (By.XPATH, '//b-grid[@name="other_table" or @name="form_table"]//div[contains(@class, "tbl")]//div[@class="tbl-row tbl-no-data-row"]')
     check_text = (By.XPATH, '//b-grid[@name="other_table" or @name="form_table"]//div[contains(@class, "tbl")]//div[@class="tbl-row"][1]')
 
     def text_check(self):
