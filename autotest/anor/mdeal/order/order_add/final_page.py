@@ -16,6 +16,17 @@ class OrderAddFinal(BasePage):
     def input_payment_type(self, payment_type_name):
         self.click_options(self.payment_type_input, self.payment_options, payment_type_name)
     # ------------------------------------------------------------------------------------------------------------------
+    consignment_date_input = (By.XPATH, '//div[@class="mb-4 ng-scope"]//input[@ng-model="item.consignment_date"]')
+    consignment_amount_input = (By.XPATH, '//div[@class="mb-4 ng-scope"]//input[@ng-model="item.consignment_amount"]')
+    consignment_amount_button = (By.XPATH, '//button[@ng-click="setConsignmentAmount(item)"]')
+
+    def input_consignment_date(self, add_days, consignment_amount):
+        """Joriy sanaga 10 kun qoshib yozish"""
+
+        date = self.current_date(add_days=add_days)
+        self.input_text(self.consignment_date_input, date)
+        self.input_text(self.consignment_amount_input, consignment_amount)
+    # ------------------------------------------------------------------------------------------------------------------
     status_input = (By.XPATH, "(//div[@id='anor279-ui_select-status']//span)[1]")
     status_options = (By.XPATH, '//div[@id="anor279-ui_select-status"]/div[@ng-model="d.status"]/ul/li/div[3]')
 

@@ -22,7 +22,7 @@ def test_data():
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
-        "cod": 15,
+        "cod": 17,
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -110,7 +110,7 @@ def open_new_window(driver, url):
 
     try:
         if not base_page._wait_for_page_load(timeout=60):
-            base_page.logger.error(f"Page did not load(❌): timeout = 60s!")
+            base_page.logger.error(f"❌Page did not load(): timeout = 60s!")
             return False
 
         base_page.logger.info("Opening a new browser window.")
@@ -124,7 +124,7 @@ def open_new_window(driver, url):
         return True
 
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
+        base_page.logger.error(f"❌Error message(): {e}")
         base_page.take_screenshot("open_new_window_error")
         raise
 
@@ -136,7 +136,7 @@ def login(driver, email, password):
 
     try:
         if not base_page._wait_for_page_load(timeout=60):
-            base_page.logger.error("Login_page did not load(❌): timeout = 60s!")
+            base_page.logger.error("❌Login_page did not load(): timeout = 60s!")
             return False
 
         base_page.logger.info("Login_page loaded successfully.")
@@ -147,7 +147,7 @@ def login(driver, email, password):
         return True
 
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
+        base_page.logger.error(f"❌Error message(): {e}")
         base_page.take_screenshot("login_error")
         raise
 
@@ -159,7 +159,7 @@ def dashboard(driver):
 
     try:
         if not base_page._wait_for_page_load(timeout=60):
-            base_page.logger.error("Dashboard did not load(❌): timeout = 60s!")
+            base_page.logger.error("❌Dashboard did not load(): timeout = 60s!")
             return False
 
         base_page.logger.info("Dashboard loaded successfully.")
@@ -167,7 +167,7 @@ def dashboard(driver):
         return True
 
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
+        base_page.logger.error(f"❌Error message(): {e}")
         base_page.take_screenshot("dashboard_error")
         raise
 

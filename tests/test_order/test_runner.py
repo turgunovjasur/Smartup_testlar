@@ -26,7 +26,7 @@ from tests.test_order.test_life_cycle import (
     test_init_balance,
     test_contract_add_A,
     test_contract_add_B,
-    test_contract_add_C,
+    test_contract_add_C, test_setting_consignment,
 )
 
 from tests.test_order.test_order import (
@@ -41,7 +41,7 @@ from tests.test_order.test_order import (
     # Status
     test_order_change_status_A,
     test_order_change_status_B,
-    test_order_change_status_C
+    test_order_change_status_C, test_order_copy_C_for_A_B
 )
 from utils.driver_setup import driver
 
@@ -83,25 +83,29 @@ def test_all():
         # Attachment setup
         {"name": "Room Attachment", "func": test_room_attachment},
         {"name": "Init Balance", "func": test_init_balance},
-
-        # Contract setup
-        # {"name": "Contract Add-C", "func": test_contract_add_C},
+        {"name": "Setting Consignment", "func": test_setting_consignment},
 
         # Test-A:
         # Contract -> Order(Add, Edit, Status) -> Cashin_Add -> Offset_Add
-        # {"name": "Contract Add-A", "func": test_contract_add_A},
-        # {"name": "Order Add-A", "func": test_order_add_A},
-        # {"name": "Order Edit-A", "func": test_order_edit_A},
-        # {"name": "Order Change Status-A", "func": test_order_change_status_A},
-        # {"name": "Cashin Add-A", "func": test_cashin_add_A},
-        # {"name": "Offset Add-A", "func": test_offset_add_A},
+        {"name": "Contract Add-A", "func": test_contract_add_A},
+        {"name": "Order Add-A", "func": test_order_add_A},
+        {"name": "Order Edit-A", "func": test_order_edit_A},
+        {"name": "Order Change Status-A", "func": test_order_change_status_A},
+        {"name": "Cashin Add-A", "func": test_cashin_add_A},
+        {"name": "Offset Add-A", "func": test_offset_add_A},
 
         # Test-B:
         # Contract -> Order(Add, Edit, Status) -> Offset_Add -> Check: Cashin_Add
-        # {"name": "Contract Add-B", "func": test_contract_add_B},
-        # {"name": "Order Add-B", "func": test_order_add_B},
-        # {"name": "Order Change Status-B", "func": test_order_change_status_B},
-        # {"name": "Offset Add-B", "func": test_offset_add_B}
+        {"name": "Contract Add-B", "func": test_contract_add_B},
+        {"name": "Order Add-B", "func": test_order_add_B},
+        {"name": "Order Change Status-B", "func": test_order_change_status_B},
+        {"name": "Offset Add-B", "func": test_offset_add_B},
+
+        # Test-C:
+        # {"name": "Contract Add-C", "func": test_contract_add_C},
+        {"name": "Order Add-C", "func": test_order_add_C},
+        {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
+
     ]
 
     passed_tests = []

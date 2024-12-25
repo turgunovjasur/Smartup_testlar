@@ -36,6 +36,7 @@ class OrderAddMain(BasePage):
     def click_contract_input(self, contract_name):
         self.clear_element(self.contract_input)
         self.click_options(self.contract_input, self.options_contract, contract_name)
+        self.click_options(self.contract_input, self.options_contract, contract_name)
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 

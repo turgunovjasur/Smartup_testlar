@@ -57,34 +57,35 @@ def cashin_add(driver, client_name=None):
     cashin_list.find_row(cashin_number)
     cashin_list.click_post_button()
     print("-" * 50)
-    print(f'Cashin Add: \nCashin number: {cashin_number} \nAmount cashin: {get_amount}')
+    print(f'Cashin Add: \nCashin number: {cashin_number} \nAmount cashin: {get_amount} \nClient name: {client_name}')
+    print("-" * 50)
 
 
 def test_cashin_add_A(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-A'
     cashin_add(driver, client_name=client_name)
-    print(f'Client name: "{client_name}"')
-    print("-" * 50)
+    # print(f'Client name: "{client_name}"')
+    # print("-" * 50)
 
 
 def test_cashin_add_B(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-B'
     cashin_add(driver, client_name=client_name)
-    print(f'Client name: "{client_name}"')
-    print("-" * 50)
+    # print(f'Client name: "{client_name}"')
+    # print("-" * 50)
 
 
 def test_cashin_add_C(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-C'
     cashin_add(driver, client_name=client_name)
-    print(f'Client name: "{client_name}"')
-    print("-" * 50)
+    # print(f'Client name: "{client_name}"')
+    # print("-" * 50)
 
 
-# ------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
 def offset_add(driver, client_name=None, payment=False):
     # Test data
@@ -115,7 +116,9 @@ def offset_add(driver, client_name=None, payment=False):
         assert check_balance == 0, f'Error: Balance is not equal to zero. -> {check_balance} != {0}'
 
         print("-" * 50)
-        print(f'Offset Add: \nOffset balance: {check_balance}')
+        print(f'Offset Add: \nOffset balance: {check_balance} \nClient name: {client_name}')
+        print("-" * 50)
+
         offset.click_post_button()
         offset.click_close_button()
         time.sleep(2)
@@ -150,8 +153,11 @@ def offset_add(driver, client_name=None, payment=False):
         assert client_name == get_client_name, f'client_name: {client_name} != get_client_name: {get_client_name}'
         get_total_price = cashin_view.check_total_price()
         assert check_balance_payment == get_total_price, f'check_balance_payment: {check_balance_payment} != get_total_price: {get_total_price}'
+
         print("-" * 50)
-        print(f'Offset Add: \nCashin Number: {get_cashin_number} \nOffset balance: {check_balance_payment}')
+        print(f'Offset Add: \nCashin Number: {get_cashin_number} \nOffset balance: {check_balance_payment} \nClient name: {client_name}')
+        print("-" * 50)
+
         cashin_view.click_close_button()
 
 
@@ -159,8 +165,8 @@ def test_offset_add_A(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-A'
     offset_add(driver, client_name=client_name)
-    print(f'Client name: "{client_name}"')
-    print("-" * 50)
+    # print(f'Client name: "{client_name}"')
+    # print("-" * 50)
 
 
 def test_offset_add_B(driver):
@@ -169,13 +175,16 @@ def test_offset_add_B(driver):
     offset_add(driver,
                client_name=client_name,
                payment=True)
-    print(f'Client name: "{client_name}"')
-    print("-" * 50)
+    # print(f'Client name: "{client_name}"')
+    # print("-" * 50)
 
 
 def test_offset_add_C(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-C'
     offset_add(driver, client_name=client_name)
-    print(f'Client name: "{client_name}"')
-    print("-" * 50)
+    # print(f'Client name: "{client_name}"')
+    # print("-" * 50)
+
+# ----------------------------------------------------------------------------------------------------------------------
+

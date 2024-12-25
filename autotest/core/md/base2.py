@@ -466,97 +466,32 @@ class BasePage:
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-
     def click(self, locator, timeout=None, retries=3, retry_delay=1):
+        """Elementni click: Selenium, ActionChains yoki JavaScript."""
         timeout = timeout or self.default_timeout
-        wait = WebDriverWait(self.driver, timeout)
-        attempt = 0
-        last_exception = None
 
-        while attempt < retries:
-            try:
-                wait.until(
-                    lambda driver: driver.execute_script("return document.readyState") == "complete")
+        def _attempt_click():
+            """Elementni bosishga urinish."""
 
-                element = wait.until(
-                    EC.presence_of_element_located(locator))
-
-                element = wait.until(
-                    EC.visibility_of_element_located(locator))
-
-                self.driver.execute_script(
-                    "arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});",
-                    element)
-                time.sleep(0.5)
-
-                element = wait.until(
-                    EC.element_to_be_clickable(locator))
-
-                try:
-                    element.click()
-                except (ElementClickInterceptedException, ElementNotInteractableException):
-                    try:
-                        self.driver.execute_script("arguments[0].click();", element)
-                    except WebDriverException:
-                        try:
-                            self.actions.move_to_element(element).click().perform()
-                        except WebDriverException:
-                            location = element.location
-                            size = element.size
-                            x = location['x'] + size['width'] // 2
-                            y = location['y'] + size['height'] // 2
-                            self.actions.move_by_offset(x, y).click().perform()
-
+            if self._click_with_selenium(locator, timeout=timeout):
                 return True
 
-            except StaleElementReferenceException:
-                attempt += 1
-                if attempt == retries:
-                    last_exception = "Element yangilandi va topilmadi"
-                time.sleep(retry_delay)
+            if self._click_with_js(locator, timeout=timeout):
+                return True
 
-            except TimeoutException:
-                attempt += 1
-                if attempt == retries:
-                    last_exception = "Element kutish vaqti tugadi"
-                time.sleep(retry_delay)
+            if self._click_with_action_chains(locator, timeout=timeout):
+                return True
 
-            except Exception as e:
-                attempt += 1
-                if attempt == retries:
-                    last_exception = str(e)
-                time.sleep(retry_delay)
+            if self._click_with_offset(locator, timeout=timeout):
+                return True
 
-        error_message = f"Click muvaffaqiyatsiz yakunlandi: {last_exception}"
-        self.take_screenshot("click_error")
-        raise AssertionError(error_message)
+            if self._click_with_keyboard(locator, timeout=timeout):
+                return True
 
-    # def click(self, locator, timeout=None, retries=3, retry_delay=1):
-    #     """Elementni click: Selenium, ActionChains yoki JavaScript."""
-    #     timeout = timeout or self.default_timeout
-    #
-    #     def _attempt_click():
-    #         """Elementni bosishga urinish."""
-    #
-    #         if self._click_with_selenium(locator, timeout=timeout):
-    #             return True
-    #
-    #         if self._click_with_js(locator, timeout=timeout):
-    #             return True
-    #
-    #         if self._click_with_action_chains(locator, timeout=timeout):
-    #             return True
-    #
-    #         if self._click_with_offset(locator, timeout=timeout):
-    #             return True
-    #
-    #         if self._click_with_keyboard(locator, timeout=timeout):
-    #             return True
-    #
-    #         self.logger.error("All click(❌) not work: %s", locator)
-    #         return False
-    #
-    #     return self.retry_with_delay(_attempt_click, retries=retries, retry_delay=retry_delay)
+            self.logger.error("All click(❌) not work: %s", locator)
+            return False
+
+        return self.retry_with_delay(_attempt_click, retries=retries, retry_delay=retry_delay)
 
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------

@@ -29,12 +29,8 @@ class DashboardPage(BasePage):
     def element_visible_session(self):
         """Agar active_session_header ko'rinsa, delete_session_button'ni bosish."""
         if self._wait_for_visibility(self.active_session_header, timeout=3):
-            # Agar active_session_header ko'rinsa
-            self.logger.info("active_session_header appeared, delete_session_button deleted.")
+            self.logger.info("Aktiv sessiya topildi va o'chirildi")
             self.click(self.delete_session_button)
-        else:
-            # Agar active_session_header ko'rinmadi
-            self.logger.info("active_session_header no active session.")
 
     # ------------------------------------------------------------------------------------------------------------------
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")

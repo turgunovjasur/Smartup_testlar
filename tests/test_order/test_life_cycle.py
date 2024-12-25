@@ -53,6 +53,7 @@ from autotest.core.md.company_view.company_view import CompanyView
 from autotest.core.md.role_view.role_view import RoleView
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.main_navbar import MainNavbar
+from autotest.trade.pref.system_setting.system_setting import SystemSetting
 from autotest.trade.tr.role_edit.role_edit import RoleEdit
 from autotest.trade.tr.role_list.role_list import RoleList
 from autotest.trade.trf.room_add.room_add import RoomAdd
@@ -429,26 +430,26 @@ def test_user_creat(driver):
 
         # User List:
         user_list = UserList(driver)
-        # assert user_list.element_visible(), 'UserList not open!'
-        # base_page.logger.info("UserList: page opened.")
-        # user_list.click_add_button()
-        # base_page.logger.info("UserList: add button pressed.")
-        #
-        # # User Add
-        # user_add = UserAdd(driver)
-        # assert user_add.element_visible(), 'UserAdd not open!'
-        # base_page.logger.info("UserAdd: page opened.")
-        # user_add.input_person_name(natural_person_name)
-        # base_page.logger.info(f"UserAdd: natural person name inputted: '{natural_person_name}'")
-        # user_add.input_password(password_user)
-        # base_page.logger.info("UserAdd: password inputted.")
-        # user_add.click_mouse_down_button()
-        # user_add.input_login(login_user)
-        # base_page.logger.info(f"UserAdd: login inputted: '{login_user}'")
-        # user_add.input_robot(robot_name)
-        # base_page.logger.info(f"UserAdd: robot name inputted: '{robot_name}'")
-        # user_add.click_save_button()
-        # base_page.logger.info("UserAdd: save button pressed.")
+        assert user_list.element_visible(), 'UserList not open!'
+        base_page.logger.info("UserList: page opened.")
+        user_list.click_add_button()
+        base_page.logger.info("UserList: add button pressed.")
+
+        # User Add
+        user_add = UserAdd(driver)
+        assert user_add.element_visible(), 'UserAdd not open!'
+        base_page.logger.info("UserAdd: page opened.")
+        user_add.input_person_name(natural_person_name)
+        base_page.logger.info(f"UserAdd: natural person name inputted: '{natural_person_name}'")
+        user_add.input_password(password_user)
+        base_page.logger.info("UserAdd: password inputted.")
+        user_add.click_mouse_down_button()
+        user_add.input_login(login_user)
+        base_page.logger.info(f"UserAdd: login inputted: '{login_user}'")
+        user_add.input_robot(robot_name)
+        base_page.logger.info(f"UserAdd: robot name inputted: '{robot_name}'")
+        user_add.click_save_button()
+        base_page.logger.info("UserAdd: save button pressed.")
 
         # User List
         assert user_list.element_visible(), 'UserList not open!'
@@ -1088,7 +1089,8 @@ def test_init_balance(driver):
         balance = balance_list.check_balance_quantity()
         base_page.logger.info(f"BalanceList: balance quantity checked: '{balance}'.")
         assert balance == product_quantity, f"Balance '{balance}' != product_quantity '{product_quantity}'"
-        base_page.logger.info(f"Balance(✅): {balance} pieces of '{product_name}' successfully added to '{warehouse_name}'!")
+        base_page.logger.info(
+            f"Balance(✅): {balance} pieces of '{product_name}' successfully added to '{warehouse_name}'!")
 
     except Exception as e:
         base_page.logger.error(f"Error message(❌): {e}")
@@ -1155,6 +1157,10 @@ def test_order_request(driver):  # mast not
 # ------------------------------------------------------------------------------------------------------------------
 
 def contract_add(driver, client_name=None, contract_name=None, initial_amount=None):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): contract_add")
+
     # Test data
     data = test_data()["data"]
     client_name = client_name if client_name is not None else data["client_name"]
@@ -1162,36 +1168,59 @@ def contract_add(driver, client_name=None, contract_name=None, initial_amount=No
     initial_amount = initial_amount if initial_amount is not None else data["product_quantity"] * data["product_price"]
     base_currency_cod = data["base_currency_cod"]
 
-    login_user(driver, url='anor/mkf/contract_list')
+    base_page.logger.info(f"Test data: client_name='{client_name}', contract_name='{contract_name}', "
+                          f"initial_amount='{initial_amount}', base_currency_cod='{base_currency_cod}'")
 
-    # Client List
-    contract_list = ContractList(driver)
-    assert contract_list.element_visible(), 'ContractList not open!'
-    contract_list.click_add_button()
+    try:
+        login_user(driver, url='anor/mkf/contract_list')
+        base_page.logger.info("Successful access to the system.")
 
-    # Client Add
-    contract_add = ContractAdd(driver)
-    assert contract_add.element_visible(), 'ContractAdd not open!'
-    contract_number = random.randint(1, 999999)
-    contract_add.input_contract_number(contract_number)
-    contract_add.input_contract_name(contract_name)
-    contract_add.click_radio_button()
-    contract_add.input_person_name(client_name)
-    contract_add.input_currency_name(base_currency_cod)
-    contract_add.input_initial_amount(initial_amount)
-    contract_add.click_checkbox_button()
-    contract_add.click_save_button()
+        # Contract List
+        contract_list = ContractList(driver)
+        assert contract_list.element_visible(), 'ContractList not open!'
+        base_page.logger.info("ContractList: page opened.")
+        contract_list.click_add_button()
+        base_page.logger.info("ContractList: add button pressed.")
 
-    # Client List
-    assert contract_list.element_visible(), 'ContractList not open!'
-    contract_list.find_row(contract_name)
-    contract_list.click_view_button()
+        # Contract Add
+        contract_add = ContractAdd(driver)
+        assert contract_add.element_visible(), 'ContractAdd not open!'
+        base_page.logger.info("ContractAdd: page opened.")
+        contract_number = random.randint(1, 999999)
+        base_page.logger.info(f"Generated contract_number: '{contract_number}'")
+        contract_add.input_contract_number(contract_number)
+        contract_add.input_contract_name(contract_name)
+        base_page.logger.info(f"ContractAdd: contract name inputted: '{contract_name}'")
+        contract_add.click_radio_button()
+        base_page.logger.info("ContractAdd: radio button selected.")
+        contract_add.input_person_name(client_name)
+        base_page.logger.info(f"ContractAdd: client name inputted: '{client_name}'")
+        contract_add.input_currency_name(base_currency_cod)
+        base_page.logger.info(f"ContractAdd: currency name inputted: '{base_currency_cod}'")
+        contract_add.input_initial_amount(initial_amount)
+        base_page.logger.info(f"ContractAdd: initial amount inputted: '{initial_amount}'")
+        contract_add.click_checkbox_button()
+        contract_add.click_save_button()
+        base_page.logger.info("ContractAdd: save button pressed.")
 
-    # Contract View
-    contract_view = ContractView(driver)
-    contract_view.element_visible()
-    contract_view.click_close_button()
-    print(f'Contract: {contract_name} successfully joined!')
+        # Contract List
+        assert contract_list.element_visible(), 'ContractList not open!'
+        contract_list.find_row(contract_name)
+        base_page.logger.info(f"ContractList: row found with name: '{contract_name}'")
+        contract_list.click_view_button()
+        base_page.logger.info("ContractList: view button pressed.")
+
+        # Contract View
+        contract_view = ContractView(driver)
+        assert contract_view.element_visible(), 'ContractView not open!'
+        base_page.logger.info("ContractView: page opened.")
+        contract_view.click_close_button()
+        base_page.logger.info(f"Contract(✅): '{contract_name}' successfully added!")
+
+    except Exception as e:
+        base_page.logger.error(f"Error message(❌): {e}")
+        base_page.take_screenshot("contract_add_error")
+        raise
 
 
 def test_contract_add_A(driver):
@@ -1217,3 +1246,45 @@ def test_contract_add_C(driver):
     client_name = f"{data['client_name']}-C"
     contract_name = f"{data['contract_name']}-C"
     contract_add(driver, client_name=client_name, contract_name=contract_name)
+
+
+# ------------------------------------------------------------------------------------------------------------------
+
+def test_setting_consignment(driver):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): test_setting_consignment")
+
+    try:
+        login_user(driver, url='trade/pref/system_setting')
+        base_page.logger.info("Successful access to the system.")
+
+        # System setting
+        system_setting = SystemSetting(driver)
+        assert system_setting.element_visible() \
+               or base_page.logger.error("SystemSetting not open!") \
+               or base_page.take_screenshot("system_setting_error")
+
+        system_setting.click_navbar_button(navbar_button=6)
+        base_page.logger.info("SystemSetting: navbar button pressed.")
+
+        assert system_setting.element_visible_order() \
+               or base_page.logger.error("order_header not open!") \
+               or base_page.take_screenshot("order_header_error")
+        if not system_setting.check_checkbox_text():
+            system_setting.click_checkbox_consignment()
+            base_page.logger.info("SystemSetting: consignment checkbox pressed.")
+
+            system_setting.input_consignment_day_limit(day_limit=90)
+            base_page.logger.info("SystemSetting: consignment day limit inputted.")
+
+        system_setting.click_save_button()
+        base_page.logger.info("SystemSetting: save button pressed.")
+        base_page.logger.info(f"✅Test end(): test_setting_consignment")
+
+    except Exception as e:
+        base_page.logger.error(f"❌Error message(): {e}")
+        base_page.take_screenshot("test_setting_consignment_error")
+        raise
+
+# ------------------------------------------------------------------------------------------------------------------

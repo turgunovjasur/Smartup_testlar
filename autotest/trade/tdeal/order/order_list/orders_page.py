@@ -13,7 +13,7 @@ class OrdersList(BasePage):
     count_info = (By.XPATH, "//div[@id='trade81-sg_header-info']")
 
     def check_order(self):
-        if self.get_element(self.count_info):
+        if self.wait_for_element_visible(self.count_info):
             return self.get_numeric_value(self.count_number)
         else:
             return 0
@@ -33,16 +33,48 @@ class OrdersList(BasePage):
     def click_edit_button(self):
         self.click(self.edit_button)
     # ------------------------------------------------------------------------------------------------------------------
+    copy_button = (By.XPATH, '//button[@id="trade81-button-show_copy_modal"]')
+
+    def click_copy_button(self):
+        self.click(self.copy_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    copy_title = (By.XPATH, "//h4/t[contains(text(), 'Копировать заказ')]")
+
+    def element_visible_copy_title(self):
+        return self.wait_for_element_visible(self.copy_title)
+    # ------------------------------------------------------------------------------------------------------------------
+    persons_input = (By.XPATH, '//b-input[@name="persons"]//input[@ng-model="_$bInput.searchValue"]')
+    clear_button = (By.XPATH, '//b-input[@name="persons"]//span[@class="clear-button"]')
+    options_persons = (By.XPATH, '//b-input[@name="persons"]//div[contains(@class,"hint")]//div[contains(@class,"hint-item")]/div')
+
+    def input_persons(self, client_name_A, client_name_B):
+        self.click(self.clear_button)
+        self.click_options(self.persons_input, self.options_persons, client_name_A)
+        self.click_options(self.persons_input, self.options_persons, client_name_B)
+    # ------------------------------------------------------------------------------------------------------------------
+    copy_save_button = (By.XPATH, '//button[@ng-click="copy()"]')
+
+    def click_copy_save_button(self):
+        self.click(self.copy_save_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, client_name):
         self.find_row_and_click(element_name=client_name)
+    # -----------------------------------------------------------------------------------------------------------------
+    reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
+
+    def click_reload_button(self):
+        self.click(self.reload_button)
     # -----------------------------------------------------------------------------------------------------------------
     change_status_one_button = (By.XPATH, "//button[@id='trade81-button-change_status_one']")
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_change_status_button(self, status_name):
         self.click(self.change_status_one_button)
-        status_button = (By.XPATH, f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
+        status_button = (By.XPATH,
+                         f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
         self.click(status_button)
         self.click(self.yes_button)
     # -----------------------------------------------------------------------------------------------------------------
