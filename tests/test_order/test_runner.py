@@ -41,7 +41,9 @@ from tests.test_order.test_order import (
     # Status
     test_order_change_status_A,
     test_order_change_status_B,
-    test_order_change_status_C, test_order_copy_C_for_A_B
+    test_order_change_status_C,
+    test_order_copy_C_for_A_B,
+    test_order_return
 )
 from utils.driver_setup import driver
 
@@ -105,6 +107,7 @@ def test_all():
         # {"name": "Contract Add-C", "func": test_contract_add_C},
         {"name": "Order Add-C", "func": test_order_add_C},
         {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
+        {"name": "Order Return", "func": test_order_return},
 
     ]
 

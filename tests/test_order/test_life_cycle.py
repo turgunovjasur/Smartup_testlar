@@ -14,6 +14,7 @@ from autotest.anor.mkr.payment_type_list.payment_type_list import PaymentTypeLis
 from autotest.anor.mkr.payment_type_list_attach.payment_type_list_attach import PaymentTypeListAttach
 from autotest.anor.mkr.price_type_add.price_type_add import PriceTypeAdd
 from autotest.anor.mkr.price_type_list.price_type_list import PriceTypeList
+from autotest.anor.mkr.price_type_list_attach.price_type_list_attch import PriceTypeListAttach
 from autotest.anor.mkr.price_type_view.price_type_id import PriceTypeIdView
 from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
 from autotest.anor.mkw.init_balance.init_inventory_balance_add.init_inventory_balance_add import InitInventoryBalanceAdd
@@ -646,8 +647,37 @@ def test_price_type_add(driver):
         base_page.logger.info("PriceTypeIdView: page opened.")
         text = price_type_view.get_elements()
         assert price_type_name == text, f'"{price_type_name}" != "{text}"!'
-        base_page.logger.info(f"PriceTypeIdView: name successfully verified '{price_type_name}'")
         price_type_view.click_close_button()
+
+        # Price Type List (All price)
+        assert price_type_list.element_visible(), 'PriceTypeList not open!'
+        price_type_list.click_add_dropdown_button()
+
+        # PriceTypeListAttach
+        price_type_list_attach = PriceTypeListAttach(driver)
+        name_a = 'Промо'
+        price_type_list_attach.find_rows(name_a)
+
+        assert price_type_list.element_visible(), 'PriceTypeList not open!'
+        price_type_list.click_add_dropdown_button()
+        name_b = 'Акция'
+        price_type_list_attach.find_rows(name_b)
+
+        assert price_type_list.element_visible(), 'PriceTypeList not open!'
+        price_type_list.click_add_dropdown_button()
+        name_c = 'Возврат'
+        price_type_list_attach.find_rows(name_c)
+
+        assert price_type_list.element_visible(), 'PriceTypeList not open!'
+        price_type_list.click_add_dropdown_button()
+        name_d = 'Передача забаланс'
+        price_type_list_attach.find_rows(name_d)
+
+        assert price_type_list.element_visible(), 'PriceTypeList not open!'
+        price_type_list.click_add_dropdown_button()
+        name_e = 'Обмен'
+        price_type_list_attach.find_rows(name_e)
+
         base_page.logger.info(f"PriceType(✅): '{price_type_name}' successfully added!")
 
     except Exception as e:
@@ -967,17 +997,21 @@ def test_room_attachment(driver):
         base_page.logger.info("RoomAttachment: page opened.")
 
         # Attach payment types
+        room_attachment.click_navbar_button(navbar_button=2)
+        room_attachment.click_detach_button(detach_button=2)
+        room_attachment.click_checkbox_all_price_type(attach_button=2)
+        base_page.logger.info("RoomAttachment: price types attached.")
+
+        # Attach payment types
         room_attachment.click_navbar_button(navbar_button=3)
         room_attachment.click_detach_button(detach_button=3)
-        base_page.logger.info("RoomAttachment: payment types detached.")
-        room_attachment.click_checkbox_all(attach_button=3)
+        room_attachment.click_checkbox_all_payment_type(attach_button=3)
         base_page.logger.info("RoomAttachment: payment types attached.")
 
         # Attach warehouse
         room_attachment.click_navbar_button(navbar_button=6)
         room_attachment.click_detach_button(detach_button=6)
         room_attachment.find_row(warehouse_name)
-        base_page.logger.info(f"RoomAttachment: warehouse '{warehouse_name}' found.")
         room_attachment.click_attach_button(attach_button=6)
         base_page.logger.info(f"RoomAttachment: warehouse '{warehouse_name}' attached.")
 
@@ -985,23 +1019,19 @@ def test_room_attachment(driver):
         room_attachment.click_navbar_button(navbar_button=7)
         room_attachment.click_detach_button(detach_button=7)
         room_attachment.find_row(cash_register_name)
-        base_page.logger.info(f"RoomAttachment: cash register '{cash_register_name}' found.")
         room_attachment.click_attach_button(attach_button=7)
         base_page.logger.info(f"RoomAttachment: cash register '{cash_register_name}' attached.")
 
         # Attach clients
         room_attachment.click_navbar_button(navbar_button=11)
         room_attachment.click_detach_button(detach_button=11)
-        base_page.logger.info("RoomAttachment: clients detached.")
         room_attachment.find_row(f'{client_name}-A')
         room_attachment.click_attach_button(attach_button=11)
-        base_page.logger.info(f"RoomAttachment: client '{client_name}-A' attached.")
         room_attachment.find_row(f'{client_name}-B')
         room_attachment.click_attach_button(attach_button=11)
-        base_page.logger.info(f"RoomAttachment: client '{client_name}-B' attached.")
         room_attachment.find_row(f'{client_name}-C')
         room_attachment.click_attach_button(attach_button=11)
-        base_page.logger.info(f"RoomAttachment: client '{client_name}-C' attached.")
+        base_page.logger.info(f"RoomAttachment: client '{client_name}-A','{client_name}-B','{client_name}-C' attached.")
 
         # Close attachment
         room_attachment.click_close_button()
@@ -1288,3 +1318,4 @@ def test_setting_consignment(driver):
         raise
 
 # ------------------------------------------------------------------------------------------------------------------
+

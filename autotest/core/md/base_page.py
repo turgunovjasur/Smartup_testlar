@@ -15,6 +15,30 @@ from selenium.common.exceptions import TimeoutException, \
     ElementClickInterceptedException, ElementNotInteractableException, WebDriverException, \
     StaleElementReferenceException
 
+from selenium.common.exceptions import (
+    TimeoutException,
+    NoSuchElementException,
+    StaleElementReferenceException,
+    ElementClickInterceptedException,
+    ElementNotInteractableException,
+    InvalidSelectorException,
+    WebDriverException,
+    NoAlertPresentException,
+    UnexpectedAlertPresentException,
+    InvalidElementStateException,
+    NoSuchWindowException,
+    NoSuchFrameException,
+    ElementNotSelectableException,
+    ImeActivationFailedException,
+    ImeNotAvailableException,
+    InsecureCertificateException,
+    InvalidCookieDomainException,
+    UnableToSetCookieException,
+    UnexpectedTagNameException,
+    InvalidSessionIdException,
+    SessionNotCreatedException,
+)
+
 init(autoreset=True)  # Ranglarni avtomatik reset qilish
 
 
@@ -23,7 +47,7 @@ class BasePage:
         self.driver = driver
         self.test_name = self._get_test_name()
         self._configure_logging()
-        self.default_timeout = 5
+        self.default_timeout = 60
         self.actions = ActionChains(driver)
 
     def _get_test_name(self):
@@ -75,7 +99,7 @@ class BasePage:
 
         # Console handler
         console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
+        console_handler.setLevel(logging.INFO)
         console_formatter = ColorFormatter(log_format)
         console_handler.setFormatter(console_formatter)
         self.logger.addHandler(console_handler)
@@ -89,6 +113,41 @@ class BasePage:
 
         # Avoid propagating logs to the root logger
         self.logger.propagate = False
+
+    # Errors -----------------------------------------------------------------------------------------------------------
+
+    def errors(self, exception, error_description=""):
+        """Selenium xatoliklarini boshqarish uchun yordamchi funksiya."""
+
+        exception_map = {
+            TimeoutException: "❌ Elementni topish yoki yuklash uchun vaqt tugadi.",
+            NoSuchElementException: "❌ Element mavjud emas.",
+            StaleElementReferenceException: "⚠️ DOM yangilangani sababli element mavjud emas.",
+            ElementClickInterceptedException: "⚠️ Element bloklangan yoki ustida boshqa element bor.",
+            ElementNotInteractableException: "❌ Element foydalanuvchi bilan ishlashga tayyor emas.",
+            InvalidSelectorException: "❌ Lokator noto‘g‘ri yoki sintaksisda xatolik mavjud.",
+            WebDriverException: "🚨 Selenium WebDriver xatoligi.",
+            NoAlertPresentException: "❌ Kutilgan alert dialog topilmadi.",
+            UnexpectedAlertPresentException: "⚠️ Kutilmagan alert paydo bo‘ldi.",
+            InvalidElementStateException: "⚠️ Element holati o‘zgartirilmasligi mumkin.",
+            NoSuchWindowException: "❌ Ko‘rsatilgan oyna mavjud emas.",
+            NoSuchFrameException: "❌ Ko‘rsatilgan frame mavjud emas.",
+            ElementNotSelectableException: "⚠️ Element tanlanishi mumkin emas.",
+            ImeActivationFailedException: "❌ IME faollashtirilmadi.",
+            ImeNotAvailableException: "❌ IME tizimda mavjud emas.",
+            InsecureCertificateException: "⚠️ Xavfsiz bo‘lmagan sertifikat topildi.",
+            InvalidCookieDomainException: "❌ Cookie noto‘g‘ri domen uchun o‘rnatilgan.",
+            UnableToSetCookieException: "❌ Cookie o‘rnatib bo‘lmadi.",
+            UnexpectedTagNameException: "⚠️ Elementning tegi kutilmagan turda.",
+            InvalidSessionIdException: "❌ Sessiya identifikatori noto‘g‘ri yoki muddati o‘tgan.",
+            SessionNotCreatedException: "🚨 Selenium sessiyasi yaratilmagan.",
+        }
+
+        error_message = exception_map.get(type(exception), "❓ Noma’lum xatolik yuz berdi.")
+        if error_description:
+            error_message += f" Amal: {error_description}"
+        self.logger.error(error_message)
+        return error_message
 
     # Screenshot -------------------------------------------------------------------------------------------------------
 
@@ -112,10 +171,8 @@ class BasePage:
     # Retry ------------------------------------------------------------------------------------------------------------
 
     def retry_with_delay(self, func, retries=3, retry_delay=1, *args, **kwargs):
-        """
-        Retry mexanizmi: Funksiyani qayta urinish bilan bajarish.
+        """Retry mexanizmi: Funksiyani qayta urinish bilan bajarish."""
 
-        """
         last_exception = None
         for attempt in range(retries):
             self.logger.debug(f"Funksiya {func.__name__} chaqirildi, urinish {attempt + 1}")
@@ -145,37 +202,185 @@ class BasePage:
             return WebDriverWait(self.driver, timeout).until(
                 lambda d: d.execute_script("return document.readyState") == "complete")
         except TimeoutException:
+            self.logger.error(f"Sahifa to'liq yuklanmadi. Kutish vaqti tugadi: {timeout}s")
             return False
+
+    def _wait_for_overlay_absence(self, timeout=None):
+        """Bloklovchi element yo‘q bo‘lishini kutadi."""
+
+        timeout = timeout or self.default_timeout
+        try:
+            WebDriverWait(self.driver, timeout).until(
+                EC.invisibility_of_element_located((By.CLASS_NAME, "block-ui-overlay")))
+        except TimeoutException:
+            self.logger.error(f"Blocklovchi element yo'qolmadi.")
+            return False
+
+    def _check_spinner_absence(self, timeout=None):
+        """Yuklash indikatorlarining mavjud emasligini tekshirish."""
+
+        timeout = timeout or self.default_timeout
+        locator = (
+            By.XPATH, "//div[contains(@class, 'block-ui-overlay') or contains(@class, 'block-ui-message-container')]")
+        start_time = time.time()
+        try:
+            # Spinner yo'qligini yoki ko'rinmasligini kutish
+            WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+            # elapsed_time = time.time() - start_time
+            # self.logger.info(f"Yuklash indikatori {elapsed_time:.2f}s ichida muvaffaqiyatli yo'qoldi: {locator}.")
+            return True
+        except TimeoutException:
+            elapsed_time = time.time() - start_time
+            self.logger.warning(f"Yuklash indikatori hali ham mavjud yoki ko'rinmoqda ({elapsed_time:.2f}s o'tdi): {locator}.")
+            return False
+
+    def _wait_for_all_loaders(self, timeout=None):
+        """Sahifadagi barcha yuklovchi elementlarni kuzatish"""
+
+        timeout = timeout or self.default_timeout
+        return self._wait_for_page_load(timeout) and \
+            self._wait_for_overlay_absence(timeout) and \
+            self._check_spinner_absence(timeout)
+
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def _click_js(self, element, locator=None):
+        """JavaScript orqali majburiy bosish."""
+
+        try:
+            self.driver.execute_script("arguments[0].click();", element)
+            return True
+        except Exception as e:
+            self.logger.error(f"JavaScript orqali bosishda xatolik: {locator} \n{e}")
+            return False
+
+    def _click_action_chains(self, element):
+        """ActionChains yordamida veb-elementni bosish funksiyasi."""
+
+        try:
+            self.actions.move_to_element(element).click().perform()
+            return True
+        except Exception as e:
+            self.logger.error(f"ActionChains yordamida bosishda xatolik: {e}")
+            return False
+
+    def _click_offset(self, element):
+        """Offset orqali elementni bosish"""
+
+        location = element.location
+        size = element.size
+        x = location['x'] + size['width'] // 2
+        y = location['y'] + size['height'] // 2
+        try:
+            self.actions.move_by_offset(x, y).click().perform()
+            return True
+        except Exception as e:
+            self.logger.error(f"Offset orqali bosishda xatolik: {e}")
+            return False
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def _is_element_covered(self, element):
+        """Element boshqa element tomonidan qoplanganligini aniqlash."""
+
+        rect = self.driver.execute_script(
+            "var rect = arguments[0].getBoundingClientRect();"
+            "return {top: rect.top, left: rect.left, bottom: rect.bottom, right: rect.right};", element)
+        x = (rect['left'] + rect['right']) // 2
+        y = (rect['top'] + rect['bottom']) // 2
+
+        # O‘rta nuqtani tekshirish
+        covered_element = self.driver.execute_script(
+            "return document.elementFromPoint(arguments[0], arguments[1]);", x, y)
+        return covered_element != element
+
+    def _get_covering_element(self, element):
+        """Element ustini qoplagan elementni aniqlash."""
+
+        rect = self.driver.execute_script(
+            "var rect = arguments[0].getBoundingClientRect();"
+            "return {top: rect.top, left: rect.left, bottom: rect.bottom, right: rect.right};", element)
+        x = (rect['left'] + rect['right']) // 2
+        y = (rect['top'] + rect['bottom']) // 2
+
+        # O‘rta nuqtani tekshirish
+        covering_element = self.driver.execute_script(
+            "return document.elementFromPoint(arguments[0], arguments[1]);", x, y)
+        return covering_element
+
+    def _hide_covering_element(self, covering_element):
+        """Qoplovchi elementni vaqtinchalik yashirish."""
+
+        self.driver.execute_script("arguments[0].style.display = 'none';", covering_element)
+        self.logger.info("Qoplovchi element vaqtinchalik yashirildi.")
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     def _wait_for_presence(self, locator, timeout=None):
-        """Element DOMda mavjud ekanligini tekshirish."""
+        """Locator DOMda mavjud ekanligini tekshirish."""
+
         timeout = timeout or self.default_timeout
         try:
-            return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
-        except TimeoutException:
+            element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+            return element
+        except TimeoutException as e:
+            self.logger.warning(f"Locator DOM da topilmadi: {locator}. Xato: {e}")
             return False
 
-    def _wait_for_visibility(self, locator, timeout=None):
-        """Elementni ko‘rinadigan va interfeysda mavjud ekanligini tekshirish."""
-        timeout = timeout or self.default_timeout
-        try:
-            return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
-        except TimeoutException:
-            return False
-
-    def _scroll_to_element(self, element):
-        """Elementga scroll qilish."""
+    def _scroll_to_element(self, element, locator):
+        """Element ga scroll qilish."""
 
         try:
-            self.driver.execute_script(
-                "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center');", element)
+            self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
             time.sleep(0.5)
-
-            self.logger.info(f"Element scroll qilindi: {element}")
             return element
 
+        except Exception:
+            self.logger.warning(f"Scroll qilishda xatolik yuz berdi. Element yangilandi")
+            try:
+                element_dom = self._wait_for_presence(locator)
+                self.logger.info(f"Qayta Scroll qilinadi.")
+                self.driver.execute_script(
+                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element_dom)
+                time.sleep(0.5)
+            except Exception as e:
+                self.logger.error(f"Scroll: xatolik yuz berdi: {e}")
+            return None
+
+    def _wait_for_visibility(self, locator, timeout=None):
+        """Locator ni interfeysda ko‘rinishini tekshirish."""
+
+        timeout = timeout or self.default_timeout
+        try:
+            element = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+            return element
+        except TimeoutException as e:
+            self.logger.warning(f"Locator interfeysda ko‘rinmadi: {locator}. Xato: {e}")
+            return False
+
+    def _wait_for_clickable(self, locator, timeout=None):
+        """Locatorni ni bosish uchun tayyor ekanligini tekshirish."""
+
+        timeout = timeout or self.default_timeout
+        try:
+            return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
+        except TimeoutException:
+            self.logger.error(f"Locator bosishga tayyor emas")
+            return None
+
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def _is_element_visible(self, locator):
+        """Element CSS orqali tekshirish"""
+        try:
+            element = self._wait_for_presence(locator)
+            is_displayed = self.driver.execute_script(
+                "return window.getComputedStyle(arguments[0]).getPropertyValue('display') !== 'none' && "
+                "window.getComputedStyle(arguments[0]).getPropertyValue('visibility') !== 'hidden';", element)
+            self.logger.info(f"Element CSS orqali tekshirildi: {is_displayed}")
+            return is_displayed
+
         except Exception as e:
-            self.logger.error(f"Scroll: xatolik yuz berdi: {e}")
+            self.logger.error(f"Element CSS orqali tekshirishda xatolik: {e}")
             return None
 
     def _wait_for_presence_all(self, locator, timeout=None):
@@ -185,19 +390,31 @@ class BasePage:
         try:
             return WebDriverWait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
         except TimeoutException:
+            self.logger.warning(f"Elementlar topilmadi: {locator}")
             return []
 
-    def _wait_for_invisibility(self, locator, timeout=None):
-        """Elementni ko'rinmas bo'lishini kutish."""
+    def _wait_for_invisibility_of_element(self, element, timeout=None):
+        """Element ni ko'rinmas bo'lishini kutish."""
 
         timeout = timeout or self.default_timeout
         try:
-            return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element(locator))
-        except TimeoutException:
+            return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element(element))
+        except TimeoutException as e:
+            self.logger.error(f"Element sahifadan yo'qolmadi: {e}")
+            return False
+
+    def _wait_for_invisibility_of_locator(self, locator, timeout=None):
+        """Locator ni ko'rinmas bo'lishini kutish."""
+
+        timeout = timeout or self.default_timeout
+        try:
+            return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+        except TimeoutException as e:
+            self.logger.error(f"Locator sahifadan yo'qolmadi")
             return False
 
     def _is_element_visible_and_interactable(self, element):
-        """Elementning ko'rinishi va o'lchami tekshiriladi"""
+        """Elementning ko'rinishi va o'lchami tekshirish"""
 
         try:
             if element.is_displayed() and element.size['width'] > 0 and element.size['height'] > 0:
@@ -213,17 +430,18 @@ class BasePage:
             self.logger.warning(f"Elementning ko'rinishi va o'lchami tekshirishda xatolik: {e}")
             return False
 
-    def _wait_for_clickable(self, locator, timeout=None):
-        """Elementni bosish uchun tayyor ekanligini tekshirish."""
-
-        timeout = timeout or self.default_timeout
-        try:
-            return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
-        except TimeoutException:
-            return None
+    def _wait_for_element_with_size(self, locator, timeout=10):
+        """Element o‘lchami nol emasligini kutadi."""
+        element = WebDriverWait(self.driver, timeout).until(
+            lambda driver: (
+                    (el := driver.find_element(*locator)).size['width'] > 0 and
+                    el.size['height'] > 0 and el
+            )
+        )
+        return element
 
     def _wait_for_stable_dom(self, timeout=None, check_interval=0.5):
-        """DOMning barqarorligini tekshirish uchun. Sahifa o'zgarishlarini to'xtashini kutadi."""
+        """DOM ning barqarorligini tekshirish uchun. Sahifa o'zgarishlarini to'xtashini kutadi."""
 
         timeout = timeout or self.default_timeout
         start_time = time.time()
@@ -261,88 +479,163 @@ class BasePage:
 
     # Click ------------------------------------------------------------------------------------------------------------
 
-    def click(self, locator, timeout=None, retries=3, retry_delay=1):
+    # def click(self, locator, timeout=None, retries=3, retry_delay=1):
+    #     """Elementni bosish funksiyasi"""
+    #
+    #     timeout = timeout or self.default_timeout
+    #     wait = WebDriverWait(self.driver, timeout)
+    #     attempt = 0
+    #     last_exception = None
+    #
+    #     while attempt < retries:
+    #         try:
+    #             self.logger.info(f"Click {attempt + 1}/{retries}: Sahifa yuklanganligini tekshirish...")
+    #             wait.until(lambda driver: driver.execute_script("return document.readyState") == "complete")
+    #
+    #             self.logger.info(f"Click {attempt + 1}/{retries}: Sahifada loading indikatorini tekshirish...")
+    #             self._check_spinner_absence(timeout=timeout)
+    #
+    #             self.logger.info(f"Click {attempt + 1}/{retries}: Element mavjudligini kutish... {locator}")
+    #             element = wait.until(EC.presence_of_element_located(locator))
+    #
+    #             self.logger.info(f"Click {attempt + 1}/{retries}: Element ko‘rinishini kutish... {locator}")
+    #             element = wait.until(EC.visibility_of_element_located(locator))
+    #
+    #             self.logger.info(f"Click {attempt + 1}/{retries}: Elementga scroll qilish... {locator}")
+    #             self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
+    #             time.sleep(0.5)
+    #
+    #             self.logger.info(f"Click {attempt + 1}/{retries}: Element bosishga tayyorligini kutish... {locator}")
+    #             element = wait.until(EC.element_to_be_clickable(locator))
+    #
+    #             self.logger.info(f"Click {attempt + 1}/{retries}: Elementni bosish... {locator}")
+    #             try:
+    #                 element.click()
+    #                 self.logger.info(f"Element muvaffaqiyatli bosildi: {locator}")
+    #             except (ElementClickInterceptedException, ElementNotInteractableException) as e:
+    #                 self.logger.warning(f"Oddiy click ishlamadi: {e}. JavaScript orqali bosilmoqda...")
+    #                 try:
+    #                     self.driver.execute_script("arguments[0].click();", element)
+    #                     self.logger.info(f"Element JavaScript yordamida muvaffaqiyatli bosildi: {locator}")
+    #                 except WebDriverException as js_exc:
+    #                     self.logger.warning(f"JavaScript click ishlamadi: {js_exc}. ActionChains orqali bosilmoqda...")
+    #                     try:
+    #                         self.actions.move_to_element(element).click().perform()
+    #                         self.logger.info(f"Element ActionChains yordamida muvaffaqiyatli bosildi: {locator}")
+    #                     except WebDriverException as ac_exc:
+    #                         self.logger.warning(f"ActionChains click ishlamadi: {ac_exc}. Offset bilan bosilmoqda...")
+    #                         location = element.location
+    #                         size = element.size
+    #                         x = location['x'] + size['width'] // 2
+    #                         y = location['y'] + size['height'] // 2
+    #                         self.actions.move_by_offset(x, y).click().perform()
+    #                         self.logger.info(f"Element offset yordamida muvaffaqiyatli bosildi: {locator}")
+    #
+    #             return True
+    #
+    #         except StaleElementReferenceException:
+    #             self.logger.warning(
+    #                 f"StaleElementReferenceException: Element yangilandi va topilmadi. Click {attempt + 1}/{retries}")
+    #             attempt += 1
+    #             time.sleep(retry_delay)
+    #
+    #         except TimeoutException:
+    #             self.logger.warning(f"TimeoutException: Elementni kutish vaqti tugadi. Click {attempt + 1}/{retries}")
+    #             attempt += 1
+    #             time.sleep(retry_delay)
+    #
+    #         except Exception as e:
+    #             self.logger.error(f"Kutilmagan xatolik: {e}. Click {attempt + 1}/{retries}")
+    #             attempt += 1
+    #             time.sleep(retry_delay)
+    #
+    #     # Muvaffaqiyatsizlikdan keyin
+    #     error_message = f"❌Click muvaffaqiyatsiz yakunlandi: {last_exception}"
+    #     self.logger.error(error_message)
+    #     self.take_screenshot("click_error")
+    #     raise AssertionError(error_message)
+
+    def click(self, locator, retries=3, retry_delay=1):
         """Elementni bosish funksiyasi"""
 
-        timeout = timeout or self.default_timeout
-        wait = WebDriverWait(self.driver, timeout)
         attempt = 0
         last_exception = None
 
         while attempt < retries:
             try:
-                self.logger.info(f"Click {attempt + 1}/{retries}: Sahifa yuklanganligini tekshirish...")
-                wait.until(lambda driver: driver.execute_script("return document.readyState") == "complete")
+                self._wait_for_all_loaders()
+                self._wait_for_async_operations()
+                element_dom = self._wait_for_presence(locator)
+                self._scroll_to_element(element=element_dom, locator=locator)
+                element_visibility = self._wait_for_visibility(locator)
+                element_clickable = self._wait_for_clickable(locator)
 
-                self.logger.info(f"Click {attempt + 1}/{retries}: Sahifada loading indikatorini tekshirish...")
-                self._check_spinner_absence(timeout=timeout)
+                # ------------------------------------------------------------------------------------------------------
 
-                self.logger.info(f"Click {attempt + 1}/{retries}: Element mavjudligini kutish...")
-                element = wait.until(EC.presence_of_element_located(locator))
-
-                self.logger.info(f"Click {attempt + 1}/{retries}: Element ko‘rinishini kutish...")
-                element = wait.until(EC.visibility_of_element_located(locator))
-
-                self.logger.info(f"Click {attempt + 1}/{retries}: Elementga scroll qilish...")
-                self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
-                time.sleep(0.5)
-
-                self.logger.info(f"Click {attempt + 1}/{retries}: Element bosishga tayyorligini kutish...")
-                element = wait.until(EC.element_to_be_clickable(locator))
-
-                self.logger.info(f"Click {attempt + 1}/{retries}: Elementni bosish...")
                 try:
-                    element.click()
-                    self.logger.info(f"Element muvaffaqiyatli bosildi: {locator}")
-                except (ElementClickInterceptedException, ElementNotInteractableException) as e:
-                    self.logger.warning(f"Oddiy click ishlamadi: {e}. JavaScript orqali bosilmoqda...")
+                    element_clickable.click()
+                    self.logger.info(f"✅Click: {locator}")
+                except WebDriverException as a_exc:
+                    last_exception = a_exc
+                    self.logger.warning(f"❗️Click ishlamadi: {locator}")
+                    # self.logger.warning(f"❌Error: {a_exc}")
                     try:
-                        self.driver.execute_script("arguments[0].click();", element)
-                        self.logger.info(f"Element JavaScript yordamida muvaffaqiyatli bosildi: {locator}")
-                    except WebDriverException as js_exc:
-                        self.logger.warning(f"JavaScript click ishlamadi: {js_exc}. ActionChains orqali bosilmoqda...")
+                        time.sleep(1)
+                        element_clickable = self._wait_for_clickable(locator)
+                        element_clickable.click()
+                        self.logger.info(f"✅Retry Click: {locator}")
+                    except WebDriverException as b_exc:
+                        last_exception = b_exc
+                        self.logger.warning(f"❗️Retry Click ishlamadi: {locator}")
+                        # self.logger.warning(f"❌Error: {b_exc}")
                         try:
-                            self.actions.move_to_element(element).click().perform()
-                            self.logger.info(f"Element ActionChains yordamida muvaffaqiyatli bosildi: {locator}")
-                        except WebDriverException as ac_exc:
-                            self.logger.warning(f"ActionChains click ishlamadi: {ac_exc}. Offset bilan bosilmoqda...")
-                            location = element.location
-                            size = element.size
-                            x = location['x'] + size['width'] // 2
-                            y = location['y'] + size['height'] // 2
-                            self.actions.move_by_offset(x, y).click().perform()
-                            self.logger.info(f"Element offset yordamida muvaffaqiyatli bosildi: {locator}")
-
+                            element_dom = self._wait_for_presence(locator)
+                            self._click_js(element_dom)
+                            self.logger.info(f"✅JavaSkript click: {locator}")
+                        except WebDriverException as d_exc:
+                            last_exception = d_exc
+                            self.logger.warning(f"❗JavaSkript ishlamadi: {locator}")
+                            # self.logger.warning(f"❌Error: {d_exc}")
+                            try:
+                                element_dom = self._wait_for_presence(locator)
+                                self._click_js(element_dom)
+                                self.logger.info(f"✅Retry JavaSkript click: {locator}")
+                            except WebDriverException as e_exc:
+                                last_exception = e_exc
+                                self.logger.warning(f"❗Retry JavaSkript ishlamadi: {locator}")
+                                self.logger.warning(f"❌Error: {e_exc}")
                 return True
 
-            except StaleElementReferenceException:
+            except StaleElementReferenceException as e:
+                last_exception = e
                 self.logger.warning(
-                    f"StaleElementReferenceException: Element yangilandi va topilmadi. Click {attempt + 1}/{retries}")
+                    f"StaleElementReferenceException: Element yangilandi va topilmadi. Click {attempt + 1}/{retries}. {locator}")
                 attempt += 1
                 time.sleep(retry_delay)
 
-            except TimeoutException:
+            except TimeoutException as e:
+                last_exception = e
                 self.logger.warning(f"TimeoutException: Elementni kutish vaqti tugadi. Click {attempt + 1}/{retries}")
                 attempt += 1
                 time.sleep(retry_delay)
 
             except Exception as e:
-                self.logger.error(f"Kutilmagan xatolik: {e}. Click {attempt + 1}/{retries}")
+                last_exception = e
+                self.logger.warning(f"Kutilmagan xatolik: {e}. Click {attempt + 1}/{retries}")
                 attempt += 1
                 time.sleep(retry_delay)
 
-        # Muvaffaqiyatsizlikdan keyin
-        error_message = f"❌Click muvaffaqiyatsiz yakunlandi: {last_exception}"
-        self.logger.error(error_message)
+        error_message = f"❌Click muvaffaqiyatsiz yakunlandi: {str(last_exception)}"
+        self.logger.warning(error_message)
         self.take_screenshot("click_error")
         raise AssertionError(error_message)
 
     # Wait -------------------------------------------------------------------------------------------------------------
+
     def wait_for_element_visible(self, locator, timeout=None, retries=3, retry_delay=1):
         """Elementni ko'rinishini kutish uchun kuchaytirilgan funksiya."""
 
         timeout = timeout or self.default_timeout
-        wait = WebDriverWait(self.driver, timeout)
 
         def try_with_retries(action, stage_name):
             attempt = 0
@@ -385,43 +678,18 @@ class BasePage:
                     time.sleep(retry_delay)
 
         # 1. Sahifa to'liq yuklanganligi tekshirish
-        try_with_retries(
-            lambda: wait.until(
-                lambda driver: driver.execute_script("return document.readyState") == "complete"), "Sahifa yuklash")
-
-        # 2. Sahifada loading indikatorini tekshirish
-        element = try_with_retries(
-            lambda: self._check_spinner_absence(timeout=timeout), "Loading indikatori mavjudligi")
+        try_with_retries(lambda: self._wait_for_all_loaders(), "Sahifa yuklash")
 
         # 3. Element mavjudligi tekshirish
-        element = try_with_retries(
-            lambda: wait.until(EC.presence_of_element_located(locator)), "Element mavjudligi")
+        element_dom = try_with_retries(lambda: self._wait_for_presence(locator), "Element DOM da mavjudligi")
 
-        # 4. Element ko'rinishi tekshirish
-        element = try_with_retries(
-            lambda: wait.until(EC.visibility_of_element_located(locator)), "Element ko'rinishi")
+        # 4. Elementni ko'rinadigan qismga scroll qilish
+        try_with_retries(lambda: self._scroll_to_element(element=element_dom, locator=locator), "Element scroll qilish")
 
-        # 5. Elementni ko'rinadigan qismga scroll qilish
-        try:
-            self.driver.execute_script(
-                "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
-            time.sleep(0.5)
-        except Exception as e:
-            logging.warning(f"Elementga scroll qilishda xatolik: {str(e)}")
-
-        # # 6. Element haqiqatdan ko'rinishi va faolligini tekshirish
-        # element = try_with_retries(
-        #     lambda: wait.until(
-        #         lambda x: (
-        #                           element.is_displayed() and
-        #                           element.is_enabled() and
-        #                           element.rect['height'] > 0 and
-        #                           element.rect['width'] > 0
-        #                   ) and element
-        #     ),
-        #     "Element faolligi"
-        # )
-
+        # 5. Element ko'rinishi tekshirish
+        element = try_with_retries(lambda: self._wait_for_visibility(locator), "Element interfeys da ko'rinishi")
+        if element:
+            self.logger.info(f"✅Visible: {locator}")
         return element
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -622,7 +890,7 @@ class BasePage:
             time.sleep(1)
 
             # Dropdown yopilganligini tekshirish
-            return self._wait_for_invisibility(options_locator, timeout=timeout)
+            return self._wait_for_invisibility_of_element(options_locator, timeout=timeout)
 
         except Exception as e:
             self.logger.error(f"Dropdownni yopishda xatolik: {str(e)}")
@@ -652,12 +920,12 @@ class BasePage:
 
             target_element = elements[0]
 
-            # Scroll qilish va ko'rinishga keltirish
+            # Scroll qilish
             self.driver.execute_script(
                 "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", target_element)
             time.sleep(0.5)
 
-            # Elementni ko'rinishi va bosilishi
+            # Elementni ko'rinishi
             if not self._wait_for_visibility(row_locator, timeout=timeout):
                 self.logger.warning("Element ko'rinmadi.")
                 return False
@@ -668,11 +936,14 @@ class BasePage:
 
             # Checkboxni bosish
             if checkbox:
-                checkbox_locator = (By.CSS_SELECTOR, ".tbl-cell span")
-                if not self.click(checkbox_locator):
-                    self.logger.warning("Checkbox bosishda xatolik yuz berdi.")
+                checkbox_locator = (By.XPATH, f"//div[contains(@class, 'tbl-row') and .//div[text()='{element_name}']]//span")
+                element = self._wait_for_presence(checkbox_locator)
+                if not element:
+                    self.logger.error(f"Checkbox topilmadi: {checkbox_locator}")
                     return False
-
+                if not self._click_js(element):
+                    self.logger.error(f"Checkbox bosib bo'lmadi: {checkbox_locator}")
+                    return False
             return True
 
         except Exception as e:
@@ -696,34 +967,34 @@ class BasePage:
                        driver.execute_script("""
                         return window.performance
                             .getEntriesByType('resource')
-                            .filter(r => !r.responseEnd && 
-                                (r.initiatorType === 'fetch' || 
+                            .filter(r => !r.responseEnd &&
+                                (r.initiatorType === 'fetch' ||
                                  r.initiatorType === 'xmlhttprequest')
                             ).length === 0;
                     """))
-            self.logger.info("Async operatsiyalar muvaffaqiyatli tugadi")
+            # self.logger.info("Async operatsiyalar muvaffaqiyatli tugadi")
             return True
         except TimeoutException:
-            self.logger.warning("Async operatsiyalar kutish vaqti tugadi")
+            self.logger.warning(f"Async operatsiyalar kutish vaqti tugadi: {timeout}s")
             return False
 
-    def _check_spinner_absence(self, timeout=None):
-        """Yuklash indikatorlarining mavjud emasligini tekshirish."""
+    # def _wait_for_async_operations(self, timeout=None):
+    #     """Sahifadagi asinxron operatsiyalarni kutish."""
+    #     timeout = timeout or self.default_timeout
+    #     try:
+    #         WebDriverWait(self.driver, timeout).until(lambda driver: driver.execute_script("""
+    #             return (
+    #                 document.readyState === 'complete' &&
+    #                 (typeof jQuery === 'undefined' || jQuery.active === 0) &&
+    #                 (typeof axios === 'undefined' || axios.defaults.transitional._pendingRequests === 0) &&
+    #                 !document.querySelector('.loading-overlay, .spinner, .loader')
+    #             );
+    #         """))
+    #         return True
+    #     except TimeoutException:
+    #         self.logger.warning("Asinxron operatsiyalar kutish vaqti tugadi")
+    #         return False
 
-        timeout = timeout or self.default_timeout
-        locator = (
-            By.XPATH, "//div[contains(@class, 'block-ui-overlay') or contains(@class, 'block-ui-message-container')]")
-        start_time = time.time()
-        try:
-            # Spinner yo'qligini yoki ko'rinmasligini kutish
-            WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
-            elapsed_time = time.time() - start_time
-            self.logger.info(f"Yuklash indikatori {elapsed_time:.2f}s ichida muvaffaqiyatli yo'qoldi: {locator}.")
-            return True
-        except TimeoutException:
-            elapsed_time = time.time() - start_time
-            self.logger.warning(f"Yuklash indikatori hali ham mavjud yoki ko'rinmoqda ({elapsed_time:.2f}s o'tdi): {locator}.")
-            return False
 
     def _check_main_content_loaded(self, timeout=None):
         """Sahifada asosiy kontent yuklanganligini tekshirish."""

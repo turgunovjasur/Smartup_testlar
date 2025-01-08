@@ -22,7 +22,7 @@ def test_data():
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
-        "cod": 17,
+        "cod": 21,
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -159,7 +159,7 @@ def dashboard(driver):
 
     try:
         if not base_page._wait_for_page_load(timeout=60):
-            base_page.logger.error("❌Dashboard did not load(): timeout = 60s!")
+            base_page.logger.error("❌Dashboard did not load()")
             return False
 
         base_page.logger.info("Dashboard loaded successfully.")

@@ -29,11 +29,19 @@ class RoomAttachment(BasePage):
     def find_row(self, element_name):
         self.find_row_and_click(element_name)
     # ------------------------------------------------------------------------------------------------------------------
-    checkbox_all = (By.XPATH, '(//b-grid[@name="table_payment_type"]//label)[1]')
+    checkbox_all_payment_type = (By.XPATH, '(//b-grid[@name="table_payment_type"]//label)[1]')
 
-    def click_checkbox_all(self, attach_button):
+    def click_checkbox_all_payment_type(self, attach_button):
         attach_button = (By.XPATH, f'(//button[@ng-click="attachMany()"])[{attach_button}]')
-        self.click(self.checkbox_all)
+        self.click(self.checkbox_all_payment_type)
+        self.click(attach_button)
+        self.click(self.yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    checkbox_all_price_type = (By.XPATH, '(//b-grid[@name="table_price_type"]//label)[1]')
+
+    def click_checkbox_all_price_type(self, attach_button):
+        attach_button = (By.XPATH, f'(//button[@ng-click="attachMany()"])[{attach_button}]')
+        self.click(self.checkbox_all_price_type)
         self.click(attach_button)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------

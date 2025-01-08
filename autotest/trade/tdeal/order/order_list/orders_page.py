@@ -1,3 +1,5 @@
+import time
+
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -38,6 +40,11 @@ class OrdersList(BasePage):
     def click_copy_button(self):
         self.click(self.copy_button)
     # ------------------------------------------------------------------------------------------------------------------
+    return_button = (By.XPATH, '//button[@id="trade81-button-edit"]')
+
+    def click_return_button(self):
+        self.click(self.return_button)
+    # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     copy_title = (By.XPATH, "//h4/t[contains(text(), 'Копировать заказ')]")
 
@@ -61,8 +68,8 @@ class OrdersList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, client_name):
-        self.find_row_and_click(element_name=client_name)
-    # -----------------------------------------------------------------------------------------------------------------
+        self.find_row_and_click(element_name=client_name, checkbox=True)
+    # ------------------------------------------------------------------------------------------------------------------
     reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
 
     def click_reload_button(self):
@@ -73,8 +80,8 @@ class OrdersList(BasePage):
 
     def click_change_status_button(self, status_name):
         self.click(self.change_status_one_button)
-        status_button = (By.XPATH,
-                         f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
+        status_button = (
+            By.XPATH, f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
         self.click(status_button)
         self.click(self.yes_button)
     # -----------------------------------------------------------------------------------------------------------------

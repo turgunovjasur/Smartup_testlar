@@ -7,6 +7,7 @@ from autotest.anor.mdeal.order.order_edit.order_edit_main import OrderEditMain
 from autotest.anor.mdeal.order.order_edit.order_edit_product import OrderEditProduct
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
+from autotest.trade.tdeal.order.return_order.return_order import ReturnOrder
 from tests.test_base.test_base import test_data, login_user
 from autotest.core.md.base_page import BasePage
 from utils.driver_setup import driver
@@ -385,7 +386,7 @@ def test_order_change_status_C(driver):
 def order_copy(driver, client_name=None, client_name_copy_A=None, client_name_copy_B=None):
     # Log
     base_page = BasePage(driver)
-    base_page.logger.info("Test run(▶️): order_copy")
+    base_page.logger.info("▶️Test run(): order_copy")
     base_page.logger.info(f"Test data: client_name='{client_name}', client_name_copy_A='{client_name_copy_A}'")
     base_page.logger.info(f"Test data: client_name='{client_name}', client_name_copy_B='{client_name_copy_B}'")
 
@@ -396,16 +397,13 @@ def order_copy(driver, client_name=None, client_name_copy_A=None, client_name_co
         # List
         order_list = OrdersList(driver)
         assert order_list.element_visible() \
-               or base_page.logger.error("order_list not open!") \
-               or base_page.take_screenshot("order_list_error")
+               or base_page.logger.error("order_list not open!")
         order_list.find_row(client_name)
         order_list.click_copy_button()
         base_page.logger.info("OrdersList: click_copy_button pressed.")
 
         # Copy
-        assert order_list.element_visible_copy_title() \
-               or base_page.logger.error("order_copy_title not open!") \
-               or base_page.take_screenshot("order_copy_title_error")
+        assert order_list.element_visible_copy_title() or base_page.logger.error("order_copy_title not open!")
         order_list.input_persons(client_name_copy_A, client_name_copy_B)
         base_page.logger.info(f"OrdersList: client_name_copy_A inputted: '{client_name_copy_A}'")
         base_page.logger.info(f"OrdersList: client_name_copy_B inputted: '{client_name_copy_B}'")
@@ -414,43 +412,33 @@ def order_copy(driver, client_name=None, client_name_copy_A=None, client_name_co
         base_page.logger.info("OrdersList: click_copy_save_button pressed.")
 
         # List
-        assert order_list.element_visible() \
-               or base_page.logger.error("order_list not open!") \
-               or base_page.take_screenshot("order_list_error")
+        assert order_list.element_visible() or base_page.logger.error("order_list not open!")
         order_list.find_row(client_name_copy_A)
         order_list.click_view_button()
         base_page.logger.info("OrdersList: click_view_button pressed.")
 
         # View client_A
         order_view = OrderView(driver)
-        assert order_view.element_visible() \
-               or base_page.logger.error("order_view client_A not open!") \
-               or base_page.take_screenshot("order_view_client_A_error")
+        assert order_view.element_visible() or base_page.logger.error("order_view client_A not open!")
         get_client_name = order_view.check_client_name()
-        assert get_client_name == client_name_copy_A \
-               or base_page.logger.error(f"{get_client_name} != {client_name_copy_A}") \
-               or base_page.take_screenshot("check_client_A_error")
+        assert get_client_name == client_name_copy_A or base_page.logger.error(
+            f"{get_client_name} != {client_name_copy_A}")
         order_view.click_close_button()
         base_page.logger.info("OrdersList: click_close_button pressed.")
 
         # List
         order_list.click_reload_button()
         base_page.logger.info("OrdersList: click_reload_button pressed.")
-        assert order_list.element_visible() \
-               or base_page.logger.error("order_list not open!") \
-               or base_page.take_screenshot("order_list_error")
+        assert order_list.element_visible() or base_page.logger.error("order_list not open!")
         order_list.find_row(client_name_copy_B)
         order_list.click_view_button()
         base_page.logger.info("OrdersList: click_view_button pressed.")
 
         # View client_B
-        assert order_view.element_visible() \
-               or base_page.logger.error("order_view client_B not open!") \
-               or base_page.take_screenshot("order_view_client_B_error")
+        assert order_view.element_visible() or base_page.logger.error("order_view client_B not open!")
         get_client_name = order_view.check_client_name()
-        assert get_client_name == client_name_copy_B \
-               or base_page.logger.error(f"{get_client_name} != {client_name_copy_B}") \
-               or base_page.take_screenshot("check_client_B_error")
+        assert get_client_name == client_name_copy_B or base_page.logger.error(
+            f"{get_client_name} != {client_name_copy_B}")
         order_view.click_close_button()
         base_page.logger.info("OrdersList: click_close_button pressed.")
 
@@ -470,3 +458,118 @@ def test_order_copy_C_for_A_B(driver):
                client_name_copy_A=client_name_copy_A,
                client_name_copy_B=client_name_copy_B)
 
+
+# Return ---------------------------------------------------------------------------------------------------------------
+
+def order_return(driver, client_name=None):
+    # Log
+    data = test_data()["data"]
+
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️Test run(): order_return")
+    base_page.logger.info(f"Test data: client_name='{client_name}'")
+
+    try:
+        login_user(driver, url='trade/tdeal/order/order_list')
+        base_page.logger.info("Successful access to the system.")
+
+        # List
+        order_list = OrdersList(driver)
+        assert order_list.element_visible() or base_page.logger.error("order_list not open!")
+        order_list.find_row(client_name)
+        order_list.click_view_button()
+        base_page.logger.info("OrdersList: click_view_button pressed.")
+
+        # View
+        order_view = OrderView(driver)
+        assert order_view.element_visible() or base_page.logger.error('OrderView not open!')
+        get_order_id = order_view.check_order_id()
+        get_status = order_view.check_status()
+        assert get_status == data["Draft"] or base_page.logger.error(f'{get_status} != {data["Draft"]}')
+        get_quantity, get_price = order_view.check_items()
+        base_page.logger.info(
+            f"OrderView: success checked: order_id: {get_order_id}, order_status: {get_status}, order_price: {get_price}")
+        order_view.click_close_button()
+        base_page.logger.info("OrderView: click_close_button pressed.")
+
+        # List
+        assert order_list.element_visible() or base_page.logger.error("order_list not open!")
+        order_list.click_change_status_button(data["Delivered"])
+        base_page.logger.info("OrdersList: click_change_status_button pressed.")
+        order_list.find_row(client_name)
+        order_list.click_return_button()
+        base_page.logger.info("OrdersList: click_return_button pressed.")
+
+        # Return Order
+        return_order = ReturnOrder(driver)
+        assert return_order.element_visible() or base_page.logger.error("return_order not open!")
+        get_client_name = return_order.check_client_name()
+        assert get_client_name == client_name or base_page.logger.error(f"{get_client_name} != {client_name}")
+        return_order.click_return_all_button()
+        base_page.logger.info("ReturnOrder: click_return_all_button pressed.")
+        get_total_price = return_order.check_total_price()
+        assert get_total_price == '0' or base_page.logger.error(f"{get_total_price} != {'0'}")
+        return_order.click_save_button()
+        base_page.logger.info("ReturnOrder: click_save_button pressed.")
+
+        # List
+        assert order_list.element_visible() or base_page.logger.error("order_list not open!")
+        order_list.find_row(client_name)
+        order_list.click_view_button()
+        base_page.logger.info("OrdersList: click_view_button pressed.")
+
+        # Order View
+        assert order_view.element_visible() or base_page.logger.error('OrderView not open!')
+        get_order_id_last = order_view.check_order_id()
+        assert get_order_id == get_order_id_last or base_page.logger.error(f'{get_order_id} != {get_order_id_last}')
+        get_status_last = order_view.check_status()
+        assert get_status_last == data["Delivered"] or base_page.logger.error(
+            f'{get_status_last} != {data["Delivered"]}')
+        get_quantity, get_price = order_view.check_items()
+        assert get_price == 0 or base_page.logger.error(f"Error: {get_price} != {0}")
+        base_page.logger.info(
+            f"OrderView: success checked: order_id: {get_order_id_last}, order_status: {get_status_last}, order_price: {get_price}")
+        base_page.logger.info(f"✅Test end(): order_return successfully!")
+
+    except Exception as e:
+        base_page.logger.error(f"❌Error message(): {e}")
+        base_page.take_screenshot("order_return_error")
+        raise
+
+
+def test_order_return(driver):
+    data = test_data()["data"]
+    client_name = f"{data['client_name']}-A"
+    order_return(driver, client_name=client_name)
+
+
+def order_list(driver, client_name=None):
+    # Log
+    data = test_data()["data"]
+
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️Test run(): order_list")
+    base_page.logger.info(f"Test data: client_name='{client_name}'")
+
+    try:
+        login_user(driver, url='trade/tdeal/order/order_list')
+        base_page.logger.info("Successful access to the system.")
+
+        # List
+        order_list = OrdersList(driver)
+        assert order_list.element_visible() or base_page.logger.error("order_list not open!")
+        order_list.find_row(client_name)
+        time.sleep(2)
+
+        base_page.logger.info(f"✅Test end(): order_return successfully!")
+
+    except Exception as e:
+        base_page.logger.error(f"❌Error message(): {e}")
+        base_page.take_screenshot("order_list_error")
+        raise
+
+
+def test_order_list(driver):
+    data = test_data()["data"]
+    client_name = f"{data['client_name']}-B"
+    order_list(driver, client_name=client_name)

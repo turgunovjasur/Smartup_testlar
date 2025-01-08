@@ -18,6 +18,13 @@ class PriceTypeList(BasePage):
     def click_add_button(self):
         self.click(self.add_button)
     # ------------------------------------------------------------------------------------------------------------------
+    add_dropdown_button = (By.XPATH, "//button[@id='anor182-button-add']/following-sibling::button")
+    attachment_button = (By.XPATH, '//button[@id="anor182-button-add"]/following-sibling::div/a[1]')
+
+    def click_add_dropdown_button(self):
+        self.click(self.add_dropdown_button)
+        self.click(self.attachment_button)
+    # ------------------------------------------------------------------------------------------------------------------
     status_many_button = (By.XPATH, "id('anor182-button-change_state_many')")
     passive_many_button = (By.XPATH, "id('anor182-button-change_state_many')/following-sibling::div")
     click_status_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
@@ -70,7 +77,7 @@ class PriceTypeList(BasePage):
     code_button = By.CSS_SELECTOR, ".tbl-header-cell:nth-child(2) > .tbl-header-txt"
 
     def click_code_button(self):
-        element = self.find_element(self.code_button)
+        element = self.wait_for_element_visible(self.code_button)
         self.driver.execute_script("arguments[0].click();", element)
     # ------------------------------------------------------------------------------------------------------------------
     checkbox_button = ".tbl-row:nth-child(1) span"

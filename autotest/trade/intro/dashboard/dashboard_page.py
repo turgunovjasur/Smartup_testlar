@@ -1,5 +1,8 @@
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class DashboardPage(BasePage):
@@ -27,11 +30,14 @@ class DashboardPage(BasePage):
     active_session_header = (By.XPATH, "//h3/t[contains(text(),'Активные сеансы')]")
 
     def element_visible_session(self):
-        """Agar active_session_header ko'rinsa, delete_session_button'ni bosish."""
-        if self._wait_for_visibility(self.active_session_header, timeout=3):
-            self.logger.info("Aktiv sessiya topildi va o'chirildi")
-            self.click(self.delete_session_button)
+        """Agar active_session_header ko'rinsa, delete_session_button ni bosish."""
 
+        try:
+            element = WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(self.delete_session_button))
+            element.click()
+            self.logger.info("Aktiv sessiya topildi va o'chirildi.")
+        except TimeoutException:
+            self.logger.info("Aktiv sessiya yo'q.")
     # ------------------------------------------------------------------------------------------------------------------
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 
