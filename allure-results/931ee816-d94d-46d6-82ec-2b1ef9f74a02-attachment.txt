@@ -1,0 +1,27 @@
+[32m2025-01-09 14:28:19,293 - [INFO] - test_payment_type_add - Test run(▶️): test_payment_type_add[0m
+[32m2025-01-09 14:28:19,310 - [INFO] - test_payment_type_add - Login_page loaded successfully.[0m
+[32m2025-01-09 14:28:19,756 - [INFO] - test_payment_type_add - Form filled with email: test-25@red_test[0m
+[32m2025-01-09 14:28:20,390 - [INFO] - test_payment_type_add - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:28:20,390 - [INFO] - test_payment_type_add - Login button clicked.[0m
+[32m2025-01-09 14:28:20,399 - [INFO] - test_payment_type_add - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:28:25,882 - [INFO] - test_payment_type_add - Aktiv sessiya yo'q.[0m
+[32m2025-01-09 14:28:26,517 - [INFO] - test_payment_type_add - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:28:27,685 - [INFO] - test_payment_type_add - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:28:27,701 - [INFO] - test_payment_type_add - Opening a new browser window.[0m
+[32m2025-01-09 14:28:28,915 - [INFO] - test_payment_type_add - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!6ufoi42/anor/mkr/payment_type_list[0m
+[32m2025-01-09 14:28:30,929 - [INFO] - test_payment_type_add - Successful access to the system.[0m
+[32m2025-01-09 14:28:31,514 - [INFO] - test_payment_type_add - ✅Visible: ('xpath', '//button[@ng-click="fi.open_attach()"]')[0m
+[32m2025-01-09 14:28:31,514 - [INFO] - test_payment_type_add - PaymentTypeList: page opened.[0m
+[32m2025-01-09 14:28:32,124 - [INFO] - test_payment_type_add - ✅Click: ('xpath', '//button[@ng-click="fi.open_attach()"]')[0m
+[32m2025-01-09 14:28:32,124 - [INFO] - test_payment_type_add - PaymentTypeList: attach button pressed.[0m
+[32m2025-01-09 14:28:33,197 - [INFO] - test_payment_type_add - ✅Visible: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:28:33,197 - [INFO] - test_payment_type_add - PaymentTypeListAttach: page opened.[0m
+[33m2025-01-09 14:28:33,780 - [WARNING] - test_payment_type_add - ❗️Click ishlamadi: ('xpath', '(//b-grid[@name="table"]//label)[1]')[0m
+[33m2025-01-09 14:28:34,816 - [WARNING] - test_payment_type_add - ❗️Retry Click ishlamadi: ('xpath', '(//b-grid[@name="table"]//label)[1]')[0m
+[32m2025-01-09 14:28:34,829 - [INFO] - test_payment_type_add - ✅JavaSkript click: ('xpath', '(//b-grid[@name="table"]//label)[1]')[0m
+[32m2025-01-09 14:28:35,444 - [INFO] - test_payment_type_add - ✅Click: ('xpath', '//button[@ng-click="attachMany()"]')[0m
+[32m2025-01-09 14:28:36,051 - [INFO] - test_payment_type_add - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:28:36,051 - [INFO] - test_payment_type_add - PaymentTypeListAttach: all checkboxes selected.[0m
+[32m2025-01-09 14:28:36,691 - [INFO] - test_payment_type_add - ✅Click: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:28:36,691 - [INFO] - test_payment_type_add - PaymentTypeListAttach: close button pressed.[0m
+[32m2025-01-09 14:28:36,692 - [INFO] - test_payment_type_add - PaymentType(✅): successfully attached![0m

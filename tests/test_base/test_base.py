@@ -22,7 +22,7 @@ def test_data():
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
-        "cod": 22,
+        "cod": 25,
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",

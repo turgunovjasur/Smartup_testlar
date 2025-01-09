@@ -1,0 +1,49 @@
+[32m2025-01-09 14:42:41,539 - [INFO] - test_order_copy_C_for_A_B - ▶️Test run(): order_copy[0m
+[32m2025-01-09 14:42:41,539 - [INFO] - test_order_copy_C_for_A_B - Test data: client_name='client-25-C', client_name_copy_A='client-25-A'[0m
+[32m2025-01-09 14:42:41,539 - [INFO] - test_order_copy_C_for_A_B - Test data: client_name='client-25-C', client_name_copy_B='client-25-B'[0m
+[32m2025-01-09 14:42:41,558 - [INFO] - test_order_copy_C_for_A_B - Login_page loaded successfully.[0m
+[32m2025-01-09 14:42:41,957 - [INFO] - test_order_copy_C_for_A_B - Form filled with email: test-25@red_test[0m
+[32m2025-01-09 14:42:42,590 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:42:42,590 - [INFO] - test_order_copy_C_for_A_B - Login button clicked.[0m
+[32m2025-01-09 14:42:42,600 - [INFO] - test_order_copy_C_for_A_B - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:42:45,333 - [INFO] - test_order_copy_C_for_A_B - Aktiv sessiya topildi va o'chirildi.[0m
+[32m2025-01-09 14:42:45,970 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:42:47,148 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:42:47,163 - [INFO] - test_order_copy_C_for_A_B - Opening a new browser window.[0m
+[32m2025-01-09 14:42:48,374 - [INFO] - test_order_copy_C_for_A_B - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!78q30s2/trade/tdeal/order/order_list[0m
+[32m2025-01-09 14:42:50,374 - [INFO] - test_order_copy_C_for_A_B - Successful access to the system.[0m
+[32m2025-01-09 14:42:50,928 - [INFO] - test_order_copy_C_for_A_B - ✅Visible: ('xpath', '//button[@id="trade81-button-add"]')[0m
+[32m2025-01-09 14:42:52,095 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-C']")[0m
+[32m2025-01-09 14:42:52,777 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', '//button[@id="trade81-button-show_copy_modal"]')[0m
+[32m2025-01-09 14:42:52,777 - [INFO] - test_order_copy_C_for_A_B - OrdersList: click_copy_button pressed.[0m
+[32m2025-01-09 14:42:53,327 - [INFO] - test_order_copy_C_for_A_B - ✅Visible: ('xpath', "//h4/t[contains(text(), 'Копировать заказ')]")[0m
+[32m2025-01-09 14:42:53,975 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', '//b-input[@name="persons"]//span[@class="clear-button"]')[0m
+[32m2025-01-09 14:42:54,600 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', '//b-input[@name="persons"]//input[@ng-model="_$bInput.searchValue"]')[0m
+[32m2025-01-09 14:42:54,654 - [INFO] - test_order_copy_C_for_A_B - Element 'client-25-A' topildi va bosildi.[0m
+[32m2025-01-09 14:42:56,730 - [INFO] - test_order_copy_C_for_A_B - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:42:57,360 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', '//b-input[@name="persons"]//input[@ng-model="_$bInput.searchValue"]')[0m
+[32m2025-01-09 14:42:57,375 - [INFO] - test_order_copy_C_for_A_B - Element 'client-25-B' topilmadi. Scroll boshlanmoqda.[0m
+[32m2025-01-09 14:42:58,522 - [INFO] - test_order_copy_C_for_A_B - Element 'client-25-B' scroll orqali topildi va bosildi.[0m
+[32m2025-01-09 14:43:00,609 - [INFO] - test_order_copy_C_for_A_B - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:43:00,609 - [INFO] - test_order_copy_C_for_A_B - OrdersList: client_name_copy_A inputted: 'client-25-A'[0m
+[32m2025-01-09 14:43:00,609 - [INFO] - test_order_copy_C_for_A_B - OrdersList: client_name_copy_B inputted: 'client-25-B'[0m
+[32m2025-01-09 14:43:01,216 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', '//button[@ng-click="copy()"]')[0m
+[32m2025-01-09 14:43:01,216 - [INFO] - test_order_copy_C_for_A_B - OrdersList: click_copy_save_button pressed.[0m
+[32m2025-01-09 14:43:01,761 - [INFO] - test_order_copy_C_for_A_B - ✅Visible: ('xpath', '//button[@id="trade81-button-add"]')[0m
+[32m2025-01-09 14:43:02,950 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-A']")[0m
+[32m2025-01-09 14:43:03,636 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//button[@id='trade81-button-view']")[0m
+[32m2025-01-09 14:43:03,637 - [INFO] - test_order_copy_C_for_A_B - OrdersList: click_view_button pressed.[0m
+[32m2025-01-09 14:43:04,723 - [INFO] - test_order_copy_C_for_A_B - ✅Visible: ('xpath', "//div[@class='card-title']/h5/t")[0m
+[32m2025-01-09 14:43:05,283 - [INFO] - test_order_copy_C_for_A_B - ✅Visible: ('xpath', '//form[@name="form"]//div[@class="form-group"]//t[contains(text(), "Клиент")]/ancestor::label/following-sibling::span')[0m
+[32m2025-01-09 14:43:05,919 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//button[@id='trade82-button-close']")[0m
+[32m2025-01-09 14:43:05,919 - [INFO] - test_order_copy_C_for_A_B - OrdersList: click_close_button pressed.[0m
+[32m2025-01-09 14:43:06,585 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', '//button[@ng-click="reload()"]')[0m
+[32m2025-01-09 14:43:06,585 - [INFO] - test_order_copy_C_for_A_B - OrdersList: click_reload_button pressed.[0m
+[32m2025-01-09 14:43:07,135 - [INFO] - test_order_copy_C_for_A_B - ✅Visible: ('xpath', '//button[@id="trade81-button-add"]')[0m
+[32m2025-01-09 14:43:08,300 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-B']")[0m
+[32m2025-01-09 14:43:08,989 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//button[@id='trade81-button-view']")[0m
+[32m2025-01-09 14:43:08,989 - [INFO] - test_order_copy_C_for_A_B - OrdersList: click_view_button pressed.[0m
+[32m2025-01-09 14:43:10,127 - [INFO] - test_order_copy_C_for_A_B - ✅Visible: ('xpath', "//div[@class='card-title']/h5/t")[0m
+[32m2025-01-09 14:43:10,684 - [INFO] - test_order_copy_C_for_A_B - ✅Visible: ('xpath', '//form[@name="form"]//div[@class="form-group"]//t[contains(text(), "Клиент")]/ancestor::label/following-sibling::span')[0m
+[32m2025-01-09 14:43:11,327 - [INFO] - test_order_copy_C_for_A_B - ✅Click: ('xpath', "//button[@id='trade82-button-close']")[0m
+[32m2025-01-09 14:43:11,327 - [INFO] - test_order_copy_C_for_A_B - OrdersList: click_close_button pressed.[0m

@@ -1,0 +1,64 @@
+[32m2025-01-09 14:32:52,109 - [INFO] - test_room_attachment - Test run(▶️): test_room_attachment[0m
+[32m2025-01-09 14:32:52,111 - [INFO] - test_room_attachment - Test data: room_name='Test_room-25', warehouse_name='Основной склад', cash_register_name='Основная касса', client_name='client-25'[0m
+[32m2025-01-09 14:32:52,131 - [INFO] - test_room_attachment - Login_page loaded successfully.[0m
+[32m2025-01-09 14:32:52,549 - [INFO] - test_room_attachment - Form filled with email: test-25@red_test[0m
+[32m2025-01-09 14:32:53,169 - [INFO] - test_room_attachment - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:32:53,171 - [INFO] - test_room_attachment - Login button clicked.[0m
+[32m2025-01-09 14:32:53,181 - [INFO] - test_room_attachment - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:32:56,298 - [INFO] - test_room_attachment - Aktiv sessiya topildi va o'chirildi.[0m
+[32m2025-01-09 14:32:56,936 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:32:58,081 - [INFO] - test_room_attachment - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:32:58,100 - [INFO] - test_room_attachment - Opening a new browser window.[0m
+[32m2025-01-09 14:32:59,264 - [INFO] - test_room_attachment - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!6yzepgy/trade/trf/room_list[0m
+[32m2025-01-09 14:33:01,271 - [INFO] - test_room_attachment - Successful access to the system.[0m
+[32m2025-01-09 14:33:01,861 - [INFO] - test_room_attachment - ✅Visible: ('xpath', '//button[@ng-click="fi.add()"]')[0m
+[32m2025-01-09 14:33:01,861 - [INFO] - test_room_attachment - RoomList: page opened.[0m
+[32m2025-01-09 14:33:03,012 - [INFO] - test_room_attachment - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='Test_room-25']")[0m
+[32m2025-01-09 14:33:03,012 - [INFO] - test_room_attachment - RoomList: row found for room 'Test_room-25'.[0m
+[32m2025-01-09 14:33:03,639 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="attachment(row)"]')[0m
+[32m2025-01-09 14:33:03,639 - [INFO] - test_room_attachment - RoomList: attachment button pressed.[0m
+[32m2025-01-09 14:33:04,716 - [INFO] - test_room_attachment - ✅Visible: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:33:04,716 - [INFO] - test_room_attachment - RoomAttachment: page opened.[0m
+[32m2025-01-09 14:33:05,339 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//div[@class="navi navi-bolder navi-hover navi-active navi-link-rounded"]/div/a)[2]')[0m
+[32m2025-01-09 14:33:05,999 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//button[@ng-class="q.classDetach"])[2]')[0m
+[33m2025-01-09 14:33:06,613 - [WARNING] - test_room_attachment - ❗️Click ishlamadi: ('xpath', '(//b-grid[@name="table_price_type"]//label)[1]')[0m
+[33m2025-01-09 14:33:07,655 - [WARNING] - test_room_attachment - ❗️Retry Click ishlamadi: ('xpath', '(//b-grid[@name="table_price_type"]//label)[1]')[0m
+[32m2025-01-09 14:33:07,669 - [INFO] - test_room_attachment - ✅JavaSkript click: ('xpath', '(//b-grid[@name="table_price_type"]//label)[1]')[0m
+[32m2025-01-09 14:33:08,284 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//button[@ng-click="attachMany()"])[2]')[0m
+[32m2025-01-09 14:33:08,907 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:33:08,908 - [INFO] - test_room_attachment - RoomAttachment: price types attached.[0m
+[32m2025-01-09 14:33:09,551 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//div[@class="navi navi-bolder navi-hover navi-active navi-link-rounded"]/div/a)[3]')[0m
+[32m2025-01-09 14:33:10,216 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//button[@ng-class="q.classDetach"])[3]')[0m
+[33m2025-01-09 14:33:10,817 - [WARNING] - test_room_attachment - ❗️Click ishlamadi: ('xpath', '(//b-grid[@name="table_payment_type"]//label)[1]')[0m
+[33m2025-01-09 14:33:11,852 - [WARNING] - test_room_attachment - ❗️Retry Click ishlamadi: ('xpath', '(//b-grid[@name="table_payment_type"]//label)[1]')[0m
+[32m2025-01-09 14:33:11,865 - [INFO] - test_room_attachment - ✅JavaSkript click: ('xpath', '(//b-grid[@name="table_payment_type"]//label)[1]')[0m
+[32m2025-01-09 14:33:12,483 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//button[@ng-click="attachMany()"])[3]')[0m
+[32m2025-01-09 14:33:13,103 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:33:13,103 - [INFO] - test_room_attachment - RoomAttachment: payment types attached.[0m
+[32m2025-01-09 14:33:13,736 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//div[@class="navi navi-bolder navi-hover navi-active navi-link-rounded"]/div/a)[6]')[0m
+[32m2025-01-09 14:33:14,389 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//button[@ng-class="q.classDetach"])[6]')[0m
+[32m2025-01-09 14:33:16,101 - [INFO] - test_room_attachment - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='Основной склад']")[0m
+[32m2025-01-09 14:33:16,717 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//b-grid)[6]//button[@ng-click="attachOne(row)"]')[0m
+[32m2025-01-09 14:33:17,344 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:33:17,344 - [INFO] - test_room_attachment - RoomAttachment: warehouse 'Основной склад' attached.[0m
+[32m2025-01-09 14:33:18,015 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//div[@class="navi navi-bolder navi-hover navi-active navi-link-rounded"]/div/a)[7]')[0m
+[32m2025-01-09 14:33:18,666 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//button[@ng-class="q.classDetach"])[7]')[0m
+[32m2025-01-09 14:33:20,381 - [INFO] - test_room_attachment - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='Основная касса']")[0m
+[32m2025-01-09 14:33:21,018 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//b-grid)[7]//button[@ng-click="attachOne(row)"]')[0m
+[32m2025-01-09 14:33:21,629 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:33:21,629 - [INFO] - test_room_attachment - RoomAttachment: cash register 'Основная касса' attached.[0m
+[32m2025-01-09 14:33:22,255 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//div[@class="navi navi-bolder navi-hover navi-active navi-link-rounded"]/div/a)[11]')[0m
+[32m2025-01-09 14:33:22,932 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//button[@ng-class="q.classDetach"])[11]')[0m
+[32m2025-01-09 14:33:24,629 - [INFO] - test_room_attachment - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-A']")[0m
+[32m2025-01-09 14:33:25,235 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//b-grid)[11]//button[@ng-click="attachOne(row)"]')[0m
+[32m2025-01-09 14:33:25,874 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:33:27,232 - [INFO] - test_room_attachment - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-B']")[0m
+[32m2025-01-09 14:33:27,933 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//b-grid)[11]//button[@ng-click="attachOne(row)"]')[0m
+[32m2025-01-09 14:33:28,571 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:33:29,759 - [INFO] - test_room_attachment - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-C']")[0m
+[32m2025-01-09 14:33:30,376 - [INFO] - test_room_attachment - ✅Click: ('xpath', '(//b-grid)[11]//button[@ng-click="attachOne(row)"]')[0m
+[32m2025-01-09 14:33:30,993 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:33:30,994 - [INFO] - test_room_attachment - RoomAttachment: client 'client-25-A','client-25-B','client-25-C' attached.[0m
+[32m2025-01-09 14:33:31,649 - [INFO] - test_room_attachment - ✅Click: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:33:31,649 - [INFO] - test_room_attachment - RoomAttachment: close button pressed.[0m
+[32m2025-01-09 14:33:31,649 - [INFO] - test_room_attachment - Room(✅): 'Test_room-25' successfully attached to payment types, 'Основной склад', 'Основная касса', and clients 'client-25-A,B,C'![0m

@@ -1,0 +1,8 @@
+--------------------------------------------------
+Order Product Edit: 
+Order ID: 3291.0 
+Client name: client-25-A 
+Product quantity: 10.0 
+Product price: 120000.0
+--------------------------------------------------
+✅ Order Edit-A passed.

@@ -1,0 +1,36 @@
+[32m2025-01-09 14:37:48,164 - [INFO] - test_cashin_add_A - Login_page loaded successfully.[0m
+[32m2025-01-09 14:37:48,495 - [INFO] - test_cashin_add_A - Form filled with email: test-25@red_test[0m
+[32m2025-01-09 14:37:49,129 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:37:49,130 - [INFO] - test_cashin_add_A - Login button clicked.[0m
+[32m2025-01-09 14:37:49,140 - [INFO] - test_cashin_add_A - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:37:52,045 - [INFO] - test_cashin_add_A - Aktiv sessiya topildi va o'chirildi.[0m
+[32m2025-01-09 14:37:52,697 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:37:53,870 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:37:53,885 - [INFO] - test_cashin_add_A - Opening a new browser window.[0m
+[32m2025-01-09 14:37:55,053 - [INFO] - test_cashin_add_A - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!73vn0j6/trade/tcs/cashin_list[0m
+[32m2025-01-09 14:37:57,631 - [INFO] - test_cashin_add_A - ✅Visible: ('xpath', '//button[@ng-click="q.sc.firstFunc()"]')[0m
+[32m2025-01-09 14:37:58,279 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//button[@ng-click="q.sc.firstFunc()"]')[0m
+[32m2025-01-09 14:37:58,897 - [INFO] - test_cashin_add_A - ✅Visible: ('xpath', '//button[@ng-click="save()"]')[0m
+[32m2025-01-09 14:37:59,609 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//b-input[@name="clients"]//input[@ng-model="d.client_name"]')[0m
+[32m2025-01-09 14:38:00,211 - [INFO] - test_cashin_add_A - Element 'client-25-A' topildi va bosildi.[0m
+[32m2025-01-09 14:38:02,289 - [INFO] - test_cashin_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:38:02,836 - [INFO] - test_cashin_add_A - ✅Visible: ('xpath', '//label/t[normalize-space(text())="Баланс"]/ancestor::label/following-sibling::span[@class="form-view ng-binding"]')[0m
+[32m2025-01-09 14:38:03,567 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//b-input[@name="payment_types"]//input')[0m
+[32m2025-01-09 14:38:04,152 - [INFO] - test_cashin_add_A - Element 'Наличные деньги' topildi va bosildi.[0m
+[32m2025-01-09 14:38:06,238 - [INFO] - test_cashin_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:38:06,857 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//b-input[@name="cashboxes"]//input')[0m
+[32m2025-01-09 14:38:07,440 - [INFO] - test_cashin_add_A - Element 'Основная касса' topildi va bosildi.[0m
+[32m2025-01-09 14:38:09,526 - [INFO] - test_cashin_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:38:10,148 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//button[@ng-click="save()"]')[0m
+[32m2025-01-09 14:38:10,764 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:38:11,612 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:38:12,713 - [INFO] - test_cashin_add_A - ✅Visible: ('xpath', '//button[@ng-click="q.sc.firstFunc()"]')[0m
+[32m2025-01-09 14:38:13,904 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='246015']")[0m
+[32m2025-01-09 14:38:14,536 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//button[@ng-click="view(row)"]')[0m
+[32m2025-01-09 14:38:15,614 - [INFO] - test_cashin_add_A - ✅Visible: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:38:16,167 - [INFO] - test_cashin_add_A - ✅Visible: ('xpath', '//div[@class="b-offcanvas-hide"]/span[1]')[0m
+[32m2025-01-09 14:38:16,786 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:38:17,861 - [INFO] - test_cashin_add_A - ✅Visible: ('xpath', '//button[@ng-click="q.sc.firstFunc()"]')[0m
+[32m2025-01-09 14:38:19,003 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='246015']")[0m
+[32m2025-01-09 14:38:19,638 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//button[@ng-click="postOne(row)"]')[0m
+[32m2025-01-09 14:38:20,243 - [INFO] - test_cashin_add_A - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m

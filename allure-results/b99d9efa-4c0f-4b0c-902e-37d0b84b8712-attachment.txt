@@ -1,0 +1,74 @@
+[32m2025-01-09 14:26:00,114 - [INFO] - test_adding_permissions_to_user - Test run(▶️): test_adding_permissions_to_user[0m
+[32m2025-01-09 14:26:00,114 - [INFO] - test_adding_permissions_to_user - Test data: filial_name='Test_filial-25', role_name='Админ'[0m
+[32m2025-01-09 14:26:00,264 - [INFO] - test_adding_permissions_to_user - Login_page loaded successfully.[0m
+[32m2025-01-09 14:26:00,522 - [INFO] - test_adding_permissions_to_user - Form filled with email: admin@red_test[0m
+[32m2025-01-09 14:26:01,273 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:26:01,274 - [INFO] - test_adding_permissions_to_user - Login button clicked.[0m
+[32m2025-01-09 14:26:01,287 - [INFO] - test_adding_permissions_to_user - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:26:04,192 - [INFO] - test_adding_permissions_to_user - Aktiv sessiya topildi va o'chirildi.[0m
+[32m2025-01-09 14:26:04,822 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:26:06,041 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:26:06,065 - [INFO] - test_adding_permissions_to_user - Opening a new browser window.[0m
+[32m2025-01-09 14:26:07,246 - [INFO] - test_adding_permissions_to_user - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!6s6pjua/trade/tr/role_list[0m
+[32m2025-01-09 14:26:09,261 - [INFO] - test_adding_permissions_to_user - Successful access to the system.[0m
+[32m2025-01-09 14:26:09,823 - [INFO] - test_adding_permissions_to_user - ✅Visible: ('xpath', '//button[@ng-click="fi.add()"]')[0m
+[32m2025-01-09 14:26:09,823 - [INFO] - test_adding_permissions_to_user - RoleList: page opened.[0m
+[32m2025-01-09 14:26:10,977 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='Админ']")[0m
+[32m2025-01-09 14:26:10,977 - [INFO] - test_adding_permissions_to_user - RoleList: role row selected with name: 'Админ'[0m
+[32m2025-01-09 14:26:11,621 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '//button[@ng-click="edit(row)"]')[0m
+[32m2025-01-09 14:26:11,621 - [INFO] - test_adding_permissions_to_user - RoleList: edit button pressed.[0m
+[32m2025-01-09 14:26:12,187 - [INFO] - test_adding_permissions_to_user - ✅Visible: ('xpath', '//button[@ng-click="save()"]')[0m
+[32m2025-01-09 14:26:12,188 - [INFO] - test_adding_permissions_to_user - RoleEdit: page opened.[0m
+[32m2025-01-09 14:26:12,733 - [INFO] - test_adding_permissions_to_user - ✅Visible: ('xpath', '(//label/span)[2]/t')[0m
+[32m2025-01-09 14:26:13,380 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[2]')[0m
+[32m2025-01-09 14:26:14,004 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[3]')[0m
+[32m2025-01-09 14:26:14,621 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[4]')[0m
+[32m2025-01-09 14:26:15,229 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[5]')[0m
+[32m2025-01-09 14:26:15,844 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[6]')[0m
+[32m2025-01-09 14:26:16,468 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[7]')[0m
+[32m2025-01-09 14:26:17,081 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[8]')[0m
+[32m2025-01-09 14:26:17,712 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[9]')[0m
+[32m2025-01-09 14:26:18,330 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[10]')[0m
+[32m2025-01-09 14:26:18,947 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[11]')[0m
+[32m2025-01-09 14:26:19,586 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[12]')[0m
+[32m2025-01-09 14:26:20,199 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[13]')[0m
+[32m2025-01-09 14:26:20,807 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[14]')[0m
+[32m2025-01-09 14:26:21,419 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[15]')[0m
+[32m2025-01-09 14:26:22,059 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[16]')[0m
+[32m2025-01-09 14:26:22,673 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[17]')[0m
+[32m2025-01-09 14:26:23,277 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[18]')[0m
+[32m2025-01-09 14:26:23,886 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[19]')[0m
+[32m2025-01-09 14:26:24,496 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[20]')[0m
+[32m2025-01-09 14:26:25,101 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[21]')[0m
+[32m2025-01-09 14:26:25,706 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[22]')[0m
+[32m2025-01-09 14:26:26,330 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[23]')[0m
+[32m2025-01-09 14:26:26,961 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[24]')[0m
+[32m2025-01-09 14:26:27,571 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[25]')[0m
+[32m2025-01-09 14:26:28,185 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[26]')[0m
+[32m2025-01-09 14:26:28,796 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[27]')[0m
+[32m2025-01-09 14:26:29,410 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//label/span)[28]')[0m
+[32m2025-01-09 14:26:29,410 - [INFO] - test_adding_permissions_to_user - RoleEdit: all checkboxes selected.[0m
+[32m2025-01-09 14:26:30,015 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '//button[@ng-click="save()"]')[0m
+[32m2025-01-09 14:26:30,015 - [INFO] - test_adding_permissions_to_user - RoleEdit: save button pressed.[0m
+[32m2025-01-09 14:26:35,320 - [INFO] - test_adding_permissions_to_user - ✅Visible: ('xpath', '//button[@ng-click="fi.add()"]')[0m
+[32m2025-01-09 14:26:36,457 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='Админ']")[0m
+[32m2025-01-09 14:26:36,457 - [INFO] - test_adding_permissions_to_user - RoleList: role row re-selected with name: 'Админ'[0m
+[32m2025-01-09 14:26:37,127 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '//button[@ng-click="view(row)"]')[0m
+[32m2025-01-09 14:26:37,127 - [INFO] - test_adding_permissions_to_user - RoleList: view button pressed.[0m
+[32m2025-01-09 14:26:38,208 - [INFO] - test_adding_permissions_to_user - ✅Visible: ('xpath', '//div[@class="card-title"]/h3/t')[0m
+[32m2025-01-09 14:26:38,208 - [INFO] - test_adding_permissions_to_user - RoleView: page opened.[0m
+[32m2025-01-09 14:26:38,755 - [INFO] - test_adding_permissions_to_user - ✅Visible: ('xpath', '(//div[@class="card-body pt-4"]//span[text()])[1]')[0m
+[32m2025-01-09 14:26:38,765 - [INFO] - test_adding_permissions_to_user - RoleView: name success checked 'Админ'[0m
+[32m2025-01-09 14:26:39,394 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '(//div[@class="navi-item mb-2"])[3]/a')[0m
+[33m2025-01-09 14:26:41,595 - [WARNING] - test_adding_permissions_to_user - ❗️Click ishlamadi: ('xpath', '//button[@ng-class="q.classDetach"]')[0m
+[33m2025-01-09 14:26:43,710 - [WARNING] - test_adding_permissions_to_user - ❗️Retry Click ishlamadi: ('xpath', '//button[@ng-class="q.classDetach"]')[0m
+[32m2025-01-09 14:26:43,730 - [INFO] - test_adding_permissions_to_user - ✅JavaSkript click: ('xpath', '//button[@ng-class="q.classDetach"]')[0m
+[33m2025-01-09 14:26:45,387 - [WARNING] - test_adding_permissions_to_user - ❗️Click ishlamadi: ('xpath', '//b-grid[@required="form, form_name, has_action, access_type"]//div[@class="tbl-header"]//label[@class="checkbox mt-0"]')[0m
+[33m2025-01-09 14:26:46,437 - [WARNING] - test_adding_permissions_to_user - ❗️Retry Click ishlamadi: ('xpath', '//b-grid[@required="form, form_name, has_action, access_type"]//div[@class="tbl-header"]//label[@class="checkbox mt-0"]')[0m
+[32m2025-01-09 14:26:46,458 - [INFO] - test_adding_permissions_to_user - ✅JavaSkript click: ('xpath', '//b-grid[@required="form, form_name, has_action, access_type"]//div[@class="tbl-header"]//label[@class="checkbox mt-0"]')[0m
+[32m2025-01-09 14:26:47,091 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '//button[@class="btn btn-primary dropdown-toggle"]')[0m
+[32m2025-01-09 14:26:47,746 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '//button[@class="btn btn-primary dropdown-toggle"]/following-sibling::ul/a[1]')[0m
+[32m2025-01-09 14:26:48,391 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:26:48,391 - [INFO] - test_adding_permissions_to_user - RoleView: 'Access all' permissions granted.[0m
+[32m2025-01-09 14:26:53,679 - [INFO] - test_adding_permissions_to_user - ✅Click: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:26:53,679 - [INFO] - test_adding_permissions_to_user - Role(✅): Permissions successfully added to role 'Админ'![0m

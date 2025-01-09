@@ -1,0 +1,24 @@
+[32m2025-01-09 14:40:43,278 - [INFO] - test_order_change_status_B - Login_page loaded successfully.[0m
+[32m2025-01-09 14:40:43,702 - [INFO] - test_order_change_status_B - Form filled with email: test-25@red_test[0m
+[32m2025-01-09 14:40:44,333 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:40:44,333 - [INFO] - test_order_change_status_B - Login button clicked.[0m
+[32m2025-01-09 14:40:44,347 - [INFO] - test_order_change_status_B - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:40:47,271 - [INFO] - test_order_change_status_B - Aktiv sessiya topildi va o'chirildi.[0m
+[32m2025-01-09 14:40:47,891 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:40:49,054 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:40:49,068 - [INFO] - test_order_change_status_B - Opening a new browser window.[0m
+[32m2025-01-09 14:40:50,282 - [INFO] - test_order_change_status_B - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!76rtvea/trade/tdeal/order/order_list[0m
+[32m2025-01-09 14:40:52,882 - [INFO] - test_order_change_status_B - ✅Visible: ('xpath', '//button[@id="trade81-button-add"]')[0m
+[32m2025-01-09 14:40:54,083 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-B']")[0m
+[32m2025-01-09 14:40:54,761 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', "//button[@id='trade81-button-view']")[0m
+[32m2025-01-09 14:40:55,567 - [INFO] - test_order_change_status_B - ✅Visible: ('xpath', "//div[@class='card-title']/h5/t")[0m
+[32m2025-01-09 14:40:56,124 - [INFO] - test_order_change_status_B - ✅Visible: ('xpath', "(//div[@class='card-body']/div/div/div/div[@class='col-sm'])[1]")[0m
+[32m2025-01-09 14:40:56,681 - [INFO] - test_order_change_status_B - ✅Visible: ('xpath', '(//form[@name="form"]//div[@class="row"]//div[@class="col-sm-12"]/span)[1]')[0m
+[32m2025-01-09 14:40:57,234 - [INFO] - test_order_change_status_B - ✅Visible: ('xpath', "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Общее кол-во']]")[0m
+[32m2025-01-09 14:40:57,800 - [INFO] - test_order_change_status_B - ✅Visible: ('xpath', "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Общее кол-во']]")[0m
+[32m2025-01-09 14:40:58,362 - [INFO] - test_order_change_status_B - ✅Visible: ('xpath', "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Сумма']]")[0m
+[32m2025-01-09 14:40:59,003 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', "//button[@id='trade82-button-close']")[0m
+[32m2025-01-09 14:40:59,571 - [INFO] - test_order_change_status_B - ✅Visible: ('xpath', '//button[@id="trade81-button-add"]')[0m
+[32m2025-01-09 14:41:00,197 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', "//button[@id='trade81-button-change_status_one']")[0m
+[32m2025-01-09 14:41:00,857 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', "//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), 'Архив')]")[0m
+[32m2025-01-09 14:41:01,474 - [INFO] - test_order_change_status_B - ✅Click: ('xpath', "//button[@ng-click='a.bConfirm.clickYes()']")[0m

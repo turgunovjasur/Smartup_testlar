@@ -1,0 +1,46 @@
+[32m2025-01-09 14:39:01,633 - [INFO] - test_contract_add_B - Test run(▶️): contract_add[0m
+[32m2025-01-09 14:39:01,633 - [INFO] - test_contract_add_B - Test data: client_name='client-25-B', contract_name='contract-25-B', initial_amount='1200000', base_currency_cod='860'[0m
+[32m2025-01-09 14:39:01,649 - [INFO] - test_contract_add_B - Login_page loaded successfully.[0m
+[32m2025-01-09 14:39:01,874 - [INFO] - test_contract_add_B - Form filled with email: test-25@red_test[0m
+[32m2025-01-09 14:39:02,549 - [INFO] - test_contract_add_B - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:39:02,552 - [INFO] - test_contract_add_B - Login button clicked.[0m
+[32m2025-01-09 14:39:02,566 - [INFO] - test_contract_add_B - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:39:05,178 - [INFO] - test_contract_add_B - Aktiv sessiya topildi va o'chirildi.[0m
+[32m2025-01-09 14:39:05,803 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:39:06,975 - [INFO] - test_contract_add_B - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:39:06,988 - [INFO] - test_contract_add_B - Opening a new browser window.[0m
+[32m2025-01-09 14:39:08,191 - [INFO] - test_contract_add_B - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!7533noy/anor/mkf/contract_list[0m
+[32m2025-01-09 14:39:10,200 - [INFO] - test_contract_add_B - Successful access to the system.[0m
+[32m2025-01-09 14:39:10,774 - [INFO] - test_contract_add_B - ✅Visible: ('xpath', '//button[@ng-click="q.add_actions[0].func()"]')[0m
+[32m2025-01-09 14:39:10,774 - [INFO] - test_contract_add_B - ContractList: page opened.[0m
+[32m2025-01-09 14:39:11,412 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//button[@ng-click="q.add_actions[0].func()"]')[0m
+[32m2025-01-09 14:39:11,413 - [INFO] - test_contract_add_B - ContractList: add button pressed.[0m
+[32m2025-01-09 14:39:12,017 - [INFO] - test_contract_add_B - ✅Visible: ('xpath', '//input[@ng-model="d.contract_number"]')[0m
+[32m2025-01-09 14:39:12,017 - [INFO] - test_contract_add_B - ContractAdd: page opened.[0m
+[32m2025-01-09 14:39:12,017 - [INFO] - test_contract_add_B - Generated contract_number: '796356'[0m
+[32m2025-01-09 14:39:12,714 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//form[@name="form"]//input[@ng-model="d.name"]')[0m
+[32m2025-01-09 14:39:13,268 - [INFO] - test_contract_add_B - ✅Visible: ('xpath', '//form[@name="form"]//input[@ng-model="d.name"]')[0m
+[32m2025-01-09 14:39:13,516 - [INFO] - test_contract_add_B - ContractAdd: contract name inputted: 'contract-25-B'[0m
+[32m2025-01-09 14:39:14,146 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//label[@class="radio"][2]/input[@name="person_kind"]/following-sibling::span')[0m
+[32m2025-01-09 14:39:14,146 - [INFO] - test_contract_add_B - ContractAdd: radio button selected.[0m
+[32m2025-01-09 14:39:14,761 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//form[@name="form"]//b-input[@name="persons"]//input[@ng-model="d.person_name"]')[0m
+[32m2025-01-09 14:39:15,348 - [INFO] - test_contract_add_B - Element 'client-25-B' topildi va bosildi.[0m
+[32m2025-01-09 14:39:17,441 - [INFO] - test_contract_add_B - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:39:17,441 - [INFO] - test_contract_add_B - ContractAdd: client name inputted: 'client-25-B'[0m
+[32m2025-01-09 14:39:18,049 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//form[@name="form"]//b-input[@name="currencies"]//input')[0m
+[32m2025-01-09 14:39:18,684 - [INFO] - test_contract_add_B - Element '860' topildi va bosildi.[0m
+[32m2025-01-09 14:39:20,775 - [INFO] - test_contract_add_B - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:39:20,775 - [INFO] - test_contract_add_B - ContractAdd: currency name inputted: '860'[0m
+[32m2025-01-09 14:39:20,850 - [INFO] - test_contract_add_B - ContractAdd: initial amount inputted: '1200000'[0m
+[32m2025-01-09 14:39:21,468 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '(//form[@name="form"]//label[@class="switch"]/span)[1]')[0m
+[32m2025-01-09 14:39:22,078 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//button[@ng-click="save()"]')[0m
+[32m2025-01-09 14:39:22,079 - [INFO] - test_contract_add_B - ContractAdd: save button pressed.[0m
+[32m2025-01-09 14:39:23,159 - [INFO] - test_contract_add_B - ✅Visible: ('xpath', '//button[@ng-click="q.add_actions[0].func()"]')[0m
+[32m2025-01-09 14:39:24,330 - [INFO] - test_contract_add_B - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='contract-25-B']")[0m
+[32m2025-01-09 14:39:24,330 - [INFO] - test_contract_add_B - ContractList: row found with name: 'contract-25-B'[0m
+[32m2025-01-09 14:39:24,955 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//button[@ng-click="view(row)"]')[0m
+[32m2025-01-09 14:39:24,955 - [INFO] - test_contract_add_B - ContractList: view button pressed.[0m
+[32m2025-01-09 14:39:25,546 - [INFO] - test_contract_add_B - ✅Visible: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:39:25,546 - [INFO] - test_contract_add_B - ContractView: page opened.[0m
+[32m2025-01-09 14:39:26,166 - [INFO] - test_contract_add_B - ✅Click: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:39:26,166 - [INFO] - test_contract_add_B - Contract(✅): 'contract-25-B' successfully added![0m

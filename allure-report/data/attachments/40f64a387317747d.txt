@@ -1,0 +1,7 @@
+--------------------------------------------------
+Offset Add: 
+Cashin Number: 3.0 
+Offset balance: 180000.0 
+Client name: client-25-B
+--------------------------------------------------
+✅ Offset Add-B passed.

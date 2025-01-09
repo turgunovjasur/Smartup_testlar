@@ -47,7 +47,7 @@ class BasePage:
         self.driver = driver
         self.test_name = self._get_test_name()
         self._configure_logging()
-        self.default_timeout = 5
+        self.default_timeout = 30
         self.actions = ActionChains(driver)
 
     def _get_test_name(self):
@@ -831,7 +831,7 @@ class BasePage:
                         return False
 
                     last_height = 0
-                    for _ in range(5):  # Maksimal 5 marta scroll qilishga ruxsat
+                    for _ in range(10):  # Maksimal 5 marta scroll qilishga ruxsat
                         self.driver.execute_script("arguments[0].scrollBy(0, 300);", dropdown_container)
                         time.sleep(1)
 

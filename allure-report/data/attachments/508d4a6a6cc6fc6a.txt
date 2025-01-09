@@ -1,0 +1,39 @@
+[32m2025-01-09 14:31:15,048 - [INFO] - test_client_add_A - Test run(▶️): client_add[0m
+[32m2025-01-09 14:31:15,049 - [INFO] - test_client_add_A - Test data: client_name='client-25-A'[0m
+[32m2025-01-09 14:31:15,068 - [INFO] - test_client_add_A - Login_page loaded successfully.[0m
+[32m2025-01-09 14:31:15,388 - [INFO] - test_client_add_A - Form filled with email: test-25@red_test[0m
+[32m2025-01-09 14:31:16,038 - [INFO] - test_client_add_A - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:31:16,039 - [INFO] - test_client_add_A - Login button clicked.[0m
+[32m2025-01-09 14:31:16,048 - [INFO] - test_client_add_A - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:31:19,987 - [INFO] - test_client_add_A - Aktiv sessiya topildi va o'chirildi.[0m
+[32m2025-01-09 14:31:20,613 - [INFO] - test_client_add_A - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:31:21,776 - [INFO] - test_client_add_A - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:31:21,794 - [INFO] - test_client_add_A - Opening a new browser window.[0m
+[32m2025-01-09 14:31:22,951 - [INFO] - test_client_add_A - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!6xe93ea/anor/mrf/client_list[0m
+[32m2025-01-09 14:31:24,952 - [INFO] - test_client_add_A - Successful access to the system.[0m
+[32m2025-01-09 14:31:25,512 - [INFO] - test_client_add_A - ✅Visible: ('xpath', '//button[@ng-click="add()"]')[0m
+[32m2025-01-09 14:31:25,513 - [INFO] - test_client_add_A - ClientList: page opened.[0m
+[32m2025-01-09 14:31:26,137 - [INFO] - test_client_add_A - ✅Click: ('xpath', '//button[@ng-click="add()"]')[0m
+[32m2025-01-09 14:31:26,137 - [INFO] - test_client_add_A - ClientList: add button pressed.[0m
+[32m2025-01-09 14:31:26,717 - [INFO] - test_client_add_A - ✅Visible: ('xpath', '//button[@ng-click="save()"]')[0m
+[32m2025-01-09 14:31:26,717 - [INFO] - test_client_add_A - ClientAdd: page opened.[0m
+[32m2025-01-09 14:31:27,343 - [INFO] - test_client_add_A - ✅Click: ('xpath', '(//label[@class="radio"])[2]/span')[0m
+[32m2025-01-09 14:31:27,343 - [INFO] - test_client_add_A - ClientAdd: radio button selected.[0m
+[32m2025-01-09 14:31:27,989 - [INFO] - test_client_add_A - ✅Click: ('xpath', '//b-input[@name="persons"]//input')[0m
+[32m2025-01-09 14:31:28,584 - [INFO] - test_client_add_A - Element 'client-25-A' topildi va bosildi.[0m
+[32m2025-01-09 14:31:30,670 - [INFO] - test_client_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:31:30,670 - [INFO] - test_client_add_A - ClientAdd: client name inputted: 'client-25-A'[0m
+[32m2025-01-09 14:31:31,275 - [INFO] - test_client_add_A - ✅Click: ('xpath', '//button[@ng-click="save()"]')[0m
+[32m2025-01-09 14:31:31,885 - [INFO] - test_client_add_A - ✅Click: ('xpath', '//button[@ng-click="a.bConfirm.clickYes()"]')[0m
+[32m2025-01-09 14:31:31,885 - [INFO] - test_client_add_A - ClientAdd: save button pressed.[0m
+[32m2025-01-09 14:31:32,954 - [INFO] - test_client_add_A - ✅Visible: ('xpath', '//button[@ng-click="add()"]')[0m
+[32m2025-01-09 14:31:34,135 - [INFO] - test_client_add_A - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-A']")[0m
+[32m2025-01-09 14:31:34,135 - [INFO] - test_client_add_A - ClientList: row found with name: 'client-25-A'[0m
+[32m2025-01-09 14:31:34,757 - [INFO] - test_client_add_A - ✅Click: ('xpath', '//button[@ng-click="view(row)"]')[0m
+[32m2025-01-09 14:31:34,757 - [INFO] - test_client_add_A - ClientList: view button pressed.[0m
+[32m2025-01-09 14:31:35,854 - [INFO] - test_client_add_A - ✅Visible: ('xpath', "//h5/t[contains(text(),'Основная информация')]")[0m
+[32m2025-01-09 14:31:35,854 - [INFO] - test_client_add_A - ClientView: page opened.[0m
+[32m2025-01-09 14:31:36,415 - [INFO] - test_client_add_A - ✅Visible: ('xpath', '//div[@class="b-offcanvas-hide"]/span[1]')[0m
+[32m2025-01-09 14:31:36,420 - [INFO] - test_client_add_A - ClientView: client name successfully verified: 'client-25-A'[0m
+[32m2025-01-09 14:31:37,032 - [INFO] - test_client_add_A - ✅Click: ('xpath', '//button[@ng-click="page.close()"]')[0m
+[32m2025-01-09 14:31:37,033 - [INFO] - test_client_add_A - Client(✅): 'client-25-A' successfully added![0m

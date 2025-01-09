@@ -1,0 +1,57 @@
+[32m2025-01-09 14:35:12,981 - [INFO] - test_order_add_A - Login_page loaded successfully.[0m
+[32m2025-01-09 14:35:13,350 - [INFO] - test_order_add_A - Form filled with email: test-25@red_test[0m
+[32m2025-01-09 14:35:13,975 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//div/button[contains(text(), 'Войти')]")[0m
+[32m2025-01-09 14:35:13,975 - [INFO] - test_order_add_A - Login button clicked.[0m
+[32m2025-01-09 14:35:13,987 - [INFO] - test_order_add_A - Dashboard loaded successfully.[0m
+[32m2025-01-09 14:35:16,821 - [INFO] - test_order_add_A - Aktiv sessiya topildi va o'chirildi.[0m
+[32m2025-01-09 14:35:17,443 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')[0m
+[32m2025-01-09 14:35:18,619 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), 'Test_filial-25')]")[0m
+[32m2025-01-09 14:35:18,634 - [INFO] - test_order_add_A - Opening a new browser window.[0m
+[32m2025-01-09 14:35:19,871 - [INFO] - test_order_add_A - Navigated to URL: http://gw.greenwhite.uz:8081/xtrade/#/!71are5u/trade/tdeal/order/order_list[0m
+[32m2025-01-09 14:35:22,448 - [INFO] - test_order_add_A - ✅Visible: ('xpath', '//button[@id="trade81-button-add"]')[0m
+[32m2025-01-09 14:35:23,080 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//button[@id='trade81-button-add']")[0m
+[32m2025-01-09 14:35:24,171 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//button[@id='anor279-button-next_step']")[0m
+[32m2025-01-09 14:35:24,739 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//div[@id='anor279-input-b_input-room_name']//input")[0m
+[32m2025-01-09 14:35:25,514 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//div[@id='anor279-input-b_input-room_name']//input")[0m
+[32m2025-01-09 14:35:25,544 - [INFO] - test_order_add_A - Element 'Test_room-25' topilmadi. Scroll boshlanmoqda.[0m
+[32m2025-01-09 14:35:26,670 - [INFO] - test_order_add_A - Element 'Test_room-25' scroll orqali topildi va bosildi.[0m
+[32m2025-01-09 14:35:28,745 - [INFO] - test_order_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:35:29,307 - [INFO] - test_order_add_A - ✅Visible: ('xpath', '//div[@id="anor279-input-b_input-robot_name"]//b-input[@name="robots"]//input')[0m
+[32m2025-01-09 14:35:30,097 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//div[@id="anor279-input-b_input-robot_name"]//b-input[@name="robots"]//input')[0m
+[32m2025-01-09 14:35:30,125 - [INFO] - test_order_add_A - Element 'Test_robot-25' topilmadi. Scroll boshlanmoqda.[0m
+[32m2025-01-09 14:35:31,280 - [INFO] - test_order_add_A - Element 'Test_robot-25' scroll orqali topildi va bosildi.[0m
+[32m2025-01-09 14:35:33,381 - [INFO] - test_order_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:35:33,931 - [INFO] - test_order_add_A - ✅Visible: ('xpath', '//div[@id="anor279-input-b_input-person_name"]//b-input[@name="persons"]//input')[0m
+[32m2025-01-09 14:35:34,680 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//div[@id="anor279-input-b_input-person_name"]//b-input[@name="persons"]//input')[0m
+[32m2025-01-09 14:35:34,698 - [INFO] - test_order_add_A - Element 'client-25-A' topilmadi. Scroll boshlanmoqda.[0m
+[32m2025-01-09 14:35:35,891 - [INFO] - test_order_add_A - Element 'client-25-A' scroll orqali topildi va bosildi.[0m
+[32m2025-01-09 14:35:37,988 - [INFO] - test_order_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:35:38,539 - [INFO] - test_order_add_A - ✅Visible: ('xpath', '//div[@id="anor279-input-b_input-contract_name"]//b-input[@name="contracts"]//input')[0m
+[32m2025-01-09 14:35:39,300 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//div[@id="anor279-input-b_input-contract_name"]//b-input[@name="contracts"]//input')[0m
+[32m2025-01-09 14:35:39,364 - [INFO] - test_order_add_A - Element 'contract-25-A' topildi va bosildi.[0m
+[32m2025-01-09 14:35:41,462 - [INFO] - test_order_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:35:42,157 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//button[@id='anor279-button-next_step']")[0m
+[32m2025-01-09 14:35:42,854 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//div/h3/t[contains(text(), 'ТМЦ')]")[0m
+[32m2025-01-09 14:35:43,480 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[@class="simple"]/input')[0m
+[32m2025-01-09 14:35:44,570 - [INFO] - test_order_add_A - ✅Visible: ('xpath', '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')[0m
+[32m2025-01-09 14:35:45,198 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')[0m
+[32m2025-01-09 14:35:46,504 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//button[@id='anor279-button-next_step']")[0m
+[32m2025-01-09 14:35:47,069 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//div/h3/t[contains(text(), 'ТМЦ')]")[0m
+[32m2025-01-09 14:35:47,713 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//div[@id="anor279-inpu-b_input-payment_type"]//b-input[@name="payment_type"]//input')[0m
+[32m2025-01-09 14:35:48,308 - [INFO] - test_order_add_A - Element 'Наличные деньги' topildi va bosildi.[0m
+[32m2025-01-09 14:35:50,398 - [INFO] - test_order_add_A - Dropdown muvaffaqiyatli yopildi.[0m
+[32m2025-01-09 14:35:51,331 - [INFO] - test_order_add_A - ✅Click: ('xpath', "(//div[@id='anor279-ui_select-status']//span)[1]")[0m
+[32m2025-01-09 14:35:51,975 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//div[@id="anor279-ui_select-status"]/div[@ng-model="d.status"]/ul/li/div[3]')[0m
+[32m2025-01-09 14:35:52,578 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//button[@id='anor279-button-next_step']")[0m
+[32m2025-01-09 14:35:53,213 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//button[@ng-click='a.bConfirm.clickYes()']")[0m
+[32m2025-01-09 14:35:55,796 - [INFO] - test_order_add_A - ✅Visible: ('xpath', '//button[@id="trade81-button-add"]')[0m
+[32m2025-01-09 14:35:56,971 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='client-25-A']")[0m
+[32m2025-01-09 14:35:57,676 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//button[@id='trade81-button-view']")[0m
+[32m2025-01-09 14:35:58,809 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//div[@class='card-title']/h5/t")[0m
+[32m2025-01-09 14:35:59,395 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "(//div[@class='card-body']/div/div/div/div[@class='col-sm'])[1]")[0m
+[32m2025-01-09 14:35:59,954 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Общее кол-во']]")[0m
+[32m2025-01-09 14:36:00,502 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Общее кол-во']]")[0m
+[32m2025-01-09 14:36:01,068 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Сумма']]")[0m
+[32m2025-01-09 14:36:01,710 - [INFO] - test_order_add_A - ✅Click: ('xpath', '//div[@class="card-title"]/ul[@role="tablist"]//span[contains(text(), "Консигнация")]')[0m
+[32m2025-01-09 14:36:02,272 - [INFO] - test_order_add_A - ✅Visible: ('xpath', "//b-pg-grid[@name='consignments']//div[contains(@class, 'tbl-row')]/div[contains(@class, 'tbl-cell') and contains(text(), '08.02.2025')]/following-sibling::div[1]")[0m
+[32m2025-01-09 14:36:02,916 - [INFO] - test_order_add_A - ✅Click: ('xpath', "//button[@id='trade82-button-close']")[0m

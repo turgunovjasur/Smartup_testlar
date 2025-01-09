@@ -1,5 +1,8 @@
 import time
 
+import allure
+import pytest
+
 from tests.test_base.test_base import get_driver
 from tests.test_order.test_cashin import test_cashin_add_A, test_offset_add_A, test_offset_add_B
 
@@ -54,9 +57,9 @@ from utils.driver_setup import driver
 # pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html
 # pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html --alluredir=./allure-results
 # allure serve ./allure-results
-def test_all():
+def get_tests():
     """All test runner"""
-    tests = [
+    return [
         # Base setup
         {"name": "Legal Person Add", "func": test_legal_person_add},
         {"name": "Filial Create", "func": test_filial_creat},
@@ -109,47 +112,24 @@ def test_all():
         {"name": "Order Add-C", "func": test_order_add_C},
         {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
         {"name": "Order Return", "func": test_order_return},
-
     ]
 
-    passed_tests = []
-    failed_tests = []
-    total_tests = len(tests)
 
-    print("\n=== Test Execution Summary ===")
-
-    for test in tests:
+@pytest.mark.parametrize("test", get_tests())
+def test_all(test):
+    with allure.step(test["name"]):
+        driver = get_driver()  # WebDriver obyektini yaratish
         try:
-            driver = get_driver()
-            if driver is None:
-                raise Exception("WebDriver initialization failed")
-
-            test['func'](driver)
-            passed_tests.append(test['name'])
-            print(f"✅ {test['name']}: PASSED")
-            print("*" * 70)
-            print("*" * 70)
+            test["func"](driver)  # Test funksiyasini ishga tushirish
+            print(f"✅ {test['name']} passed.")
         except Exception as e:
-            failed_tests.append({"name": test['name'], "error": str(e)})
-            print(f"❌ {test['name']}: FAILED")
-            print("*" * 70)
-            print("*" * 70)
+            allure.attach(
+                body=str(e),
+                name="Error Log",
+                attachment_type=allure.attachment_type.TEXT
+            )
+            print(f"❌ {test['name']} failed with error: {e}")
+            pytest.fail(f"Test failed: {test['name']}. Stopping execution.")
         finally:
-            if driver:
-                driver.quit()
-            time.sleep(1)
-
-    print("\n=== Final Results ===")
-    print(f"Total Tests: {total_tests}")
-    print(f"Passed: {len(passed_tests)}")
-    print(f"Failed: {len(failed_tests)}")
-
-    if failed_tests:
-        print("\nFailed Tests Details:")
-        for test in failed_tests:
-            print(f"❌ {test['name']}")
-            print(f"   Error: {test['error']}\n")
-
-    # Agar birorta test muvaffaqiyatsiz bo'lsa, pytest uchun xatolikni ko'rsatamiz
-    assert len(failed_tests) == 0, "Some tests failed"
+            driver.quit()  # WebDriver sessiyasini tozalash
 

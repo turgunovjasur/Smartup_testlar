@@ -1,0 +1,9 @@
+Test error_massage: successfully!
+--------------------------------------------------
+Order Product Add: 
+Order ID: 3292.0 
+Client name: client-25-B 
+Product quantity: 15.0 
+Product price: 180000.0
+--------------------------------------------------
+✅ Order Add-B passed.
