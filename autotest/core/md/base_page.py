@@ -47,7 +47,7 @@ class BasePage:
         self.driver = driver
         self.test_name = self._get_test_name()
         self._configure_logging()
-        self.default_timeout = 60
+        self.default_timeout = 5
         self.actions = ActionChains(driver)
 
     def _get_test_name(self):
@@ -323,14 +323,15 @@ class BasePage:
             element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
             return element
         except TimeoutException as e:
-            self.logger.warning(f"Locator DOM da topilmadi: {locator}. Xato: {e}")
-            return False
+            self.logger.error(f"Locator DOM da topilmadi: {locator}. Xato: {e}")
+            raise WebDriverException(f"Locator DOM da topilmadi: {locator}")
 
     def _scroll_to_element(self, element, locator):
         """Element ga scroll qilish."""
 
         try:
-            self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
+            self.driver.execute_script(
+                "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
             time.sleep(0.5)
             return element
 
@@ -342,9 +343,10 @@ class BasePage:
                 self.driver.execute_script(
                     "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element_dom)
                 time.sleep(0.5)
+                return element_dom
             except Exception as e:
                 self.logger.error(f"Scroll: xatolik yuz berdi: {e}")
-            return None
+                raise WebDriverException(f"Scroll qilishda xatolik: {e}")
 
     def _wait_for_visibility(self, locator, timeout=None):
         """Locator ni interfeysda ko‘rinishini tekshirish."""
@@ -355,7 +357,7 @@ class BasePage:
             return element
         except TimeoutException as e:
             self.logger.warning(f"Locator interfeysda ko‘rinmadi: {locator}. Xato: {e}")
-            return False
+            raise WebDriverException(f"Locator interfeysda ko‘rinmadi: {locator}")
 
     def _wait_for_clickable(self, locator, timeout=None):
         """Locatorni ni bosish uchun tayyor ekanligini tekshirish."""
@@ -688,8 +690,9 @@ class BasePage:
 
         # 5. Element ko'rinishi tekshirish
         element = try_with_retries(lambda: self._wait_for_visibility(locator), "Element interfeys da ko'rinishi")
-        if element:
-            self.logger.info(f"✅Visible: {locator}")
+        if not element:
+            raise WebDriverException(f"Element ko‘rinadigan bo‘lmadi: {locator}")
+        self.logger.info(f"✅Visible: {locator}")
         return element
 
     # ------------------------------------------------------------------------------------------------------------------

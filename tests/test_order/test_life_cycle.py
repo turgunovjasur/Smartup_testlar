@@ -224,6 +224,11 @@ def test_filial_creat(driver):
         text = filial_view.check_filial_text()
         assert filial_name == text, f'Error: {filial_name} != {text}'
         base_page.logger.info(f"FilialView: name success checked '{filial_name}'")
+        filial_view.click_navbar_button()
+        base_page.logger.info("FilialView: click_navbar_button pressed.")
+        filial_view.click_checkbox_button()
+        base_page.logger.info("FilialView: click_checkbox_button pressed.")
+        time.sleep(1)
         filial_view.click_close_button()
         base_page.logger.info(f"Filial(✅): '{filial_name}' successfully added!")
 
