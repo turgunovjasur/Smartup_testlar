@@ -1,43 +1,40 @@
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
+from datetime import datetime, timedelta
 
 
-class RoleView(BasePage):
+class CurrencyView(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = (By.XPATH, '//div[@class="card-title"]/h3/t')
+    header = (By.XPATH, "//div[@class='card-title']/h5/t")
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    navbar_button = (By.XPATH, '(//div[@class="navi-item mb-2"])[3]/a')
 
-    def click_navbar_button(self):
-        self.click(self.navbar_button)
+    def click_navbar_button(self, navbar_button):
+        navbar = (By.XPATH, f"(//div[contains(@class,'navi navi-bolder')]//div[contains(@class,'navi-item')]/a)[{navbar_button}]")
+        self.click(navbar)
     # ------------------------------------------------------------------------------------------------------------------
-    get_text_role = (By.XPATH, '(//div[@class="card-body pt-4"]//span[text()])[1]')
+    add_rate_button = (By.XPATH, '//button[@ng-click="openAddRate()"]')
 
-    def check_text(self):
-        return self.get_text(self.get_text_role)
+    def click_add_rate_button(self):
+        self.click(self.add_rate_button)
     # ------------------------------------------------------------------------------------------------------------------
-    detached_button = (By.XPATH, '//button[@ng-class="q.classDetach"]')
+    exchange_rate_input = (By.XPATH, '//div[@class="modal-content"]//div[@class="form-group"]/input[@ng-model="p.data.rate"]')
 
-    def click_detached_button(self):
-        self.click(self.detached_button)
+    def input_exchange_rate_button(self, exchange_rate):
+        self.input_text(self.exchange_rate_input, exchange_rate)
     # ------------------------------------------------------------------------------------------------------------------
-    checkbox_form = (By.XPATH, '//b-grid[@required="form, form_name, has_action, access_type"]//div[@class="tbl-header"]//label[@class="checkbox mt-0"]')
+    save_button = (By.XPATH, '//button[@ng-click="save()"]')
 
-    def click_checkbox_form(self):
-        self.click(self.checkbox_form)
+    def click_save_button(self):
+        self.click(self.save_button)
     # ------------------------------------------------------------------------------------------------------------------
-    dropdown_button = (By.XPATH, '//button[@class="btn btn-primary dropdown-toggle"]')
-    access_all_button = (By.XPATH, '//button[@class="btn btn-primary dropdown-toggle"]/following-sibling::ul/a[1]')
-    yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
+    get_row = (By.XPATH, '//div[@class="tbl"]//div[@class="tbl-row"]')
 
-    def click_access_all_button(self):
-        self.click(self.dropdown_button)
-        self.click(self.access_all_button)
-        self.click(self.yes_button)
+    def check_row(self):
+        return self.wait_for_element_visible(self.get_row)
     # ------------------------------------------------------------------------------------------------------------------
     close_button = (By.XPATH, '//button[@ng-click="page.close()"]')
 

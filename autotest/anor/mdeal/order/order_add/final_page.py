@@ -16,6 +16,11 @@ class OrderAddFinal(BasePage):
     def input_payment_type(self, payment_type_name):
         self.click_options(self.payment_type_input, self.payment_options, payment_type_name)
     # ------------------------------------------------------------------------------------------------------------------
+    get_total_amount = (By.XPATH, "//t[text()='ИТОГО']/parent::label/following-sibling::span")
+
+    def check_total_amount(self):
+        return self.get_numeric_value(self.get_total_amount)
+    # ------------------------------------------------------------------------------------------------------------------
     consignment_date_input = (By.XPATH, '//div[@class="mb-4 ng-scope"]//input[@ng-model="item.consignment_date"]')
     consignment_amount_input = (By.XPATH, '//div[@class="mb-4 ng-scope"]//input[@ng-model="item.consignment_amount"]')
     consignment_amount_button = (By.XPATH, '//button[@ng-click="setConsignmentAmount(item)"]')

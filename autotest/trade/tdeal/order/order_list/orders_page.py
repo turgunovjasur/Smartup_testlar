@@ -1,5 +1,3 @@
-import time
-
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -67,8 +65,8 @@ class OrdersList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
 
-    def find_row(self, client_name):
-        self.find_row_and_click(element_name=client_name, checkbox=True)
+    def find_row(self, client_name, checkbox=False):
+        self.find_row_and_click(element_name=client_name, checkbox=checkbox)
     # ------------------------------------------------------------------------------------------------------------------
     reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
 

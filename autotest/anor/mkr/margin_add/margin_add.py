@@ -2,37 +2,36 @@ from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
-class LoginPage(BasePage):
+class MarginAdd(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    login_header = (By.XPATH, '//div[@class="loginbox__logo"]')
+    header = (By.XPATH, '//button[@ng-click="save()"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.login_header)
+        return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    email_input = (By.XPATH, '//input[@id="login"]')
-    password_input = (By.XPATH, '//input[@id="password"]')
+    name_button = (By.XPATH, '//input[@ng-model="d.name"]')
 
-    def fill_form(self, email, password):
-        self.input_text(self.email_input, email)
-        self.input_text(self.password_input, password)
+    def click_name_button(self, margin_name):
+        self.input_text(self.name_button, margin_name)
     # ------------------------------------------------------------------------------------------------------------------
-    signup_button = (By.XPATH, '//button[@id="sign_in"]')
+    percent_button = (By.XPATH, '//input[@ng-model="d.percent"]')
 
-    def click_button(self):
-        self.click(self.signup_button)
+    def click_percent_button(self, percent_margin):
+        self.input_text(self.percent_button, percent_margin)
     # ------------------------------------------------------------------------------------------------------------------
-    # Logout
-    # ------------------------------------------------------------------------------------------------------------------
-    navbar_button = (By.XPATH, '(//div[@class="topbar-item"])[5]/div/span')
 
-    def click_navbar_button(self):
-        self.click(self.navbar_button)
+    def click_percent_type_radio_button(self, percent_type):
+        radio_button = (By.XPATH, f'(//input[@type="radio" and @ng-model="d.percent_type"])[{percent_type}]/following-sibling::span')
+        self.click(radio_button)
     # ------------------------------------------------------------------------------------------------------------------
-    logout_button = (By.XPATH, '//a[@ng-click="a.logout()"]/div')
-    yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
+    save_button = (By.XPATH, '//button[@ng-click="save()"]')
 
-    def click_logout_button(self):
-        self.click(self.logout_button)
-        self.click(self.yes_button)
+    def click_save_button(self):
+        self.click(self.save_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    error_header = (By.XPATH, '//div[contains(@class,"modal-header")]//h4[contains(@class,"modal-title") and contains(text(),"Ошибка")]')
+
+    def check_error_header(self):
+        self.wait_for_element_visible(self.error_header, timeout=5, retries=1)
     # ------------------------------------------------------------------------------------------------------------------

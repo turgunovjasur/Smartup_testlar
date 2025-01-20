@@ -1,3 +1,4 @@
+import re
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
@@ -9,13 +10,26 @@ class OrderAddProduct(BasePage):
     def element_visible(self):
         return self.wait_for_element_visible(self.header_text)
     # ------------------------------------------------------------------------------------------------------------------
-    product_text = (By.XPATH, '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
 
-    def get_product_text(self):
-        """Sahifadagi mahsulot nomini olish"""
-        self.click(self.name_input)
-        full_text = self.get_text(self.product_text)
-        return full_text.split()[0]
+    def input_name_product(self, product_name, warehouse_name, price_type_name):
+        if self.click(self.name_input):
+            element_list = self._wait_for_presence_all(self.name_options)
+
+            for element in element_list:
+                element_text = element.text
+                parts = re.split(r'\s(?=[A-ZА-Я])', element_text, maxsplit=2)
+
+                # print("Parts of the element:")
+                # for i, part in enumerate(parts, start=1):
+                #     print(f"  Part {i}: {part.strip()}")
+
+                if (len(parts) == 3 and
+                        parts[0].strip() == product_name and
+                        parts[1].strip() == warehouse_name and
+                        parts[2].strip() == price_type_name):
+                    element.click()
+                    break
+
     # ------------------------------------------------------------------------------------------------------------------
     name_input = (By.XPATH, '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[@class="simple"]/input')
     name_options = (By.XPATH, '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
@@ -33,6 +47,13 @@ class OrderAddProduct(BasePage):
 
     def input_quantity(self, product_quantity):
         self.input_text(self.quantity_input, product_quantity)
+    # ------------------------------------------------------------------------------------------------------------------
+    margin_value_input = (By.XPATH, '//div[@ng-model="item.margin_value"]//span[@ng-click="$select.activate()"]')
+
+    def click_percent_value_button(self, percent_value):
+        self.click(self.margin_value_input)
+        percent_value_button = (By.XPATH, f'//div[@ng-model="item.margin_value"]//div[contains(@class,"ui-select-choices-row")]/span[contains(text(),"{percent_value}")]')
+        self.click(percent_value_button)
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 

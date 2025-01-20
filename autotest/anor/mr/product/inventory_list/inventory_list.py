@@ -94,11 +94,6 @@ class InventoryList(BasePage):
     def find_and_click_checkbox(self, product_name):
         self.find_row_and_click(element_name=product_name)
     # ------------------------------------------------------------------------------------------------------------------
-    set_price_button = (By.XPATH, "//button[@ng-click='set_price(row)']")
-
-    def click_set_price_button(self):
-        self.click(self.set_price_button)
-    # ------------------------------------------------------------------------------------------------------------------
     navbar_button = (By.XPATH, "//ul[contains(@class,'breadcrumb')]/li[5]/a")
 
     def click_navbar_button(self):

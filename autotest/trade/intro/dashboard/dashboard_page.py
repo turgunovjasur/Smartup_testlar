@@ -42,7 +42,7 @@ class DashboardPage(BasePage):
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 
     def click_button_delete_session(self):
-        self.click(self.delete_session_button, timeout=2)
+        self.click(self.delete_session_button)
     # ------------------------------------------------------------------------------------------------------------------
     # navbar buttons
     # ------------------------------------------------------------------------------------------------------------------

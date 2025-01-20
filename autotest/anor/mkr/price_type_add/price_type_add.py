@@ -20,16 +20,17 @@ class PriceTypeAdd(BasePage):
         self.input_text(self.name_input, price_type_name)
     # ------------------------------------------------------------------------------------------------------------------
     rooms_input = (By.XPATH, '//b-input[@name="rooms"]//input')
-    options = (By.XPATH, '//b-input[@name="rooms"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+    rooms_options = (By.XPATH, '//b-input[@name="rooms"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def input_rooms(self, room_name):
-        self.click_options(self.rooms_input, self.options, room_name)
+        self.click_options(self.rooms_input, self.rooms_options, room_name)
     # ------------------------------------------------------------------------------------------------------------------
-    currency_name_input = (By.XPATH, "(id('anor183-input-b_input-currency_name')//input)[2]")
-    currency_name = (By.XPATH, "id('anor183-input-b_input-currency_name')//div[@class='hint-body ng-scope']/div[7]")
+    currency_input = (By.XPATH, '//b-input[@name="currencies"]//input')
+    currency_options = (By.XPATH, '//b-input[@name="currencies"]//div[contains(@class,"hint")]//div[contains(@class,"hint-item")]')
 
-    def input_currency_name(self):
-        self.input_text_elem(self.currency_name_input, self.currency_name)
+    def input_currency(self, currency_name):
+        self.clear_element(self.currency_input)
+        self.click_options(self.currency_input, self.currency_options, currency_name)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, "//button[@id='anor183-button-save']")
 

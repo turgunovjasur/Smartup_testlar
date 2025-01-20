@@ -2,28 +2,27 @@ from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
-class ProductSetPrice(BasePage):
+class MarginList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = (By.XPATH, '//button[@ng-click="save()"]')
+    header = (By.XPATH, '//button[@ng-if="fi.open_attach"]')
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    text = (By.XPATH, '//label[@class="form-view ng-binding"]')
+    attach_button = (By.XPATH, '//button[@ng-if="fi.open_attach"]')
 
-    def check_product(self):
-        return self.get_text(self.text)
+    def click_attach_button(self):
+        self.click(self.attach_button)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def input_prices(self, product_price, price_type_name):
-        prices_input = (By.XPATH, f"//b-pg-grid[@name='prices']//div[contains(text(), '{price_type_name}')]/following-sibling::div/input")
-        self.input_text(prices_input, product_price)
+    def find_row(self, margin_name):
+        self.find_row_and_click(element_name=margin_name)
     # ------------------------------------------------------------------------------------------------------------------
-    save_button = (By.XPATH, '//button[@ng-click="save()"]')
-    yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
+    attach_one_button = (By.XPATH, '//button[@ng-click="attachOne(row)"]')
+    yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
-    def click_save_button(self):
-        self.click(self.save_button)
+    def click_attach_one_button(self):
+        self.click(self.attach_one_button)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------

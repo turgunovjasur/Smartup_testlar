@@ -22,12 +22,14 @@ class OrderView(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     get_product_total_quantity = (By.XPATH, "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Общее кол-во']]")
     get_product_total_price = (By.XPATH, "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Сумма']]")
+    get_product_total_sum = (By.XPATH, "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Итого']]")
 
     def check_items(self):
         self.wait_for_element_visible(self.get_product_total_quantity)
         quantity = self.get_numeric_value(self.get_product_total_quantity)
         price = self.get_numeric_value(self.get_product_total_price)
-        return quantity, price
+        total_sum = self.get_numeric_value(self.get_product_total_sum)
+        return quantity, price, total_sum
     # ------------------------------------------------------------------------------------------------------------------
     get_client_name = (By.XPATH, '//form[@name="form"]//div[@class="form-group"]//t[contains(text(), "Клиент")]/ancestor::label/following-sibling::span')
 
@@ -41,6 +43,10 @@ class OrderView(BasePage):
         tablist_button = (By.XPATH, f'//div[@class="card-title"]/ul[@role="tablist"]//span[contains(text(), "{navbar_button}")]')
         self.click(tablist_button)
     # ------------------------------------------------------------------------------------------------------------------
+    get_row_consignment = (By.XPATH, '//b-pg-grid[@name="consignments"]//div[@class="tbl-body"]//div[contains(@class, "tbl-no-data-row") and contains(text(), "нет данных")]')
+
+    def check_row_consignment(self):
+        self.wait_for_element_visible(self.get_row_consignment)
 
     def check_consignments(self, add_date):
         current_date = datetime.now()

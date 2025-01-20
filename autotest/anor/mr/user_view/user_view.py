@@ -34,7 +34,7 @@ class UserView(BasePage):
     # Forms:
     # ------------------------------------------------------------------------------------------------------------------
     aria_expand_button = (By.XPATH, '//b-grid-controller[@name="form_table" or @name="other_table"]//button[@class="btn btn-default rounded-0 ng-binding"]')
-    limit_button = (By.XPATH, '//b-grid-controller[@name="form_table" or @name="other_table"]//a[@ng-click="changeLimit(500)"]')
+    limit_button = (By.XPATH, '//b-grid-controller[@name="form_table" or @name="other_table"]//a[@ng-click="changeLimit(1000)"]')
     checkbox_form = (By.XPATH, '//b-grid[@required="form, form_name, has_action, access_type"]//div[@class="tbl-header"]//label[@class="checkbox mt-0"]')
     attach_form = (By.XPATH, '//button[@ng-click="attachChecked()"]')
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
@@ -46,7 +46,6 @@ class UserView(BasePage):
         self.click(self.limit_button)
 
     def click_checkbox_form(self):
-        time.sleep(2)
         self.click(self.checkbox_form)
 
     def click_attach_form(self):

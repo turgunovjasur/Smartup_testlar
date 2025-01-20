@@ -12,6 +12,10 @@ from utils.driver_setup import driver
 
 
 def cashin_add(driver, client_name=None):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): cashin_add")
+
     # Test data
     data = test_data()["data"]
     payment_type_name = data["payment_type_name"]
@@ -22,12 +26,12 @@ def cashin_add(driver, client_name=None):
 
     # Cashin List
     cashin_list = CashinList(driver)
-    assert cashin_list.element_visible(), 'CashinList not open!'
+    assert cashin_list.element_visible(), base_page.logger.error('CashinList not open!')
     cashin_list.click_add_button()
 
     # Cashin Add
     cashin_add = CashinAdd(driver)
-    assert cashin_add.element_visible(), 'CashinAdd not open!'
+    assert cashin_add.element_visible(), base_page.logger.error('CashinAdd not open!')
     cashin_number = random.randint(1, 999999)
     cashin_add.input_cashin_number(cashin_number)
     cashin_add.input_clients(client_name)
@@ -41,53 +45,48 @@ def cashin_add(driver, client_name=None):
     cashin_add.click_close_button()
 
     # Cashin List
-    assert cashin_list.element_visible(), 'CashinList not open!'
+    assert cashin_list.element_visible(), base_page.logger.error('CashinList not open!')
     cashin_list.find_row(cashin_number)
     cashin_list.click_view_button()
 
     # Cashin View
     cashin_view = CashinView(driver)
-    assert cashin_view.element_visible(), 'CashinView not open!'
+    assert cashin_view.element_visible(), base_page.logger.error('CashinView not open!')
     text = cashin_view.check_cashin_number()
-    assert cashin_number == text, f'cashin_number: {cashin_number} != text: {text}'
+    assert cashin_number == text, base_page.logger.error(f'cashin_number: {cashin_number} != text: {text}')
     cashin_view.click_close_button()
 
     # Cashin List
-    assert cashin_list.element_visible(), 'CashinList not open!'
+    assert cashin_list.element_visible(), base_page.logger.error('CashinList not open!')
     cashin_list.find_row(cashin_number)
     cashin_list.click_post_button()
-    print("-" * 50)
-    print(f'Cashin Add: \nCashin number: {cashin_number} \nAmount cashin: {get_amount} \nClient name: {client_name}')
-    print("-" * 50)
 
 
 def test_cashin_add_A(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-A'
     cashin_add(driver, client_name=client_name)
-    # print(f'Client name: "{client_name}"')
-    # print("-" * 50)
 
 
 def test_cashin_add_B(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-B'
     cashin_add(driver, client_name=client_name)
-    # print(f'Client name: "{client_name}"')
-    # print("-" * 50)
 
 
 def test_cashin_add_C(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-C'
     cashin_add(driver, client_name=client_name)
-    # print(f'Client name: "{client_name}"')
-    # print("-" * 50)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 def offset_add(driver, client_name=None, payment=False):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): cashin_add")
+
     # Test data
     data = test_data()["data"]
     cash_register_name = data["cash_register_name"]
@@ -96,13 +95,13 @@ def offset_add(driver, client_name=None, payment=False):
     login_user(driver, url='anor/mdeal/order/offset/offset_list')
 
     offset_list = OffsetList(driver)
-    assert offset_list.element_visible(), 'OffsetList not open!'
+    assert offset_list.element_visible(), base_page.logger.error('OffsetList not open!')
     offset_list.find_row(client_name)
     offset_list.click_detail_button()
 
     # Offset Detail List
     offset_detail_list = OffsetDetailList(driver)
-    assert offset_detail_list.element_visible(), 'OffsetDetailList not open!'
+    assert offset_detail_list.element_visible(), base_page.logger.error('OffsetDetailList not open!')
     offset_detail_list.find_row(client_name)
 
     if payment is False:
@@ -110,14 +109,11 @@ def offset_add(driver, client_name=None, payment=False):
 
         # Offset Detail List
         offset = Offset(driver)
-        assert offset.element_visible(), 'Offset not open!'
-        assert offset.find_row(client_name), f'Error: Automatic price button did not work'
+        assert offset.element_visible(), base_page.logger.error('Offset not open!')
+        assert offset.find_row(client_name), base_page.logger.error(f'Error: Automatic price button did not work')
         check_balance = offset.check_balance(client_name)
-        assert check_balance == 0, f'Error: Balance is not equal to zero. -> {check_balance} != {0}'
-
-        print("-" * 50)
-        print(f'Offset Add: \nOffset balance: {check_balance} \nClient name: {client_name}')
-        print("-" * 50)
+        assert check_balance == 0, \
+            base_page.logger.error(f'Error: Balance is not equal to zero. -> {check_balance} != {0}')
 
         offset.click_post_button()
         offset.click_close_button()
@@ -128,8 +124,8 @@ def offset_add(driver, client_name=None, payment=False):
 
         # Offset Detail List
         offset = Offset(driver)
-        assert offset.element_visible(), 'Offset not open!'
-        assert offset.find_row(client_name), f'Error: Automatic price button did not work'
+        assert offset.element_visible(), base_page.logger.error('Offset not open!')
+        assert offset.find_row(client_name), base_page.logger.error(f'Error: Automatic price button did not work')
         offset.input_cashboxes(cash_register_name)
         check_balance_payment = offset.check_balance_payment(client_name)
         offset.click_post_button()
@@ -141,23 +137,22 @@ def offset_add(driver, client_name=None, payment=False):
         cut_url = base_page.cut_url()
         open_new_window(driver, cut_url + 'trade/tcs/cashin_list')
         cashin_list = CashinList(driver)
-        assert cashin_list.element_visible(), 'CashinList not open!'
+        assert cashin_list.element_visible(), base_page.logger.error('CashinList not open!')
         cashin_list.find_row(client_name)
         cashin_list.click_view_button()
 
         # Cashin View
         cashin_view = CashinView(driver)
-        assert cashin_view.element_visible(), 'CashinView not open!'
+        assert cashin_view.element_visible(), base_page.logger.error('CashinView not open!')
         get_cashin_number = cashin_view.check_cashin_number()
         get_client_name = cashin_view.check_client_name()
-        assert client_name == get_client_name, f'client_name: {client_name} != get_client_name: {get_client_name}'
+        assert client_name == get_client_name, \
+            base_page.logger.error(f'client_name: {client_name} != get_client_name: {get_client_name}')
         get_total_price = cashin_view.check_total_price()
-        assert check_balance_payment == get_total_price, f'check_balance_payment: {check_balance_payment} != get_total_price: {get_total_price}'
-
-        print("-" * 50)
-        print(f'Offset Add: \nCashin Number: {get_cashin_number} \nOffset balance: {check_balance_payment} \nClient name: {client_name}')
-        print("-" * 50)
-
+        assert check_balance_payment == get_total_price, \
+            base_page.logger.error(
+                f'check_balance_payment: {check_balance_payment} != get_total_price: {get_total_price}')
+        base_page.logger.info(f'get_cashin_number: {get_cashin_number}')
         cashin_view.click_close_button()
 
 
@@ -165,8 +160,6 @@ def test_offset_add_A(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-A'
     offset_add(driver, client_name=client_name)
-    # print(f'Client name: "{client_name}"')
-    # print("-" * 50)
 
 
 def test_offset_add_B(driver):
@@ -175,16 +168,11 @@ def test_offset_add_B(driver):
     offset_add(driver,
                client_name=client_name,
                payment=True)
-    # print(f'Client name: "{client_name}"')
-    # print("-" * 50)
 
 
 def test_offset_add_C(driver):
     data = test_data()["data"]
     client_name = f'{data["client_name"]}-C'
     offset_add(driver, client_name=client_name)
-    # print(f'Client name: "{client_name}"')
-    # print("-" * 50)
 
 # ----------------------------------------------------------------------------------------------------------------------
-

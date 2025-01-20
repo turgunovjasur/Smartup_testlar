@@ -1,8 +1,0 @@
---------------------------------------------------
-Order Product Add: 
-Order ID: 3293.0 
-Client name: client-25-C 
-Product quantity: 20.0 
-Product price: 240000.0
---------------------------------------------------
-✅ Order Add-C passed.

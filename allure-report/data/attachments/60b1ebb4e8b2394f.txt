@@ -1,7 +1,0 @@
---------------------------------------------------
-Cashin Add: 
-Cashin number: 246015 
-Amount cashin: 120000.0 
-Client name: client-25-A
---------------------------------------------------
-✅ Cashin Add-A passed.

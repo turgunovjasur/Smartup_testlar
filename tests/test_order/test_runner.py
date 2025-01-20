@@ -16,7 +16,6 @@ from tests.test_order.test_life_cycle import (
     test_user_creat,
     test_adding_permissions_to_user,
     test_user_change_password,
-    test_price_type_add,
     test_payment_type_add,
     test_sector_add,
     test_product_add,
@@ -28,16 +27,22 @@ from tests.test_order.test_life_cycle import (
     test_client_add_C,
     test_room_attachment,
     test_init_balance,
-    test_contract_add_A,
-    test_contract_add_B,
-    test_contract_add_C, test_setting_consignment,
+    test_setting_consignment,
+    test_sub_filial_add,
+    test_price_type_add_UZB,
+    test_price_type_add_USA,
+    test_currency_add,
+    test_margin_add,
+    test_contract_add_A_UZB,
+    test_contract_add_B_UZB,
+    test_contract_add_C_USA,
 )
 
 from tests.test_order.test_order import (
     # Add
-    test_order_add_A,
-    test_order_add_B,
-    test_order_add_C,
+    test_order_add_with_consignment,
+    test_order_add_client_B_check_contract,
+    test_order_add_price_type_USA,
 
     # Edit
     test_order_edit_A,
@@ -65,6 +70,7 @@ def get_tests():
         {"name": "Filial Create", "func": test_filial_creat},
         {"name": "Room Add", "func": test_room_add},
         {"name": "Robot Add", "func": test_robot_add},
+        {"name": "Sub filial Add", "func": test_sub_filial_add},
 
         # User management
         {"name": "Natural Person Add", "func": test_natural_person_add},
@@ -73,10 +79,13 @@ def get_tests():
         {"name": "User Change Password", "func": test_user_change_password},
 
         # Product setup
-        {"name": "Price Type Add", "func": test_price_type_add},
+        {"name": "Price Type Add", "func": test_price_type_add_UZB},
+        {"name": "Price Type Add", "func": test_price_type_add_USA},
         {"name": "Payment Type Add", "func": test_payment_type_add},
         {"name": "Sector Add", "func": test_sector_add},
         {"name": "Product Add", "func": test_product_add},
+        {"name": "Currency Add", "func": test_currency_add},
+        {"name": "Margin Add", "func": test_margin_add},
 
         # Client setup
         {"name": "Natural Person Client Add-A", "func": test_natural_person_client_add_A},
@@ -91,25 +100,22 @@ def get_tests():
         {"name": "Init Balance", "func": test_init_balance},
         {"name": "Setting Consignment", "func": test_setting_consignment},
 
-        # Test-A:
         # Contract -> Order(Add, Edit, Status) -> Cashin_Add -> Offset_Add
-        {"name": "Contract Add-A", "func": test_contract_add_A},
-        {"name": "Order Add-A", "func": test_order_add_A},
+        {"name": "Contract Add-A", "func": test_contract_add_A_UZB},
+        {"name": "Order Add-A", "func": test_order_add_with_consignment},
         {"name": "Order Edit-A", "func": test_order_edit_A},
         {"name": "Order Change Status-A", "func": test_order_change_status_A},
         {"name": "Cashin Add-A", "func": test_cashin_add_A},
         {"name": "Offset Add-A", "func": test_offset_add_A},
 
-        # Test-B:
         # Contract -> Order(Add, Edit, Status) -> Offset_Add -> Check: Cashin_Add
-        {"name": "Contract Add-B", "func": test_contract_add_B},
-        {"name": "Order Add-B", "func": test_order_add_B},
+        {"name": "Contract Add-B", "func": test_contract_add_B_UZB},
+        {"name": "Order Add-B", "func": test_order_add_client_B_check_contract},
         {"name": "Order Change Status-B", "func": test_order_change_status_B},
         {"name": "Offset Add-B", "func": test_offset_add_B},
 
-        # Test-C:
-        # {"name": "Contract Add-C", "func": test_contract_add_C},
-        {"name": "Order Add-C", "func": test_order_add_C},
+        {"name": "Contract Add-C", "func": test_contract_add_C_USA},
+        {"name": "Order Add-C", "func": test_order_add_price_type_USA},
         {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
         {"name": "Order Return", "func": test_order_return},
     ]

@@ -15,6 +15,11 @@ class ContractView(BasePage):
     def check_contract_name(self):
         return self.get_text(self.get_contract_name)
     # ------------------------------------------------------------------------------------------------------------------
+    get_currency_name = (By.XPATH, "//div[contains(@class,'col-sm-12')]/label/t[contains(text(),'Валюта')]/ancestor::label/following-sibling::span")
+
+    def check_currency_name(self):
+        return self.get_text(self.get_currency_name)
+    # ------------------------------------------------------------------------------------------------------------------
     close_button = (By.XPATH, '//button[@ng-click="page.close()"]')
 
     def click_close_button(self):

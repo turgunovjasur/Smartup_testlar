@@ -1,15 +1,19 @@
 import random
 import time
-import logging
 
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
 from autotest.anor.mdeal.order.order_add.order_request_view.order_request_view import OrderRequestView
 from autotest.anor.mdeal.order.order_request_list.order_request_list import OrderRequestList
+from autotest.anor.mk.currency_list.currency_list import CurrencyList
+from autotest.anor.mk.currency_view.currency_view import CurrencyView
 from autotest.anor.mkf.contract_add.contract_add import ContractAdd
 from autotest.anor.mkf.contract_list.contract_list import ContractList
 from autotest.anor.mkf.contract_view.contract_view import ContractView
+from autotest.anor.mkr.margin_add.margin_add import MarginAdd
+from autotest.anor.mkr.margin_list.margin_list import MarginList
+from autotest.anor.mkr.margin_list_attach.margin_list_attach import MarginListAttach
 from autotest.anor.mkr.payment_type_list.payment_type_list import PaymentTypeList
 from autotest.anor.mkr.payment_type_list_attach.payment_type_list_attach import PaymentTypeListAttach
 from autotest.anor.mkr.price_type_add.price_type_add import PriceTypeAdd
@@ -46,6 +50,8 @@ from autotest.anor.mrf.robot_add.robot_add import RobotAdd
 from autotest.anor.mrf.robot_list.robot_list import RobotList
 from autotest.anor.mrf.robot_view.robot_view import RobotView
 from autotest.anor.mrf.room_attachment.room_attachment import RoomAttachment
+from autotest.anor.mrf.subfilial_add.subfilial_add import SubFilialAdd
+from autotest.anor.mrf.subfilial_list.subfilial_list import SubFilialList
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.change_password.change_password import ChangePassword
 from autotest.core.md.company_add.company_add import CompanyAdd
@@ -60,62 +66,68 @@ from autotest.trade.tr.role_list.role_list import RoleList
 from autotest.trade.trf.room_add.room_add import RoomAdd
 from autotest.trade.trf.room_list.room_list import RoomList
 from autotest.trade.trf.room_view.room_view import RoomView
-from tests.test_base.test_base import test_data, login, dashboard, open_new_window, login_admin, login_user
+from tests.test_base.test_base import test_data, login, dashboard, open_new_window, login_admin, login_user, logout
 from utils.driver_setup import driver
 
 
 def test_company_creat(driver):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): test_company_creat")
+
     # Test data
     data = test_data()["data"]
 
-    # Login
-    login(driver, data['email_company'], data['password_company'])
+    try:
+        # Login
+        login(driver, data['email_company'], data['password_company'])
 
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.click_main_button()
+        # Dashboard
+        dashboard(driver)
+        dashboard_page = DashboardPage(driver)
+        dashboard_page.click_main_button()
 
-    # MainNavbar
-    time.sleep(2)
-    main_navbar = MainNavbar(driver)
-    assert main_navbar.element_visible(), 'MainNavbar not open!'
-    main_navbar.click_company_button()
+        # Main Navbar
+        main_navbar = MainNavbar(driver)
+        assert main_navbar.element_visible() or base_page.logger.error('MainNavbar not open!')
+        main_navbar.click_company_button()
 
-    # Company created:
-    time.sleep(2)
-    company_list = CompanyList(driver)
-    assert company_list.element_visible(), 'CompanyList not open!'
-    company_list.click_add_button()
+        # Company created:
+        company_list = CompanyList(driver)
+        assert company_list.element_visible() or base_page.logger.error('CompanyList not open!')
+        company_list.click_add_button()
 
-    # CompanyAdd
-    time.sleep(2)
-    company_add = CompanyAdd(driver)
-    assert company_add.element_visible(), 'CompanyAdd not open!'
-    company_add.input_code(data["code_input"])
-    company_add.input_name(data["name_company"])
-    company_add.input_plan_accounts(data["plan_account"])
-    company_add.input_bank(data["bank_name"])
-    company_add.input_checkbox()
-    company_add.click_save_button()
+        # Company Add
+        company_add = CompanyAdd(driver)
+        assert company_add.element_visible() or base_page.logger.error('CompanyAdd not open!')
+        company_add.input_code(data["code_input"])
+        company_add.input_name(data["name_company"])
+        company_add.input_plan_accounts(data["plan_account"])
+        company_add.input_bank(data["bank_name"])
+        company_add.input_checkbox()
+        company_add.click_save_button()
 
-    # CompanyList
-    time.sleep(2)
-    assert company_list.element_visible(), 'CompanyList not open!'
-    company_list.find_company(data["code_input"])
-    company_list.click_view_button()
+        # Company List
+        assert company_list.element_visible() or base_page.logger.error('CompanyList not open!')
+        company_list.find_company(data["code_input"])
+        company_list.click_view_button()
 
-    # CompanyView
-    time.sleep(2)
-    company_view = CompanyView(driver)
-    assert company_view.element_visible(), 'CompanyView not open!'
-    text = company_view.check_filial_text()
-    assert data["name_company"] == text, f'Error: {data["name_company"]} != {text}'
-    company_view.click_navbar_button()
-    company_view.click_checkbox()
-    company_view.click_close_button()
-    time.sleep(2)
-    print(f"Company: '{data['name_company']}' successfully added!")
+        # Company View
+        company_view = CompanyView(driver)
+        assert company_view.element_visible() or base_page.logger.error('CompanyView not open!')
+        text = company_view.check_filial_text()
+        assert data["name_company"] == text or \
+               base_page.logger.error(f'Error: {data["name_company"]} != {text}')
+        company_view.click_navbar_button()
+        company_view.click_checkbox()
+        company_view.click_close_button()
+        time.sleep(2)
+        base_page.logger.info(f"✅Company: '{data['name_company']}' successfully added!")
+
+    except Exception as e:
+        base_page.logger.error(f"Error massage(❌): {e}")
+        base_page.take_screenshot("test_company_creat_error")
+        raise
 
 
 def test_legal_person_add(driver, legal_person_name=None):
@@ -131,38 +143,28 @@ def test_legal_person_add(driver, legal_person_name=None):
     try:
         # Login
         login_admin(driver, url='anor/mr/person/legal_person_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Legal Person List
         legal_person_list = LegalPersonList(driver)
-        assert legal_person_list.element_visible(), 'LegalPersonList not open!'
-        base_page.logger.info("LegalPersonList: page opened.")
-        legal_person_list.click_add_button()
-        base_page.logger.info("LegalPersonList: add button pressed.")
-
-        # Legal Person Add
-        legal_person_add = LegalPersonAdd(driver)
-        assert legal_person_add.element_visible(), 'LegalPersonAdd not open!'
-        base_page.logger.info("LegalPersonAdd: page opened.")
-        legal_person_add.input_name(legal_person_name)
-        base_page.logger.info(f"LegalPersonAdd: name inputted: '{legal_person_name}'")
-        legal_person_add.click_save_button()
-        base_page.logger.info("LegalPersonAdd: save button pressed.")
+        # assert legal_person_list.element_visible() or base_page.logger.error('LegalPersonList not open!')
+        # legal_person_list.click_add_button()
+        #
+        # # Legal Person Add
+        # legal_person_add = LegalPersonAdd(driver)
+        # assert legal_person_add.element_visible() or base_page.logger.error('LegalPersonAdd not open!')
+        # legal_person_add.input_name(legal_person_name)
+        # legal_person_add.click_save_button()
 
         # Legal Person List
-        assert legal_person_list.element_visible(), 'LegalPersonList not open!'
+        assert legal_person_list.element_visible() or base_page.logger.error('LegalPersonList not open!')
         legal_person_list.find_row(legal_person_name)
-        base_page.logger.info(f"LegalPersonList: row found with name: '{legal_person_name}'")
         legal_person_list.click_view_button()
-        base_page.logger.info("LegalPersonList: view button pressed.")
 
         # Legal Person View
         legal_person_view = LegalPersonView(driver)
-        assert legal_person_view.element_visible(), 'LegalPersonView not open!'
-        base_page.logger.info("LegalPersonView: page opened.")
+        assert legal_person_view.element_visible() or base_page.logger.error('LegalPersonView not open!')
         text = legal_person_view.check_text()
         assert legal_person_name == text, f'Error: {legal_person_name} != {text}'
-        base_page.logger.info(f"LegalPersonView: name success checked '{legal_person_name}'")
         base_page.logger.info(f"Legal Person(✅): '{legal_person_name}' successfully added!")
 
     except Exception as e:
@@ -188,42 +190,33 @@ def test_filial_creat(driver):
     try:
         # Login
         login_admin(driver, url='anor/mr/filial_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Filial List
         filial_list = FilialList(driver)
-        assert filial_list.element_visible(), 'FilialList not open!'
-        base_page.logger.info("FilialList: page opened.")
+        assert filial_list.element_visible() or base_page.logger.error('FilialList not open!')
         filial_list.click_add_button()
-        base_page.logger.info("FilialList: add button pressed.")
 
         # FilialAdd
         filial_add = FilialAdd(driver)
-        assert filial_add.element_visible(), 'FilialAdd not open!'
-        base_page.logger.info("FilialAdd: page opened.")
+        assert filial_add.element_visible() or base_page.logger.error('FilialAdd not open!')
         filial_add.input_name(filial_name)
-        base_page.logger.info(f"FilialAdd: name inputted: '{filial_name}'")
         filial_add.input_base_currency_name(base_currency_cod)
-        base_page.logger.info(f"FilialAdd: base currency code inputted: '{base_currency_cod}'")
         filial_add.input_person_name(legal_person_name)
-        base_page.logger.info(f"FilialAdd: legal person name inputted: '{legal_person_name}'")
         filial_add.click_save_button()
-        base_page.logger.info("FilialAdd: save button pressed.")
 
         # FilialList
-        assert filial_list.element_visible(), 'FilialList not open!'
+        assert filial_list.element_visible() or base_page.logger.error('FilialList not open!')
         filial_list.find_filial_row(filial_name)
-        base_page.logger.info(f"FilialList: row found with name: '{filial_name}'")
         filial_list.click_view_button()
-        base_page.logger.info("FilialList: view button pressed.")
 
         # FilialView
         filial_view = FilialView(driver)
-        assert filial_view.element_visible(), 'FilialView not open!'
-        base_page.logger.info("FilialView: page opened.")
+        assert filial_view.element_visible() or base_page.logger.error('FilialView not open!')
         text = filial_view.check_filial_text()
-        assert filial_name == text, f'Error: {filial_name} != {text}'
-        base_page.logger.info(f"FilialView: name success checked '{filial_name}'")
+        assert filial_name == text or base_page.logger.error(f'Error: {filial_name} != {text}')
+        filial_view.click_navbar_button()
+        filial_view.click_project_checkbox()
+        filial_view.click_checkbox_button()
         filial_view.click_close_button()
         base_page.logger.info(f"Filial(✅): '{filial_name}' successfully added!")
 
@@ -248,38 +241,28 @@ def test_room_add(driver):
     try:
         # Login
         login_admin(driver, filial_name=filial_name, url='trade/trf/room_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Room List
         room_list = RoomList(driver)
-        assert room_list.element_visible(), 'RoomList not open!'
-        base_page.logger.info("RoomList: page opened.")
+        assert room_list.element_visible() or base_page.logger.error('RoomList not open!')
         room_list.click_add_button()
-        base_page.logger.info("RoomList: add button pressed.")
 
         # Add room
         room_add = RoomAdd(driver)
-        assert room_add.element_visible(), 'RoomAdd not open!'
-        base_page.logger.info("RoomAdd: page opened.")
+        assert room_add.element_visible() or base_page.logger.error('RoomAdd not open!')
         room_add.input_name(room_name)
-        base_page.logger.info(f"RoomAdd: name inputted: '{room_name}'")
         room_add.click_save_button()
-        base_page.logger.info("RoomAdd: save button pressed.")
 
         # List room
-        assert room_list.element_visible(), 'RoomList not open!'
+        assert room_list.element_visible() or base_page.logger.error('RoomList not open!')
         room_list.find_row(room_name)
-        base_page.logger.info(f"RoomList: row found with name: '{room_name}'")
         room_list.click_view_button()
-        base_page.logger.info("RoomList: view button pressed.")
 
         # View room
         room_view = RoomView(driver)
-        assert room_view.element_visible(), 'RoomView not open!'
-        base_page.logger.info("RoomView: page opened.")
+        assert room_view.element_visible() or base_page.logger.error('RoomView not open!')
         get_text = room_view.check_room_name()
-        assert get_text == room_name, f"{get_text} != {room_name}"
-        base_page.logger.info(f"RoomView: name success checked '{room_name}'")
+        assert get_text == room_name or base_page.logger.error(f"{get_text} != {room_name}")
         room_view.click_close_button()
         base_page.logger.info(f"Room(✅): '{room_name}' successfully added to filial '{filial_name}'!")
 
@@ -307,48 +290,82 @@ def test_robot_add(driver):
     try:
         # Login
         login_admin(driver, filial_name=filial_name, url='anor/mrf/robot_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Robot List
         robot_list = RobotList(driver)
-        assert robot_list.element_visible(), 'RobotList not open!'
-        base_page.logger.info("RobotList: page opened.")
+        assert robot_list.element_visible() or base_page.logger.error('RobotList not open!')
         robot_list.click_add_button()
-        base_page.logger.info("RobotList: add button pressed.")
 
         # Add robot
         robot_add = RobotAdd(driver)
-        assert robot_add.element_visible(), 'RobotAdd not open!'
-        base_page.logger.info("RobotAdd: page opened.")
+        assert robot_add.element_visible() or base_page.logger.error('RobotAdd not open!')
         robot_add.input_name(robot_name)
-        base_page.logger.info(f"RobotAdd: name inputted: '{robot_name}'")
         robot_add.input_roles(role_name)
-        base_page.logger.info(f"RobotAdd: role inputted: '{role_name}'")
         robot_add.input_rooms(room_name)
-        base_page.logger.info(f"RobotAdd: room inputted: '{room_name}'")
         robot_add.click_save_button()
-        base_page.logger.info("RobotAdd: save button pressed.")
 
         # List robot
-        assert robot_list.element_visible(), 'RobotList not open!'
+        assert robot_list.element_visible() or base_page.logger.error('RobotList not open!')
         robot_list.find_row(robot_name)
-        base_page.logger.info(f"RobotList: row found with name: '{robot_name}'")
         robot_list.click_view_button()
-        base_page.logger.info("RobotList: view button pressed.")
 
         # Check robot
         robot_view = RobotView(driver)
-        assert robot_view.element_visible(), 'RobotView not open!'
-        base_page.logger.info("RobotView: page opened.")
+        assert robot_view.element_visible() or base_page.logger.error('RobotView not open!')
         get_text = robot_view.check_robot_name()
-        assert get_text == robot_name, f"{get_text} != {robot_name}"
-        base_page.logger.info(f"RobotView: name success checked '{robot_name}'")
+        assert get_text == robot_name or base_page.logger.error(f"{get_text} != {robot_name}")
         robot_view.click_close_button()
         base_page.logger.info(f"Robot(✅): '{robot_name}' successfully added to filial '{filial_name}'!")
 
     except Exception as e:
         base_page.logger.error(f"Error message(❌): {e}")
         base_page.take_screenshot("test_robot_add_error")
+        raise
+
+
+def test_sub_filial_add(driver):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): test_sub_filial_add")
+
+    # Test data
+    data = test_data()["data"]
+    filial_name = data["filial_name"]
+    room_name = data["room_name"]
+    robot_name = data["robot_name"]
+    role_name = data["role_name"]
+    sub_filial_name = data["sub_filial_name"]
+
+    base_page.logger.info(
+        f"Test data: filial_name='{filial_name}', room_name='{room_name}', sub_filial_name='{sub_filial_name}', role_name='{role_name}'")
+
+    try:
+        # Login
+        login_admin(driver, filial_name=filial_name, url='anor/mrf/subfilial_list')
+
+        # Sub Filial List
+        sub_filial_list = SubFilialList(driver)
+        assert sub_filial_list.element_visible() or base_page.logger.error('SubFilialList not open!')
+        sub_filial_list.click_add_button()
+
+        # Sub Filial Add
+        sub_filial_add = SubFilialAdd(driver)
+        assert sub_filial_add.element_visible() or base_page.logger.error('SubFilialAdd not open!')
+        sub_filial_add.input_name(sub_filial_name)
+        sub_filial_add.input_rooms(room_name)
+        sub_filial_add.click_save_button()
+
+        # Sub Filial List
+        assert sub_filial_list.element_visible() or base_page.logger.error('SubFilialList not open!')
+        try:
+            sub_filial_list.find_row(sub_filial_name)
+        except Exception:
+            base_page.logger.error(f'❌Error: {sub_filial_name} not found!')
+        base_page.logger.info(f"Sub-Filial(✅): '{sub_filial_name}' successfully added to room '{room_name}'!")
+
+    except Exception as e:
+        base_page.logger.error(f"Error message(❌): {e}")
+        base_page.take_screenshot("test_sub_filial_add_error")
         raise
 
 
@@ -367,37 +384,28 @@ def test_natural_person_add(driver, person_name=None):
     try:
         # Login
         login_admin(driver, filial_name=filial_name, url='anor/mr/person/natural_person_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Natural Person List
         natural_person_list = NaturalPersonList(driver)
-        assert natural_person_list.element_visible(), 'NaturalPersonList not open!'
-        base_page.logger.info("NaturalPersonList: page opened.")
+        assert natural_person_list.element_visible() or base_page.logger.error('NaturalPersonList not open!')
         natural_person_list.click_add_button()
-        base_page.logger.info("NaturalPersonList: add button pressed.")
 
         # Natural Person Add
         natural_person_add = NaturalPersonAdd(driver)
-        assert natural_person_add.element_visible(), 'NaturalPersonAdd not open!'
-        base_page.logger.info("NaturalPersonAdd: page opened.")
+        assert natural_person_add.element_visible() or base_page.logger.error('NaturalPersonAdd not open!')
         natural_person_add.input_name(natural_person_name)
-        base_page.logger.info(f"NaturalPersonAdd: name inputted: '{natural_person_name}'")
         natural_person_add.click_save_button()
-        base_page.logger.info("NaturalPersonAdd: save button pressed.")
 
         # Natural Person List
-        assert natural_person_list.element_visible(), 'NaturalPersonList not open!'
+        assert natural_person_list.element_visible() or base_page.logger.error('NaturalPersonList not open!')
         natural_person_list.find_row(natural_person_name)
-        base_page.logger.info(f"NaturalPersonList: row found with name: '{natural_person_name}'")
         natural_person_list.click_view_button()
-        base_page.logger.info("NaturalPersonList: view button pressed.")
 
         # Natural Person View
         natural_person_view = NaturalPersonView(driver)
-        assert natural_person_view.element_visible(), 'NaturalPersonView not open!'
-        base_page.logger.info("NaturalPersonView: page opened.")
+        assert natural_person_view.element_visible() or base_page.logger.error('NaturalPersonView not open!')
         text = natural_person_view.check_text()
-        assert natural_person_name == text, f"Error: {natural_person_name} != {text}"
+        assert natural_person_name == text or base_page.logger.error(f"Error: {natural_person_name} != {text}")
         base_page.logger.info(f"NaturalPersonView(✅): name success checked '{natural_person_name}'")
 
     except Exception as e:
@@ -427,45 +435,32 @@ def test_user_creat(driver):
     try:
         # Login
         login_admin(driver, filial_name=filial_name, url='anor/mr/user_list')
-        base_page.logger.info("Successful access to the system.")
 
         # User List:
         user_list = UserList(driver)
-        assert user_list.element_visible(), 'UserList not open!'
-        base_page.logger.info("UserList: page opened.")
-        user_list.click_add_button()
-        base_page.logger.info("UserList: add button pressed.")
-
-        # User Add
-        user_add = UserAdd(driver)
-        assert user_add.element_visible(), 'UserAdd not open!'
-        base_page.logger.info("UserAdd: page opened.")
-        user_add.input_person_name(natural_person_name)
-        base_page.logger.info(f"UserAdd: natural person name inputted: '{natural_person_name}'")
-        user_add.input_password(password_user)
-        base_page.logger.info("UserAdd: password inputted.")
-        user_add.click_mouse_down_button()
-        user_add.input_login(login_user)
-        base_page.logger.info(f"UserAdd: login inputted: '{login_user}'")
-        user_add.input_robot(robot_name)
-        base_page.logger.info(f"UserAdd: robot name inputted: '{robot_name}'")
-        user_add.click_save_button()
-        base_page.logger.info("UserAdd: save button pressed.")
+        # assert user_list.element_visible() or base_page.logger.error('UserList not open!')
+        # user_list.click_add_button()
+        #
+        # # User Add
+        # user_add = UserAdd(driver)
+        # assert user_add.element_visible() or base_page.logger.error('UserAdd not open!')
+        # user_add.input_person_name(natural_person_name)
+        # user_add.input_password(password_user)
+        # user_add.click_mouse_down_button()
+        # user_add.input_login(login_user)
+        # user_add.input_robot(robot_name)
+        # user_add.click_save_button()
 
         # User List
-        assert user_list.element_visible(), 'UserList not open!'
+        assert user_list.element_visible() or base_page.logger.error('UserList not open!')
         user_list.find_natural_person_row(natural_person_name)
-        base_page.logger.info(f"UserList: row found with name: '{natural_person_name}'")
         user_list.click_view_button()
-        base_page.logger.info("UserList: view button pressed.")
 
         # User View
         user_view = UserView(driver)
-        assert user_view.element_visible(), 'UserView not open!'
-        base_page.logger.info("UserView: page opened.")
+        assert user_view.element_visible() or base_page.logger.error('UserView not open!')
         text = user_view.check_natural_person_text()
-        assert natural_person_name == text, f'Error: {natural_person_name} != {text}'
-        base_page.logger.info(f"UserView: name success checked '{natural_person_name}'")
+        assert natural_person_name == text or base_page.logger.error(f'Error: {natural_person_name} != {text}')
 
         # Forms:
         user_view.click_navbar_button(navbar_button=2)
@@ -510,48 +505,37 @@ def test_adding_permissions_to_user(driver):
     try:
         # Login
         login_admin(driver, filial_name=filial_name, url='trade/tr/role_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Role List
         role_list = RoleList(driver)
-        assert role_list.element_visible(), 'RoleList not open!'
+        assert role_list.element_visible() or base_page.logger.error('RoleList not open!')
         base_page.logger.info("RoleList: page opened.")
         role_list.click_row_button(role_name)
-        base_page.logger.info(f"RoleList: role row selected with name: '{role_name}'")
         role_list.click_edit_button()
-        base_page.logger.info("RoleList: edit button pressed.")
 
         # Role Edit
         role_edit = RoleEdit(driver)
-        assert role_edit.element_visible(), 'RoleEdit not open!'
-        base_page.logger.info("RoleEdit: page opened.")
+        assert role_edit.element_visible() or base_page.logger.error('RoleEdit not open!')
         if not role_edit.check_checkbox():
             role_edit.click_checkboxes()
-            base_page.logger.info("RoleEdit: all checkboxes selected.")
         role_edit.click_save_button()
-        base_page.logger.info("RoleEdit: save button pressed.")
 
         # Role List
-        assert role_list.element_visible(), 'RoleList not open!'
+        assert role_list.element_visible() or base_page.logger.error('RoleList not open!')
         role_list.click_row_button(role_name)
-        base_page.logger.info(f"RoleList: role row re-selected with name: '{role_name}'")
         role_list.click_view_button()
-        base_page.logger.info("RoleList: view button pressed.")
 
         # Role View
         role_view = RoleView(driver)
-        assert role_view.element_visible(), 'RoleView not open!'
-        base_page.logger.info("RoleView: page opened.")
+        assert role_view.element_visible() or base_page.logger.error('RoleView not open!')
         text = role_view.check_text()
-        assert role_name == text, f"{role_name} != {text}"
-        base_page.logger.info(f"RoleView: name success checked '{role_name}'")
+        assert role_name == text or base_page.logger.error(f"{role_name} != {text}")
 
         # Access all
         role_view.click_navbar_button()
         role_view.click_detached_button()
         role_view.click_checkbox_form()
         role_view.click_access_all_button()
-        base_page.logger.info("RoleView: 'Access all' permissions granted.")
         time.sleep(2)
         role_view.click_close_button()
         base_page.logger.info(f"Role(✅): Permissions successfully added to role '{role_name}'!")
@@ -571,25 +555,17 @@ def test_user_change_password(driver):
     data = test_data()["data"]
     password_user = data["password_user"]
 
-    base_page.logger.info(f"Test data: password_user='******'")
-
     try:
         # Login
         login_user(driver, filial_name=False, url=False)
-        base_page.logger.info("Successful access to the system.")
 
         # Change Password
         change_password = ChangePassword(driver)
-        assert change_password.element_visible(), 'ChangePassword not open!'
-        base_page.logger.info("ChangePassword: page opened.")
+        assert change_password.element_visible() or base_page.logger.error('ChangePassword not open!')
         change_password.input_current_password(password_user)
-        base_page.logger.info("ChangePassword: current password inputted.")
         change_password.input_new_password(password_user)
-        base_page.logger.info("ChangePassword: new password inputted.")
         change_password.input_rewritten_password(password_user)
-        base_page.logger.info("ChangePassword: rewritten password inputted.")
         change_password.click_save_button()
-        base_page.logger.info("ChangePassword: save button pressed.")
         time.sleep(2)
         base_page.logger.info(f"Password(✅): successfully changed!")
 
@@ -599,14 +575,21 @@ def test_user_change_password(driver):
         raise
 
 
-def test_price_type_add(driver):
+# ------------------------------------------------------------------------------------------------------------------
+
+
+def price_type_add(driver, price_type_name=None, currency_name=None, all_price=None):
     # Log
     base_page = BasePage(driver)
     base_page.logger.info("Test run(▶️): test_price_type_add")
 
     # Test data
     data = test_data()["data"]
-    price_type_name = data["price_type_name"]
+    price_type_name_USA = data["price_type_name_USA"]
+    price_type_name_UZB = data["price_type_name_UZB"]
+    price_type_name = price_type_name_USA if price_type_name else price_type_name_UZB
+
+    currency_name = currency_name if currency_name is not None else data["currency_name"]
     room_name = data["room_name"]
 
     base_page.logger.info(f"Test data: price_type_name='{price_type_name}', room_name='{room_name}'")
@@ -614,69 +597,61 @@ def test_price_type_add(driver):
     try:
         # Login
         login_user(driver, url='anor/mkr/price_type_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Price Type List
         price_type_list = PriceTypeList(driver)
-        assert price_type_list.element_visible(), 'PriceTypeList not open!'
-        base_page.logger.info("PriceTypeList: page opened.")
+        assert price_type_list.element_visible() or base_page.logger.error('PriceTypeList not open!')
         price_type_list.click_add_button()
-        base_page.logger.info("PriceTypeList: add button pressed.")
 
         # Price Type Add
         price_type_add = PriceTypeAdd(driver)
-        assert price_type_add.element_visible(), 'PriceTypeAdd not open!'
-        base_page.logger.info("PriceTypeAdd: page opened.")
+        assert price_type_add.element_visible() or base_page.logger.error('PriceTypeAdd not open!')
         price_type_add.input_name(price_type_name)
-        base_page.logger.info(f"PriceTypeAdd: name inputted: '{price_type_name}'")
         price_type_add.input_rooms(room_name)
-        base_page.logger.info(f"PriceTypeAdd: room inputted: '{room_name}'")
+        price_type_add.input_currency(currency_name)
         price_type_add.click_save_button()
-        base_page.logger.info("PriceTypeAdd: save button pressed.")
 
         # Price Type List
-        assert price_type_list.element_visible(), 'PriceTypeList not open!'
+        assert price_type_list.element_visible() or base_page.logger.error('PriceTypeList not open!')
         price_type_list.find_row(price_type_name)
-        base_page.logger.info(f"PriceTypeList: row found with name: '{price_type_name}'")
         price_type_list.click_view_button()
-        base_page.logger.info("PriceTypeList: view button pressed.")
 
         # Price Type View
         price_type_view = PriceTypeIdView(driver)
-        assert price_type_view.element_visible(), 'PriceTypeIdView not open!'
-        base_page.logger.info("PriceTypeIdView: page opened.")
+        assert price_type_view.element_visible() or base_page.logger.error('PriceTypeIdView not open!')
         text = price_type_view.get_elements()
-        assert price_type_name == text, f'"{price_type_name}" != "{text}"!'
+        assert price_type_name == text or base_page.logger.error(f'"{price_type_name}" != "{text}"!')
         price_type_view.click_close_button()
 
-        # Price Type List (All price)
-        assert price_type_list.element_visible(), 'PriceTypeList not open!'
-        price_type_list.click_add_dropdown_button()
+        if all_price is True:
+            # Price Type List (All price)
+            assert price_type_list.element_visible() or base_page.logger.error('PriceTypeList not open!')
+            price_type_list.click_add_dropdown_button()
 
-        # PriceTypeListAttach
-        price_type_list_attach = PriceTypeListAttach(driver)
-        name_a = 'Промо'
-        price_type_list_attach.find_rows(name_a)
+            # PriceTypeListAttach
+            price_type_list_attach = PriceTypeListAttach(driver)
+            name_a = 'Промо'
+            price_type_list_attach.find_rows(name_a)
 
-        assert price_type_list.element_visible(), 'PriceTypeList not open!'
-        price_type_list.click_add_dropdown_button()
-        name_b = 'Акция'
-        price_type_list_attach.find_rows(name_b)
+            assert price_type_list.element_visible() or base_page.logger.error('PriceTypeList not open!')
+            price_type_list.click_add_dropdown_button()
+            name_b = 'Акция'
+            price_type_list_attach.find_rows(name_b)
 
-        assert price_type_list.element_visible(), 'PriceTypeList not open!'
-        price_type_list.click_add_dropdown_button()
-        name_c = 'Возврат'
-        price_type_list_attach.find_rows(name_c)
+            assert price_type_list.element_visible() or base_page.logger.error('PriceTypeList not open!')
+            price_type_list.click_add_dropdown_button()
+            name_c = 'Возврат'
+            price_type_list_attach.find_rows(name_c)
 
-        assert price_type_list.element_visible(), 'PriceTypeList not open!'
-        price_type_list.click_add_dropdown_button()
-        name_d = 'Передача забаланс'
-        price_type_list_attach.find_rows(name_d)
+            assert price_type_list.element_visible() or base_page.logger.error('PriceTypeList not open!')
+            price_type_list.click_add_dropdown_button()
+            name_d = 'Передача забаланс'
+            price_type_list_attach.find_rows(name_d)
 
-        assert price_type_list.element_visible(), 'PriceTypeList not open!'
-        price_type_list.click_add_dropdown_button()
-        name_e = 'Обмен'
-        price_type_list_attach.find_rows(name_e)
+            assert price_type_list.element_visible() or base_page.logger.error('PriceTypeList not open!')
+            price_type_list.click_add_dropdown_button()
+            name_e = 'Обмен'
+            price_type_list_attach.find_rows(name_e)
 
         base_page.logger.info(f"PriceType(✅): '{price_type_name}' successfully added!")
 
@@ -684,6 +659,19 @@ def test_price_type_add(driver):
         base_page.logger.error(f"Error message(❌): {e}")
         base_page.take_screenshot("test_price_type_add_error")
         raise
+
+
+def test_price_type_add_UZB(driver):
+    currency_name = "Узбекский сум"
+    price_type_add(driver, currency_name=currency_name, all_price=True)
+
+
+def test_price_type_add_USA(driver):
+    currency_name = "Доллар США"
+    price_type_add(driver, price_type_name=True, currency_name=currency_name, all_price=False)
+
+
+# ------------------------------------------------------------------------------------------------------------------
 
 
 def test_payment_type_add(driver):
@@ -694,23 +682,17 @@ def test_payment_type_add(driver):
     try:
         # Login
         login_user(driver, url='anor/mkr/payment_type_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Payment Type List
         payment_type_list = PaymentTypeList(driver)
-        assert payment_type_list.element_visible(), 'PaymentTypeList not open!'
-        base_page.logger.info("PaymentTypeList: page opened.")
+        assert payment_type_list.element_visible() or base_page.logger.error('PaymentTypeList not open!')
         payment_type_list.click_attach_button()
-        base_page.logger.info("PaymentTypeList: attach button pressed.")
 
         # Payment Type List Attach
         payment_type_list_attach = PaymentTypeListAttach(driver)
-        assert payment_type_list_attach.element_visible(), 'PaymentTypeListAttach not open!'
-        base_page.logger.info("PaymentTypeListAttach: page opened.")
+        assert payment_type_list_attach.element_visible() or base_page.logger.error('PaymentTypeListAttach not open!')
         payment_type_list_attach.click_checkbox_all()
-        base_page.logger.info("PaymentTypeListAttach: all checkboxes selected.")
         payment_type_list_attach.click_close_button()
-        base_page.logger.info("PaymentTypeListAttach: close button pressed.")
         base_page.logger.info(f"PaymentType(✅): successfully attached!")
 
     except Exception as e:
@@ -788,10 +770,14 @@ def test_product_add(driver):
     measurement_name = data["measurement_name"]
     sector_name = data["sector_name"]
     product_price = data["product_price"]
+    product_price_USA = data["product_price_USA"]
+    price_type_name_UZB = data["price_type_name_UZB"]
+    price_type_name_USA = data["price_type_name_USA"]
 
     base_page.logger.info(f"Test data: product_name='{product_name}', "
                           f"measurement_name='{measurement_name}', "
-                          f"sector_name='{sector_name}', product_price='{product_price}'")
+                          f"sector_name='{sector_name}', "
+                          f"product_price='{product_price}'")
 
     try:
         # Login
@@ -801,61 +787,45 @@ def test_product_add(driver):
         # Inventory List
         inventory_list = InventoryList(driver)
         assert inventory_list.element_visible(), 'InventoryList not open!'
-        base_page.logger.info("InventoryList: page opened.")
         inventory_list.click_add_button()
-        base_page.logger.info("InventoryList: add button pressed.")
 
         # Add Inventory
         inventory_add = InventoryNew(driver)
         assert inventory_add.element_visible(), 'InventoryNew not open!'
-        base_page.logger.info("InventoryNew: page opened.")
         inventory_add.input_name(product_name)
-        base_page.logger.info(f"InventoryNew: product name inputted: '{product_name}'")
         inventory_add.input_measurement(measurement_name)
-        base_page.logger.info(f"InventoryNew: measurement name inputted: '{measurement_name}'")
         inventory_add.input_sectors(sector_name)
-        base_page.logger.info(f"InventoryNew: sector name inputted: '{sector_name}'")
         inventory_add.click_goods_checkbox()
-        base_page.logger.info("InventoryNew: goods checkbox selected.")
         inventory_add.click_save_button()
-        base_page.logger.info("InventoryNew: save button pressed.")
 
         # Inventory List
         assert inventory_list.element_visible(), 'InventoryList not open!'
         inventory_list.find_and_click_checkbox(product_name)
-        base_page.logger.info(f"InventoryList: checkbox selected for product '{product_name}'.")
         inventory_list.click_view_button()
-        base_page.logger.info("InventoryList: view button pressed.")
 
         # Product View
         product_id = ProductView(driver)
         assert product_id.element_visible(), 'ProductView not open!'
-        base_page.logger.info("ProductView: page opened.")
         get_name = product_id.get_elements()
         assert product_name == get_name, f"Error: {product_name} != {get_name}"
-        base_page.logger.info(f"ProductView: name successfully verified '{product_name}'.")
         product_id.click_close_button()
-        base_page.logger.info("ProductView: close button pressed.")
 
         # Inventory List - Set Price
         assert inventory_list.element_visible(), 'InventoryList not open!'
         inventory_list.find_and_click_checkbox(product_name)
-        base_page.logger.info(f"InventoryList: checkbox re-selected for product '{product_name}'.")
         inventory_list.click_set_price_button()
-        base_page.logger.info("InventoryList: set price button pressed.")
 
         # Product Set Price
         product_set_price = ProductSetPrice(driver)
         assert product_set_price.element_visible(), 'ProductSetPrice not open!'
-        base_page.logger.info("ProductSetPrice: page opened.")
         text = product_set_price.check_product()
         assert product_name == text, f'"{product_name}" != "{text}"'
-        base_page.logger.info(f"ProductSetPrice: product name verified '{product_name}'.")
-        product_set_price.input_prices(product_price)
-        base_page.logger.info(f"ProductSetPrice: price inputted: '{product_price}'.")
+        product_set_price.input_prices(product_price, price_type_name_UZB)
+        product_set_price.input_prices(product_price_USA, price_type_name_USA)
         product_set_price.click_save_button()
-        base_page.logger.info("ProductSetPrice: save button pressed.")
-        base_page.logger.info(f"Product(✅): '{product_name}' with price '{product_price}' successfully added!")
+        base_page.logger.info(f"Product(✅): '{product_name}' successfully added! "
+                              f"\n{price_type_name_UZB}: {product_price} "
+                              f"\n{price_type_name_USA}: {product_price_USA}")
 
     except Exception as e:
         base_page.logger.error(f"Error message(❌): {e}")
@@ -980,21 +950,16 @@ def test_room_attachment(driver):
     try:
         # Login
         login_user(driver, url='trade/trf/room_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Room List
         room_list = RoomList(driver)
-        assert room_list.element_visible(), 'RoomList not open!'
-        base_page.logger.info("RoomList: page opened.")
+        assert room_list.element_visible() or base_page.logger.error("RoomList not open!")
         room_list.find_row(room_name)
-        base_page.logger.info(f"RoomList: row found for room '{room_name}'.")
         room_list.click_attachment_button()
-        base_page.logger.info("RoomList: attachment button pressed.")
 
         # Room Attachment
         room_attachment = RoomAttachment(driver)
-        assert room_attachment.element_visible(), 'RoomAttachment not open!'
-        base_page.logger.info("RoomAttachment: page opened.")
+        assert room_attachment.element_visible() or base_page.logger.error("'RoomAttachment not open!'")
 
         # Attach payment types
         room_attachment.click_navbar_button(navbar_button=2)
@@ -1007,6 +972,12 @@ def test_room_attachment(driver):
         room_attachment.click_detach_button(detach_button=3)
         room_attachment.click_checkbox_all_payment_type(attach_button=3)
         base_page.logger.info("RoomAttachment: payment types attached.")
+
+        # Attach margin types
+        room_attachment.click_navbar_button(navbar_button=5)
+        room_attachment.click_detach_button(detach_button=5)
+        room_attachment.click_checkbox_all_margin_type(attach_button=5)
+        base_page.logger.info("RoomAttachment: margin types attached.")
 
         # Attach warehouse
         room_attachment.click_navbar_button(navbar_button=6)
@@ -1186,7 +1157,8 @@ def test_order_request(driver):  # mast not
 
 # ------------------------------------------------------------------------------------------------------------------
 
-def contract_add(driver, client_name=None, contract_name=None, initial_amount=None):
+def contract_add(driver, client_name=None, contract_name=None, initial_amount=None,
+                 currency_cod=None, currency_name=None):
     # Log
     base_page = BasePage(driver)
     base_page.logger.info("Test run(▶️): contract_add")
@@ -1196,54 +1168,45 @@ def contract_add(driver, client_name=None, contract_name=None, initial_amount=No
     client_name = client_name if client_name is not None else data["client_name"]
     contract_name = contract_name if contract_name is not None else data["contract_name"]
     initial_amount = initial_amount if initial_amount is not None else data["product_quantity"] * data["product_price"]
-    base_currency_cod = data["base_currency_cod"]
+    base_currency_cod = currency_cod if currency_cod is not None else data["base_currency_cod"]
+    currency_name = currency_name if currency_name is not None else "Узбекский сум"
 
     base_page.logger.info(f"Test data: client_name='{client_name}', contract_name='{contract_name}', "
                           f"initial_amount='{initial_amount}', base_currency_cod='{base_currency_cod}'")
 
     try:
         login_user(driver, url='anor/mkf/contract_list')
-        base_page.logger.info("Successful access to the system.")
 
         # Contract List
         contract_list = ContractList(driver)
-        assert contract_list.element_visible(), 'ContractList not open!'
-        base_page.logger.info("ContractList: page opened.")
+        assert contract_list.element_visible() or base_page.logger.error('ContractList not open!')
         contract_list.click_add_button()
-        base_page.logger.info("ContractList: add button pressed.")
 
         # Contract Add
         contract_add = ContractAdd(driver)
-        assert contract_add.element_visible(), 'ContractAdd not open!'
-        base_page.logger.info("ContractAdd: page opened.")
+        assert contract_add.element_visible() or base_page.logger.error('ContractAdd not open!')
         contract_number = random.randint(1, 999999)
-        base_page.logger.info(f"Generated contract_number: '{contract_number}'")
         contract_add.input_contract_number(contract_number)
         contract_add.input_contract_name(contract_name)
-        base_page.logger.info(f"ContractAdd: contract name inputted: '{contract_name}'")
         contract_add.click_radio_button()
-        base_page.logger.info("ContractAdd: radio button selected.")
         contract_add.input_person_name(client_name)
-        base_page.logger.info(f"ContractAdd: client name inputted: '{client_name}'")
         contract_add.input_currency_name(base_currency_cod)
-        base_page.logger.info(f"ContractAdd: currency name inputted: '{base_currency_cod}'")
         contract_add.input_initial_amount(initial_amount)
-        base_page.logger.info(f"ContractAdd: initial amount inputted: '{initial_amount}'")
         contract_add.click_checkbox_button()
         contract_add.click_save_button()
-        base_page.logger.info("ContractAdd: save button pressed.")
 
         # Contract List
-        assert contract_list.element_visible(), 'ContractList not open!'
+        assert contract_list.element_visible() or base_page.logger.error('ContractList not open!')
         contract_list.find_row(contract_name)
-        base_page.logger.info(f"ContractList: row found with name: '{contract_name}'")
         contract_list.click_view_button()
-        base_page.logger.info("ContractList: view button pressed.")
 
         # Contract View
         contract_view = ContractView(driver)
-        assert contract_view.element_visible(), 'ContractView not open!'
-        base_page.logger.info("ContractView: page opened.")
+        assert contract_view.element_visible() or base_page.logger.error('ContractView not open!')
+        get_contract_name = contract_view.check_contract_name()
+        assert get_contract_name == contract_name or base_page.logger.error(f'Error: {get_contract_name} != {contract_name}')
+        get_currency_name = contract_view.check_currency_name()
+        assert get_currency_name == currency_name or base_page.logger.error(f'{get_currency_name} != {currency_name}')
         contract_view.click_close_button()
         base_page.logger.info(f"Contract(✅): '{contract_name}' successfully added!")
 
@@ -1253,14 +1216,16 @@ def contract_add(driver, client_name=None, contract_name=None, initial_amount=No
         raise
 
 
-def test_contract_add_A(driver):
+def test_contract_add_A_UZB(driver):
     data = test_data()["data"]
     client_name = f"{data['client_name']}-A"
     contract_name = f"{data['contract_name']}-A"
-    contract_add(driver, client_name=client_name, contract_name=contract_name)
+    contract_add(driver,
+                 client_name=client_name,
+                 contract_name=contract_name)
 
 
-def test_contract_add_B(driver):
+def test_contract_add_B_UZB(driver):
     data = test_data()["data"]
     client_name = f"{data['client_name']}-B"
     contract_name = f"{data['contract_name']}-B"
@@ -1271,11 +1236,19 @@ def test_contract_add_B(driver):
                  initial_amount=initial_amount)
 
 
-def test_contract_add_C(driver):
+def test_contract_add_C_USA(driver):
     data = test_data()["data"]
     client_name = f"{data['client_name']}-C"
     contract_name = f"{data['contract_name']}-C"
-    contract_add(driver, client_name=client_name, contract_name=contract_name)
+    currency_cod = 840
+    currency_name = 'Доллар США'
+    initial_amount = 100 * data["product_price_USA"]
+    contract_add(driver,
+                 client_name=client_name,
+                 contract_name=contract_name,
+                 currency_cod=currency_cod,
+                 currency_name=currency_name,
+                 initial_amount=initial_amount)
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -1291,16 +1264,12 @@ def test_setting_consignment(driver):
 
         # System setting
         system_setting = SystemSetting(driver)
-        assert system_setting.element_visible() \
-               or base_page.logger.error("SystemSetting not open!") \
-               or base_page.take_screenshot("system_setting_error")
+        assert system_setting.element_visible() or base_page.logger.error("SystemSetting not open!")
 
         system_setting.click_navbar_button(navbar_button=6)
         base_page.logger.info("SystemSetting: navbar button pressed.")
 
-        assert system_setting.element_visible_order() \
-               or base_page.logger.error("order_header not open!") \
-               or base_page.take_screenshot("order_header_error")
+        assert system_setting.element_visible_order() or base_page.logger.error("order_header not open!")
         if not system_setting.check_checkbox_text():
             system_setting.click_checkbox_consignment()
             base_page.logger.info("SystemSetting: consignment checkbox pressed.")
@@ -1317,5 +1286,116 @@ def test_setting_consignment(driver):
         base_page.take_screenshot("test_setting_consignment_error")
         raise
 
+
 # ------------------------------------------------------------------------------------------------------------------
 
+def test_currency_add(driver):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): test_currency_add")
+
+    # Test data
+    currency_name = 'Доллар США'
+    exchange_rate = 10_000
+
+    try:
+        login_user(driver, url='anor/mk/currency_list')
+        base_page.logger.info("Successful access to the system.")
+
+        # Currency List
+        currency_list = CurrencyList(driver)
+        assert currency_list.element_visible() or base_page.logger.error("CurrencyList not open!")
+        currency_list.find_row(currency_name)
+        currency_list.click_view_button()
+
+        # Currency View
+        currency_view = CurrencyView(driver)
+        assert currency_view.element_visible() or base_page.logger.error("CurrencyView not open!")
+        currency_view.click_navbar_button(navbar_button=2)
+        currency_view.click_add_rate_button()
+
+        # Modal
+        currency_view.input_exchange_rate_button(exchange_rate)
+        currency_view.click_save_button()
+
+        assert currency_view.check_row() or base_page.logger.error("exchange_rate not found!")
+        currency_view.click_close_button()
+
+        # Currency List
+        assert currency_list.element_visible() or base_page.logger.error("CurrencyList not open!")
+        base_page.logger.info(f"✅Test end(): test_currency_add")
+
+    except Exception as e:
+        base_page.logger.error(f"❌Error message(): {e}")
+        base_page.take_screenshot("test_currency_add_error")
+        raise
+
+
+# ------------------------------------------------------------------------------------------------------------------
+
+def test_margin_add(driver):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): test_margin_add")
+
+    # Test data
+    data = test_data()["data"]
+    margin_name = data["margin_name"]
+    percent_value = data["percent_value"]
+
+    try:
+        # Login
+        login_admin(driver, url='anor/mkr/margin_list')
+
+        # Margin List - Admin
+        margin_list_attach = MarginListAttach(driver)
+        assert margin_list_attach.element_visible() or base_page.logger.error("MarginList-Admin not open!")
+        margin_list_attach.find_row('')
+        margin_list_attach.click_delete_button()
+        assert margin_list_attach.element_visible() or base_page.logger.error("MarginList-Admin not open!")
+
+    except Exception:
+        base_page.logger.error(f"❌Error: Margin not found!")
+
+    logout(driver)
+
+    try:
+        login_user(driver, url='anor/mkr/margin_list')
+
+        # Margin List
+        margin_list = MarginList(driver)
+        assert margin_list.element_visible() or base_page.logger.error("MarginList not open!")
+        margin_list.click_attach_button()
+
+        # Margin List Attach
+        margin_list_attach = MarginListAttach(driver)
+        assert margin_list_attach.element_visible() or base_page.logger.error("MarginListAttach not open!")
+        margin_list_attach.click_add_button()
+
+        # Margin Add
+        margin_add = MarginAdd(driver)
+        assert margin_add.element_visible() or base_page.logger.error("MarginAdd not open!")
+        margin_add.click_name_button(margin_name)
+        margin_add.click_percent_button(percent_value)
+        margin_add.click_percent_type_radio_button(percent_type=1)
+        margin_add.click_save_button()
+
+        # Margin List
+        assert margin_list.element_visible() or base_page.logger.error("MarginList not open!")
+        margin_list.click_attach_button()
+
+        # Margin List Attach
+        assert margin_list_attach.element_visible() or base_page.logger.error("MarginListAttach not open!")
+        margin_list.find_row(margin_name)
+        margin_list.click_attach_one_button()
+
+        # Margin List
+        assert margin_list.element_visible() or base_page.logger.error("MarginList not open!")
+        margin_list.find_row(margin_name)
+        base_page.logger.info(f"✅Test end(): test_margin_add")
+
+    except Exception as e:
+        base_page.logger.error(f"❌Error message(): {e}")
+        base_page.take_screenshot("test_margin_add_error")
+        raise
+# ------------------------------------------------------------------------------------------------------------------

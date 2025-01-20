@@ -45,6 +45,14 @@ class RoomAttachment(BasePage):
         self.click(attach_button)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------
+    checkbox_all_margin_type = (By.XPATH, '(//b-grid[@name="table_margin"]//label)[1]')
+
+    def click_checkbox_all_margin_type(self, attach_button):
+        attach_button = (By.XPATH, f'(//button[@ng-click="attachMany()"])[{attach_button}]')
+        self.click(self.checkbox_all_margin_type)
+        self.click(attach_button)
+        self.click(self.yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
     def click_attach_button(self, attach_button):

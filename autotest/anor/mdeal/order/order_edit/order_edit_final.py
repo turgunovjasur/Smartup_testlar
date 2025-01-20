@@ -31,3 +31,16 @@ class OrderEditFinal(BasePage):
         self.click(self.save_button)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------
+    error_massage_xpath = (By.XPATH, '//div[@id="biruniAlertExtended"]//div[@class="modal-content"]//div[@class="modal-title"]//div[@class="ng-binding"]')
+
+    def error_massage(self):
+        full_text = self.get_text(self.error_massage_xpath)
+        error_code = full_text.split('—')[
+            0].strip()
+        return error_code
+    # ------------------------------------------------------------------------------------------------------------------
+    error_button = (By.XPATH, '//div[@id="biruniAlertExtended"]//div[@class="modal-content"]//button[@class="close p-4 m-n4"]')
+
+    def click_error_button(self):
+        self.click(self.error_button)
+    # ------------------------------------------------------------------------------------------------------------------

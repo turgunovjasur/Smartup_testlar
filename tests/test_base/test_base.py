@@ -22,7 +22,7 @@ def test_data():
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
-        "cod": 25,
+        "cod": 26,
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -42,17 +42,24 @@ def test_data():
         "contract_name": f"contract-{base_data['cod']}",
         "room_name": f"Test_room-{base_data['cod']}",
         "robot_name": f"Test_robot-{base_data['cod']}",
+        "sub_filial_name": f"Test_sub_filial-{base_data['cod']}",
         "sector_name": f"Test_sector-{base_data['cod']}",
         "product_name": f"Test_product-{base_data['cod']}",
         "role_name": "Админ",
         "warehouse_name": "Основной склад",
         "cash_register_name": "Основная касса",
         "measurement_name": "Количество",
-        "price_type_name": f"Цена продажи-{base_data['cod']}",
+
+        "price_type_name_UZB": f"Цена продажи UZB-{base_data['cod']}",
+        "price_type_name_USA": f"Цена продажи USA-{base_data['cod']}",
+
+        "margin_name": f"Test_margin-{base_data['cod']}",
+        "percent_value": 5,
+
         "payment_type_name": "Наличные деньги",
-        # "test_quantity": 10,
         "product_quantity": 1_000,
         "product_price": 12_000,
+        "product_price_USA": 12,
     }
     order_status = {
         "Draft": "Черновик",
@@ -65,6 +72,7 @@ def test_data():
     }
     error_massage = {
         "error_massage_1": "H02-ANOR279-015",
+        "error_massage_2": "H02-ANOR279-006",
     }
     return {
         "data": {
@@ -110,7 +118,7 @@ def open_new_window(driver, url):
 
     try:
         if not base_page._wait_for_page_load(timeout=60):
-            base_page.logger.error(f"❌Page did not load(): timeout = 60s!")
+            base_page.logger.error(f"❌Page did not load()")
             return False
 
         base_page.logger.info("Opening a new browser window.")
@@ -120,12 +128,26 @@ def open_new_window(driver, url):
         driver.get(url)
         base_page.logger.info(f"Navigated to URL: {url}")
         time.sleep(2)
-
         return True
 
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
+        base_page.logger.error(f"❌Error while opening a new window: {e}")
         base_page.take_screenshot("open_new_window_error")
+        raise
+
+
+def logout(driver):
+    # Log
+    base_page = BasePage(driver)
+    login_page = LoginPage(driver)
+    try:
+        login_page.click_navbar_button()
+        login_page.click_logout_button()
+        base_page.logger.info("Logout successfully.")
+
+    except Exception as e:
+        base_page.logger.error(f"❌Error: logout_error(): {e}")
+        base_page.take_screenshot("logout_error")
         raise
 
 
@@ -133,21 +155,24 @@ def login(driver, email, password):
     # Log
     base_page = BasePage(driver)
     login_page = LoginPage(driver)
-
     try:
-        if not base_page._wait_for_page_load(timeout=60):
-            base_page.logger.error("❌Login_page did not load(): timeout = 60s!")
-            return False
+        try:
+            base_page._wait_for_all_loaders()
+        except Exception:
+            base_page.logger.error("❌Login_page did not load()")
 
-        base_page.logger.info("Login_page loaded successfully.")
-        login_page.fill_form(email, password)
-        base_page.logger.info(f"Form filled with email: {email}")
-        login_page.click_button()
-        base_page.logger.info("Login button clicked.")
-        return True
+        assert login_page.element_visible() or base_page.logger.error("❌Login_page not open!")
+        base_page.logger.info("Login_page opened successfully.")
+
+        try:
+            login_page.fill_form(email, password)
+            login_page.click_button()
+            return True
+        except Exception:
+            base_page.logger.error(f'email: {email} or password: {password} error')
 
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
+        base_page.logger.error(f"❌Error: login_error(): {e}")
         base_page.take_screenshot("login_error")
         raise
 
@@ -158,16 +183,17 @@ def dashboard(driver):
     dashboard_page = DashboardPage(driver)
 
     try:
-        if not base_page._wait_for_page_load(timeout=60):
+        try:
+            base_page._wait_for_all_loaders()
+        except Exception:
             base_page.logger.error("❌Dashboard did not load()")
-            return False
 
-        base_page.logger.info("Dashboard loaded successfully.")
         dashboard_page.element_visible_session()
+        base_page.logger.info("Dashboard opened successfully.")
         return True
 
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
+        base_page.logger.error(f"❌Error: dashboard_error(): {e}")
         base_page.take_screenshot("dashboard_error")
         raise
 
@@ -180,12 +206,12 @@ def login_system(driver, email, password, filial_name, url):
     dashboard(driver)
     dashboard_page = DashboardPage(driver)
 
-    if not filial_name is False:
+    if filial_name:
         dashboard_page.find_filial(filial_name)
 
     base_page = BasePage(driver)
     cut_url = base_page.cut_url()
-    if not url is False:
+    if url:
         open_new_window(driver, cut_url + url)
 
 
