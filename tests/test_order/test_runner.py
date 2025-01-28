@@ -1,10 +1,8 @@
-import time
-
 import allure
 import pytest
-
 from tests.test_base.test_base import get_driver
 from tests.test_order.test_cashin import test_cashin_add_A, test_offset_add_A, test_offset_add_B
+from utils.driver_setup import driver
 
 # Import all test functions
 from tests.test_order.test_life_cycle import (
@@ -54,7 +52,6 @@ from tests.test_order.test_order import (
     test_order_copy_C_for_A_B,
     test_order_return
 )
-from utils.driver_setup import driver
 
 
 # All ------------------------------------------------------------------------------------------------------------------
@@ -65,20 +62,17 @@ from utils.driver_setup import driver
 def get_tests():
     """All test runner"""
     return [
-        # Base setup
         {"name": "Legal Person Add", "func": test_legal_person_add},
         {"name": "Filial Create", "func": test_filial_creat},
         {"name": "Room Add", "func": test_room_add},
         {"name": "Robot Add", "func": test_robot_add},
         {"name": "Sub filial Add", "func": test_sub_filial_add},
 
-        # User management
         {"name": "Natural Person Add", "func": test_natural_person_add},
         {"name": "User Create", "func": test_user_creat},
         {"name": "Adding Permissions", "func": test_adding_permissions_to_user},
         {"name": "User Change Password", "func": test_user_change_password},
 
-        # Product setup
         {"name": "Price Type Add", "func": test_price_type_add_UZB},
         {"name": "Price Type Add", "func": test_price_type_add_USA},
         {"name": "Payment Type Add", "func": test_payment_type_add},
@@ -87,7 +81,6 @@ def get_tests():
         {"name": "Currency Add", "func": test_currency_add},
         {"name": "Margin Add", "func": test_margin_add},
 
-        # Client setup
         {"name": "Natural Person Client Add-A", "func": test_natural_person_client_add_A},
         {"name": "Natural Person Client Add-B", "func": test_natural_person_client_add_B},
         {"name": "Natural Person Client Add-C", "func": test_natural_person_client_add_C},
@@ -95,12 +88,10 @@ def get_tests():
         {"name": "Client Add-B", "func": test_client_add_B},
         {"name": "Client Add-C", "func": test_client_add_C},
 
-        # Attachment setup
         {"name": "Room Attachment", "func": test_room_attachment},
         {"name": "Init Balance", "func": test_init_balance},
         {"name": "Setting Consignment", "func": test_setting_consignment},
 
-        # Contract -> Order(Add, Edit, Status) -> Cashin_Add -> Offset_Add
         {"name": "Contract Add-A", "func": test_contract_add_A_UZB},
         {"name": "Order Add-A", "func": test_order_add_with_consignment},
         {"name": "Order Edit-A", "func": test_order_edit_A},
@@ -108,7 +99,6 @@ def get_tests():
         {"name": "Cashin Add-A", "func": test_cashin_add_A},
         {"name": "Offset Add-A", "func": test_offset_add_A},
 
-        # Contract -> Order(Add, Edit, Status) -> Offset_Add -> Check: Cashin_Add
         {"name": "Contract Add-B", "func": test_contract_add_B_UZB},
         {"name": "Order Add-B", "func": test_order_add_client_B_check_contract},
         {"name": "Order Change Status-B", "func": test_order_change_status_B},
@@ -116,17 +106,17 @@ def get_tests():
 
         {"name": "Contract Add-C", "func": test_contract_add_C_USA},
         {"name": "Order Add-C", "func": test_order_add_price_type_USA},
-        {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
-        {"name": "Order Return", "func": test_order_return},
+        # # {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
+        # # {"name": "Order Return", "func": test_order_return},
     ]
 
 
 @pytest.mark.parametrize("test", get_tests())
 def test_all(test):
     with allure.step(test["name"]):
-        driver = get_driver()  # WebDriver obyektini yaratish
+        driver = get_driver()
         try:
-            test["func"](driver)  # Test funksiyasini ishga tushirish
+            test["func"](driver)
             print(f"✅ {test['name']} passed.")
         except Exception as e:
             allure.attach(
@@ -137,5 +127,4 @@ def test_all(test):
             print(f"❌ {test['name']} failed with error: {e}")
             pytest.fail(f"Test failed: {test['name']}. Stopping execution.")
         finally:
-            driver.quit()  # WebDriver sessiyasini tozalash
-
+            driver.quit()

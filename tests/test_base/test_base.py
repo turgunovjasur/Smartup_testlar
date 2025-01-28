@@ -1,6 +1,4 @@
-import time
-import logging
-
+import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
@@ -9,6 +7,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
+
+from selenium.common.exceptions import WebDriverException, TimeoutException
+from tests.test_base.exceptions import *
 
 
 def test_data():
@@ -22,7 +23,7 @@ def test_data():
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
-        "cod": 26,
+        "cod": 32,
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -104,7 +105,8 @@ def get_driver():
         options.add_argument("--log-level=3")
 
         driver = webdriver.Chrome(service=service, options=options)
-        driver.get("http://gw.greenwhite.uz:8081/xtrade/login.html")
+        driver.get("https://app3.gw.greenwhite.uz/xtrade/login.html")
+        # driver.get("http://gw.greenwhite.uz:8081/xtrade/login.html")
         # driver.get("https://smartup.online/login.html")
         return driver
 
@@ -113,27 +115,30 @@ def get_driver():
         raise
 
 
-def open_new_window(driver, url):
+def open_new_window(driver, url: str) -> bool:
+    """Yangi oynada URL ochish."""
+
     base_page = BasePage(driver)
 
     try:
-        if not base_page._wait_for_page_load(timeout=60):
-            base_page.logger.error(f"❌Page did not load()")
+        base_page._wait_for_all_loaders()
+        base_page.logger.info("Yangi brauzer oynasi ochilmoqda")
+
+        driver.execute_script("window.open('');")
+        driver.switch_to.window(driver.window_handles[-1])
+        driver.get(url)
+
+        if base_page._wait_for_all_loaders():
+            base_page.logger.info(f"URL muvaffaqiyatli ochildi: {url}")
+            return True
+        else:
+            base_page.logger.error("Sahifa to'liq yuklanmadi")
             return False
 
-        base_page.logger.info("Opening a new browser window.")
-        driver.execute_script("window.open('');")
-        all_windows = driver.window_handles
-        driver.switch_to.window(all_windows[-1])
-        driver.get(url)
-        base_page.logger.info(f"Navigated to URL: {url}")
-        time.sleep(2)
-        return True
-
     except Exception as e:
-        base_page.logger.error(f"❌Error while opening a new window: {e}")
+        base_page.logger.error(f"Yangi oyna ochishda xato: {str(e)}", exc_info=True)
         base_page.take_screenshot("open_new_window_error")
-        raise
+        raise WebDriverException(f"Yangi oyna ochishda xato: {str(e)}")
 
 
 def logout(driver):
@@ -156,66 +161,70 @@ def login(driver, email, password):
     base_page = BasePage(driver)
     login_page = LoginPage(driver)
     try:
-        try:
-            base_page._wait_for_all_loaders()
-        except Exception:
-            base_page.logger.error("❌Login_page did not load()")
+        if not base_page._wait_for_all_loaders():
+            return False
 
-        assert login_page.element_visible() or base_page.logger.error("❌Login_page not open!")
-        base_page.logger.info("Login_page opened successfully.")
+        if not login_page.element_visible():
+            base_page.logger.error("Login sahifasi logo elementi topilmadi")
+            return False
 
-        try:
-            login_page.fill_form(email, password)
-            login_page.click_button()
-            return True
-        except Exception:
-            base_page.logger.error(f'email: {email} or password: {password} error')
+        if not login_page.fill_form(email, password):
+            base_page.logger.error("Email yoki parolni kiritish muvaffaqiyatsiz yakunlandi")
+            return False
+
+        login_page.click_button()
+        return True
 
     except Exception as e:
-        base_page.logger.error(f"❌Error: login_error(): {e}")
+        base_page.logger.error(f"❌Login jarayonida xato: {str(e)}")
         base_page.take_screenshot("login_error")
-        raise
+        return False
 
 
 def dashboard(driver):
     # Log
     base_page = BasePage(driver)
     dashboard_page = DashboardPage(driver)
-
     try:
-        try:
-            base_page._wait_for_all_loaders()
-        except Exception:
-            base_page.logger.error("❌Dashboard did not load()")
+        if not base_page._wait_for_all_loaders():
+            return False
 
-        dashboard_page.element_visible_session()
-        base_page.logger.info("Dashboard opened successfully.")
+        session_exists = dashboard_page.element_visible_session()
+        if session_exists is True:
+            dashboard_page.click_button_delete_session()
+            base_page.logger.info("✅ Eski sessiya muvaffaqiyatli o'chirildi")
+
+        if not dashboard_page.element_visible():
+            base_page.logger.error("Dashboard tekshiruvi muvaffaqiyatsiz yakunlandi")
+            return False
+
+        base_page.logger.info("✅ Dashboard sahifasi muvaffaqiyatli yuklandi")
         return True
 
     except Exception as e:
-        base_page.logger.error(f"❌Error: dashboard_error(): {e}")
-        base_page.take_screenshot("dashboard_error")
-        raise
+        base_page.logger.error(f"❌ Dashboard sahifasida xatolik: {str(e)}")
+        return False
 
 
 def login_system(driver, email, password, filial_name, url):
     # Login
-    login(driver, email, password)
-
-    # Dashboard
-    dashboard(driver)
+    base_page = BasePage(driver)
     dashboard_page = DashboardPage(driver)
+
+    login(driver, email, password)
+    dashboard(driver)
 
     if filial_name:
         dashboard_page.find_filial(filial_name)
 
-    base_page = BasePage(driver)
-    cut_url = base_page.cut_url()
     if url:
+        cut_url = base_page.cut_url()
         open_new_window(driver, cut_url + url)
 
 
 def login_admin(driver, filial_name=None, email=None, password=None, url=None):
+    """Admin sifatida tizimga kirish."""
+
     # Test data
     data = test_data()["data"]
     filial_name = filial_name if filial_name is not None else data["Administration_name"]
@@ -223,11 +232,12 @@ def login_admin(driver, filial_name=None, email=None, password=None, url=None):
     password = password if password is not None else data["password"]
     url = url if url is not None else 'trade/intro/dashboard'
 
-    # Authorization
     login_system(driver, email, password, filial_name, url)
 
 
 def login_user(driver, filial_name=None, email=None, password=None, url=None):
+    """Oddiy foydalanuvchi sifatida tizimga kirish."""
+
     # Test data
     data = test_data()["data"]
     filial_name = filial_name if filial_name is not None else data["filial_name"]
@@ -235,5 +245,5 @@ def login_user(driver, filial_name=None, email=None, password=None, url=None):
     password = password if password is not None else data["password_user"]
     url = url if url is not None else 'trade/intro/dashboard'
 
-    # Authorization
     login_system(driver, email, password, filial_name, url)
+

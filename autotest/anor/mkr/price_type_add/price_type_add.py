@@ -32,6 +32,12 @@ class PriceTypeAdd(BasePage):
         self.clear_element(self.currency_input)
         self.click_options(self.currency_input, self.currency_options, currency_name)
     # ------------------------------------------------------------------------------------------------------------------
+    sub_filial_input = (By.XPATH, '//b-input[@name="subfilials"]//input')
+    sub_filial_options = (By.XPATH, '//b-input[@name="subfilials"]//div[contains(@class,"hint")]//div[contains(@class,"hint-item")]')
+
+    def input_sub_filial(self, sub_filial_name):
+        self.click_options(self.sub_filial_input, self.sub_filial_options, sub_filial_name)
+    # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, "//button[@id='anor183-button-save']")
 
     def click_save_button(self):

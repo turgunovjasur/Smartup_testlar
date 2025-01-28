@@ -24,7 +24,8 @@ def driver(request):
     driver = webdriver.Chrome(service=service, options=options)
 
     # Test URL ga o'tish
-    driver.get("http://gw.greenwhite.uz:8081/xtrade/login.html")
+    driver.get("https://app3.gw.greenwhite.uz/xtrade/login.html")
+    # driver.get("http://gw.greenwhite.uz:8081/xtrade/login.html")
 
     # Alternativ URLlar:
     # driver.get("http://localhost:8080/smartup5x_trade_patch/")

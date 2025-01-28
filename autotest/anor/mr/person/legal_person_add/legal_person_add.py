@@ -27,4 +27,5 @@ class LegalPersonAdd(BasePage):
     def click_save_button(self):
         self.click(self.save_button)
         self.click(self.yes_button)
+        self._wait_for_all_loaders()
     # ------------------------------------------------------------------------------------------------------------------

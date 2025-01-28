@@ -1,22 +1,22 @@
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 class DashboardPage(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_header = (By.XPATH, "//div/h3[contains(text(), 'Trade')]")
 
-    def element_visible(self, timeout=None):
-        return self.wait_for_element_visible(self.dashboard_header, timeout=timeout)
-    # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
-    error_massage = (By.XPATH, "//span[@id='error']")
+    def element_visible(self):
+        try:
+            if self.wait_for_element_visible(self.dashboard_header):
+                self.logger.info("✅ Dashboard sahifasida 'Trade' elementi tasdiqlandi")
+                return True
 
-    def wait_for_element_error(self, timeout=2):
-        self.wait_for_element_visible(self.error_massage, timeout=timeout)
+        except Exception:
+            self.logger.error("❌ Dashboard tekshiruvi muvaffaqiyatsiz: 'Trade' elementi topilmadi")
+            return False
+    # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     filial_list_button = (By.XPATH, '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')
 
@@ -30,14 +30,14 @@ class DashboardPage(BasePage):
     active_session_header = (By.XPATH, "//h3/t[contains(text(),'Активные сеансы')]")
 
     def element_visible_session(self):
-        """Agar active_session_header ko'rinsa, delete_session_button ni bosish."""
-
         try:
-            element = WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(self.delete_session_button))
-            element.click()
-            self.logger.info("Aktiv sessiya topildi va o'chirildi.")
-        except TimeoutException:
-            self.logger.info("Aktiv sessiya yo'q.")
+            if self._wait_for_visibility(self.active_session_header, timeout=5):
+                self.logger.info("‼️ Aktiv sessiya mavjud - uni o'chirish kerak.")
+                return True
+
+        except Exception:
+            self.logger.info("5 sekund kutildi. Aktiv sessiya tekshiruvi yakunlandi. Sessiya mavjud emas.")
+            return False
     # ------------------------------------------------------------------------------------------------------------------
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 

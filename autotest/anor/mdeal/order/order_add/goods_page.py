@@ -10,6 +10,14 @@ class OrderAddProduct(BasePage):
     def element_visible(self):
         return self.wait_for_element_visible(self.header_text)
     # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    setting_button = (By.XPATH, '//b-pg-controller[@name="goods_items"]//div[@role="group"]/button')
+    setting_tbl_button = (By.XPATH, '//b-pg-controller[@name="goods_items"]//div[@role="group"]/div[@x-placement="bottom-end"]/a')
+
+    def click_setting_button(self):
+        self.click(self.setting_button)
+        self.click(self.setting_tbl_button)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def input_name_product(self, product_name, warehouse_name, price_type_name):
         if self.click(self.name_input):
@@ -29,7 +37,6 @@ class OrderAddProduct(BasePage):
                         parts[2].strip() == price_type_name):
                     element.click()
                     break
-
     # ------------------------------------------------------------------------------------------------------------------
     name_input = (By.XPATH, '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[@class="simple"]/input')
     name_options = (By.XPATH, '//b-input[@id="anor279_input-b_input-product_name_goods0"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
@@ -77,6 +84,13 @@ class OrderAddProduct(BasePage):
         else:
             print('Action active!')
             return True
+    # ------------------------------------------------------------------------------------------------------------------
+    # Select:
+    # ------------------------------------------------------------------------------------------------------------------
+    select_button = (By.XPATH, '(//button[@id="anor279-button-select"])[1]')
+
+    def click_select_button(self):
+        self.click(self.select_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Overload
     # ------------------------------------------------------------------------------------------------------------------

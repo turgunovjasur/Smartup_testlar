@@ -43,6 +43,12 @@ class ContractAdd(BasePage):
     def input_initial_amount(self, initial_amount):
         self.input_text(self.initial_amount_input, initial_amount)
     # ------------------------------------------------------------------------------------------------------------------
+    sub_filial_input = (By.XPATH, '//b-input[@name="subfilials"]//input')
+    options_sub_filial = (By.XPATH, '//b-input[@name="subfilials"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def input_sub_filial(self, sub_filial_name):
+        self.click_options(self.sub_filial_input, self.options_sub_filial, sub_filial_name)
+    # ------------------------------------------------------------------------------------------------------------------
     checkbox_button = (By.XPATH, '(//form[@name="form"]//label[@class="switch"]/span)[1]')
 
     def click_checkbox_button(self):

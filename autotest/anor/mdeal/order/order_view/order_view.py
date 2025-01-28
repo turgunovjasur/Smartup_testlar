@@ -15,6 +15,13 @@ class OrderView(BasePage):
     def check_order_id(self):
         return self.get_numeric_value(self.order_id)
     # ------------------------------------------------------------------------------------------------------------------
+    setting_button = (By.XPATH, '//b-pg-controller[@name="goods_items_view"]//div[@role="group"]/button')
+    setting_tbl_button = (By.XPATH, '//b-pg-controller[@name="goods_items_view"]//div[@role="group"]/div[@x-placement="bottom-end"]/a')
+
+    def click_setting_button(self):
+        self.click(self.setting_button)
+        self.click(self.setting_tbl_button)
+    # ------------------------------------------------------------------------------------------------------------------
     get_status = (By.XPATH, '(//form[@name="form"]//div[@class="row"]//div[@class="col-sm-12"]/span)[1]')
 
     def check_status(self):
@@ -46,7 +53,7 @@ class OrderView(BasePage):
     get_row_consignment = (By.XPATH, '//b-pg-grid[@name="consignments"]//div[@class="tbl-body"]//div[contains(@class, "tbl-no-data-row") and contains(text(), "нет данных")]')
 
     def check_row_consignment(self):
-        self.wait_for_element_visible(self.get_row_consignment)
+        return self.wait_for_element_visible(self.get_row_consignment)
 
     def check_consignments(self, add_date):
         current_date = datetime.now()

@@ -37,6 +37,12 @@ class OrderAddMain(BasePage):
         self.clear_element(self.contract_input)
         self.click_options(self.contract_input, self.options_contract, contract_name)
     # ------------------------------------------------------------------------------------------------------------------
+    sub_filial_input = (By.XPATH, '//b-input[@name="subfilials"]//input[@ng-model="d.subfilial_name"]')
+    options_sub_filial = (By.XPATH, '//b-input[@name="subfilials"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def click_sub_filial_input(self, sub_filial_name):
+        self.click_options(self.sub_filial_input, self.options_sub_filial, sub_filial_name)
+    # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
     def click_next_step_button(self):

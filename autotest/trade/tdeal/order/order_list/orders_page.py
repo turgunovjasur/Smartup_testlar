@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 class OrdersList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     header = (By.XPATH, '//button[@id="trade81-button-add"]')
+    # header = (By.XPATH, '//button[@id="tradeddsf81-button-add"]')
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
@@ -65,8 +66,8 @@ class OrdersList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
 
-    def find_row(self, client_name, checkbox=False):
-        self.find_row_and_click(element_name=client_name, checkbox=checkbox)
+    def find_row(self, client_name):
+        self.find_row_and_click(element_name=client_name)
     # ------------------------------------------------------------------------------------------------------------------
     reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
 

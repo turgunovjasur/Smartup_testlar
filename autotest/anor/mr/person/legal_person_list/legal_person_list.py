@@ -16,7 +16,7 @@ class LegalPersonList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, legal_person_name):
-        self.find_row_and_click(element_name=legal_person_name)
+        self.find_row_and_click(element_name=legal_person_name, expand=True)
     # ------------------------------------------------------------------------------------------------------------------
     view_button = (By.XPATH, '//button[@ng-click="view(row)"]')
 
