@@ -2,158 +2,34 @@ import os
 import re
 import time
 import allure
-import logging
-import inspect
 from datetime import datetime, timedelta
 from selenium.webdriver import Keys
-from colorama import Fore, Style, init
+from colorama import init
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import TimeoutException, \
-    ElementClickInterceptedException, ElementNotInteractableException, WebDriverException, \
-    StaleElementReferenceException
-
+from utils.logger import get_test_name, configure_logging
 from selenium.common.exceptions import (
     TimeoutException,
-    NoSuchElementException,
     StaleElementReferenceException,
-    ElementClickInterceptedException,
-    ElementNotInteractableException,
-    InvalidSelectorException,
-    WebDriverException,
-    NoAlertPresentException,
-    UnexpectedAlertPresentException,
-    InvalidElementStateException,
-    NoSuchWindowException,
-    NoSuchFrameException,
-    ElementNotSelectableException,
-    ImeActivationFailedException,
-    ImeNotAvailableException,
-    InsecureCertificateException,
-    InvalidCookieDomainException,
-    UnableToSetCookieException,
-    UnexpectedTagNameException,
-    InvalidSessionIdException,
-    SessionNotCreatedException,
+    WebDriverException
 )
 
-init(autoreset=True)  # Ranglarni avtomatik reset qilish
-
+init(autoreset=True)
 
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.test_name = self._get_test_name()
-        self._configure_logging()
-        self.default_timeout = 5
+        self.test_name = get_test_name()
+        self.logger = configure_logging(self.test_name)
+        self.default_timeout = 3
         self.actions = ActionChains(driver)
-
-    def _get_test_name(self):
-        """Test nomini avtomatik aniqlash: funksiyaning yoki sinfning nomini topish."""
-
-        stack = inspect.stack()
-        for frame in stack:
-            # Test funksiyasi "test_" bilan boshlanadi
-            if frame.function.startswith("test"):
-                return frame.function
-        return "unknown_test"
-
-    def _configure_logging(self):
-        """
-        Logging konfiguratsiyasi: loglarni yagona faylga yozish
-        va test nomi bilan ajratib ko‘rsatish.
-        """
-        log_dir = "logs"
-        if not os.path.exists(log_dir):
-            os.makedirs(log_dir)
-
-        # Log faylining yagona nomi
-        log_file_name = f"{log_dir}/{self.test_name}_{datetime.now().strftime('%Y_%m_%d')}.log"
-
-        # Logger yaratish
-        self.logger = logging.getLogger(self.test_name)
-        self.logger.setLevel(logging.DEBUG)
-
-        # Eski handlerlarni tozalash
-        if self.logger.hasHandlers():
-            self.logger.handlers.clear()
-
-        # Log format: test nomini kiritish
-        log_format = f"%(asctime)s - [%(levelname)s] - {self.test_name} - %(message)s"
-
-        # Rangli konsol handler
-        class ColorFormatter(logging.Formatter):
-            def format(self, record):
-                log_message = super().format(record)
-                if record.levelno == logging.INFO:
-                    return f"{Fore.GREEN}{log_message}{Style.RESET_ALL}"
-                elif record.levelno == logging.WARNING:
-                    return f"{Fore.YELLOW}{log_message}{Style.RESET_ALL}"
-                elif record.levelno == logging.ERROR:
-                    return f"{Fore.RED}{log_message}{Style.RESET_ALL}"
-                elif record.levelno == logging.DEBUG:
-                    return f"{Fore.CYAN}{log_message}{Style.RESET_ALL}"
-                return log_message
-
-        # Console handler
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
-        console_formatter = ColorFormatter(log_format)
-        console_handler.setFormatter(console_formatter)
-        self.logger.addHandler(console_handler)
-
-        # File handler
-        file_handler = logging.FileHandler(log_file_name, mode='a', encoding='utf-8')
-        file_handler.setLevel(logging.DEBUG)
-        file_formatter = logging.Formatter(log_format)
-        file_handler.setFormatter(file_formatter)
-        self.logger.addHandler(file_handler)
-
-        # Avoid propagating logs to the root logger
-        self.logger.propagate = False
-
-    # Errors -----------------------------------------------------------------------------------------------------------
-
-    def errors(self, exception, error_description=""):
-        """Selenium xatoliklarini boshqarish uchun yordamchi funksiya."""
-
-        exception_map = {
-            TimeoutException: "❌ Elementni topish yoki yuklash uchun vaqt tugadi.",
-            NoSuchElementException: "❌ Element mavjud emas.",
-            StaleElementReferenceException: "⚠️ DOM yangilangani sababli element mavjud emas.",
-            ElementClickInterceptedException: "⚠️ Element bloklangan yoki ustida boshqa element bor.",
-            ElementNotInteractableException: "❌ Element foydalanuvchi bilan ishlashga tayyor emas.",
-            InvalidSelectorException: "❌ Lokator noto‘g‘ri yoki sintaksisda xatolik mavjud.",
-            WebDriverException: "🚨 Selenium WebDriver xatoligi.",
-            NoAlertPresentException: "❌ Kutilgan alert dialog topilmadi.",
-            UnexpectedAlertPresentException: "⚠️ Kutilmagan alert paydo bo‘ldi.",
-            InvalidElementStateException: "⚠️ Element holati o‘zgartirilmasligi mumkin.",
-            NoSuchWindowException: "❌ Ko‘rsatilgan oyna mavjud emas.",
-            NoSuchFrameException: "❌ Ko‘rsatilgan frame mavjud emas.",
-            ElementNotSelectableException: "⚠️ Element tanlanishi mumkin emas.",
-            ImeActivationFailedException: "❌ IME faollashtirilmadi.",
-            ImeNotAvailableException: "❌ IME tizimda mavjud emas.",
-            InsecureCertificateException: "⚠️ Xavfsiz bo‘lmagan sertifikat topildi.",
-            InvalidCookieDomainException: "❌ Cookie noto‘g‘ri domen uchun o‘rnatilgan.",
-            UnableToSetCookieException: "❌ Cookie o‘rnatib bo‘lmadi.",
-            UnexpectedTagNameException: "⚠️ Elementning tegi kutilmagan turda.",
-            InvalidSessionIdException: "❌ Sessiya identifikatori noto‘g‘ri yoki muddati o‘tgan.",
-            SessionNotCreatedException: "🚨 Selenium sessiyasi yaratilmagan.",
-        }
-
-        error_message = exception_map.get(type(exception), "❓ Noma’lum xatolik yuz berdi.")
-        if error_description:
-            error_message += f" Amal: {error_description}"
-        self.logger.error(error_message)
-        return error_message
 
     # Screenshot -------------------------------------------------------------------------------------------------------
 
     def take_screenshot(self, filename=None):
         """Fayl nomiga vaqt va test nomini qo'shib, screenshot saqlash."""
-
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         test_name = self.test_name if self.test_name != "unknown_test" else "default"
         if filename:
@@ -168,53 +44,25 @@ class BasePage:
         self.logger.info(f"Screenshot saved at {screenshot_path}")
         allure.attach.file(screenshot_path, name="Error Screenshot", attachment_type=allure.attachment_type.PNG)
 
-    # Retry ------------------------------------------------------------------------------------------------------------
-
-    def retry_with_delay(self, func, retries=3, retry_delay=1, *args, **kwargs):
-        """Retry mexanizmi: Funksiyani qayta urinish bilan bajarish."""
-
-        last_exception = None
-        for attempt in range(retries):
-            self.logger.debug(f"Funksiya {func.__name__} chaqirildi, urinish {attempt + 1}")
-            try:
-                result = func(*args, **kwargs)
-                if result:
-                    self.logger.debug(f"{func.__name__} natijasi: {result}")
-                    return result  # Muvaffaqiyatli natija
-            except Exception as e:
-                last_exception = e
-                self.logger.warning(
-                    f"[Urinish {attempt + 1}] {func.__name__} bajarilmadi, {retry_delay} soniyadan keyin qayta urinish..."
-                )
-            time.sleep(retry_delay)
-        self.logger.error(
-            f"Funksiya {func.__name__} barcha {retries} urinishdan so‘ng muvaffaqiyatsiz tugadi: {last_exception}"
-        )
-        return False
-
     # Halper function --------------------------------------------------------------------------------------------------
 
     def _wait_for_page_load(self, timeout=None):
         """Sahifa to'liq yuklanganligini kutish."""
-
+        page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
-        start_time = time.time()
         try:
             result = WebDriverWait(self.driver, timeout).until(
                 lambda d: d.execute_script("return document.readyState") == "complete")
-            elapsed_time = time.time() - start_time
-            # self.logger.debug(f"Sahifa {elapsed_time:.2f}s ichida yuklandi")
             return result
-        except TimeoutException as e:
-            self.logger.error(f"Sahifa {timeout}s ichida yuklanmadi: {str(e)}", exc_info=True)
+        except TimeoutException:
+            self.logger.error(f"{page_name}: Sahifa {timeout}s ichida yuklanmadi.")
             return False
 
     def _wait_for_async_operations(self, timeout=None):
         """Sahifadagi async operatsiyalar (AJAX, fetch) tugashini kutish."""
-
+        page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
         wait = WebDriverWait(self.driver, timeout)
-        start_time = time.time()
         try:
             wait.until(lambda driver:
                        driver.execute_script(
@@ -229,48 +77,39 @@ class BasePage:
                                  r.initiatorType === 'xmlhttprequest')
                             ).length === 0;
                     """))
-            elapsed_time = time.time() - start_time
-            # self.logger.debug(f"Async operatsiyalar {elapsed_time:.2f}s ichida tugadi")
             return True
-        except TimeoutException as e:
-            self.logger.error(f"Async operatsiyalar {timeout}s o'tgandan keyin ham tugamadi: {str(e)}")
+        except TimeoutException:
+            self.logger.error(f"{page_name}: Async operatsiyalar {timeout}s ichida tugamadi.")
             return False
 
     def _wait_for_overlay_absence(self, timeout=None):
         """Bloklovchi element yo‘q bo‘lishini kutadi."""
-
+        page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
-        start_time = time.time()
         try:
             WebDriverWait(self.driver, timeout).until(
                 EC.invisibility_of_element_located((By.CLASS_NAME, "block-ui-overlay")))
-            elapsed_time = time.time() - start_time
-            # self.logger.debug(f"Bloklovchi element {elapsed_time:.2f}s ichida yo'qoldi")
             return True
-        except TimeoutException as e:
-            self.logger.error(f"Bloklovchi element {timeout}s ichida yo'qolmadi: {str(e)}", exc_info=True)
+        except TimeoutException:
+            self.logger.error(f"{page_name}: Bloklovchi element {timeout}s ichida yo'qolmadi.")
             return False
 
     def _check_spinner_absence(self, timeout=None):
         """Yuklash indikatorlarining mavjud emasligini tekshirish."""
-
+        page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
         locator = (By.XPATH,
-            "//div[contains(@class, 'block-ui-overlay') or contains(@class, 'block-ui-message-container')]")
-        start_time = time.time()
+                   "//div[contains(@class, 'block-ui-overlay') or contains(@class, 'block-ui-message-container')]")
         try:
             WebDriverWait(self.driver, timeout).until(
                 EC.invisibility_of_element_located(locator))
-            elapsed_time = time.time() - start_time
-            # self.logger.debug(f"Yuklash indikatori {elapsed_time:.2f}s ichida yo'qoldi")
             return True
-        except TimeoutException as e:
-            self.logger.error(f"Yuklash indikatori {timeout}s o'tgandan keyin ham mavjud: {str(e)}")
+        except TimeoutException:
+            self.logger.error(f"{page_name}: Yuklash indikatori {timeout}s ichida yo'qolmadi.")
             return False
 
     def _wait_for_all_loaders(self, timeout=None):
         """Sahifadagi barcha yuklanish indikatorlarini kutish"""
-
         page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
 
@@ -293,8 +132,8 @@ class BasePage:
 
             return True
 
-        except Exception as e:
-            self.logger.warning(f"{page_name}: Sahifa yuklanishida xatolik: {str(e)}")
+        except Exception:
+            self.logger.error(f"{page_name}: Sahifa yuklanishida xatolik.")
             return False
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -305,7 +144,7 @@ class BasePage:
         page_name = self.__class__.__name__
         try:
             element.click()
-            self.logger.info(f"⏺{page_name}: {'Retry ' if retry else ''}Click: {locator}")
+            self.logger.info(f"⏺ {page_name}: {'Retry ' if retry else ''}Click: {locator}")
             return True
         except WebDriverException:
             if error_massage:
@@ -318,7 +157,7 @@ class BasePage:
         page_name = self.__class__.__name__
         try:
             self.driver.execute_script("arguments[0].click();", element)
-            self.logger.info(f"⏺{page_name}: {'Retry ' if retry else ''}JS-Click: {locator}")
+            self.logger.info(f"⏺ {page_name}: {'Retry ' if retry else ''}JS-Click: {locator}")
             return True
         except WebDriverException:
             self.logger.warning(f"❗{'Retry ' if retry else ''}JS-Click ishlamadi: {locator}")
@@ -457,19 +296,31 @@ class BasePage:
             return False
 
     # Click ------------------------------------------------------------------------------------------------------------
-    def click(self, locator, retries=3, retry_delay=1):
+    def click(self, locator, timeout=None, retries=3, retry_delay=1):
         """Elementni bosish funksiyasi"""
+        page_name = self.__class__.__name__
+        self.logger.debug(f"{page_name}: Element bosilmoqda: {locator}")
 
+        timeout = timeout or self.default_timeout
         attempt = 0
+        errors = []
+
         while attempt < retries:
             try:
-                # Sahifa yuklanishini tekshirish
+                # 1. Sahifa yuklanishini tekshirish
                 if not self._wait_for_all_loaders():
-                    raise TimeoutException("click: yuklanishi muvaffaqiyatsiz yakunlandi")
+                    raise TimeoutException(f"{page_name}: sahifasi yuklanishi muvaffaqiyatsiz yakunlandi")
 
-                # Element tayyor bo'lishini kutish
-                element_dom = self._wait_for_presence(locator)
-                self._scroll_to_element(element_dom, locator)
+                # 2. Element DOM da borligini tekshirish
+                element_dom = self._wait_for_presence(locator, error_massage=False)
+                if not element_dom:
+                    raise TimeoutException(f"{page_name}: Element DOM da topilmadi: {locator}")
+
+                # 3. Elementga scroll
+                scroll_result = self._scroll_to_element(element_dom, locator)
+                if not scroll_result:
+                    raise WebDriverException(f"{page_name}: Elementga scroll qilib bo'lmadi: {locator}")
+
                 element_clickable = self._wait_for_clickable(locator)
 
                 # 1-urinish: Oddiy click
@@ -489,25 +340,32 @@ class BasePage:
                     return True
 
             except StaleElementReferenceException:
-                self.logger.warning(f"Element yangilandi. Click {attempt + 1}/{retries}. {locator}")
+                errors.append(f"🚫 {page_name}: Element yangilandi (Urinish {attempt + 1}): {locator}")
             except TimeoutException:
-                self.logger.warning(f"Elementni kutish vaqti tugadi. Click {attempt + 1}/{retries}")
-            except Exception as e:
-                self.logger.warning(f"Kutilmagan xatolik: {e}. Click {attempt + 1}/{retries}")
+                errors.append(f"⛔️ {page_name}: Vaqt tugadi: {timeout}s (Urinish {attempt + 1}): {locator}")
+            except Exception:
+                errors.append(f"⁉️ {page_name}: Kutilmagan xato: (Urinish {attempt + 1}): {locator}")
 
             attempt += 1
-            time.sleep(retry_delay)
+            if attempt < retries:
+                self.logger.warning(f"⚠️ {page_name}: Element bosilmadi. (Urinish {attempt}): {locator}")
+                time.sleep(retry_delay)
 
-        self.logger.error('❌Click muvaffaqiyatsiz yakunlandi')
-        self.take_screenshot("click_error")
-        raise WebDriverException(f"Click funksiyasi barcha urinishda ham ishlamadi: {locator}")
+        # Barcha urinishlar tugadi
+        error_log = "\n".join(errors)
+        self.logger.error(f"❌ {page_name}: Element bosilmadi. (Urinish {attempt}): {locator}")
+        self.logger.error(f"Xatoliklar tarixi:\n{error_log}")
+        self.take_screenshot(f"{page_name.lower()}_element_not_click")
+
+        raise WebDriverException(
+            f"{page_name}: Element bosilmadi: {locator}\nSabablari:\n{error_log}")
 
     # Wait -------------------------------------------------------------------------------------------------------------
 
     def wait_for_element_visible(self, locator, timeout=None, retries=3, retry_delay=1):
         """Elementni ko'rinishini kutish funksiyasi"""
         page_name = self.__class__.__name__
-        self.logger.debug(f"{page_name} sahifasida element qidirilmoqda: {locator}")
+        self.logger.debug(f"{page_name}: Element qidirilmoqda: {locator}")
 
         timeout = timeout or self.default_timeout
         attempt = 0
@@ -517,17 +375,17 @@ class BasePage:
             try:
                 # 1. Sahifa yuklanishini tekshirish
                 if not self._wait_for_all_loaders():
-                    raise TimeoutException(f"{page_name} sahifasi yuklanishi muvaffaqiyatsiz yakunlandi")
+                    raise TimeoutException(f"{page_name}: sahifasi yuklanishi muvaffaqiyatsiz yakunlandi")
 
                 # 2. Element DOM da borligini tekshirish
                 element_dom = self._wait_for_presence(locator, error_massage=False)
                 if not element_dom:
-                    raise TimeoutException(f"Element DOM da topilmadi: {locator}")
+                    raise TimeoutException(f"{page_name}: Element DOM da topilmadi: {locator}")
 
                 # 3. Elementga scroll
                 scroll_result = self._scroll_to_element(element_dom, locator)
                 if not scroll_result:
-                    raise WebDriverException(f"Elementga scroll qilib bo'lmadi: {locator}")
+                    raise WebDriverException(f"{page_name}: Elementga scroll qilib bo'lmadi: {locator}")
 
                 # 4. Element ko'rinishini tekshirish
                 if element := self._wait_for_visibility(locator, error_massage=False):
@@ -535,28 +393,25 @@ class BasePage:
                     return element
 
             except StaleElementReferenceException:
-                errors.append(f"{page_name} element yangilandi (Urinish {attempt + 1})")
-
-            except TimeoutException as e:
-                errors.append(f"Vaqt tugadi: {str(e)} (Urinish {attempt + 1})")
-
-            except Exception as e:
-                errors.append(f"Kutilmagan xato: {str(e)} (Urinish {attempt + 1})")
+                errors.append(f"🚫 {page_name}: Element yangilandi (Urinish {attempt + 1}): {locator}")
+            except TimeoutException:
+                errors.append(f"⛔️ {page_name}: Vaqt tugadi: {timeout}s (Urinish {attempt + 1}): {locator}")
+            except Exception:
+                errors.append(f"⁉️ {page_name}: Kutilmagan xato: (Urinish {attempt + 1}): {locator}")
 
             attempt += 1
             if attempt < retries:
-                self.logger.warning(f"Element topilmadi. {retry_delay} soniyadan keyin qayta urinish...")
+                self.logger.warning(f"⚠️ {page_name}: Element topilmadi. (Urinish {attempt}): {locator}")
                 time.sleep(retry_delay)
 
         # Barcha urinishlar tugadi
         error_log = "\n".join(errors)
-        self.logger.error(f"❌ Element {retries} ta urinishdan keyin ham topilmadi")
+        self.logger.error(f"❌ {page_name}: Element topilmadi. (Urinish {attempt}): {locator}")
         self.logger.error(f"Xatoliklar tarixi:\n{error_log}")
         self.take_screenshot(f"{page_name.lower()}_element_not_found")
 
         raise WebDriverException(
-            f"Element topilmadi: {locator}\nSabablari:\n{error_log}"
-        )
+            f"{page_name}: Element topilmadi: {locator}\nSabablari:\n{error_log}")
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -763,7 +618,7 @@ class BasePage:
             self.click(item_button)
 
         if expand:
-            click_limit_button(limit=2)
+            click_limit_button(limit=4)
 
         def process_element():
             try:

@@ -334,7 +334,6 @@ def test_sub_filial_add(driver):
     data = test_data()["data"]
     filial_name = data["filial_name"]
     room_name = data["room_name"]
-    robot_name = data["robot_name"]
     role_name = data["role_name"]
     sub_filial_name = data["sub_filial_name"]
 
@@ -359,10 +358,8 @@ def test_sub_filial_add(driver):
 
         # Sub Filial List
         assert sub_filial_list.element_visible(), base_page.logger.error('SubFilialList not open!')
-        try:
-            sub_filial_list.find_row(sub_filial_name)
-        except Exception:
-            base_page.logger.error(f'❌Error: {sub_filial_name} not found!')
+        sub_filial_list.click_reload_button()
+        sub_filial_list.find_row(sub_filial_name)
         base_page.logger.info(f"Sub-Filial(✅): '{sub_filial_name}' successfully added to room '{room_name}'!")
 
     except Exception as e:

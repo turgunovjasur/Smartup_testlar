@@ -1,15 +1,13 @@
-import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import WebDriverException
 
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 
-from selenium.common.exceptions import WebDriverException, TimeoutException
-from tests.test_base.exceptions import *
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 def test_data():
@@ -23,7 +21,7 @@ def test_data():
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
-        "cod": 32,
+        "cod": 33,
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -105,7 +103,7 @@ def get_driver():
         options.add_argument("--log-level=3")
 
         driver = webdriver.Chrome(service=service, options=options)
-        driver.get("https://app3.gw.greenwhite.uz/xtrade/login.html")
+        driver.get("https://app3.greenwhite.uz/xtrade/login.html")
         # driver.get("http://gw.greenwhite.uz:8081/xtrade/login.html")
         # driver.get("https://smartup.online/login.html")
         return driver
@@ -122,7 +120,6 @@ def open_new_window(driver, url: str) -> bool:
 
     try:
         base_page._wait_for_all_loaders()
-        base_page.logger.info("Yangi brauzer oynasi ochilmoqda")
 
         driver.execute_script("window.open('');")
         driver.switch_to.window(driver.window_handles[-1])
@@ -188,17 +185,15 @@ def dashboard(driver):
     try:
         if not base_page._wait_for_all_loaders():
             return False
-
         session_exists = dashboard_page.element_visible_session()
         if session_exists is True:
             dashboard_page.click_button_delete_session()
             base_page.logger.info("✅ Eski sessiya muvaffaqiyatli o'chirildi")
-
-        if not dashboard_page.element_visible():
+        if not dashboard_page.element_visible(timeout=10) is None:
             base_page.logger.error("Dashboard tekshiruvi muvaffaqiyatsiz yakunlandi")
             return False
 
-        base_page.logger.info("✅ Dashboard sahifasi muvaffaqiyatli yuklandi")
+        base_page.logger.info("✅ Dashboard sahifasi muvaffaqiyatli ochildi")
         return True
 
     except Exception as e:

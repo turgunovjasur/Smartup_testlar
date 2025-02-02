@@ -19,3 +19,8 @@ class SubFilialList(BasePage):
     def find_row(self, sub_filial_name):
         self.find_row_and_click(element_name=sub_filial_name)
     # ------------------------------------------------------------------------------------------------------------------
+    reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
+
+    def click_reload_button(self):
+        self.click(self.reload_button)
+    # ------------------------------------------------------------------------------------------------------------------
