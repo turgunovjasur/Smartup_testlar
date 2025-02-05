@@ -16,10 +16,10 @@ class InitInventoryBalanceAdd(BasePage):
         self.click_options(self.warehouse_name_input, self.warehouse_elem, warehouse_name)
     # ------------------------------------------------------------------------------------------------------------------
     product_name_input = (By.XPATH, '//b-input[@name="products"]//input[@ng-model="item.product_name"]')
-    product_elem = (By.XPATH, '//b-input[@model="item.product_name"]//div[@class="hint-body ng-scope"]/div[1]')
+    options_product = (By.XPATH, '//b-input[@model="item.product_name"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[2]')
 
     def input_product_name(self, product_name):
-        self.click_options(self.product_name_input, self.product_elem, product_name)
+        self.click_options(self.product_name_input, self.options_product, product_name)
     # ------------------------------------------------------------------------------------------------------------------
     card_code_input = (By.XPATH, '(//input[@ng-model="item.card_code"])[1]')
 
@@ -42,20 +42,4 @@ class InitInventoryBalanceAdd(BasePage):
     def click_save_button(self):
         self.click(self.save_button)
         self.click(self.yes_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
-
-    def click_reload_button(self):
-        self.click(self.reload_button)
-    # ------------------------------------------------------------------------------------------------------------------
-
-    def find_row(self, balance_number):
-        return self.find_row_and_click(element_name=balance_number)
-    # ------------------------------------------------------------------------------------------------------------------
-    post_one_button = (By.XPATH, '//button[@ng-click="postOne(row)"]')
-    yes_post_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
-
-    def click_post_one_button(self):
-        self.click(self.post_one_button)
-        self.click(self.yes_post_button)
     # ------------------------------------------------------------------------------------------------------------------

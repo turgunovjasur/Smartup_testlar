@@ -50,7 +50,7 @@ from tests.test_order.test_order import (
     test_order_change_status_B,
     test_order_change_status_C,
     test_order_copy_C_for_A_B,
-    test_order_return
+    test_order_return, test_order_add_for_sub_filial_select
 )
 
 
@@ -106,6 +106,12 @@ def get_tests():
 
         {"name": "Contract Add-C", "func": test_contract_add_C_USA},
         {"name": "Order Add-C", "func": test_order_add_price_type_USA},
+        {"name": "Order Change Status-C", "func": test_order_change_status_C},
+        {"name": "Order Add-C", "func": test_order_add_for_sub_filial_select},
+
+
+
+
         # # {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
         # # {"name": "Order Return", "func": test_order_return},
     ]

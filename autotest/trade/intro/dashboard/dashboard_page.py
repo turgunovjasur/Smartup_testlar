@@ -1,4 +1,3 @@
-from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
@@ -6,24 +5,21 @@ from autotest.core.md.base_page import BasePage
 class DashboardPage(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_header = (By.XPATH, "//div/h3[contains(text(), 'Trade')]")
-    save_button_header = (By.XPATH, '//button[@ng-click="save()"]')
+    save_button = (By.XPATH, '//button[@ng-click="save()"]')
 
-    def element_visible(self, timeout=None):
-        try:
-            if not self._wait_for_all_loaders():
-                raise TimeoutException(f"Dashboard sahifasi yuklanishida xatolik")
-            try:
-                if self._wait_for_visibility(self.dashboard_header, timeout=timeout, error_massage=False):
-                    self.logger.info("Dashboard sahifasida 'Trade' elementi tasdiqlandi")
-                    return True
-            except:
-                if self._wait_for_visibility(self.dashboard_header, timeout=timeout, error_massage=False):
-                    self.logger.info("ChangePassword sahifasida 'save_button' elementi tasdiqlandi")
-                    return True
+    def element_visible(self):
+        # Dashboard header tekshiruvi
+        if self._wait_for_visibility(self.dashboard_header, timeout=10, error_massage=False):
+            self.logger.info("Dashboard sahifasi ochilganligi tasdiqlandi")
+            return True
 
-        except Exception:
-            self.logger.error("❌ Dashboard tekshiruvi muvaffaqiyatsiz: 'header_text' elementi topilmadi")
-            return False
+        # ChangePassword save button tekshiruvi
+        if self._wait_for_visibility(self.save_button, timeout=10, error_massage=False):
+            self.logger.info("Dashboard(ChangePassword) sahifasi ochilganligi tasdiqlandi")
+            return True
+
+        self.logger.error("Dashboard tekshiruvi muvaffaqiyatsiz: elementlar topilmadi")
+        return False
 
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
@@ -40,14 +36,12 @@ class DashboardPage(BasePage):
     active_session_header = (By.XPATH, "//h3/t[contains(text(),'Активные сеансы')]")
 
     def element_visible_session(self):
-        try:
-            if self._wait_for_visibility(self.active_session_header, timeout=5):
-                self.logger.info("‼️ Aktiv sessiya mavjud - uni o'chirish kerak.")
-                return True
+        if self._wait_for_visibility(self.active_session_header, timeout=5, error_massage=False):
+            self.logger.info("‼️ Eski sessiya mavjud!")
+            return True
 
-        except Exception:
-            self.logger.info("5 sekund kutildi. Aktiv sessiya tekshiruvi yakunlandi. Sessiya mavjud emas.")
-            return False
+        self.logger.info("5 sekund kutildi. Eski sessiya mavjud emas.")
+        return False
 
     # ------------------------------------------------------------------------------------------------------------------
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")

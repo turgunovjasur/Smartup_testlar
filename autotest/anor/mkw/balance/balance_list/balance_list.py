@@ -12,7 +12,7 @@ class BalanceList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, product_name):
-        self.find_row_and_click(product_name)
+        self.find_row_and_click(element_name=product_name)
     # ------------------------------------------------------------------------------------------------------------------
     detail_button = (By.XPATH, '//button[@ng-click="detailOne(row)"]')
 

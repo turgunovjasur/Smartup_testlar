@@ -34,7 +34,7 @@ class FilialView(BasePage):
     checkbox_save_button = (By.XPATH, '//button[@ng-click="checkSave()"]')
 
     def click_checkbox_button(self):
-        for number in range(1, 15):
+        for number in range(1, 14):
             checkbox_button = (By.XPATH, f'(//b-subpage[@name="filial_projects"]//div[@class="row"]//span)[{number}]')
             self.click(checkbox_button)
         self.click(self.checkbox_save_button)

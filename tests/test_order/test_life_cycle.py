@@ -1,6 +1,9 @@
 import random
 import time
+import pytest
 
+from autotest.anor.mcg.action_add.action_add import ActionAdd
+from autotest.anor.mcg.action_list.action_list import ActionList
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
@@ -124,10 +127,11 @@ def test_company_creat(driver):
         time.sleep(2)
         base_page.logger.info(f"✅Company: '{data['name_company']}' successfully added!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error massage(❌): {e}")
-        base_page.take_screenshot("test_company_creat_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_legal_person_add(driver, legal_person_name=None):
@@ -143,7 +147,8 @@ def test_legal_person_add(driver, legal_person_name=None):
 
     try:
         # Login
-        login_admin(driver, url='anor/mr/person/legal_person_list')
+        if not login_admin(driver, url='anor/mr/person/legal_person_list'):
+            pytest.fail()
 
         # Legal Person List
         legal_person_list = LegalPersonList(driver)
@@ -169,10 +174,11 @@ def test_legal_person_add(driver, legal_person_name=None):
         assert legal_person_name == text, base_page.logger.error(f'Error: {legal_person_name} != {text}')
         base_page.logger.info(f"Legal Person(✅): '{legal_person_name}' successfully added!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error massage(❌): {e}")
-        base_page.take_screenshot("test_legal_person_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_filial_creat(driver):
@@ -222,10 +228,11 @@ def test_filial_creat(driver):
         filial_view.click_close_button()
         base_page.logger.info(f"Filial(✅): '{filial_name}' successfully added!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_filial_creat_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_room_add(driver):
@@ -268,10 +275,11 @@ def test_room_add(driver):
         room_view.click_close_button()
         base_page.logger.info(f"Room(✅): '{room_name}' successfully added to filial '{filial_name}'!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_room_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_robot_add(driver):
@@ -319,10 +327,11 @@ def test_robot_add(driver):
         robot_view.click_close_button()
         base_page.logger.info(f"Robot(✅): '{robot_name}' successfully added to filial '{filial_name}'!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_robot_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_sub_filial_add(driver):
@@ -362,10 +371,11 @@ def test_sub_filial_add(driver):
         sub_filial_list.find_row(sub_filial_name)
         base_page.logger.info(f"Sub-Filial(✅): '{sub_filial_name}' successfully added to room '{room_name}'!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_sub_filial_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_natural_person_add(driver, person_name=None):
@@ -407,10 +417,11 @@ def test_natural_person_add(driver, person_name=None):
         assert natural_person_name == text, base_page.logger.error(f"Error: {natural_person_name} != {text}")
         base_page.logger.info(f"NaturalPersonView(✅): name success checked '{natural_person_name}'")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_natural_person_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_user_creat(driver):
@@ -483,10 +494,11 @@ def test_user_creat(driver):
         user_view.click_close_button()
         base_page.logger.info(f"User(✅): Permissions added to user '{natural_person_name}'!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_user_creat_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_adding_permissions_to_user(driver):
@@ -508,7 +520,6 @@ def test_adding_permissions_to_user(driver):
         # Role List
         role_list = RoleList(driver)
         assert role_list.element_visible(), base_page.logger.error('RoleList not open!')
-        base_page.logger.info("RoleList: page opened.")
         role_list.click_row_button(role_name)
         role_list.click_edit_button()
 
@@ -539,10 +550,11 @@ def test_adding_permissions_to_user(driver):
         role_view.click_close_button()
         base_page.logger.info(f"Role(✅): Permissions successfully added to role '{role_name}'!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_adding_permissions_to_user_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_user_change_password(driver):
@@ -568,10 +580,11 @@ def test_user_change_password(driver):
         time.sleep(2)
         base_page.logger.info(f"Password(✅): successfully changed!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_user_change_password_error")
-        raise
+        pytest.fail(str(e))
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -657,10 +670,11 @@ def price_type_add(driver, price_type_name=None, currency_name=None, all_price=F
 
         base_page.logger.info(f"PriceType(✅): '{price_type_name}' successfully added!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_price_type_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_price_type_add_UZB(driver):
@@ -702,10 +716,11 @@ def test_payment_type_add(driver):
         payment_type_list_attach.click_close_button()
         base_page.logger.info(f"PaymentType(✅): successfully attached!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_payment_type_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_sector_add(driver):
@@ -749,10 +764,11 @@ def test_sector_add(driver):
         sector_view.click_close_button()
         base_page.logger.info(f"Sector(✅): '{sector_name}' successfully added!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_sector_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_product_add(driver):
@@ -782,40 +798,40 @@ def test_product_add(driver):
 
         # Inventory List
         inventory_list = InventoryList(driver)
-        assert inventory_list.element_visible(), 'InventoryList not open!'
+        assert inventory_list.element_visible(), base_page.logger.error('InventoryList not open!')
         inventory_list.click_add_button()
 
         # Add Inventory
         inventory_add = InventoryNew(driver)
-        assert inventory_add.element_visible(), 'InventoryNew not open!'
+        assert inventory_add.element_visible(), base_page.logger.error('InventoryNew not open!')
         inventory_add.input_name(product_name)
-        inventory_add.input_measurement(measurement_name)
         inventory_add.input_sectors(sector_name)
+        inventory_add.input_measurement(measurement_name)
         inventory_add.click_goods_checkbox()
         inventory_add.click_save_button()
 
         # Inventory List
-        assert inventory_list.element_visible(), 'InventoryList not open!'
+        assert inventory_list.element_visible(), base_page.logger.error('InventoryList not open!')
         inventory_list.find_and_click_checkbox(product_name)
         inventory_list.click_view_button()
 
         # Product View
         product_id = ProductView(driver)
-        assert product_id.element_visible(), 'ProductView not open!'
+        assert product_id.element_visible(), base_page.logger.error('ProductView not open!')
         get_name = product_id.get_elements()
-        assert product_name == get_name, f"Error: {product_name} != {get_name}"
+        assert product_name == get_name, base_page.logger.error(f"Error: {product_name} != {get_name}")
         product_id.click_close_button()
 
         # Inventory List - Set Price
-        assert inventory_list.element_visible(), 'InventoryList not open!'
+        assert inventory_list.element_visible(), base_page.logger.error('InventoryList not open!')
         inventory_list.find_and_click_checkbox(product_name)
         inventory_list.click_set_price_button()
 
         # Product Set Price
         product_set_price = ProductSetPrice(driver)
-        assert product_set_price.element_visible(), 'ProductSetPrice not open!'
+        assert product_set_price.element_visible(), base_page.logger.error('ProductSetPrice not open!')
         text = product_set_price.check_product()
-        assert product_name == text, f'"{product_name}" != "{text}"'
+        assert product_name == text, base_page.logger.error(f'"{product_name}" != "{text}"')
         product_set_price.input_prices(product_price, price_type_name_UZB)
         product_set_price.input_prices(product_price_USA, price_type_name_USA)
         product_set_price.click_save_button()
@@ -823,10 +839,11 @@ def test_product_add(driver):
                               f"\n{price_type_name_UZB}: {product_price} "
                               f"\n{price_type_name_USA}: {product_price_USA}")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_product_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_currency_add(driver):
@@ -864,10 +881,11 @@ def test_currency_add(driver):
         assert currency_list.element_visible(), base_page.logger.error("CurrencyList not open!")
         base_page.logger.info(f"✅Test end(): test_currency_add")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("test_currency_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_margin_add(driver):
@@ -931,10 +949,11 @@ def test_margin_add(driver):
         margin_list.find_row(margin_name)
         base_page.logger.info(f"✅Test end(): test_margin_add")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("test_margin_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -1009,10 +1028,11 @@ def client_add(driver, client_name=None):
         base_page.logger.info(f"Client(✅): '{client_name}' successfully added!")
         time.sleep(0.2)
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("client_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_client_add_A(driver):
@@ -1115,10 +1135,11 @@ def test_room_attachment(driver):
         base_page.logger.info(f"Room(✅): '{room_name}' successfully attached to payment types, "
                               f"'{warehouse_name}', '{cash_register_name}', and clients '{client_name}-A,B,C'!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_room_attachment_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_init_balance(driver):
@@ -1141,9 +1162,9 @@ def test_init_balance(driver):
         login_user(driver, url='anor/mkw/init_balance/init_inventory_balance_list')
 
         # Init Inventory Balance List
-        init_balance = InitInventoryBalanceList(driver)
-        assert init_balance.element_visible(), base_page.logger.error('InitInventoryBalanceList not open!')
-        init_balance.click_add_button()
+        init_balance_list = InitInventoryBalanceList(driver)
+        assert init_balance_list.element_visible(), base_page.logger.error('InitInventoryBalanceList not open!')
+        init_balance_list.click_add_button()
 
         # Add Init Inventory Balance
         init_balance_add = InitInventoryBalanceAdd(driver)
@@ -1155,23 +1176,20 @@ def test_init_balance(driver):
         init_balance_add.input_quantity(product_quantity)
         init_balance_add.input_price(product_price)
         init_balance_add.click_save_button()
-        assert init_balance_add.find_row(balance_number), \
-            base_page.logger.error(f"Balance number '{balance_number}' not found!")
-        init_balance_add.click_post_one_button()
+
+        # Init Inventory Balance List
+        assert init_balance_list.element_visible(), base_page.logger.error('InitInventoryBalanceList not open!')
+        init_balance_list.click_reload_button()
+        init_balance_list.find_row(balance_number)
+        init_balance_list.click_post_one_button()
 
         # Balance List
         cut_url = base_page.cut_url()
         open_new_window(driver, cut_url + 'anor/mkw/balance/balance_list')
         balance_list = BalanceList(driver)
         assert balance_list.element_visible(), base_page.logger.error('BalanceList not open!')
-
-        # Verify balance
-        try:
-            balance_list.find_row(product_name)
-        except:
-            balance_list.click_reload_button()
-            balance_list.find_row(product_name)
-
+        balance_list.click_reload_button()
+        balance_list.find_row(product_name)
         balance_list.click_detail_button()
         time.sleep(2)
 
@@ -1181,39 +1199,39 @@ def test_init_balance(driver):
         base_page.logger.info(
             f"Balance(✅): {balance} pieces of '{product_name}' successfully added to '{warehouse_name}'!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("test_init_balance_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_setting_consignment(driver):
     # Log
     base_page = BasePage(driver)
+    system_setting = SystemSetting(driver)
     base_page.logger.info("Test run(▶️): test_setting_consignment")
 
     try:
         login_user(driver, url='trade/pref/system_setting')
 
         # System setting
-        system_setting = SystemSetting(driver)
         assert system_setting.element_visible(), base_page.logger.error("SystemSetting not open!")
-
         system_setting.click_navbar_button(navbar_button=6)
 
         assert system_setting.element_visible_order(), base_page.logger.error("order_header not open!")
         if not system_setting.check_checkbox_text():
             system_setting.click_checkbox_consignment()
-
             system_setting.input_consignment_day_limit(day_limit=90)
 
         system_setting.click_save_button()
         base_page.logger.info(f"✅Test end(): test_setting_consignment")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("test_setting_consignment_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_order_request(driver):  # mast not
@@ -1332,10 +1350,11 @@ def contract_add(driver, client_name=None, contract_name=None, initial_amount=No
         contract_view.click_close_button()
         base_page.logger.info(f"Contract(✅): '{contract_name}' successfully added!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"Error message(❌): {e}")
-        base_page.take_screenshot("contract_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_contract_add_A_UZB(driver):
@@ -1373,4 +1392,53 @@ def test_contract_add_C_USA(driver):
                  initial_amount=initial_amount,
                  sub_filial=True)
 
+
+# ------------------------------------------------------------------------------------------------------------------
+
+def test_action(driver):
+    # Log
+    base_page = BasePage(driver)
+    base_page.logger.info("Test run(▶️): test_action")
+
+    # Test data
+    data = test_data()["data"]
+    action_name = 'Test_action'
+    room_name = data["room_name"]
+    warehouse_name = data["warehouse_name"]
+    product_name = data["product_name"]
+    product_quantity = 10
+
+    try:
+        login_user(driver, url='anor/mcg/action_list')
+
+        # Contract List
+        action_list = ActionList(driver)
+        assert action_list.element_visible(), base_page.logger.error('ActionList not open!')
+        action_list.click_add_button()
+
+        # Contract List
+        action_add = ActionAdd(driver)
+        assert action_add.element_visible(), base_page.logger.error('ActionAdd not open!')
+        action_add.input_name(action_name)
+        action_add.input_room(room_name)
+        action_add.input_bonus_warehouse(warehouse_name)
+        action_add.click_step_button()
+
+        action_add.input_inventory(product_name)
+        action_add.input_inventory_quantity(product_quantity)
+
+
+
+
+
+
+
+
+        base_page.logger.info(f"Action(✅): successfully added!")
+
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
+    except Exception as e:
+        pytest.fail(str(e))
 # ------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,7 @@
 import time
+
+import pytest
+
 from autotest.anor.mdeal.order.order_add.create_order_page import OrderAddMain
 from autotest.anor.mdeal.order.order_add.final_page import OrderAddFinal
 from autotest.anor.mdeal.order.order_add.goods_page import OrderAddProduct
@@ -30,7 +33,6 @@ def order_add(driver,
               margin=False,
               select=False,
               setting=False):
-
     # Test data
     base_page = BasePage(driver)
     data = test_data()["data"]
@@ -179,10 +181,11 @@ def order_add(driver,
         order_view.click_close_button()
         base_page.logger.info(f"✅Test end(): order_add")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("order_add_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_order_add_with_consignment(driver):
@@ -301,6 +304,7 @@ def order_edit(driver, client_name=None, product_quantity_edit=None):
 
         # Order Add Final
         order_add_final = OrderAddFinal(driver)
+
         def check_error_message():
             error_message = order_add_final.error_massage()
             if error_message == data["error_massage_2"]:
@@ -311,6 +315,7 @@ def order_edit(driver, client_name=None, product_quantity_edit=None):
                 base_page.logger.error(f'Error: Expected "{data["error_massage_2"]}", got "{error_message}"')
                 base_page.logger.error("Consignment edit failed!")
                 return False
+
         if not check_error_message():
             base_page.logger.error(f'Error: check_error_message')
 
@@ -339,10 +344,11 @@ def order_edit(driver, client_name=None, product_quantity_edit=None):
         order_view.click_close_button()
         base_page.logger.info(f"✅Test end(): order_edit")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("order_edit_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_order_edit_A(driver):
@@ -433,7 +439,8 @@ def order_change_status(driver, client_name=None, status=True):
             assert text == data["Pending"], base_page.logger.error(f'{text} != {data["Pending"]}')
             pending_quantity, pending_price, pending_sum = order_view.check_items()
             assert draft_quantity == pending_quantity, \
-                base_page.logger.error(f'Error: draft_quantity: {draft_quantity} != pending_quantity: {pending_quantity}')
+                base_page.logger.error(
+                    f'Error: draft_quantity: {draft_quantity} != pending_quantity: {pending_quantity}')
             assert draft_price == pending_price, \
                 base_page.logger.error(f'Error: draft_price: {draft_price} != pending_price: {pending_price}')
             order_view.click_close_button()
@@ -450,7 +457,8 @@ def order_change_status(driver, client_name=None, status=True):
             assert text == data["Shipped"], base_page.logger.error(f'{text} != {data["Shipped"]}')
             shipped_quantity, shipped_price, shipped_sum = order_view.check_items()
             assert draft_quantity == shipped_quantity, \
-                base_page.logger.error(f'Error: draft_quantity: {draft_quantity} != shipped_quantity: {shipped_quantity}')
+                base_page.logger.error(
+                    f'Error: draft_quantity: {draft_quantity} != shipped_quantity: {shipped_quantity}')
             assert draft_price == shipped_price, \
                 base_page.logger.error(f'Error: draft_price: {draft_price} != shipped_price: {shipped_price}')
             order_view.click_close_button()
@@ -479,10 +487,11 @@ def order_change_status(driver, client_name=None, status=True):
         order_list.click_change_status_button(data["Archive"])
         base_page.logger.info(f"✅Test end(): order_change_status")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("order_change_status_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_order_change_status_A(driver):
@@ -557,10 +566,11 @@ def order_copy(driver, client_name=None, client_name_copy_A=None, client_name_co
             base_page.logger.error(f"{get_client_name} != {client_name_copy_B}")
         order_view.click_close_button()
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("order_copy_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_order_copy_C_for_A_B(driver):
@@ -638,10 +648,11 @@ def order_return(driver, client_name=None):
             f"OrderView: success checked: order_id: {get_order_id_last}, order_status: {get_status_last}, order_price: {get_price}")
         base_page.logger.info(f"✅Test end(): order_return successfully!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("order_return_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_order_return(driver):
@@ -709,10 +720,11 @@ def order_list(driver, client_name=None):
 
         base_page.logger.info(f"✅Test end(): order_return successfully!")
 
+    except AssertionError as ae:
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
     except Exception as e:
-        base_page.logger.error(f"❌Error message(): {e}")
-        base_page.take_screenshot("order_list_error")
-        raise
+        pytest.fail(str(e))
 
 
 def test_order_list(driver):

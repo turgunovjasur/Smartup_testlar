@@ -7,7 +7,13 @@ class LoginPage(BasePage):
     login_header = (By.XPATH, '//div[@class="loginbox__logo"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.login_header)
+        if self._wait_for_visibility(self.login_header):
+            self.logger.info("Login sahifada 'logo' elementi tasdiqlandi")
+            return True
+
+        self.logger.error("Login sahifada 'logo' elementi tasdiqlanmadi")
+        return False
+
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     email_input = (By.XPATH, '//input[@id="login"]')
@@ -17,10 +23,12 @@ class LoginPage(BasePage):
         email_success = self.input_text(self.email_input, email)
         password_success = self.input_text(self.password_input, password)
 
-        if not email_success or not password_success:
-            self.logger.error(f"Error form: Email={email_success}, Password={password_success}")
-            return False
-        return True
+        if email_success and password_success:
+            self.logger.info("Login formasi muvaffaqiyatli to'ldirildi")
+            return True
+
+        self.logger.error(f"Noto'g'ri ma'lumot: email={email_success} yoki password={password_success}")
+        return False
     # ------------------------------------------------------------------------------------------------------------------
     signup_button = (By.XPATH, '//button[@id="sign_in"]')
 
