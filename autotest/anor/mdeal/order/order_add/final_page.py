@@ -10,6 +10,11 @@ class OrderAddFinal(BasePage):
         return self.wait_for_element_visible(self.header_text)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
+    booked_payment_allowed_input = (By.XPATH, '//div[contains(@ng-show, "d.booked_payment_allowed")]//t[contains(text(),"Баланс клиента")]/ancestor::label/following-sibling::span')
+
+    def get_booked_payment_allowed(self):
+        return self.get_numeric_value(self.booked_payment_allowed_input)
+    # ------------------------------------------------------------------------------------------------------------------
     payment_type_input = (By.XPATH, '//div[@id="anor279-inpu-b_input-payment_type"]//b-input[@name="payment_type"]//input')
     payment_options = (By.XPATH, '//div[@id="anor279-inpu-b_input-payment_type"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 

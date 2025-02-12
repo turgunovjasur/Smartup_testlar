@@ -69,29 +69,35 @@ class ActionAdd(BasePage):
     def input_type_condition(self):
         self.input_text_elem(self.type_condition_input, self.type_condition_elem)
     # ------------------------------------------------------------------------------------------------------------------
-    inventory_input = (By.XPATH, '//b-input[@id="rule_products"]//input')
-    options_inventory = (By.XPATH, '//b-input[@id="rule_products"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
+    product_input = (By.XPATH, '//b-input[@id="rule_products"]//input')
+    options_product = (By.XPATH, '//b-input[@id="rule_products"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
 
-    def input_inventory(self, product_name):
-        self.click_options(self.inventory_input, self.options_inventory, product_name)
+    def input_product_name(self, product_name):
+        self.click_options(self.product_input, self.options_product, product_name)
     # ------------------------------------------------------------------------------------------------------------------
-    inventory_quantity_input = (By.XPATH, '//form[@name="step1"]//input[@ng-model="rule.main_value"]')
+    product_quantity_input = (By.XPATH, '//form[@name="step1"]//input[@ng-model="rule.main_value"]')
 
-    def input_inventory_quantity(self, inventory_quantity):
-        self.input_text(self.inventory_quantity_input, inventory_quantity)
+    def input_product_quantity(self, product_quantity):
+        self.input_text(self.product_quantity_input, product_quantity)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    bonus_inventory_input = (By.XPATH, "(id('bonus_products')//input)[1]")
-    bonus_inventory_elem = (By.XPATH, "id('bonus_products')//div[@class='hint-body ng-scope']/div[1]")
+    bonus_product_input = (By.XPATH, '//b-input[@id="bonus_products"]//input')
+    options_bonus_product = (By.XPATH, '//b-input[@id="bonus_products"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
 
-    def input_bonus_inventory(self):
-        self.input_text_elem(self.bonus_inventory_input, self.bonus_inventory_elem)
+    def input_bonus_product(self, bonus_product_name):
+        self.click_options(self.bonus_product_input, self.options_bonus_product, bonus_product_name)
     # ------------------------------------------------------------------------------------------------------------------
-    bonus_inventory_quantity_input = (By.XPATH, "id('anor718-input-text-product_value')/input")
+    bonus_product_quantity_input = (By.XPATH, '//form[@name="step1"]//input[@ng-model="product.value"]')
 
-    def input_bonus_inventory_quantity(self, bonus_inventory_quantity_elem):
-        self.input_text(self.bonus_inventory_quantity_input, bonus_inventory_quantity_elem)
+    def input_bonus_product_quantity(self, bonus_product_quantity):
+        self.input_text(self.bonus_product_quantity_input, bonus_product_quantity)
     # ------------------------------------------------------------------------------------------------------------------
+    bonus_kind_input = (By.XPATH, '//form[@name="step1"]//div[@ng-model="bonus.bonus_kind"]//span[@ng-click="$select.activate()"]')
+    bonus_kind = (By.XPATH, '//form[@name="step1"]//div[@ng-model="bonus.bonus_kind"]//ul//span[contains(text(), "Скидка")]')
+
+    def input_bonus_kind(self):
+        self.click(self.bonus_kind_input)
+        self.click(self.bonus_kind)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, "id('anor718-button-next_step')")
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")

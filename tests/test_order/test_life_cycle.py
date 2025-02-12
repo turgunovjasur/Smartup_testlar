@@ -2,8 +2,6 @@ import random
 import time
 import pytest
 
-from autotest.anor.mcg.action_add.action_add import ActionAdd
-from autotest.anor.mcg.action_list.action_list import ActionList
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
@@ -1395,50 +1393,41 @@ def test_contract_add_C_USA(driver):
 
 # ------------------------------------------------------------------------------------------------------------------
 
-def test_action(driver):
-    # Log
+def setting_prepayment(driver, prepayment=True):
     base_page = BasePage(driver)
-    base_page.logger.info("Test run(▶️): test_action")
-
-    # Test data
-    data = test_data()["data"]
-    action_name = 'Test_action'
-    room_name = data["room_name"]
-    warehouse_name = data["warehouse_name"]
-    product_name = data["product_name"]
-    product_quantity = 10
+    system_setting = SystemSetting(driver)
+    base_page.logger.info("Test run(▶️): test_setting_prepayment")
 
     try:
-        login_user(driver, url='anor/mcg/action_list')
+        login_user(driver, url='trade/pref/system_setting')
 
-        # Contract List
-        action_list = ActionList(driver)
-        assert action_list.element_visible(), base_page.logger.error('ActionList not open!')
-        action_list.click_add_button()
-
-        # Contract List
-        action_add = ActionAdd(driver)
-        assert action_add.element_visible(), base_page.logger.error('ActionAdd not open!')
-        action_add.input_name(action_name)
-        action_add.input_room(room_name)
-        action_add.input_bonus_warehouse(warehouse_name)
-        action_add.click_step_button()
-
-        action_add.input_inventory(product_name)
-        action_add.input_inventory_quantity(product_quantity)
-
-
-
-
-
-
-
-
-        base_page.logger.info(f"Action(✅): successfully added!")
+        # System setting
+        assert system_setting.element_visible(), base_page.logger.error("SystemSetting not open!")
+        system_setting.click_navbar_button(navbar_button=6)
+        assert system_setting.element_visible_order(), base_page.logger.error("order_navbar not open!")
+        if prepayment:
+            if not system_setting.check_checkbox_prepayment():
+                system_setting.click_checkbox_prepayment()
+                system_setting.input_prepayment()
+                system_setting.input_prepayment_min_percent(payment_min_percent=50)
+        if not prepayment:
+            if system_setting.check_checkbox_prepayment():
+                system_setting.click_checkbox_prepayment()
+        system_setting.click_save_button()
+        assert system_setting.element_visible_order(), base_page.logger.error("order_navbar not open!")
+        base_page.logger.info(f"✅Test end(): test_setting_prepayment")
 
     except AssertionError as ae:
         base_page.take_screenshot("assertion_error")
         pytest.fail(str(ae))
     except Exception as e:
         pytest.fail(str(e))
+
+
+def test_setting_prepayment_on(driver):
+    setting_prepayment(driver, prepayment=True)
+
+
+def test_setting_prepayment_off(driver):
+    setting_prepayment(driver, prepayment=False)
 # ------------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,10 @@
+import time
+
 import allure
 import pytest
 from tests.test_base.test_base import get_driver
 from tests.test_order.test_cashin import test_cashin_add_A, test_offset_add_A, test_offset_add_B
+from tests.test_reference import test_action
 from utils.driver_setup import driver
 
 # Import all test functions
@@ -33,7 +36,7 @@ from tests.test_order.test_life_cycle import (
     test_margin_add,
     test_contract_add_A_UZB,
     test_contract_add_B_UZB,
-    test_contract_add_C_USA,
+    test_contract_add_C_USA, test_setting_prepayment_on, test_setting_prepayment_off,
 )
 
 from tests.test_order.test_order import (
@@ -50,8 +53,9 @@ from tests.test_order.test_order import (
     test_order_change_status_B,
     test_order_change_status_C,
     test_order_copy_C_for_A_B,
-    test_order_return, test_order_add_for_sub_filial_select
+    test_order_return, test_order_add_for_sub_filial_select, test_order_edit_C
 )
+from utils.screen_recorder import ScreenRecorder
 
 
 # All ------------------------------------------------------------------------------------------------------------------
@@ -106,8 +110,16 @@ def get_tests():
 
         {"name": "Contract Add-C", "func": test_contract_add_C_USA},
         {"name": "Order Add-C", "func": test_order_add_price_type_USA},
-        {"name": "Order Change Status-C", "func": test_order_change_status_C},
-        {"name": "Order Add-C", "func": test_order_add_for_sub_filial_select},
+        {"name": "Test Setting Prepayment On", "func": test_setting_prepayment_on},
+        {"name": "Order Edit-C", "func": test_order_edit_C},
+
+        # {"name": "Order Change Status-C", "func": test_order_change_status_C},
+        {"name": "Test Setting Prepayment Off", "func": test_setting_prepayment_off},
+
+
+
+        # {"name": "Order Add-C", "func": test_order_add_for_sub_filial_select},
+        # {"name": "Test Action", "func": test_action},
 
 
 

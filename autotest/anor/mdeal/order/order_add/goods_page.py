@@ -67,37 +67,22 @@ class OrderAddProduct(BasePage):
     def click_next_step_button(self):
         self.click(self.next_step_button)
     # ------------------------------------------------------------------------------------------------------------------
-    # Action
-    # ------------------------------------------------------------------------------------------------------------------
-    action_button = (By.XPATH, "//ul[@id='anor279-ul-nav_tablist']/li[7]/a")
 
-    def click_action_button(self):
-        self.click(self.action_button)
+    def click_nav_tablist_button(self, nav_tablist):
+        tablist = (By.XPATH, f'//ul[@id="anor279-ul-nav_tablist"]//li[contains(@class,"nav-item")][{nav_tablist}]/a')
+        self.click(tablist)
     # ------------------------------------------------------------------------------------------------------------------
-    check_action = (By.XPATH, "//div[@id='actions']//label[@class='py-3 px-4']")
+    action_checkbox_button = (By.XPATH, '//div[@id="actions"]//label[@class="switch"]')
+    # action_checkbox_button = (By.XPATH, '//div[@id="actions"]//label[@class="switch"]/input')
 
-    def action_is_visible(self):
-        element = self.wait_for_element_visible(self.check_action, timeout=2)
-        if element is None:
-            print('Action inactive!')
-            return False
-        else:
-            print('Action active!')
-            return True
-    # ------------------------------------------------------------------------------------------------------------------
-    # Select:
+    def click_action_checkbox_button(self):
+        self.click(self.action_checkbox_button)
+
     # ------------------------------------------------------------------------------------------------------------------
     select_button = (By.XPATH, '(//button[@id="anor279-button-select"])[1]')
 
     def click_select_button(self):
         self.click(self.select_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    # Overload
-    # ------------------------------------------------------------------------------------------------------------------
-    overload_button = (By.XPATH, "//ul[@id='anor279-ul-nav_tablist']/li[5]/a")
-
-    def click_overload_button(self):
-        self.click(self.overload_button)
     # ------------------------------------------------------------------------------------------------------------------
     check_overload = (By.XPATH, "(//div[@id='overload']//div[@class='col-sm-15'])[1]")
 
@@ -109,11 +94,4 @@ class OrderAddProduct(BasePage):
         else:
             print('Overload active!')
             return True
-    # ------------------------------------------------------------------------------------------------------------------
-    # Inventory
-    # ------------------------------------------------------------------------------------------------------------------
-    inventory_button = (By.XPATH, "//ul[@id='anor279-ul-nav_tablist']/li[1]/a")
-
-    def click_inventory_button(self):
-        self.click(self.inventory_button)
     # ------------------------------------------------------------------------------------------------------------------

@@ -2,7 +2,6 @@ import logging
 import time
 import traceback
 from functools import wraps
-from typing import Optional
 
 from selenium.common.exceptions import (
     TimeoutException,

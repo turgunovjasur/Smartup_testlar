@@ -4,15 +4,15 @@ from selenium.webdriver.common.by import By
 
 class ActionIdView(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = By.XPATH, "//div[@class='card-title']/h5/t"
+    header = By.XPATH, '//button[@id="anor1199-button-close"]'
 
     def element_visible(self):
-        self.wait_for_element_visible(self.header)
+        return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    action_name = (By.XPATH, "id('anor1199-action_information')/div/span[1]")
+    get_action_name = (By.XPATH, '//div[@id="anor1199-action_information"]//span[1]')
 
     def get_elements(self):
-        return self.get_text(self.action_name)
+        return self.get_text(self.get_action_name)
     # ------------------------------------------------------------------------------------------------------------------
     close_button = By.XPATH, "//button[@id='anor1199-button-close']"
 

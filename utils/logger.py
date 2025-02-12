@@ -1,7 +1,6 @@
 import os
 import inspect
 import logging
-import allure
 from datetime import datetime
 from colorama import Fore, Style, init
 

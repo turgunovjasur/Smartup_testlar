@@ -9,6 +9,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+
+from utils.exception import (
+    ElementInteractionError,
+    ElementNotFoundError,
+    ElementStaleError,
+    ElementNotClickableError,
+    ScrollError,
+    LoaderTimeoutError, ElementVisibilityError
+)
 from utils.logger import get_test_name, configure_logging
 from selenium.common.exceptions import (
     TimeoutException,
@@ -47,98 +56,132 @@ class BasePage:
 
     # Halper function --------------------------------------------------------------------------------------------------
 
-    def _wait_for_page_load(self, timeout=None):
-        """Sahifa to'liq yuklanganligini kutish."""
-        page_name = self.__class__.__name__
-        timeout = timeout or self.default_timeout
-        try:
-            result = WebDriverWait(self.driver, timeout).until(
-                lambda d: d.execute_script("return document.readyState") == "complete")
-            return result
-        except TimeoutException:
-            self.logger.error(f"{page_name}: Sahifa {timeout}s ichida yuklanmadi.")
-            return False
-
     def _wait_for_async_operations(self, timeout=None):
-        """Sahifadagi async operatsiyalar (AJAX, fetch) tugashini kutish."""
-        page_name = self.__class__.__name__
-        timeout = timeout or self.default_timeout
-        wait = WebDriverWait(self.driver, timeout)
-        try:
-            wait.until(lambda driver:
-                       driver.execute_script(
-                           "return document.readyState") == "complete" and
-                       driver.execute_script(
-                           "return typeof jQuery !== 'undefined' ? jQuery.active === 0 : true;") and
-                       driver.execute_script("""
-                        return window.performance
-                            .getEntriesByType('resource')
-                            .filter(r => !r.responseEnd &&
-                                (r.initiatorType === 'fetch' ||
-                                 r.initiatorType === 'xmlhttprequest')
-                            ).length === 0;
-                    """))
-            return True
-        except TimeoutException:
-            self.logger.error(f"{page_name}: Async operatsiyalar {timeout}s ichida tugamadi.")
-            return False
+        """Sahifadagi asinxron operatsiyalar tugashini kutish."""
 
-    def _wait_for_overlay_absence(self, timeout=None):
-        """Bloklovchi element yo‘q bo‘lishini kutadi."""
         page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
+
+        async_check_script = """
+            return (
+                document.readyState === 'complete' &&
+                (typeof jQuery !== 'undefined' ? jQuery.active === 0 : true) &&
+                window.performance
+                    .getEntriesByType('resource')
+                    .filter(r => !r.responseEnd && 
+                        (r.initiatorType === 'fetch' || r.initiatorType === 'xmlhttprequest'))
+                    .length === 0 &&
+                !document.querySelector('html.ng-scope.ng-isolate-scope')
+            );
+        """
+        try:
+            WebDriverWait(self.driver, timeout).until(lambda driver: driver.execute_script(async_check_script))
+            return True
+
+        except TimeoutException:
+            error_message = f"Asinxron operatsiyalar {timeout}s ichida tugallanmadi"
+            self.logger.error(f"{page_name}: {error_message}")
+            raise LoaderTimeoutError(error_message)
+        except Exception as e:
+            error_message = f"Asinxron operatsiyalar tekshirishda kutilmagan xato: {str(e)}"
+            self.logger.error(f"{page_name}: {error_message}")
+            raise LoaderTimeoutError(error_message)
+
+    def _wait_for_block_ui_absence(self, timeout=None):
+        """
+            Block UI yo'qolishini kutish.
+            JavaScript orqali Block UI holatini tekshiradi.
+            blockUI va blockUIConfig obyektlarining mavjudligi va holatini tekshiradi.
+            Faqat JavaScript darajasida ishlaydi.
+        """
+        page_name = self.__class__.__name__
+        timeout = timeout or self.default_timeout
+
+        block_ui_script = """
+            return (
+                (typeof blockUI === 'undefined' || !blockUI.state() || !blockUI.state().blocking) &&
+                (typeof blockUIConfig === 'undefined' || blockUIConfig.autoBlock !== false)
+            );
+        """
+
         try:
             WebDriverWait(self.driver, timeout).until(
-                EC.invisibility_of_element_located((By.CLASS_NAME, "block-ui-overlay")))
+                lambda driver: driver.execute_script(block_ui_script)
+            )
             return True
+
         except TimeoutException:
-            self.logger.error(f"{page_name}: Bloklovchi element {timeout}s ichida yo'qolmadi.")
-            return False
+            error_message = f"Block UI {timeout}s ichida yo'qolmadi"
+            self.logger.error(f"{page_name}: {error_message}")
+            raise LoaderTimeoutError(error_message)
+        except Exception as e:
+            error_message = f"Block UI tekshirishda kutilmagan xato: {str(e)}"
+            self.logger.error(f"{page_name}: {error_message}")
+            raise LoaderTimeoutError(error_message)
 
     def _check_spinner_absence(self, timeout=None):
-        """Yuklash indikatorlarining mavjud emasligini tekshirish."""
+        """
+            Spinner yo'qolishini kutish.
+            DOM elementlarini tekshiradi (4 ta CSS selector orqali)
+            Angular scope holatini tekshiradi.
+            Ham DOM, ham JavaScript darajasida ishlaydi.
+        """
         page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
-        locator = (By.XPATH,
-                   "//div[contains(@class, 'block-ui-overlay') or contains(@class, 'block-ui-message-container')]")
+
+        # Block UI container va uning ichki elementlari uchun locatorlar
+        block_ui_locators = [
+            (By.CSS_SELECTOR, "div.block-ui-container"),
+            (By.CSS_SELECTOR, "div.block-ui-overlay"),
+            (By.CSS_SELECTOR, "div.block-ui-message-container"),
+            (By.CSS_SELECTOR, "img[src='assets/img/loading.svg']")
+        ]
+
         try:
-            WebDriverWait(self.driver, timeout).until(
-                EC.invisibility_of_element_located(locator))
+            for locator in block_ui_locators:
+                WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+
+            # Angular scope holatini tekshirish
+            angular_scope_script = """
+                return (typeof angular === 'undefined') || 
+                       !document.querySelector('.block-ui-container.ng-scope') ||
+                       angular.element(document.querySelector('.block-ui-container')).scope().state.blocking === false;
+            """
+
+            WebDriverWait(self.driver, timeout).until(lambda driver: driver.execute_script(angular_scope_script))
             return True
+
         except TimeoutException:
-            self.logger.error(f"{page_name}: Yuklash indikatori {timeout}s ichida yo'qolmadi.")
-            return False
+            error_message = f"Block UI spinneri {timeout}s ichida yo'qolmadi"
+            self.logger.error(f"{page_name}: {error_message}")
+            raise LoaderTimeoutError(error_message)
+        except Exception as e:
+            error_message = f"Block UI spinnerini tekshirishda kutilmagan xato: {str(e)}"
+            self.logger.error(f"{page_name}: {error_message}")
+            raise LoaderTimeoutError(error_message)
 
-    def _wait_for_all_loaders(self, timeout=None):
-        """Sahifadagi barcha yuklanish indikatorlarini kutish"""
+    def _wait_for_all_loaders(self, timeout=None, log_text=None):
+        """Sahifaning to'liq barqaror holatga kelishini kutish."""
+
         page_name = self.__class__.__name__
-        timeout = timeout or self.default_timeout
+
+        status_text = f"{log_text}: ->" if log_text else ""
+        self.logger.debug(f"{page_name}: {status_text} Sahifa yuklanishini kutish boshlandi")
 
         try:
-            # Sahifaning asosiy yuklanishi
-            if not self._wait_for_page_load(timeout):
-                raise TimeoutException("Sahifa HTML yuklashni tugatmadi")
-
-            # Asinxron so'rovlarni kutish
-            if not self._wait_for_async_operations(timeout):
-                raise TimeoutException("Sahifadagi asinxron so'rovlar tugamadi")
-
-            # Overlaylarni yo'qolishini kutish
-            if not self._wait_for_overlay_absence(timeout):
-                raise TimeoutException("Sahifadagi overley yo'qolmadi")
-
-            # Spinnerlarni yo'qolishini kutish
-            if not self._check_spinner_absence(timeout):
-                raise TimeoutException("Sahifadagi yuklanish indikatori yo'qolmadi")
-
+            self._wait_for_async_operations(timeout)
+            self._wait_for_block_ui_absence(timeout)
+            self._check_spinner_absence(timeout)
+            self.logger.debug(f"{page_name}: {status_text} Sahifa yuklandi")
             return True
-        except Exception as e:
-            self.logger.error(f"{page_name}: Sahifa yuklanishida xatolik. {e}")
-            return False
+
+        except LoaderTimeoutError as e:
+            self.logger.error(f"{page_name}: {status_text} Sahifa yuklanishida xato: {str(e)}")
+            raise
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def _click(self, element, locator=None, retry=False, error_massage=True):
+    def _click(self, element, locator=None, retry=False, error_message=True):
         """Oddiy click urinishi"""
         page_name = self.__class__.__name__
         try:
@@ -146,7 +189,7 @@ class BasePage:
             self.logger.info(f"⏺ {page_name}: {'Retry ' if retry else ''}Click: {locator}")
             return True
         except WebDriverException:
-            if error_massage:
+            if error_message:
                 self.logger.warning(f"❗{'Retry ' if retry else ''}Click ishlamadi: {locator}")
             return False
 
@@ -158,7 +201,7 @@ class BasePage:
             self.logger.info(f"⏺ {page_name}: {'Retry ' if retry else ''}JS-Click: {locator}")
             return True
         except WebDriverException:
-            self.logger.error(f"❗{'Retry ' if retry else ''}JS-Click ishlamadi: {locator}")
+            self.logger.warning(f"❗{'Retry ' if retry else ''}JS-Click ishlamadi: {locator}")
             return False
 
     def _click_action_chains(self, element):
@@ -187,161 +230,258 @@ class BasePage:
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def _wait_for_presence(self, locator, timeout=None, error_massage=True):
-        """Locator DOMda mavjud ekanligini tekshirish"""
+    def _wait_for_presence(self, locator, timeout=None, error_message=True):
+        """Element DOMda mavjud ekanligini tekshirish"""
         page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
+
         try:
+            # # Sahifa yuklanishini tekshirish
+            # try:
+            #     self._wait_for_all_loaders(log_text='DOM')
+            # except LoaderTimeoutError:
+            #     raise
+
             element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
             return element
-        except StaleElementReferenceException:
-            if error_massage:
-                self.logger.warning(f"{page_name}: Element DOM da yangilandi: {locator}")
-            raise
-        except TimeoutException:
-            if error_massage:
-                self.logger.error(f"{page_name}: Element DOM da topilmadi: {locator}")
-            return None
-        except Exception as e:
-            if error_massage:
-                self.logger.error(f"{page_name}: Element qidirishda kutilmagan xato: {e}")
-            return None
 
-    def _scroll_to_element(self, element, locator, retries=3):
-        """Element ga scroll qilish."""
+        except StaleElementReferenceException as e:
+            if error_message:
+                self.logger.warning(f"{page_name}: Element DOM da yangilandi: {locator}")
+            raise ElementStaleError(
+                message="Element DOM da yangilandi",
+                locator=locator,
+                original_error=e
+            )
+
+        except TimeoutException as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Element DOM da topilmadi: {locator}")
+            raise ElementNotFoundError(
+                message="Element topilmadi",
+                locator=locator,
+                original_error=e
+            )
+
+        except Exception as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Element qidirishda kutilmagan xato: {e}")
+            raise ElementInteractionError(
+                message=f"Kutilmagan xato: {str(e)}",
+                locator=locator,
+                original_error=e
+            )
+
+    def _scroll_to_element(self, element, locator):
+        """Element ga scroll qilish"""
         page_name = self.__class__.__name__
 
         if element.is_displayed():
+            # self.logger.debug(f"{page_name}: Element scroll kerak emas!: {locator}")
             return element
 
         try:
-            location = element.location_once_scrolled_into_view
-            self.driver.execute_script(f"window.scrollTo({location['x']}, {location['y'] - 100});")
+            self.driver.execute_script(
+                "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
+            time.sleep(0.5)
+
+            if not element.is_displayed():
+                self.logger.warning(f"{page_name}: Element scroll qilingandan keyin ham ko'rinmadi: {locator}")
+                raise ScrollError(
+                    message="Element scroll qilingandan keyin ham ko'rinmadi",
+                    locator=locator
+                )
             return element
-        except Exception:
-            self.logger.warning(f"{page_name}: Scroll qilishda xatolik yuz berdi. Retry amalga oshiriladi.")
 
-        for attempt in range(retries):
-            try:
-                location = element.location_once_scrolled_into_view
-                self.driver.execute_script(f"window.scrollTo({location['x']}, {location['y'] - 100});")
-                return element
-            except Exception:
-                time.sleep(1)
+        except StaleElementReferenceException as e:
+            raise ElementStaleError(
+                message="Scroll paytida element yangilandi",
+                locator=locator,
+                original_error=e
+            )
+        except Exception as e:
+            raise ScrollError(
+                message=f"Element scroll qilib bo'lmadi",
+                locator=locator,
+                original_error=e
+            )
 
-        self.logger.error(f"{page_name}: Scroll qilishda xatolik. Element locator: {locator}")
-        return None
-
-    def _wait_for_visibility(self, locator, timeout=None, error_massage=True):
-        """Locatorni ko'rinishini tekshirish"""
+    def _wait_for_visibility(self, locator, timeout=None, error_message=True):
+        """Element ko'rinishini kutish"""
         page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
+
         try:
             element = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
             return element
-        except StaleElementReferenceException:
-            if error_massage:
-                self.logger.warning(f"{page_name}: Elementni ko'rinishida: element DOM da yangilandi: {locator}")
-            raise
-        except TimeoutException:
-            if error_massage:
-                self.logger.error(f"{page_name}: Element sahifada ko'rinmadi: {locator}")
-            return None
-        except Exception as e:
-            if error_massage:
-                self.logger.error(f"{page_name}: Element ko'rinishini tekshirishda xatolik: {e}")
-            return None
 
-    def _wait_for_clickable(self, locator, timeout=None, error_massage=True):
-        """Locatorni ni bosish uchun tayyor ekanligini tekshirish."""
+        except StaleElementReferenceException as e:
+            if error_message:
+                self.logger.warning(f"{page_name}: Element DOM da yangilandi: {locator}")
+            raise ElementStaleError(
+                message="Element ko'rinishini kutishda yangilandi",
+                locator=locator,
+                original_error=e
+            )
+
+        except TimeoutException as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Element ko'rinmadi: {locator}")
+            raise ElementNotFoundError(
+                message="Element ko'rinmadi",
+                locator=locator,
+                original_error=e
+            )
+
+        except Exception as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Element kutishda kutilmagan xato: {e}")
+            raise ElementInteractionError(
+                message=f"Kutilmagan xato: {str(e)}",
+                locator=locator,
+                original_error=e
+            )
+
+    def _wait_for_clickable(self, locator, timeout=None, error_message=True):
+        """Element bosiladigan holatda ekanligini tekshirish"""
         page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
+
         try:
             element = WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
             return element
-        except StaleElementReferenceException:
-            if error_massage:
-                self.logger.warning(f"{page_name}: Elementni bosishda: element DOM da yangilandi: {locator}")
-            raise
-        except TimeoutException:
-            if error_massage:
-                self.logger.warning(f"{page_name}: Element bosishga tayyor emas: {locator}")
-            return None
+
+        except StaleElementReferenceException as e:
+            if error_message:
+                self.logger.warning(f"{page_name}: Element DOM da yangilandi: {locator}")
+            raise ElementStaleError(
+                message="Element bosiladigan holatga kelishda yangilandi",
+                locator=locator,
+                original_error=e
+            )
+
+        except TimeoutException as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Element bosilmaydigan holatda: {locator}")
+            raise ElementNotClickableError(
+                message="Element bosilmaydigan holatda",
+                locator=locator,
+                original_error=e
+            )
+
         except Exception as e:
-            if error_massage:
-                self.logger.error(f"{page_name}: Element bosilishini tekshirishda xatolik: {e}")
-            return None
+            if error_message:
+                self.logger.error(f"{page_name}: Element tekshirishda kutilmagan xato: {e}")
+            raise ElementInteractionError(
+                message=f"Kutilmagan xato: {str(e)}",
+                locator=locator,
+                original_error=e
+            )
 
     # Click ------------------------------------------------------------------------------------------------------------
 
-    def click(self, locator, timeout=None, retries=3, retry_delay=0.5):
+    def is_displayed_block_ui(self, timeout=None):
+        """Block UI elementining ko'rinishini tekshiradi.
+
+        Returns:
+            bool: True agar loading ko'rinsa, False agar ko'rinmasa
+        """
+        page_name = self.__class__.__name__
+        timeout = timeout or self.default_timeout
+        block_ui_locator = (By.CSS_SELECTOR, "img[src='assets/img/loading.svg']")
+
+        try:
+            element = WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_element_located(block_ui_locator)
+            )
+            self.logger.info(f"@ {page_name}: block_ui DOM da topildi")
+
+            is_visible = element.is_displayed()
+            if is_visible:
+                self.logger.info(f"@ {page_name}: block_ui ko'rindi")
+                return True
+            else:
+                self.logger.info(f"@ {page_name}: block_ui ko'rinmadi")
+                return False
+
+        except TimeoutException:
+            self.logger.info(f"@ {page_name}: block_ui topilmadi")
+            return False
+        except WebDriverException as e:
+            self.logger.error(f"@ {page_name}: block_ui tekshirishda xatolik: {str(e)}")
+            raise
+
+    def click(self, locator, retries=3, retry_delay=1):
         """Elementni bosish funksiyasi"""
         page_name = self.__class__.__name__
         self.logger.debug(f"{page_name}: Element bosilmoqda: {locator}")
 
-        timeout = timeout or self.default_timeout
         attempt = 0
-
         while attempt < retries:
             try:
-                # 1. Sahifa yuklanishini tekshirish
-                if not self._wait_for_all_loaders():
-                    raise TimeoutException(f"{page_name}: sahifasi yuklanishi muvaffaqiyatsiz yakunlandi")
+                # Sahifa yuklanishini tekshirish
+                try:
+                    self._wait_for_all_loaders(log_text='Click')
+                except LoaderTimeoutError:
+                    raise
 
-                # 2. Element DOM da borligini tekshirish
-                element_dom = self._wait_for_presence(locator, error_massage=True)
-                if not element_dom:
-                    return False
-
-                # 3. Elementga scroll
-                if not self._scroll_to_element(element_dom, locator):
-                    return False
-
+                # Element bilan ishlash
+                element_dom = self._wait_for_presence(locator)
+                self._scroll_to_element(element_dom, locator)
+                self._wait_for_visibility(locator)
                 element_clickable = self._wait_for_clickable(locator)
-                if not element_clickable:
-                    return False
 
-                # 1-urinish: Oddiy click
-                if self._click(element_clickable, locator, error_massage=False):
+                # Click urinishlari
+                if self._click(element_clickable, locator):
                     return True
 
-                # 2-urinish: Qayta oddiy click
                 time.sleep(retry_delay)
-                if self._click(element_clickable, locator, retry=True, error_massage=False):
+                if self._click(element_clickable, locator, retry=True):
                     return True
 
-                # 3-urinish: JavaScript click
                 time.sleep(retry_delay)
-                element_dom = self._wait_for_presence(locator, error_massage=True)
-                if not element_dom:
-                    return False
                 if self._click_js(element_dom, locator):
                     return True
 
-                return False
+                # Sahifa yuklanishini tekshirish
+                try:
+                    self._wait_for_all_loaders()
+                except LoaderTimeoutError as e:
+                    self.logger.error(f"{page_name}: Click: -> 2)Sahifa yuklanish xatosi: {str(e)}")
+                    raise
 
-            except StaleElementReferenceException:
-                self.logger.warning(f"🔄 {page_name}: Element yangilandi, qayta urinish (Urinish {attempt + 1})")
+                # Barcha click urinishlari muvaffaqiyatsiz bo'lsa
+                raise ElementNotClickableError(
+                    "Element barcha usullar bilan bosilmadi",
+                    locator=locator
+                )
+
+            except (ElementStaleError, ElementNotClickableError, ScrollError) as e:
+                # Elementning yangilanishi yoki bosilmasligi bilan bog'liq xatoliklar
+                if attempt == retries - 1:
+                    self.logger.error(f"{page_name}: {e.message}")
+                    self.take_screenshot(f"{page_name.lower()}_click_error")
+                    raise
+
+                self.logger.warning(f"{page_name}: {e.message}, qayta urinish ({attempt + 1}/{retries})")
                 time.sleep(retry_delay)
-            except TimeoutException:
-                self.logger.warning(f"⛔️ {page_name}: Vaqt tugadi: {timeout}s (Urinish {attempt + 1})")
-            except Exception:
-                self.logger.warning(f"⁉️ {page_name}: Kutilmagan xato: (Urinish {attempt + 1})")
+                attempt += 1
+                continue
 
-            attempt += 1
-            if attempt < retries:
-                self.logger.warning(f"⚠️ {page_name}: Element bosilmadi. (Urinish {attempt})")
-                time.sleep(retry_delay)
+            except ElementNotFoundError as e:
+                # Bu xatoliklar uchun qayta urinish mantiqsiz
+                self.logger.error(f"{page_name}: {e.message}")
+                self.take_screenshot(f"{page_name.lower()}_click_error")
+                raise
 
-        # Barcha urinishlar tugadi
-        self.logger.error(f"❌ {page_name}: Element bosilmadi. (Urinish {attempt}): {locator}")
-        self.take_screenshot(f"{page_name.lower()}_element_not_click")
-
-        return False
+        raise ElementInteractionError(
+            f"Element bosilmadi ({attempt} urinish): {locator}",
+            locator=locator
+        )
 
     # Wait -------------------------------------------------------------------------------------------------------------
 
-    def wait_for_element_visible(self, locator, timeout=None, retries=3, retry_delay=1):
+    def wait_for_element_visible(self, locator, timeout=None, retries=3, retry_delay=0.5):
         """Elementni ko'rinishini kutish funksiyasi"""
         page_name = self.__class__.__name__
         self.logger.debug(f"{page_name}: Element qidirilmoqda: {locator}")
@@ -351,131 +491,192 @@ class BasePage:
 
         while attempt < retries:
             try:
-                # 1. Sahifa yuklanishini tekshirish
-                if not self._wait_for_all_loaders():
-                    raise TimeoutException(f"{page_name}: sahifasi yuklanishi muvaffaqiyatsiz yakunlandi")
+                # Sahifa yuklanishini tekshirish
+                try:
+                    self._wait_for_all_loaders(log_text='Visible')
+                except LoaderTimeoutError:
+                    raise
 
-                # 2. Element DOM da borligini tekshirish
-                element_dom = self._wait_for_presence(locator, error_massage=True)
-                if not element_dom:
-                    return False
+                # Element bilan ishlash
+                element_dom = self._wait_for_presence(locator)
+                self._scroll_to_element(element_dom, locator)
+                element = self._wait_for_visibility(locator, timeout)
 
-                # 3. Elementga scroll
-                if not self._scroll_to_element(element_dom, locator):
-                    return False
-
-                # 4. Element ko'rinishini tekshirish
-                if element := self._wait_for_visibility(locator, error_massage=True):
-                    self.logger.info(f"⏺ {page_name} element topildi: {locator}")
+                if element:
+                    self.logger.info(f"⏺ {page_name}: Element topildi: {locator}")
                     return element
 
-                return False
+                raise ElementInteractionError(
+                    message="Element ko'rinmadi",
+                    locator=locator
+                )
 
-            except StaleElementReferenceException:
-                self.logger.warning(f"🚫 {page_name}: Element yangilandi (Urinish {attempt + 1})")
+            except (ElementStaleError, ScrollError) as e:
+                # Element yangilanishi bilan bog'liq xatoliklar
+                if attempt == retries - 1:
+                    self.logger.error(f"{page_name}: {e.message}")
+                    self.take_screenshot(f"{page_name.lower()}_visibility_error")
+                    raise
+
+                self.logger.warning(f"{page_name}: {e.message}, qayta urinish ({attempt + 1}/{retries})")
                 time.sleep(retry_delay)
-            except TimeoutException:
-                self.logger.warning(f"⛔️ {page_name}: Vaqt tugadi: {timeout}s (Urinish {attempt + 1})")
-            except Exception:
-                self.logger.warning(f"⁉️ {page_name}: Kutilmagan xato: (Urinish {attempt + 1})")
+                attempt += 1
+                continue
 
-            attempt += 1
-            if attempt < retries:
-                self.logger.warning(f"⚠️ {page_name}: Element topilmadi. (Urinish {attempt}): {locator}")
-                time.sleep(retry_delay)
+            except (ElementNotFoundError) as e:
+                # Bu xatoliklar uchun qayta urinish mantiqsiz
+                self.logger.error(f"{page_name}: {e.message}")
+                self.take_screenshot(f"{page_name.lower()}_visibility_error")
+                raise
 
-        # Barcha urinishlar tugadi
-        self.logger.error(f"❌ {page_name}: Element topilmadi. (Urinish {attempt}): {locator}")
-        self.take_screenshot(f"{page_name.lower()}_element_not_found")
+            except Exception as e:
+                self.logger.error(f"{page_name}: Kutilmagan xato: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_visibility_error")
+                raise ElementInteractionError(
+                    message=f"Kutilmagan xato: {str(e)}",
+                    locator=locator,
+                    original_error=e
+                )
 
-        return False
+        raise ElementInteractionError(
+            f"Element topilmadi ({attempt} urinish): {locator}",
+            locator=locator
+        )
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _wait_for_presence_all(self, locator, timeout=None, error_massage=True):
-        """Elementlar ro'yxatini kutish."""
-
+    def _wait_for_presence_all(self, locator, timeout=None, error_message=True):
+        """Elementlar ro'yxatini kutish funksiyasi."""
+        page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
-        try:
-            return WebDriverWait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
-        except TimeoutException:
-            if error_massage:
-                self.logger.error(f"Elementlar ro'yhati topilmadi: {locator}")
-            return []
 
-    def _wait_for_invisibility_of_element(self, element, timeout=None, error_massage=None):
+        try:
+            elements = WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_all_elements_located(locator)
+            )
+            if not elements:
+                self.logger.warning(f"{page_name}: Elementlar topilmadi: {locator}")
+            return elements
+
+        except StaleElementReferenceException as e:
+            if error_message:
+                self.logger.warning(f"{page_name}: Elementlar DOM da yangilandi: {locator}")
+            raise ElementStaleError(
+                message="Elementlar DOM da yangilandi",
+                locator=locator,
+                original_error=e
+            )
+
+        except TimeoutException as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Elementlar topilmadi: {locator}")
+            raise ElementNotFoundError(
+                message="Elementlar topilmadi",
+                locator=locator,
+                original_error=e
+            )
+
+        except Exception as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Elementlarni qidirishda kutilmagan xato: {e}")
+            raise ElementInteractionError(
+                message=f"Kutilmagan xato: {str(e)}",
+                locator=locator,
+                original_error=e
+            )
+
+    def _wait_for_invisibility_of_element(self, element, timeout=None, error_message=None):
         """Element ni ko'rinmas bo'lishini kutish."""
 
         timeout = timeout or self.default_timeout
         try:
             return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element(element))
         except TimeoutException as e:
-            if error_massage:
+            if error_message:
                 self.logger.error(f"Element interfeys dan yo'qolmadi: {e}")
             return False
 
-    def _wait_for_invisibility_of_locator(self, locator, timeout=None, error_massage=None):
-        """Locator ni ko'rinmas bo'lishini kutish."""
-
+    def _wait_for_invisibility_of_locator(self, locator, timeout=None, error_message=True):
+        """Locator ko'rinmas bo'lishini kutish funksiyasi."""
+        page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
+
         try:
-            return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
-        except TimeoutException as e:
-            if error_massage:
-                self.logger.error(f"Locator interfeys dan yo'qolmadi: {e}")
+            result = WebDriverWait(self.driver, timeout).until(
+                EC.invisibility_of_element_located(locator)
+            )
+            if result:
+                return True
+
+            if error_message:
+                self.logger.warning(f"{page_name}: Element hali ham ko'rinmoqda: {locator}")
             return False
+
+        except StaleElementReferenceException as e:
+            if error_message:
+                self.logger.warning(f"{page_name}: Element DOM da yangilandi: {locator}")
+            raise ElementStaleError(
+                message="Element DOM da yangilandi",
+                locator=locator,
+                original_error=e
+            )
+
+        except TimeoutException as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Element ko'rinmas bo'lmadi: {locator}")
+            raise ElementVisibilityError(
+                message="Element ko'rinmas bo'lmadi",
+                locator=locator,
+                original_error=e
+            )
+
+        except Exception as e:
+            if error_message:
+                self.logger.error(f"{page_name}: Element kutishda kutilmagan xato: {e}")
+            raise ElementInteractionError(
+                message=f"Kutilmagan xato: {str(e)}",
+                locator=locator,
+                original_error=e
+            )
 
     # ------------------------------------------------------------------------------------------------------------------
 
     def input_text(self, locator, text):
-        import inspect
-
+        """Element topib, matn kiritish funksiyasi"""
         page_name = self.__class__.__name__
-        # Chaqiruvchi funksiya nomini olish
-        caller_frame = inspect.currentframe().f_back
-        caller_name = caller_frame.f_code.co_name if caller_frame else None
-
-        # Sahifa to'liq yuklangunicha kutish
-        if not self._wait_for_all_loaders():
-            self.logger.error(f"{page_name}: input yuklanmadi: {locator}")
-            self.take_screenshot(f"{page_name.lower()}_input_not_loaded")
-            return False
-
-        # Element bosilishi mumkin bo'lguncha kutish
-        element = self._wait_for_clickable(locator)
-        if element is None:
-            self.logger.error(f"{page_name}: Input topilmadi yoki bosilmadi: {locator}")
-            self.take_screenshot(f"{page_name.lower()}_input_not_clickable")
-            return False
+        self.logger.debug(f"{page_name}: Matn kiritilmoqda: {locator}")
 
         try:
-            element.clear()
-            element.send_keys(text)
-            if caller_name:
-                self.logger.info(f"{page_name}: {caller_name} -> {text}")
+            # Sahifa yuklanishini alohida tekshirish
+            try:
+                self._wait_for_all_loaders(log_text='input_text')
+            except LoaderTimeoutError:
+                self.take_screenshot(f"{page_name.lower()}_loader_error")
+                raise
+
+            # Element bilan ishlash
+            element_dom = self._wait_for_presence(locator)
+            self._scroll_to_element(element_dom, locator)
+            element_clickable = self._wait_for_clickable(locator)
+
+            # Matn kiritish
+            element_clickable.clear()
+            element_clickable.send_keys(text)
+            self.logger.info(f"⏺ {page_name}: Input: {locator} -> {text}")
             return True
+
+        except (ElementNotFoundError, ElementStaleError, ScrollError, ElementNotClickableError) as e:
+            self.logger.error(f"{page_name}: {e.message}")
+            self.take_screenshot(f"{page_name.lower()}_input_error")
+            raise
+
         except Exception as e:
-            self.logger.error(f"{page_name}: Matn kiritishda xatolik: {locator}. Xato: {str(e)}")
-            self.take_screenshot(f"{page_name.lower()}_input_text_error")
-            return False
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    def input_text_elem(self, locator, elem_locator, timeout=None):
-        try:
-            if self.click(locator, timeout) and self.click(elem_locator, timeout):
-                return True
-            return False
-
-        except Exception:
-            self.logger.warning("input_text_elem: not clickable: %s", locator)
-            self.take_screenshot("input_text_elem")
-            return False
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    def get_text(self, locator):
-        element = self.wait_for_element_visible(locator)
-        return element.text
+            self.logger.error(f"{page_name}: Matn kiritishda kutilmagan xatolik: {str(e)}")
+            self.take_screenshot(f"{page_name.lower()}_input_error")
+            raise ElementInteractionError(
+                message=f"Matn kiritishda xatolik: {str(e)}",
+                locator=locator,
+                original_error=e
+            )
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -487,17 +688,43 @@ class BasePage:
             self.logger.error("clear_element: not clear.")
 
     # ------------------------------------------------------------------------------------------------------------------
+    def get_text(self, locator):
+        """Elementning matnini olish."""
+        try:
+            element_dom = self._wait_for_presence(locator)
+            if not element_dom:
+                return None
+
+            self._scroll_to_element(element_dom, locator)
+            element_visibility = self._wait_for_visibility(locator)
+
+            return element_visibility.text if element_visibility else None
+
+        except Exception as e:
+            self.logger.error(f"Element matnini olishda xato: {str(e)}")
+            return None
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     def get_numeric_value(self, locator):
+        """Elementdan raqamli qiymatni ajratib olish va float formatiga o'tkazish."""
         text = self.get_text(locator)
         if text is None:
-            self.logger.warning("get_numeric_value: not work.")
+            self.logger.error(f"get_numeric_value: Element topilmadi - {locator}")
             return None
+
         text = text.strip()
         numeric_value = re.sub(r'[^0-9.]', '', text)
-        if numeric_value.count('.') <= 1:
+
+        if numeric_value.count('.') > 1:
+            self.logger.error(f"get_numeric_value: Noto'g'ri format - {text}")
+            return None
+
+        try:
             return float(numeric_value) if numeric_value else 0
-        return None
+        except ValueError as e:
+            self.logger.error(f"get_numeric_value: Float ga o'tkazishda xato - {str(e)}")
+            return None
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -535,68 +762,150 @@ class BasePage:
     # ------------------------------------------------------------------------------------------------------------------
     def click_options(self, input_locator, options_locator, element, scroll=10):
         """
-        Dropdown bilan ishlash uchun funksiya: elementni topib, uni bosish va dropdownni yopish.
-        options_locator = (By.XPATH, '//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
+        Dropdown bilan ishlash uchun funksiya.
+
+        Args:
+            input_locator: Dropdown ochish uchun bosiladigan element lokatori
+            options_locator: Dropdown ichidagi variantlar lokatori
+            element: Tanlanishi kerak bo'lgan element matni
+            scroll: Scroll qilish uchun maksimal urinishlar soni (default: 10)
+
+        Returns:
+            bool: Muvaffaqiyatli bajarilganda True, aks holda False
+
+        Raises:
+            ElementNotFoundError: Element topilmaganda
+            ElementNotClickableError: Element bosilmaydigan holatda bo'lganda
+            ScrollError: Elementga scroll qilib bo'lmaganda
+            ElementVisibilityError: Element ko'rinmas bo'lmaganda
         """
+        page_name = self.__class__.__name__
+        self.logger.debug(f"{page_name}: Dropdown bilan ishlanmoqda: {input_locator}")
 
         try:
             # 1. Dropdown ochish
             if not self.click(input_locator):
-                self.logger.error("Dropdownni ochib bo'lmadi!")
-                return False
+                raise ElementNotClickableError(
+                    message="Dropdown ochib bo'lmadi",
+                    locator=input_locator
+                )
 
             # 2. Optionlarni yuklanishini kutish
-            options = self._wait_for_presence_all(options_locator, error_massage=True)
+            options = self._wait_for_presence_all(options_locator)
             if not options:
-                self.logger.warning("Dropdown variantlari yuklanmadi!")
-                return False
+                raise ElementNotFoundError(
+                    message="Dropdown variantlari yuklanmadi",
+                    locator=options_locator
+                )
 
-            # 3. Elementni topish va bosish
-            def find_and_click_option():
+            # 3. Element topish va bosish funksiyasi
+            def find_and_click_option(options_list):
                 element_str = str(element).strip()
-                for option in options:
+                for option in options_list:
                     if option.text.strip() == element_str:
-                        option.click()
-                        return True
+                        try:
+                            option.click()
+                            self.logger.info(f"⏺ {page_name}: Element '{element}' bosildi")
+                            return True
+                        except Exception as e:
+                            raise ElementNotClickableError(
+                                message=f"Elementni bosib bo'lmadi: {str(e)}",
+                                locator=options_locator
+                            )
                 return False
 
-            if find_and_click_option():
-                self.logger.info(f"Element '{element}' topildi va bosildi.")
-            else:
-                self.logger.info(f"Element '{element}' topilmadi. Scroll boshlanmoqda.")
-                dropdown_container = self._find_visible_container(options_locator)
-                if not dropdown_container:
-                    self.logger.error("Dropdown konteyner topilmadi.")
-                    return False
+            # 4. Elementni qidirish
+            if find_and_click_option(options):
+                return self._check_dropdown_closed(options_locator)
 
-                last_height = 0
-                for _ in range(scroll):  # Maksimal 10 marta scroll qilishga ruxsat
+            # 5. Scroll qilib qidirish
+            self.logger.info(f"{page_name}: Element '{element}' topilmadi. Scroll qilinmoqda...")
+            dropdown_container = self._find_visible_container(options_locator)
+            if not dropdown_container:
+                raise ElementNotFoundError(
+                    message="Dropdown konteyner topilmadi",
+                    locator=options_locator
+                )
+
+            # 6. Scroll bilan qidirish
+            last_height = 0
+            for attempt in range(scroll):
+                try:
                     self.driver.execute_script("arguments[0].scrollBy(0, 300);", dropdown_container)
-                    time.sleep(1)
+                    time.sleep(0.5)
 
                     options = self._wait_for_presence_all(options_locator)
-                    if options and find_and_click_option():
-                        self.logger.info(f"Element '{element}' scroll orqali topildi va bosildi.")
-                        break
+                    if options and find_and_click_option(options):
+                        return self._check_dropdown_closed(options_locator)
+
                     new_height = self.driver.execute_script("return arguments[0].scrollHeight", dropdown_container)
                     if new_height == last_height:
-                        self.logger.warning(f"Scroll tugadi, lekin {element} topilmadi.")
-                        return False
+                        raise ElementNotFoundError(
+                            message=f"Element '{element}' scroll tugagandan keyin ham topilmadi",
+                            locator=options_locator
+                        )
                     last_height = new_height
 
-            # 4. Dropdown yopilishini tekshirish
-            if not self._check_dropdown(options_locator):
-                return False
-            return True
+                except ElementStaleError:
+                    if attempt == scroll - 1:
+                        raise
+                    continue
+
+            raise ElementNotFoundError(
+                message=f"Element '{element}' {scroll} marta scroll qilingandan keyin ham topilmadi",
+                locator=options_locator
+            )
+
+        except (ElementNotFoundError, ElementNotClickableError, ScrollError) as e:
+            self.logger.error(f"{page_name}: {e.message}")
+            self.take_screenshot(f"{page_name.lower()}_click_options_error")
+            raise
 
         except Exception as e:
-            self.logger.error(f"Xatolik yuz berdi: {str(e)}")
-            self.take_screenshot("click_options_error")
-            return False
+            self.logger.error(f"{page_name}: Kutilmagan xato: {str(e)}")
+            self.take_screenshot(f"{page_name.lower()}_click_options_error")
+            raise ElementInteractionError(
+                message=f"Kutilmagan xato: {str(e)}",
+                locator=options_locator,
+                original_error=e
+            )
+
+    def _check_dropdown_closed(self, options_locator):
+        """Dropdown yopilganligini tekshirish."""
+
+        page_name = self.__class__.__name__
+        try:
+            # Turli yopish usullarini sinash
+            self.driver.execute_script("document.body.click();")
+            time.sleep(0.1)
+            self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ESCAPE)
+            time.sleep(0.1)
+
+            if not self._wait_for_invisibility_of_locator(options_locator):
+                raise ElementVisibilityError(
+                    message="Dropdown yopilmadi",
+                    locator=options_locator
+                )
+            return True
+
+        except ElementVisibilityError as e:
+            self.logger.error(f"{page_name}: {e.message}")
+            self.take_screenshot(f"{page_name.lower()}_dropdown_close_error")
+            raise
+
+        except Exception as e:
+            self.logger.error(f"{page_name}: Dropdown yopishda kutilmagan xato: {str(e)}")
+            self.take_screenshot(f"{page_name.lower()}_dropdown_close_error")
+            raise ElementInteractionError(
+                message=f"Dropdown yopishda kutilmagan xato: {str(e)}",
+                locator=options_locator,
+                original_error=e
+            )
 
     def _find_visible_container(self, options_locator):
         """Dropdown uchun ko'rinadigan konteynerni topish."""
 
+        page_name = self.__class__.__name__
         possible_container_selectors = [
             "//div[contains(@class, 'hint-body')]",
             "//div[contains(@class, 'dropdown-menu')]",
@@ -605,130 +914,174 @@ class BasePage:
             f"{options_locator[1]}/ancestor::div[contains(@class, 'dropdown')]",
         ]
 
-        for selector in possible_container_selectors:
-            containers = self.driver.find_elements(By.XPATH, selector)
-            for container in containers:
-                if container.is_displayed():
-                    # print(f'container: {container}')
-                    return container
-
-        self.logger.warning("Dropdown konteyner topilmadi.")
-        return None
-
-    def _check_dropdown(self, options_locator):
-        """Dropdown yopilishini tekshirish."""
-
         try:
-            # Turli yopish usullarini sinash
-            self.driver.execute_script("document.body.click();")
-            time.sleep(0.1)
-            self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ESCAPE)
-            time.sleep(0.1)
+            for selector in possible_container_selectors:
+                containers = self.driver.find_elements(By.XPATH, selector)
+                for container in containers:
+                    if container.is_displayed():
+                        return container
 
-            return self._wait_for_invisibility_of_locator(options_locator)
+            raise ElementNotFoundError(
+                message="Ko'rinadigan dropdown konteyner topilmadi",
+                locator=(By.XPATH, " | ".join(possible_container_selectors))
+            )
+
+        except ElementNotFoundError as e:
+            self.logger.error(f"{page_name}: {e.message}")
+            raise
+
         except Exception as e:
-            self.logger.error(f"Dropdownni yopishda xatolik: {str(e)}")
-            return False
+            self.logger.error(f"{page_name}: Konteyner qidirishda kutilmagan xato: {str(e)}")
+            raise ElementInteractionError(
+                message=f"Konteyner qidirishda kutilmagan xato: {str(e)}",
+                locator=options_locator,
+                original_error=e
+            )
 
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row_and_click(self, element_name, xpath_pattern=None, timeout=None,
                            expand=False, checkbox=False, limit=3):
-        """Jadvaldagi qatorni topish va ustiga bosish."""
+        """Jadvaldagi qatorni topish va ustiga bosish funksiyasi."""
 
-        xpath_pattern = xpath_pattern or ("//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]"
-                                          "//div[contains(@class, 'tbl-cell') and normalize-space(text())='{}']")
+        page_name = self.__class__.__name__
+        self.logger.debug(f"{page_name}: Jadval qatori qidirilmoqda: {element_name}")
+
+        if not xpath_pattern:
+            xpath_pattern = ("//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]"
+                             "//div[contains(@class, 'tbl-cell') and normalize-space(text())='{}']")
+
         row_locator = (By.XPATH, xpath_pattern.format(element_name))
         limit_button = (By.XPATH, '//button[@class="btn btn-default rounded-0 ng-binding"]')
 
         timeout = timeout or self.default_timeout
 
-        def click_limit_button(limit):
-            self.click(limit_button)
-            item_button = (
-                By.XPATH, f'//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[{limit}]')
-            self.click(item_button)
-
-        if expand:
-            click_limit_button(limit=4)
-
-        def click_checkbox():
-            checkbox_locator = (By.XPATH, f"//div[contains(@class, 'tbl-row') and .//div[text()='{element_name}']]//span")
-            element = self._wait_for_presence(checkbox_locator, error_massage=False)
-            if not element:
-                self.logger.error(f"Checkbox DOM da topilmadi: {checkbox_locator}")
-                return False
-            if not self._click_js(element, checkbox_locator):
-                self.logger.error(f"Checkbox bosib bo'lmadi: {checkbox_locator}")
-                return False
-            return True
-
-        def process_element():
+        def change_limit(new_limit):
+            """Jadval sahifasidagi elementlar sonini o'zgartirish."""
             try:
-                # Sahifa yuklanishini kutish
-                if not self._wait_for_all_loaders():
-                    return False
+                # Limit tugmasini bosish
+                if not self.click(limit_button):
+                    raise ElementNotClickableError(
+                        message="Limit tugmasini bosib bo'lmadi",
+                        locator=limit_button
+                    )
 
-                # Jadval qatorini izlash
-                elements = self._wait_for_presence_all(row_locator, timeout, error_massage=True)
+                # Kerakli limitni tanlash
+                limit_option = (By.XPATH,
+                                f'//button[@class="btn btn-default rounded-0 ng-binding"]'
+                                f'/following-sibling::div/a[{new_limit}]'
+                                )
+                if not self.click(limit_option):
+                    raise ElementNotClickableError(
+                        message=f"Limit {new_limit} ni tanlab bo'lmadi",
+                        locator=limit_option
+                    )
+
+                # Loader tugashini kutish
+                self._wait_for_all_loaders()
+                return True
+
+            except (ElementNotClickableError, LoaderTimeoutError) as e:
+                self.logger.error(f"{page_name}: Limit o'zgartirishda xatolik: {e.message}")
+                raise
+
+        def click_checkbox_for_row():
+            """Qator uchun checkbox ni bosish."""
+            try:
+                checkbox_locator = (
+                    By.XPATH,
+                    f"//div[contains(@class, 'tbl-row') and .//div[text()='{element_name}']]//span"
+                )
+                checkbox_element = self._wait_for_presence(checkbox_locator)
+
+                if not self._click_js(checkbox_element, checkbox_locator):
+                    raise ElementNotClickableError(
+                        message="Checkbox ni bosib bo'lmadi",
+                        locator=checkbox_locator
+                    )
+                return True
+
+            except ElementNotFoundError as e:
+                self.logger.error(f"{page_name}: Checkbox topilmadi: {e.message}")
+                raise
+
+            except ElementNotClickableError as e:
+                self.logger.error(f"{page_name}: Checkbox bosilmadi: {e.message}")
+                raise
+
+        def find_and_click_row():
+            """Qatorni topish va bosish."""
+            try:
+                # Sahifa yuklanishini alohida tekshirish
+                try:
+                    self._wait_for_all_loaders(log_text='find_and_click_row')
+                except LoaderTimeoutError:
+                    self.take_screenshot(f"{page_name.lower()}_loader_error")
+                    raise
+
+                # Qatorni qidirish
+                elements = self._wait_for_presence_all(row_locator, timeout)
                 if not elements:
+                    # Agar limit o'rnatilgan bo'lsa, limitni oshirib qayta qidirish
                     if limit:
-                        self.logger.info(f"'{element_name}' topilmadi. Limit 500 qilib belgilanadi")
-                        click_limit_button(limit)
-                        time.sleep(1)
-                        # Qayta qidirish
-                        elements = self._wait_for_presence_all(row_locator, error_massage=True)
+                        self.logger.info(f"{page_name}: '{element_name}' topilmadi. "
+                                         f"Limit {limit} ga o'zgartiriladi")
+                        change_limit(limit)
+                        elements = self._wait_for_presence_all(row_locator)
                         if not elements:
-                            self.logger.error(f"'{element_name}' limit o'zgartirilgandan keyin ham topilmadi.")
-                            return False
+                            raise ElementNotFoundError(
+                                message=f"Qator '{element_name}' limit o'zgartirilgandan "
+                                        f"keyin ham topilmadi",
+                                locator=row_locator
+                            )
                     else:
-                        self.logger.error(f"'{element_name}' qatori topilmadi.")
-                        return False
+                        raise ElementNotFoundError(
+                            message=f"Qator '{element_name}' topilmadi",
+                            locator=row_locator
+                        )
 
                 target_element = elements[0]
 
-                # Scroll qilish
-                if not self._scroll_to_element(target_element, row_locator):
-                    return False
+                self._scroll_to_element(target_element, row_locator)
+                self._wait_for_visibility(row_locator)
 
-                # Elementni ko'rinishi
-                if not self._wait_for_visibility(row_locator):
-                    return False
-
+                # Qatorni bosish
                 if not self.click(row_locator):
-                    return False
+                    raise ElementNotClickableError(
+                        message=f"Qator '{element_name}' ni bosib bo'lmadi",
+                        locator=row_locator
+                    )
 
-                # Checkboxni bosish
+                # Agar checkbox belgilangan bo'lsa
                 if checkbox:
-                    click_checkbox()
-
+                    click_checkbox_for_row()
                 return True
 
+            except (ElementNotFoundError, ElementNotClickableError, ElementStaleError) as e:
+                self.logger.error(f"{page_name}: {e.message}")
+                self.take_screenshot(f"{page_name.lower()}_find_row_error")
+                raise
+
             except Exception as e:
-                self.logger.error(f"find_row_and_click xatolik: {str(e)}")
-                self.take_screenshot(f"find_row_and_click_{element_name}_error")
-                return False
+                self.logger.error(f"{page_name}: Kutilmagan xatolik: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_find_row_error")
+                raise ElementInteractionError(
+                    message=f"Kutilmagan xatolik: {str(e)}",
+                    locator=row_locator,
+                    original_error=e
+                )
 
-        return process_element()
+        try:
+            # Jadval hajmini kengaytirish
+            if expand:
+                change_limit(4)
 
-    # ------------------------------------------------------------------------------------------------------------------
+            # Qatorni topish va bosish
+            return find_and_click_row()
 
-    def _check_main_content_loaded(self, timeout=None):
-        """Sahifada asosiy kontent yuklanganligini tekshirish."""
-
-        timeout = timeout or self.default_timeout
-        main_selectors = ["//html", "//body"]
-        start_time = time.time()
-        for selector in main_selectors:
-            try:
-                elements = self._wait_for_presence_all((By.CSS_SELECTOR, selector), timeout)
-                if any(e.is_displayed() and len(e.text.strip()) > 0 for e in elements):
-                    elapsed_time = time.time() - start_time
-                    self.logger.info(f"Asosiy kontent {elapsed_time:.1f} sekund ichida yuklandi")
-                    return True
-            except Exception:
-                continue
-        self.logger.warning(f"Asosiy kontent {timeout:.1f} sekund ichida topilmadi")
-        return False
+        except Exception as e:
+            self.logger.error(f"{page_name}: {str(e)}")
+            self.take_screenshot(f"{page_name.lower()}_find_row_error")
+            return False
 
     # ------------------------------------------------------------------------------------------------------------------
