@@ -10,24 +10,25 @@ from autotest.core.md.base_page import BasePage
 from autotest.trade.tcs.cashin_add.cashin_add import CashinAdd
 from autotest.trade.tcs.cashin_list.cashin_list import CashinList
 from autotest.trade.tcs.cashin_view.cashin_view import CashinView
-from tests.test_base.test_base import test_data, open_new_window, login_user
+from tests.test_base.test_base import test_data, login_user
 from utils.driver_setup import driver
 
 
-def cashin_add(driver, client_name=None):
+def cashin_add(driver, test_data, client_name=None, login=True, amount=None):
     # Log
     base_page = BasePage(driver)
     base_page.logger.info("Test run(▶️): cashin_add")
 
     # Test data
-    data = test_data()["data"]
+    data = test_data["data"]
     payment_type_name = data["payment_type_name"]
     cashbox_name = data["cash_register_name"]
     client_name = client_name if client_name is not None else data["client_name"]
 
     try:
         # Login
-        login_user(driver, url='trade/tcs/cashin_list')
+        if login:
+            login_user(driver, test_data, url='trade/tcs/cashin_list')
 
         # Cashin List
         cashin_list = CashinList(driver)
@@ -41,8 +42,8 @@ def cashin_add(driver, client_name=None):
         cashin_add.input_cashin_number(cashin_number)
         cashin_add.input_clients(client_name)
 
-        get_amount = cashin_add.get_amount()
-        cashin_add.input_amount(get_amount)
+        input_amount = amount if amount is not None else cashin_add.get_amount()
+        cashin_add.input_amount(input_amount)
 
         cashin_add.input_payment_types(payment_type_name)
         cashin_add.input_cashbox(cashbox_name)
@@ -73,39 +74,39 @@ def cashin_add(driver, client_name=None):
         pytest.fail(str(e))
 
 
-def test_cashin_add_A(driver):
-    data = test_data()["data"]
+def test_cashin_add_A(driver, test_data):
+    data = test_data["data"]
     client_name = f'{data["client_name"]}-A'
-    cashin_add(driver, client_name=client_name)
+    cashin_add(driver, test_data, client_name=client_name)
 
 
-def test_cashin_add_B(driver):
-    data = test_data()["data"]
+def test_cashin_add_B(driver, test_data):
+    data = test_data["data"]
     client_name = f'{data["client_name"]}-B'
-    cashin_add(driver, client_name=client_name)
+    cashin_add(driver, test_data, client_name=client_name)
 
 
-def test_cashin_add_C(driver):
-    data = test_data()["data"]
+def test_cashin_add_C(driver, test_data, amount=1_000_00):
+    data = test_data["data"]
     client_name = f'{data["client_name"]}-C'
-    cashin_add(driver, client_name=client_name)
+    cashin_add(driver, test_data, client_name=client_name, login=False, amount=amount)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def offset_add(driver, client_name=None, payment=False):
+def offset_add(driver, test_data, client_name=None, payment=False):
     # Log
     base_page = BasePage(driver)
     base_page.logger.info("Test run(▶️): cashin_add")
 
     # Test data
-    data = test_data()["data"]
+    data = test_data["data"]
     cash_register_name = data["cash_register_name"]
     client_name = client_name if client_name is not None else data["client_name"]
 
     try:
         # Login
-        login_user(driver, url='anor/mdeal/order/offset/offset_list')
+        login_user(driver, test_data, url='anor/mdeal/order/offset/offset_list')
 
         offset_list = OffsetList(driver)
         assert offset_list.element_visible(), base_page.logger.error('OffsetList not open!')
@@ -148,7 +149,7 @@ def offset_add(driver, client_name=None, payment=False):
             # Cashin List
             base_page = BasePage(driver)
             cut_url = base_page.cut_url()
-            open_new_window(driver, cut_url + 'trade/tcs/cashin_list')
+            base_page.open_new_window(cut_url + 'trade/tcs/cashin_list')
             cashin_list = CashinList(driver)
             assert cashin_list.element_visible(), base_page.logger.error('CashinList not open!')
             cashin_list.find_row(client_name)
@@ -175,23 +176,23 @@ def offset_add(driver, client_name=None, payment=False):
         pytest.fail(str(e))
 
 
-def test_offset_add_A(driver):
-    data = test_data()["data"]
+def test_offset_add_A(driver, test_data):
+    data = test_data["data"]
     client_name = f'{data["client_name"]}-A'
-    offset_add(driver, client_name=client_name)
+    offset_add(driver, test_data, client_name=client_name)
 
 
-def test_offset_add_B(driver):
-    data = test_data()["data"]
+def test_offset_add_B(driver, test_data):
+    data = test_data["data"]
     client_name = f'{data["client_name"]}-B'
-    offset_add(driver,
+    offset_add(driver, test_data,
                client_name=client_name,
                payment=True)
 
 
-def test_offset_add_C(driver):
-    data = test_data()["data"]
+def test_offset_add_C(driver, test_data):
+    data = test_data["data"]
     client_name = f'{data["client_name"]}-C'
-    offset_add(driver, client_name=client_name)
+    offset_add(driver, test_data, client_name=client_name)
 
 # ----------------------------------------------------------------------------------------------------------------------

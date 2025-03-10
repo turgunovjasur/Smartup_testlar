@@ -49,10 +49,20 @@ class ContractAdd(BasePage):
     def input_sub_filial(self, sub_filial_name):
         self.click_options(self.sub_filial_input, self.options_sub_filial, sub_filial_name)
     # ------------------------------------------------------------------------------------------------------------------
-    checkbox_button = (By.XPATH, '(//form[@name="form"]//label[@class="switch"]/span)[1]')
+    is_main_checkbox = (By.XPATH, '//input[@ng-model="d.is_main"]/following-sibling::span')
 
-    def click_checkbox_button(self):
-        self.click(self.checkbox_button)
+    def click_is_main_checkbox(self):
+        self.click(self.is_main_checkbox)
+    # ------------------------------------------------------------------------------------------------------------------
+    allow_auto_consignment_checkbox = (By.XPATH, '//input[@ng-model="d.allow_auto_consignment"]/following-sibling::span')
+
+    def click_allow_auto_consignment_checkbox(self):
+        self.click(self.allow_auto_consignment_checkbox)
+    # ------------------------------------------------------------------------------------------------------------------
+    check_status_checkbox = (By.XPATH, '//input[@ng-model="d.state"]/following-sibling::span')
+
+    def click_check_status_checkbox(self):
+        self.click(self.check_status_checkbox)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
 

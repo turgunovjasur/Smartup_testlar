@@ -54,11 +54,12 @@ class SystemSetting(BasePage):
         self.click(self.prepayment_checkbox)
     # ------------------------------------------------------------------------------------------------------------------
     prepayment_input = (By.XPATH, '//div[@ng-model="d.deal_booked_payment_allow_by_status"]')
-    options_prepayment = (By.XPATH, '//div[@ng-model="d.deal_booked_payment_allow_by_status"]//div[@role="option"]/span[contains(text(),"Новый")]')
 
-    def input_prepayment(self):
+    def input_prepayment(self, status_name):
         self.click(self.prepayment_input)
-        self.click(self.options_prepayment)
+
+        options_prepayment = (By.XPATH, f'//div[@ng-model="d.deal_booked_payment_allow_by_status"]//div[@role="option"]/span[contains(text(),"{status_name}")]')
+        self.click(options_prepayment)
     # ------------------------------------------------------------------------------------------------------------------
     prepayment_min_percent_input = (By.XPATH, '//input[@ng-model="d.deal_booked_payment_min_percent"]')
 

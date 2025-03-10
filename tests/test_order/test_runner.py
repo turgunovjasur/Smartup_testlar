@@ -1,84 +1,51 @@
-import time
-
 import allure
 import pytest
-from tests.test_base.test_base import get_driver
+from tests.test_reference.test_action import test_add_action
 from tests.test_order.test_cashin import test_cashin_add_A, test_offset_add_A, test_offset_add_B
-from tests.test_reference import test_action
-from utils.driver_setup import driver
-
-# Import all test functions
+from tests.test_order.test_order_for_action import test_add_order_for_action, test_edit_order_for_action
+from tests.test_order.test_order_report import (
+    test_check_report_for_order_list, test_check_report_for_order_history_list,
+    test_add_template_for_order_invoice_report, test_check_invoice_report_for_order_list
+)
 from tests.test_order.test_life_cycle import (
-    test_legal_person_add,
-    test_filial_creat,
-    test_room_add,
-    test_robot_add,
-    test_natural_person_add,
-    test_user_creat,
-    test_adding_permissions_to_user,
-    test_user_change_password,
-    test_payment_type_add,
-    test_sector_add,
-    test_product_add,
-    test_natural_person_client_add_A,
-    test_natural_person_client_add_B,
-    test_natural_person_client_add_C,
-    test_client_add_A,
-    test_client_add_B,
-    test_client_add_C,
-    test_room_attachment,
-    test_init_balance,
-    test_setting_consignment,
-    test_sub_filial_add,
-    test_price_type_add_UZB,
-    test_price_type_add_USA,
-    test_currency_add,
-    test_margin_add,
-    test_contract_add_A_UZB,
-    test_contract_add_B_UZB,
-    test_contract_add_C_USA, test_setting_prepayment_on, test_setting_prepayment_off,
+    test_legal_person_add, test_filial_create, test_room_add, test_robot_add,
+    test_natural_person_add, test_user_create, test_adding_permissions_to_user, test_user_change_password,
+    test_payment_type_add, test_sector_add, test_product_add,
+    test_natural_person_client_add_A, test_natural_person_client_add_B, test_natural_person_client_add_C,
+    test_client_add_A, test_client_add_B, test_client_add_C,
+    test_room_attachment, test_init_balance, test_setting_consignment, test_sub_filial_add,
+    test_price_type_add_UZB, test_price_type_add_USA,
+    test_currency_add, test_margin_add,
+    test_setting_prepayment_on, test_setting_prepayment_off,
+    test_add_contract_for_client_A_UZB, test_add_contract_for_client_B_UZB, test_add_contract_for_client_C_USA,
 )
-
 from tests.test_order.test_order import (
-    # Add
-    test_order_add_with_consignment,
-    test_order_add_client_B_check_contract,
-    test_order_add_price_type_USA,
-
-    # Edit
-    test_order_edit_A,
-
-    # Status
-    test_order_change_status_A,
-    test_order_change_status_B,
-    test_order_change_status_C,
-    test_order_copy_C_for_A_B,
-    test_order_return, test_order_add_for_sub_filial_select, test_order_edit_C
+    test_order_copy_C_for_A_B, test_order_return, test_order_add_for_sub_filial_select,
+    test_add_order_with_consignment, test_edit_order_with_consignment,
+    test_change_status_for_order_A, test_change_status_for_order_B, test_change_status_for_order_C,
+    test_add_order_with_contract, test_add_order_with_price_type_USA, test_edit_order_for_price_type_USA
 )
-from utils.screen_recorder import ScreenRecorder
-
+from utils.driver_setup import driver
+from tests.conftest import test_data
 
 # All ------------------------------------------------------------------------------------------------------------------
 
-# pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html
 # pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html --alluredir=./allure-results
 # allure serve ./allure-results
-def get_tests():
-    """All test runner"""
-    return [
+test_cases = [
         {"name": "Legal Person Add", "func": test_legal_person_add},
-        {"name": "Filial Create", "func": test_filial_creat},
+        {"name": "Filial Create", "func": test_filial_create},
         {"name": "Room Add", "func": test_room_add},
         {"name": "Robot Add", "func": test_robot_add},
         {"name": "Sub filial Add", "func": test_sub_filial_add},
 
         {"name": "Natural Person Add", "func": test_natural_person_add},
-        {"name": "User Create", "func": test_user_creat},
+        {"name": "User Create", "func": test_user_create},
         {"name": "Adding Permissions", "func": test_adding_permissions_to_user},
         {"name": "User Change Password", "func": test_user_change_password},
-
-        {"name": "Price Type Add", "func": test_price_type_add_UZB},
-        {"name": "Price Type Add", "func": test_price_type_add_USA},
+        #
+        {"name": "Price Type Add (UZB)", "func": test_price_type_add_UZB},
+        {"name": "Price Type Add (USA)", "func": test_price_type_add_USA},
         {"name": "Payment Type Add", "func": test_payment_type_add},
         {"name": "Sector Add", "func": test_sector_add},
         {"name": "Product Add", "func": test_product_add},
@@ -96,53 +63,64 @@ def get_tests():
         {"name": "Init Balance", "func": test_init_balance},
         {"name": "Setting Consignment", "func": test_setting_consignment},
 
-        {"name": "Contract Add-A", "func": test_contract_add_A_UZB},
-        {"name": "Order Add-A", "func": test_order_add_with_consignment},
-        {"name": "Order Edit-A", "func": test_order_edit_A},
-        {"name": "Order Change Status-A", "func": test_order_change_status_A},
+        {"name": "Add Contract For Client UZB-A", "func": test_add_contract_for_client_A_UZB},
+        {"name": "Add Order With Consignment-A", "func": test_add_order_with_consignment},
+        {"name": "Check Report For Order List-A", "func": test_check_report_for_order_list},
+        {"name": "Edit Order With Consignment-A", "func": test_edit_order_with_consignment},
+        {"name": "Change Status For Order-A", "func": test_change_status_for_order_A},
+        {"name": "Check Report For Order History List-A", "func": test_check_report_for_order_history_list},
         {"name": "Cashin Add-A", "func": test_cashin_add_A},
         {"name": "Offset Add-A", "func": test_offset_add_A},
 
-        {"name": "Contract Add-B", "func": test_contract_add_B_UZB},
-        {"name": "Order Add-B", "func": test_order_add_client_B_check_contract},
-        {"name": "Order Change Status-B", "func": test_order_change_status_B},
+        {"name": "Add Contract For Client UZB-B", "func": test_add_contract_for_client_B_UZB},
+        {"name": "Add Order With Contract-B", "func": test_add_order_with_contract},
+        {"name": "Change Status For Order-B", "func": test_change_status_for_order_B},
         {"name": "Offset Add-B", "func": test_offset_add_B},
 
-        {"name": "Contract Add-C", "func": test_contract_add_C_USA},
-        {"name": "Order Add-C", "func": test_order_add_price_type_USA},
+        {"name": "Add Contract For Client USA-C", "func": test_add_contract_for_client_C_USA},
+        {"name": "Add Order With Price Type-C", "func": test_add_order_with_price_type_USA},
         {"name": "Test Setting Prepayment On", "func": test_setting_prepayment_on},
-        {"name": "Order Edit-C", "func": test_order_edit_C},
-
-        # {"name": "Order Change Status-C", "func": test_order_change_status_C},
+        {"name": "Edit Order For Price Type USA-C", "func": test_edit_order_for_price_type_USA},
         {"name": "Test Setting Prepayment Off", "func": test_setting_prepayment_off},
 
 
+        {"name": "Add Template For Order Invoice Report", "func": test_add_template_for_order_invoice_report},
+        {"name": "Order Add For Sub Filial Select-C", "func": test_order_add_for_sub_filial_select},
+        {"name": "Check Invoice Report For Order List-C", "func": test_check_invoice_report_for_order_list},
+        {"name": "Change Status For Order-C", "func": test_change_status_for_order_C},
 
-        # {"name": "Order Add-C", "func": test_order_add_for_sub_filial_select},
-        # {"name": "Test Action", "func": test_action},
+        {"name": "Add Action", "func": test_add_action},
+        {"name": "Add Order For Action-C", "func": test_add_order_for_action},
+        {"name": "Edit Order For Action-C", "func": test_edit_order_for_action},
+        {"name": "Change Status For Order-C", "func": test_change_status_for_order_C},
 
 
 
-
-        # # {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
-        # # {"name": "Order Return", "func": test_order_return},
+        {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
+        {"name": "Order Return", "func": test_order_return},
     ]
 
 
-@pytest.mark.parametrize("test", get_tests())
-def test_all(test):
-    with allure.step(test["name"]):
-        driver = get_driver()
+@pytest.mark.parametrize("test_case", test_cases)
+def test_all(driver, test_data, test_case):
+    """Barcha testlarni driver fixture bilan ishlashga moslash"""
+    with allure.step(test_case["name"]):
         try:
-            test["func"](driver)
-            print(f"✅ {test['name']} passed.")
+            test_case["func"](driver, test_data)
+            print(f"✅ {test_case['name']} passed.")
+        except AssertionError as ae:
+            allure.attach(
+                body=str(ae),
+                name=f"Assertion Error - {test_case['name']}",
+                attachment_type=allure.attachment_type.TEXT
+            )
+            print(f"❌ {test_case['name']} failed with assertion error: {ae}")
+            pytest.fail(f"Assertion failed: {test_case['name']}")
         except Exception as e:
             allure.attach(
                 body=str(e),
-                name="Error Log",
+                name=f"Error Log - {test_case['name']}",
                 attachment_type=allure.attachment_type.TEXT
             )
-            print(f"❌ {test['name']} failed with error: {e}")
-            pytest.fail(f"Test failed: {test['name']}. Stopping execution.")
-        finally:
-            driver.quit()
+            print(f"❌ {test_case['name']} failed with error: {e}")
+            pytest.fail(f"Test failed: {test_case['name']}. Stopping execution.")

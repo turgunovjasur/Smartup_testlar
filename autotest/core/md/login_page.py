@@ -1,7 +1,7 @@
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-from utils.exception import ElementNotFoundError, ElementInteractionError
+from utils.exception import ElementInteractionError, ElementVisibilityError
 
 
 class LoginPage(BasePage):
@@ -11,9 +11,10 @@ class LoginPage(BasePage):
     def element_visible(self):
         try:
             self._wait_for_visibility(self.login_header)
-            self.logger.info("Login sahifada 'logo' elementi tasdiqlandi")
-        except ElementNotFoundError:
-            self.logger.warning("Login sahifada 'logo' elementi ko'rinmadi")
+            self.logger.info("Login Page: The 'logo' element is verified")
+        except ElementVisibilityError:
+            self.logger.warning("Login Page: The 'logo' element is not visible")
+            pass
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     email_input = (By.XPATH, '//input[@id="login"]')
@@ -24,9 +25,9 @@ class LoginPage(BasePage):
             email_success = self.input_text(self.email_input, email)
             password_success = self.input_text(self.password_input, password)
             if email_success and password_success:
-                self.logger.info("Login formasi muvaffaqiyatli to'ldirildi")
+                self.logger.info("Login Page: Data entered successfully")
         except ElementInteractionError:
-            self.logger.error(f"Noto'g'ri ma'lumot: email={email} yoki password={password}")
+            self.logger.error(f"Login Page: Incorrect data -> email={email} or password={password}")
             raise
     # ------------------------------------------------------------------------------------------------------------------
     signup_button = (By.XPATH, '//button[@id="sign_in"]')
@@ -36,8 +37,8 @@ class LoginPage(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     error_massage = (By.XPATH, "//span[@id='error']")
 
-    def get_error_text(self, timeout=2):
-        self.wait_for_element_visible(self.error_massage, timeout=timeout)
+    def get_error_text(self):
+        self.wait_for_element_visible(self.error_massage)
     # ------------------------------------------------------------------------------------------------------------------
     # Logout
     # ------------------------------------------------------------------------------------------------------------------

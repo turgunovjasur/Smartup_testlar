@@ -58,12 +58,13 @@ def configure_logging(test_name):
             elif record.levelno == logging.ERROR:
                 return f"{Fore.RED}{log_message}{Style.RESET_ALL}"
             elif record.levelno == logging.DEBUG:
-                return f"{Fore.CYAN}{log_message}{Style.RESET_ALL}"
+                # return f"{Fore.WHITE}{log_message}{Style.RESET_ALL}"
+                return f"{Fore.LIGHTBLACK_EX}{log_message}{Style.RESET_ALL}"
             return log_message
 
     # Console handler
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging.DEBUG)
     console_formatter = ColorFormatter(log_format)
     console_handler.setFormatter(console_formatter)
     logger.addHandler(console_handler)

@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
-from utils.exception import ElementNotFoundError, ElementInteractionError
+from utils.exception import ElementInteractionError, ElementVisibilityError
 
 
 class DashboardPage(BasePage):
@@ -9,26 +9,21 @@ class DashboardPage(BasePage):
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
 
     def element_visible(self):
-        # Dashboard header tekshiruvi
         try:
             if self._wait_for_visibility(self.dashboard_header, timeout=10, error_message=False):
-                self.logger.info("Dashboard sahifasi ochilganligi tasdiqlandi")
+                self.logger.info("Dashboard Page: Successfully opened")
                 return True
         except Exception:
             pass
 
-        # Agar dashboard_header topilmasa, save_button tekshiriladi
         try:
             if self._wait_for_visibility(self.save_button, timeout=10, error_message=False):
-                self.logger.info("Dashboard(ChangePassword) sahifasi ochilganligi tasdiqlandi")
+                self.logger.info("Dashboard Page (ChangePassword): Successfully opened")
                 return True
         except Exception:
             pass
 
-        # Agar ikkalasi ham topilmasa
-        self.logger.error("Dashboard tekshiruvi muvaffaqiyatsiz: elementlar topilmadi")
         return False
-
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     filial_list_button = (By.XPATH, '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')
@@ -46,10 +41,10 @@ class DashboardPage(BasePage):
     def element_visible_session(self):
         try:
             if self._wait_for_visibility(self.active_session_header, timeout=5, error_message=False):
-                self.logger.info("‼️ Eski sessiya mavjud!")
+                self.logger.info("‼️Old sessiya available!")
                 return True
-        except Exception:
-            self.logger.info("5 sekund kutildi. Eski sessiya mavjud emas.")
+        except ElementVisibilityError:
+            self.logger.info("Old sessiya not available! Waited for 5 seconds.")
             return False
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -57,10 +52,10 @@ class DashboardPage(BasePage):
 
     def click_button_delete_session(self):
         try:
-            self.click(self.delete_session_button)
-            self.logger.info("Eski sessiya muvaffaqiyatli o'chirildi")
+            if self.click(self.delete_session_button):
+                self.logger.info("Old session successfully deleted")
         except ElementInteractionError:
-            self.logger.error("Eski sessiyani o'chirishda xatolik yuz berdi")
+            self.logger.error("Unexpected error: -> while deleting the old session")
             raise
     # ------------------------------------------------------------------------------------------------------------------
     # navbar buttons

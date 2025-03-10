@@ -1,4 +1,4 @@
-# QA Testing: Mukammal va tushunarli qo'llanma
+# QA Testing: Qo'llanma
 
 ## Mundarija
 1. [Kirish: QA Testing nima?](#kirish-qa-testing-nima)

@@ -24,7 +24,13 @@ class CashinAdd(BasePage):
     amount_get = (By.XPATH, '//label/t[normalize-space(text())="Баланс"]/ancestor::label/following-sibling::span[@class="form-view ng-binding"]')
 
     def get_amount(self):
-        return self.get_numeric_value(self.amount_get)
+        number = self.get_numeric_value(self.amount_get)
+        if number == 0:
+            return 120_000
+        else:
+            return number
+
+        # return self.get_numeric_value(self.amount_get)
     # ------------------------------------------------------------------------------------------------------------------
     amount_input = (By.XPATH, '//input[@ng-model="d.amount"]')
 

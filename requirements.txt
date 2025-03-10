@@ -1,0 +1,6 @@
+pytest~=8.3.2
+requests~=2.32.3
+selenium~=4.25.0
+colorama~=0.4.6
+numpy~=2.0.2
+pyautogui~=0.9.54

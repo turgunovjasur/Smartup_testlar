@@ -19,7 +19,9 @@ class OrderAddProduct(BasePage):
         self.click(self.setting_tbl_button)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def input_name_product(self, product_name, warehouse_name, price_type_name):
+    def input_name_product(self, product_name, warehouse_name, price_type_name, clear_input=False):
+        if clear_input:
+            self.clear_element(self.name_input)
         if self.click(self.name_input):
             element_list = self._wait_for_presence_all(self.name_options)
 
@@ -87,7 +89,7 @@ class OrderAddProduct(BasePage):
     check_overload = (By.XPATH, "(//div[@id='overload']//div[@class='col-sm-15'])[1]")
 
     def overload_is_visible(self):
-        element = self.wait_for_element_visible(self.check_overload, timeout=2)
+        element = self.wait_for_element_visible(self.check_overload)
         if element is None:
             print('Overload inactive!')
             return False

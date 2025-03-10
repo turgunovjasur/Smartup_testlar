@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
+from datetime import datetime, timedelta
 
 
 class OrderAddFinal(BasePage):
@@ -14,6 +15,11 @@ class OrderAddFinal(BasePage):
 
     def get_booked_payment_allowed(self):
         return self.get_numeric_value(self.booked_payment_allowed_input)
+    # ------------------------------------------------------------------------------------------------------------------
+    booked_payment_percentage_input = (By.XPATH, '//div[contains(@ng-show, "d.booked_payment_allowed")]//t[contains(text(),"Минимальный процент предоплаты")]/ancestor::label/following-sibling::span')
+
+    def get_booked_payment_percentage(self):
+        return self.get_numeric_value(self.booked_payment_percentage_input)
     # ------------------------------------------------------------------------------------------------------------------
     payment_type_input = (By.XPATH, '//div[@id="anor279-inpu-b_input-payment_type"]//b-input[@name="payment_type"]//input')
     payment_options = (By.XPATH, '//div[@id="anor279-inpu-b_input-payment_type"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
@@ -31,18 +37,21 @@ class OrderAddFinal(BasePage):
     consignment_amount_button = (By.XPATH, '//button[@ng-click="setConsignmentAmount(item)"]')
 
     def input_consignment_date(self, add_days, consignment_amount):
-        """Joriy sanaga 10 kun qoshib yozish"""
+        """Joriy sanaga `add_days` kun qo'shib, uni kiritish."""
 
-        date = self.current_date(add_days=add_days)
-        self.input_text(self.consignment_date_input, date)
+        # Sana hisoblash
+        future_date = (datetime.now() + timedelta(days=add_days)).strftime("%d.%m.%Y %H:%M:%S")
+
+        # Input maydonlarga kiritish
+        self.input_text(self.consignment_date_input, future_date)
         self.input_text(self.consignment_amount_input, consignment_amount)
     # ------------------------------------------------------------------------------------------------------------------
     status_input = (By.XPATH, "(//div[@id='anor279-ui_select-status']//span)[1]")
-    status_options = (By.XPATH, '//div[@id="anor279-ui_select-status"]/div[@ng-model="d.status"]/ul/li/div[3]')
 
-    def input_status(self):
+    def input_status(self, status=1):
         self.click(self.status_input)
-        self.click(self.status_options)
+        status_options = (By.XPATH, f'//div[@id="anor279-ui_select-status"]//div[@role="option"][{status}]')
+        self.click(status_options)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
@@ -63,6 +72,11 @@ class OrderAddFinal(BasePage):
 
     def click_error_close_button(self):
         self.click(self.close_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    booked_payment_amount_input = (By.XPATH, '//input[@ng-model="d.booked_payment_amount"]')
+
+    def input_booked_payment_amount(self, prepayment_amount):
+        self.input_text(self.booked_payment_amount_input, prepayment_amount)
     # ------------------------------------------------------------------------------------------------------------------
     prev_step_button = (By.XPATH, '//button[@id="anor279-button-prev_step"]')
 

@@ -33,5 +33,5 @@ class MarginAdd(BasePage):
     error_header = (By.XPATH, '//div[contains(@class,"modal-header")]//h4[contains(@class,"modal-title") and contains(text(),"Ошибка")]')
 
     def check_error_header(self):
-        self.wait_for_element_visible(self.error_header, timeout=5, retries=1)
+        self.wait_for_element_visible(self.error_header)
     # ------------------------------------------------------------------------------------------------------------------

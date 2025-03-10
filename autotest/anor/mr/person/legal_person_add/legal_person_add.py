@@ -15,6 +15,11 @@ class LegalPersonAdd(BasePage):
     def input_name(self, legal_person_name):
         self.input_text(self.name_input, legal_person_name)
     # ------------------------------------------------------------------------------------------------------------------
+    tin_input = (By.XPATH, '//input[@ng-model="d.details.tin"]')
+
+    def input_tin(self, tin_number):
+        self.input_text(self.tin_input, tin_number)
+    # ------------------------------------------------------------------------------------------------------------------
     legal_persons_input = (By.XPATH, '//b-input[@name="legal_persons"]//input[@ng-model="d.parent_person_name"]')
     options_locator = (By.XPATH, '//b-input[@name="legal_persons"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
 

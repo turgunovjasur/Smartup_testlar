@@ -1,30 +1,30 @@
-from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
+from selenium.webdriver.common.by import By
 
 
-class LegalPersonList(BasePage):
+class TemplateList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = (By.XPATH, '//button[@ng-click="q.oa.firstFn()"]')
+    header = (By.XPATH, '//button[@ng-click="fi.add()"]')
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    add_button = (By.XPATH, '//button[@ng-click="q.oa.firstFn()"]')
+    add_button = (By.XPATH, '//button[@ng-click="fi.add()"]')
 
     def click_add_button(self):
         self.click(self.add_button)
     # ------------------------------------------------------------------------------------------------------------------
-    search_input = (By.XPATH, '//b-grid-controller//input[@type="search"]')
 
-    def input_search(self, element_name):
-        self.input_text(self.search_input, element_name)
+    def find_row(self, template_name):
+        self.find_row_and_click(element_name=template_name)
     # ------------------------------------------------------------------------------------------------------------------
+    attach_role_button = (By.XPATH, '//button[@ng-if="fi.attach_role"]')
 
-    def find_row(self, legal_person_name):
-        self.find_row_and_click(element_name=legal_person_name)
+    def click_attach_role_button(self):
+        self.click(self.attach_role_button)
     # ------------------------------------------------------------------------------------------------------------------
-    view_button = (By.XPATH, '//button[@ng-click="view(row)"]')
+    detach_role_button = (By.XPATH, '//button[@ng-class="q.classDetach"]')
 
-    def click_view_button(self):
-        self.click(self.view_button)
+    def click_detach_role_button(self):
+        self.click(self.detach_role_button)
     # ------------------------------------------------------------------------------------------------------------------

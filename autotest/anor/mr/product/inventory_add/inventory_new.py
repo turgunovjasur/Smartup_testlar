@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
+from utils.exception import ElementVisibilityError
 
 
 class InventoryNew(BasePage):
@@ -41,15 +42,25 @@ class InventoryNew(BasePage):
     def click_save_button(self):
         self.click(self.save_button)
     # ------------------------------------------------------------------------------------------------------------------
+    error_massage_xpath = (By.XPATH, '//div[@id="biruniAlertExtended"]//div[@class="modal-content"]//div[@class="modal-title"]//div[@class="ng-binding"]')
+
+    def error_massage(self):
+        """Error xabarini tekshirish va olish"""
+
+        try:
+            self._wait_for_visibility(self.error_massage_xpath, timeout=5, error_message=False)
+        except ElementVisibilityError:
+            return False
+
+        full_text = self.get_text(self.error_massage_xpath)
+        if full_text:
+            error_code = full_text.split('—')[0].strip() if "—" in full_text else full_text.strip()
+            return error_code
+    # ------------------------------------------------------------------------------------------------------------------
     clear_button = (By.XPATH, '//b-input[@name="sectors"]//span[@class="clear-button"]')
     sectors_input = (By.XPATH, '//b-input[@name="sectors"]//input')
     sectors_elem = (By.XPATH, '//b-input[@name="sectors"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
 
     def input_sectors(self, sector_name):
         self.click_options(self.clear_button, self.sectors_elem, sector_name)
-    # ------------------------------------------------------------------------------------------------------------------
-    add_button = (By.XPATH, '//b-input[@name="sectors"]//div/a[@ng-click="_$bInput.onAddClick()"]')
-
-    def input_add_sectors(self):
-        self.input_text_elem(self.sectors_input, self.add_button)
     # ------------------------------------------------------------------------------------------------------------------
