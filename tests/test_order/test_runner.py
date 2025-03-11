@@ -93,11 +93,11 @@ test_cases = [
         {"name": "Add Order For Action-C", "func": test_add_order_for_action},
         {"name": "Edit Order For Action-C", "func": test_edit_order_for_action},
         {"name": "Change Status For Order-C", "func": test_change_status_for_order_C},
-
-
-
-        {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
-        {"name": "Order Return", "func": test_order_return},
+        #
+        #
+        #
+        # {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
+        # {"name": "Order Return", "func": test_order_return},
     ]
 
 

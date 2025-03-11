@@ -407,7 +407,7 @@ def test_sub_filial_add(driver, test_data):
         pytest.fail(str(e))
 
 
-def test_natural_person_add(driver, test_data, person_name='Jasur'):
+def test_natural_person_add(driver, test_data, person_name=None):
     """Test adding a natural person"""
 
     base_page = BasePage(driver)

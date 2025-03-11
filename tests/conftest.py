@@ -16,7 +16,7 @@ def test_data():
         # "code_input": "test",
         "code_input": "red_test",
         # "cod": 1,
-        "cod": 40,
+        "cod": 41,
         # "url": "https://smartup.merospharm.uz/login.html",
         "url": "https://app3.greenwhite.uz/xtrade/login.html",
         # "url": "https://app3.greenwhite.uz/xtrade/login.html",
