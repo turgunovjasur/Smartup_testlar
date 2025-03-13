@@ -132,7 +132,6 @@ def test_add_order_for_action(driver, test_data):
 
 
 def test_edit_order_for_action(driver, test_data):
-
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_for_action")
 

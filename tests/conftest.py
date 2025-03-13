@@ -16,7 +16,7 @@ def test_data():
         # "code_input": "test",
         "code_input": "red_test",
         # "cod": 1,
-        "cod": 41,
+        "cod": 44,
         # "url": "https://smartup.merospharm.uz/login.html",
         "url": "https://app3.greenwhite.uz/xtrade/login.html",
         # "url": "https://app3.greenwhite.uz/xtrade/login.html",
@@ -66,7 +66,8 @@ def test_data():
         "Pending": "В ожидании",
         "Shipped": "Отгружен",
         "Delivered": "Доставлен",
-        "Archive": "Архив"
+        "Archive": "Архив",
+        "Cancelled": "Отменен",
     }
     error_massage = {
         "error_massage_1": "H02-ANOR279-015",

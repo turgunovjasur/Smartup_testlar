@@ -45,6 +45,7 @@ class BasePage:
 
     def take_screenshot(self, filename=None):
         """Fayl nomiga vaqt va test nomini qo'shib, screenshot saqlash."""
+
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         test_name = self.test_name if self.test_name != "unknown_test" else "default"
         if filename:
@@ -90,10 +91,10 @@ class BasePage:
                 else:
                     elapsed_time = time.time() - start_time
                     self.logger.debug(f"Asinxron operatsiyalar davom etmoqda, qayta tekshirilmoqda... ({elapsed_time:.2f}s)")
-            except JavascriptException as js_err:
-                message = f"Asinxron tekshiruvda JavaScript xatosi: {str(js_err)}"
-                self.logger.error(message)
-                raise JavaScriptError(message)
+            except JavascriptException as e:
+                message = f"Asinxron tekshiruvda JavaScript xatosi."
+                self.logger.error(f"{message}: {str(e)}")
+                raise JavaScriptError(message, original_error=e)
 
             time.sleep(retry_interval)
 
@@ -140,10 +141,10 @@ class BasePage:
                 else:
                     self.logger.debug(f"Block UI hali ham ko‘rinmoqda, kutish davom etmoqda... ({elapsed_time:.2f}s)")
 
-            except JavascriptException as js_err:
-                message = f"Block UI tekshirishda JavaScript xatosi: {str(js_err)}"
-                self.logger.error(message)
-                raise JavaScriptError(message)
+            except JavascriptException as e:
+                message = f"Block UI tekshirishda JavaScript xatosi: {str(e)}"
+                self.logger.warning(f"{message}: locator={block_ui_selector}: {str(e)}")
+                raise JavaScriptError(message, locator=block_ui_selector, original_error=e)
 
             time.sleep(retry_interval)
 
@@ -151,7 +152,7 @@ class BasePage:
         total_time = time.time() - start_time
         message = f"Block UI {timeout}s ichida yo'qolmadi (Jami vaqt: {total_time:.2f}s)"
         self.logger.error(message)
-        raise LoaderTimeoutError(message)
+        raise LoaderTimeoutError(message, locator=block_ui_selector)
 
     def _check_spinner_absence(self, timeout=None, retry_interval=0.5):
         timeout = timeout or self.default_timeout
@@ -199,29 +200,29 @@ class BasePage:
                         break
 
                 if not is_visible:
-                    self.logger.debug(f"Barcha spinnerlar yo‘qoldi ({elapsed_time:.2f}s)")
+                    self.logger.debug(f"Barcha spinner yo‘qoldi ({elapsed_time:.2f}s)")
                     return True
 
-            except TimeoutException:
-                message = f"Spinnerlar {timeout}s ichida yo‘qolmadi!"
-                self.logger.error(message)
-                raise LoaderTimeoutError(message)
+            except JavascriptException as e:
+                message = "Spinner tekshirishda JavaScript xatosi."
+                self.logger.warning(f"{message}: {locator}: {str(e)}")
+                raise JavaScriptError(message, locator, e)
 
             time.sleep(retry_interval)
 
-        message = f"Spinner yoki block UI {timeout}s ichida yo‘qolmadi!"
+        message = f"Spinner {timeout}s ichida yo‘qolmadi!"
         self.logger.error(message)
-        raise LoaderTimeoutError(message)
+        raise LoaderTimeoutError(message, locator)
 
     def _wait_for_all_loaders(self, timeout=None, log_text=None):
         """Sahifaning to'liq barqaror holatga kelishini kutish."""
 
         timeout = timeout or self.default_page_load_timeout
 
-        status_text = f"{log_text}: ->" if log_text else ""
+        status_text = f"{log_text}: -> " if log_text else ""
 
         errors = []
-        self.logger.debug(f"{'='*10} {status_text}  Started waiting {'='*10}")
+        self.logger.debug(f"{'='*10} {status_text} Started waiting {'='*10}")
 
         try:
             self._wait_for_async_operations(timeout)
@@ -247,7 +248,7 @@ class BasePage:
         if len(errors) == 3:
             full_error_message = "\n".join(errors)
             self.logger.error(f"{status_text} Barcha yuklanish funksiyalari muvaffaqiyatsiz tugadi.\n{full_error_message}")
-            raise LoaderTimeoutError(full_error_message)
+            raise LoaderTimeoutError(message=full_error_message)
 
         self.logger.debug(f"{'='*10} {status_text} Finished waiting {'='*10}")
         return True
@@ -303,6 +304,7 @@ class BasePage:
 
     def _wait_for_presence(self, locator, timeout=None):
         """Element DOMda mavjud ekanligini tekshirish"""
+
         page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
 
@@ -311,16 +313,19 @@ class BasePage:
             return element
 
         except StaleElementReferenceException as e:
-            self.logger.warning(f"{page_name}: Element DOM da yangilandi: {locator}")
-            raise ElementStaleError("Element DOM da yangilandi", locator, e)
+            message = f"Element DOM da yangilandi."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementStaleError(message, locator, e)
 
         except TimeoutException as e:
-            self.logger.warning(f"{page_name}: Element {timeout}s ichida DOM da topilmadi: {locator}")
-            raise ElementNotFoundError(f"Element {timeout}s ichida DOM da topilmadi", locator, e)
+            message = f"Element {timeout}s ichida DOM da topilmadi."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementNotFoundError(message, locator, e)
 
         except Exception as e:
-            self.logger.warning(f"{page_name}: Element DOM da mavjudligi da kutilmagan xato: {str(e)}")
-            raise ElementInteractionError(f"Kutilmagan xato - DOM", locator, e)
+            message = f"Element DOM da mavjudligi da kutilmagan xato."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementInteractionError(message, locator, e)
 
     def _scroll_to_element(self, element, locator, timeout=None):
         """Elementga scroll qilish."""
@@ -330,13 +335,12 @@ class BasePage:
 
         try:
             if element is None:
-                raise ElementNotFoundError("Element topilmadi, scroll qilish imkonsiz", locator)
+                raise ElementNotFoundError(message="Element topilmadi, scroll qilish imkonsiz", locator=locator)
 
             if element.is_displayed():
                 return element
 
-            self.driver.execute_script(
-                "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
+            self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
 
             WebDriverWait(self.driver, timeout).until(lambda d: element.is_displayed())
 
@@ -344,24 +348,29 @@ class BasePage:
             return element
 
         except NoSuchElementException as e:
-            self.logger.warning(f"{page_name}: Element topilmadi, scroll ishlamadi: {locator}")
-            raise ElementNotFoundError("Element topilmadi, scroll ishlamadi", locator, e)
+            message = f"Element topilmadi, scroll ishlamadi."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementNotFoundError(message, locator, e)
 
         except StaleElementReferenceException as e:
-            self.logger.warning(f"{page_name}: Element DOM da yangilandi: {locator}")
-            raise ElementStaleError("Element DOM da yangilandi", locator, e)
+            message = f"Element DOM da yangilandi."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementStaleError(message, locator, e)
 
         except TimeoutException as e:
-            self.logger.warning(f"{page_name}: Element {timeout}s ichida sahifada ko'rinmadi: {locator}")
-            raise ScrollError(f"Element {timeout}s ichida sahifada ko'rinmadi", locator, e)
+            message = f"Element {timeout}s ichida sahifada ko'rinmadi."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ScrollError(message, locator, e)
 
-        except JavascriptException as e:
-            self.logger.warning(f"{page_name}: JavaScript scrollIntoView xatoligi: {locator} - Xato: {str(e)}")
-            raise JavaScriptError("JavaScript scrollIntoView ishlamay qoldi", locator, e)
+        except JavascriptException as je:
+            message = f"JavaScript scrollIntoView xatoligi."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(je)}")
+            raise JavaScriptError(message, locator, je)
 
         except Exception as e:
-            self.logger.warning(f"{page_name}: Scroll qilishda kutilmagan xatolik: {str(e)}")
-            raise ElementInteractionError("Kutilmagan xatolik - Scroll", locator, e)
+            message = f"Scroll qilishda kutilmagan xatolik."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementInteractionError(message, locator, e)
 
     def _wait_for_visibility(self, locator, timeout=None, error_message=True):
         """Element ko'rinishini kutish"""
@@ -374,22 +383,26 @@ class BasePage:
             return element
 
         except StaleElementReferenceException as e:
+            message = f"Element ko'rinishini kutishda DOM da yangilandi."
             if error_message:
-                self.logger.warning(f"{page_name}: Element ko'rinishini kutishda DOM da yangilandi: {locator}")
-            raise ElementStaleError("Element ko'rinishini kutishda DOM da yangilandi", locator, e)
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementStaleError(message, locator, e)
 
         except TimeoutException as e:
+            message = f"Element {timeout}s ichida ko'rinmadi."
             if error_message:
-                self.logger.warning(f"{page_name}: Element {timeout}s ichida ko'rinmadi: {locator}")
-            raise ElementVisibilityError(f"Element {timeout}s ichida ko'rinmadi", locator, e)
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementVisibilityError(message, locator, e)
 
         except Exception as e:
+            message = f"Element kutishda kutilmagan xato."
             if error_message:
-                self.logger.warning(f"{page_name}: Element kutishda kutilmagan xato: {str(e)}")
-            raise ElementInteractionError("Kutilmagan xatolik - Visibility", locator, e)
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementInteractionError(message, locator, e)
 
     def _wait_for_clickable(self, locator, timeout=None):
         """ Element bosiladigan holatda ekanligini tekshirish """
+
         page_name = self.__class__.__name__
         timeout = timeout or self.default_timeout
 
@@ -398,39 +411,42 @@ class BasePage:
             return element
 
         except StaleElementReferenceException as e:
-            self.logger.warning(f"{page_name}: Element bosiladigan holatga kelishda DOM da yangilandi: {locator}")
-            raise ElementStaleError("Element bosiladigan holatga kelishda DOM da yangilandi", locator, e)
+            message = f"Element bosiladigan holatga kelishda DOM da yangilandi."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementStaleError(message, locator, e)
 
         except TimeoutException as e:
-            self.logger.warning(f"{page_name}: Element {timeout}s ichida bosiladigan holga kelmadi: {locator}")
-            raise ElementNotClickableError("Element bosilmaydigan holatda", locator, e)
+            message = f"Element {timeout}s ichida bosiladigan holga kelmadi."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementNotClickableError(message, locator, e)
 
         except Exception as e:
-            self.logger.warning(f"{page_name}: Element bosilishi da kutilmagan xato: {str(e)}")
-            raise ElementInteractionError("Kutilmagan xatolik - Clickable", locator, e)
+            message = f"Element bosilishi da kutilmagan xato."
+            self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            raise ElementInteractionError(message, locator, e)
 
     # Click ------------------------------------------------------------------------------------------------------------
 
     def is_checkbox_selected(self, locator):
+        """Checkbox tanlangan yoki yo'qligini tekshirish."""
+
         try:
             checkbox = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(locator))
-
-            # Checkbox tanlangan yoki yo'qligini tekshiramiz
             return checkbox.is_selected()
         except Exception as e:
-            print(f"Xatolik yuz berdi: {e}")
+            self.logger.error(f"Error: {str(e)}")
             return False
 
     def click(self, locator, retries=3, retry_delay=2):
         """Elementni bosish funksiyasi"""
 
         page_name = self.__class__.__name__
-        self.logger.debug(f"{page_name}: Running -> click: {locator}")
+        self.logger.debug(f"{page_name}: Running click: {locator}")
 
         attempt = 0
         while attempt < retries:
             try:
-                self._wait_for_all_loaders(log_text='Run -> click')
+                self._wait_for_all_loaders(log_text='Run click')
                 element_dom = self._wait_for_presence(locator)
                 self._scroll_to_element(element_dom, locator)
                 element_clickable = self._wait_for_clickable(locator)
@@ -438,39 +454,47 @@ class BasePage:
                     return True
 
                 time.sleep(retry_delay)
-                self.logger.info(f"Retry Click sinab ko'riladi...")
-                self._wait_for_all_loaders(log_text='Run -> retry click')
+                self.logger.info("Retry Click sinab ko'riladi...")
+                self._wait_for_all_loaders(log_text='Run retry click')
                 element_clickable = self._wait_for_clickable(locator)
                 if element_clickable and self._click(element_clickable, locator, retry=True):
                     return True
 
                 time.sleep(retry_delay)
-                self.logger.info(f"Majburiy JS Click sinab ko'riladi...")
-                self._wait_for_all_loaders(log_text='Run -> JS click')
+                self.logger.info("Majburiy JS Click sinab ko'riladi...")
+                self._wait_for_all_loaders(log_text='Run JS click')
                 element_dom = self._wait_for_presence(locator)
                 if element_dom and self._click_js(element_dom, locator):
                     return True
 
             except (ElementStaleError, ScrollError, JavaScriptError) as e:
-                self.logger.warning(f"{page_name}: {e.message}, qayta urinish ({attempt + 1}/{retries})")
+                self.logger.warning(f"{page_name}: Qayta urinish ({attempt + 1}/{retries}): {str(e)}")
                 time.sleep(retry_delay)
 
-            except (ElementNotFoundError, ElementNotClickableError, LoaderTimeoutError) as e:
-                self.logger.error(f"{page_name}: {e.message} - Element topilmadi. Click bekor qilindi.")
-                self.take_screenshot(f"{page_name.lower()}_click_elem_not_found_error")
+            except (ElementNotFoundError, LoaderTimeoutError) as e:
+                message = "Element topilmadi yoki yuklanmadi. Click bekor qilindi."
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_click_not_found_error")
+                raise ElementInteractionError(message, locator, e)
+
+            except ElementNotClickableError as e:
+                message = "Element bosilmaydigan holda. Click bekor qilindi."
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_click_not_clickable_error")
                 raise
 
             except Exception as e:
-                self.logger.error(f"{page_name}: Kutilmagan xato: {str(e)}")
+                message = "Kutilmagan xatolik."
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
                 self.take_screenshot(f"{page_name.lower()}_click_unexpected_error")
-                raise
+                raise ElementInteractionError(message, locator, e)
 
             attempt += 1
 
-        message = f"{page_name}: Element barcha usullar bilan bosilmadi ({attempt}/{retries}) - {locator}"
-        self.logger.error(message)
-        self.take_screenshot(f"{page_name.lower()}_click_error")
-        raise ElementInteractionError(message, locator)
+        message = f"Element barcha usullar bilan bosilmadi ({attempt-1}/{retries})"
+        self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+        self.take_screenshot(f"{page_name.lower()}_click_all_error")
+        raise ElementInteractionError(message, locator, e)
 
     # Wait -------------------------------------------------------------------------------------------------------------
 
@@ -485,7 +509,7 @@ class BasePage:
 
         while attempt < retries:
             try:
-                self._wait_for_all_loaders(log_text='Run -> wait_for_element_visible')
+                self._wait_for_all_loaders(log_text='Run wait_for_element_visible')
                 element_dom = self._wait_for_presence(locator)
                 self._scroll_to_element(element_dom, locator)
                 element = self._wait_for_visibility(locator)
@@ -498,22 +522,30 @@ class BasePage:
                 self.logger.warning(f"{page_name}: {e.message}, qayta urinish ({attempt + 1}/{retries})")
                 time.sleep(retry_delay)
 
-            except (ElementNotFoundError, ElementVisibilityError, LoaderTimeoutError) as e:
-                self.logger.error(f"{page_name}: {e.message} - Element topilmadi. Qidirish bekor qilindi.")
-                self.take_screenshot(f"{page_name.lower()}_visibility_elem_not_found_error")
+            except (ElementNotFoundError, LoaderTimeoutError) as e:
+                message = "Element topilmadi yoki yuklanmadi. Qidirish bekor qilindi."
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_visible_elem_not_found_error")
+                raise ElementInteractionError(message, locator, e)
+
+            except ElementVisibilityError as e:
+                message = "Element ko'rinmaydi. Qidirish bekor qilindi."
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_visible_elem_not_view_error")
                 raise
 
             except Exception as e:
-                self.logger.error(f"{page_name}: Kutilmagan xato: {str(e)}")
-                self.take_screenshot(f"{page_name.lower()}_visibility_unexpected_error")
-                raise
+                message = "Kutilmagan xatolik."
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_visible_unexpected_error")
+                raise ElementInteractionError(message, locator, e)
 
             attempt += 1
 
-        message = f"{page_name}: Element barcha usullar bilan topilmadi ({attempt}/{retries}) - {locator}"
-        self.logger.error(message)
-        self.take_screenshot(f"{page_name.lower()}_visibility_error")
-        raise ElementInteractionError(message, locator)
+        message = f"Element barcha usullar bilan topilmadi ({attempt-1}/{retries})"
+        self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+        self.take_screenshot(f"{page_name.lower()}_visible_all_error")
+        raise ElementInteractionError(message, locator, e)
 
     # ------------------------------------------------------------------------------------------------------------------
     def _wait_for_presence_all(self, locator, timeout=None):
@@ -527,19 +559,19 @@ class BasePage:
             return elements
 
         except StaleElementReferenceException as e:
-            message = "Elementlar ro'yhati DOM da yangilandi"
+            message = "Elementlar ro'yhati DOM da yangilandi."
             self.logger.warning(f"{page_name}: {message}: {locator}")
             raise ElementStaleError(message, locator, e)
 
         except TimeoutException as e:
-            message = "Elementlar ro'yhati topilmadi"
+            message = "Elementlar ro'yhati topilmadi."
             self.logger.error(f"{page_name}: {message}: {locator}")
             raise ElementNotFoundError(message, locator, e)
 
         except Exception as e:
-            message = "Elementlarni ro'yhatini qidirishda kutilmagan xato"
+            message = "Elementlarni ro'yhatini qidirishda kutilmagan xato."
             self.logger.error(f"{page_name}: {message}: {str(e)}")
-            raise ElementInteractionError(f"{message}: {str(e)}", locator, e)
+            raise ElementInteractionError(message, locator, e)
 
     def _wait_for_invisibility_of_element(self, element, timeout=None, error_message=None):
         """Element ni ko'rinmas bo'lishini kutish."""
@@ -568,21 +600,21 @@ class BasePage:
                 return False
 
         except StaleElementReferenceException as e:
-            message = f"{page_name}: Element DOM da yangilandi: {locator}"
+            message = f"Element DOM da yangilandi."
             if error_message:
-                self.logger.warning(message)
+                self.logger.warning(f"{page_name}: {message}: {locator}")
             raise ElementStaleError(message, locator, e)
 
         except TimeoutException as e:
-            message = f"{page_name}: Element ko'rinmas bo'lmadi: {locator}"
+            message = f"Element ko'rinmas bo'lmadi."
             if error_message:
-                self.logger.error(message)
+                self.logger.warning(f"{page_name}: {message}: {locator}")
             raise ElementVisibilityError(message, locator, e)
 
         except Exception as e:
-            message = f"{page_name}: Element kutishda kutilmagan xato: {str(e)}"
+            message = f"Element kutishda kutilmagan xato."
             if error_message:
-                self.logger.error(message)
+                self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
             raise ElementInteractionError(message, locator, e)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -597,32 +629,37 @@ class BasePage:
         while attempt < retries:
             try:
                 self._wait_for_all_loaders()
-
                 element_dom = self._wait_for_presence(locator)
                 self._scroll_to_element(element_dom, locator)
                 element_clickable = self._wait_for_clickable(locator)
 
-                # Matn kiritish
                 element_clickable.clear()
                 element_clickable.send_keys(text)
                 self.logger.info(f"Input: send_key -> '{text}'")
                 return True
 
-            except ElementStaleError:
-                self.logger.warning(f"Elementi yangilandi, qayta urinish ({attempt + 1})...")
+            except (ElementStaleError, ScrollError):
+                self.logger.warning("Input yangilandi, qayta urinish ({attempt + 1})...")
                 attempt += 1
                 time.sleep(retry_delay)
 
-            except (ElementNotFoundError, ScrollError, ElementNotClickableError, LoaderTimeoutError) as e:
-                self.logger.error(f"{page_name}: {e.message}")
-                self.take_screenshot(f"{page_name.lower()}_input_error")
+            except (ElementNotFoundError, LoaderTimeoutError) as e:
+                message = "Input topilmadi yoki yuklanmadi. Input bekor qilindi."
+                self.logger.error(f"{page_name}: {message}: {locator}")
+                self.take_screenshot(f"{page_name.lower()}_input_not_found_error")
+                raise ElementInteractionError(message, locator, e)
+
+            except ElementNotClickableError:
+                message = f"Input bosiladigan holga kelmadi. Input bekor qilindi."
+                self.logger.error(f"{page_name}: {message}: {locator}")
+                self.take_screenshot(f"{page_name.lower()}_input_not_clickable_error")
                 raise
 
             except Exception as e:
                 message = "Matn kiritishda kutilmagan xatolik"
-                self.logger.error(f"{message}: {str(e)}")
-                self.take_screenshot(f"{page_name.lower()}_input_error")
-                raise ElementInteractionError(f"{message}: {str(e)}", locator, e)
+                self.logger.error(f"{page_name}: {message}: {locator}: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_input_unexpected_error")
+                raise ElementInteractionError(message, locator, e)
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -754,12 +791,13 @@ class BasePage:
 
             return f"{base_path}#/!{user_id}/"
 
-        except Exception:
+        except Exception as e:
             self.logger.error("cut_url URL ni kesishda xatolik.")
-            return current_url
+            raise ElementInteractionError(message='cut_url URL ni kesishda xatolik',
+                                          locator=current_url, original_error=e)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def open_new_window(self, url: str) -> bool:
+    def open_new_window(self, url):
         """Yangi oynada URL ochish."""
 
         try:
@@ -777,15 +815,15 @@ class BasePage:
             message = "Yangi oyna ochish uchun berilgan vaqt tugadi"
             self.logger.error(message)
             self.take_screenshot("open_new_timeout_error")
-            raise LoaderTimeoutError(message)
-
-        except Exception as e:
-            self.logger.error(f"Yangi oyna ochishda xato: {str(e)}", exc_info=True)
-            self.take_screenshot("open_new_window_error")
             raise
 
+        except Exception as e:
+            self.logger.error(msg="Yangi oyna ochishda xato: {str(e)}", exc_info=True)
+            self.take_screenshot("open_new_window_error")
+            raise ElementInteractionError(message='Yangi oyna ochishda xato', locator=url, original_error=e)
+
     # ------------------------------------------------------------------------------------------------------------------
-    def switch_to_previous_window(self) -> bool:
+    def switch_to_previous_window(self):
         """Avvalgi oynaga qaytish."""
 
         try:
@@ -816,7 +854,7 @@ class BasePage:
             return False
 
     # ------------------------------------------------------------------------------------------------------------------
-    def refresh_page(self) -> bool:
+    def refresh_page(self):
         """Joriy sahifani yangilash."""
 
         try:
@@ -846,14 +884,18 @@ class BasePage:
         try:
             # 1. Dropdown ochish
             if not self.click(input_locator):
-                raise ElementNotClickableError("Dropdown ochilmadi", input_locator)
+                message = "Dropdown ochilmadi"
+                self.logger.error(f"{message}: {input_locator}")
+                raise ElementNotClickableError(message, input_locator)
 
             # 2. Optionlarni yuklanishini kutish
             self.logger.info(f"{page_name}: Dropdown ochildi, elementlar yuklanmoqda...")
             options = self._wait_for_presence_all(options_locator)
 
             if not options:
-                raise ElementNotFoundError("Dropdown elementlari topilmadi", options_locator)
+                message = "Dropdown elementlari topilmadi"
+                self.logger.error(f"{message}: {options_locator}")
+                raise ElementNotFoundError(message, options_locator)
 
             # 3. Element topish va bosish funksiyasi
             def find_and_click_option(options):
@@ -867,7 +909,9 @@ class BasePage:
                                 self.logger.info(f"⏺ {page_name}: Element '{element}' bosildi")
                                 return True
                         except Exception as e:
-                            raise ElementNotClickableError(f"Elementni bosib bo‘lmadi: {str(e)}", options_locator)
+                            message = "Elementni bosib bo‘lmadi"
+                            self.logger.error(f"{message}: {options_locator}: {str(e)}")
+                            raise ElementNotClickableError(message, options_locator, e)
                 return False
 
             # 4. Elementni qidirish
@@ -880,9 +924,10 @@ class BasePage:
 
             dropdown_container = self._find_visible_container(options_locator)
             if not dropdown_container:
-                self.logger.error(f"❌ {page_name}: Dropdown konteyner topilmadi!")
+                message = "❌ Dropdown konteyner topilmadi!"
+                self.logger.error(f"{page_name}: {message}: {options_locator}")
                 self.take_screenshot(f"{page_name.lower()}_dropdown_not_found")
-                raise ElementNotFoundError("Dropdown konteyner topilmadi", options_locator)
+                raise ElementNotFoundError(message, options_locator)
 
             # 6. Scroll bilan qidirish
             last_height = 0
@@ -909,11 +954,12 @@ class BasePage:
                         raise
                     continue
 
-            raise ElementNotFoundError(
-                f"Element '{element}' {scroll} marta scroll qilingandan keyin ham topilmadi", options_locator)
+            message = f"Element '{element}' {scroll} marta scroll qilingandan keyin ham topilmadi"
+            self.logger.warning(message)
+            raise ElementNotFoundError(message, options_locator)
 
         except (ElementNotFoundError, ElementNotClickableError, ScrollError) as e:
-            self.logger.error(f"{page_name}: {e.message}")
+            self.logger.error(f"{page_name}: {str(e)}")
             self.take_screenshot(f"{page_name.lower()}_click_options_error")
             raise
 
@@ -921,7 +967,7 @@ class BasePage:
             message = f"Kutilmagan xato"
             self.logger.error(f"{page_name}: {message}: {str(e)}")
             self.take_screenshot(f"{page_name.lower()}_click_options_error")
-            raise ElementInteractionError(f"{message}: {str(e)}", options_locator, e)
+            raise ElementInteractionError(message, options_locator, e)
 
     def _check_dropdown_closed(self, options_locator, retry_count=3):
         """Dropdown yopilganligini tekshirish."""
@@ -997,22 +1043,22 @@ class BasePage:
 
                 except TimeoutException:
                     self.logger.warning(f"⚠️ {page_name}: Timeout kutish: '{selector}' topilmadi")
-                    continue  # Agar `TimeoutException` bo‘lsa, keyingi selectorni tekshiramiz
+                    continue  # Agar `TimeoutException` bolsa, keyingi selectorni tekshiramiz
 
-            raise ElementNotFoundError(
-                message=f"{page_name}: Ko'rinadigan dropdown konteyner topilmadi",
-                locator=(By.XPATH, " | ".join(possible_container_selectors)))
+            message = f"{page_name}: Ko'rinadigan dropdown konteyner topilmadi"
+            self.logger.error(message)
+            raise ElementNotFoundError(message, locator=(By.XPATH, " | ".join(possible_container_selectors)))
 
         except ElementNotFoundError as e:
-            self.logger.error(f"❌ {page_name}: {e.message}")
+            self.logger.error(f"❌ {page_name}: {str(e)}")
             self.take_screenshot(f"{page_name.lower()}_dropdown_not_found")
             raise
 
         except Exception as e:
-            message = f"Konteyner qidirishda kutilmagan xato"
-            self.logger.error(f"❌ {page_name}: {message}: {str(e)}")
+            message = f"❌ Konteyner qidirishda kutilmagan xato"
+            self.logger.error(f"{page_name}: {message}: {str(e)}")
             self.take_screenshot(f"{page_name.lower()}_dropdown_error")
-            raise ElementInteractionError(f"{message}: {str(e)}", options_locator, e)
+            raise ElementInteractionError(message, options_locator, e)
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -1053,8 +1099,7 @@ class BasePage:
                         continue
 
                     elif not search_used:
-                        self.logger.warning(
-                            f"{page_name}: Limit oshirilganidan keyin ham '{element_name}' topilmadi. Qidiruvga berilmoqda...")
+                        self.logger.warning(f"{page_name}: Limit oshirilganidan keyin ham '{element_name}' topilmadi. Qidiruvga berilmoqda...")
                         element = self._wait_for_clickable(search_input)
                         if element:
                             element.clear()
@@ -1064,11 +1109,13 @@ class BasePage:
                         continue
 
                     else:
-                        raise ElementNotFoundError(f"{element_name} topilmadi, Limit va Qidiruv da ham", row_locator)
+                        message = f"{element_name} topilmadi, Limit va Qidiruv da ham"
+                        self.logger.error(message)
+                        raise ElementNotFoundError(message, row_locator)
 
                 target_element = elements[0]
                 self._scroll_to_element(target_element, row_locator)
-                self._wait_for_visibility(row_locator)
+                # self._wait_for_visibility(row_locator)
 
                 if click:
                     element_clickable = self._wait_for_clickable(row_locator)
@@ -1095,12 +1142,19 @@ class BasePage:
                         return True
 
             except (ElementStaleError, ScrollError, JavaScriptError) as e:
-                self.logger.warning(f"{page_name}: {e.message}, qayta urinish ({attempt + 1}/{retries})")
+                self.logger.warning(f"{page_name}: {str(e)}, qayta urinish ({attempt + 1}/{retries})")
                 time.sleep(retry_delay)
 
-            except (ElementNotFoundError, ElementNotClickableError, LoaderTimeoutError) as e:
-                self.logger.error(f"{page_name}: {e.message} - Element topilmadi. Click bekor qilindi.")
-                self.take_screenshot(f"{page_name.lower()}_find_row_error")
+            except (ElementNotFoundError, LoaderTimeoutError) as e:
+                message = "Element topilmadi yoki yuklanmadi. Click bekor qilindi."
+                self.logger.error(f"{page_name}: {message}: {row_locator}: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_find_row_not_found_error")
+                raise ElementInteractionError(message, row_locator, e)
+
+            except ElementNotClickableError as e:
+                message = "Element bosilmaydi. Click bekor qilindi."
+                self.logger.error(f"{page_name}: {message}: {row_locator}: {str(e)}")
+                self.take_screenshot(f"{page_name.lower()}_find_row_not_clickable_error")
                 raise
 
             except Exception as e:
@@ -1110,9 +1164,9 @@ class BasePage:
 
             attempt += 1
 
-        message = f"{page_name}: Element barcha usullar bilan bosilmadi ({attempt}/{retries}) - {row_locator}"
-        self.logger.error(message)
+        message = f"Element barcha usullar bilan bosilmadi ({attempt}/{retries})"
+        self.logger.error(f"{page_name}: {message}: {row_locator}: {str(e)}")
         self.take_screenshot(f"{page_name.lower()}_click_row_error")
-        raise ElementInteractionError(message, row_locator)
+        raise ElementInteractionError(message, row_locator, e)
 
     # ------------------------------------------------------------------------------------------------------------------

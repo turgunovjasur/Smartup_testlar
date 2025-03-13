@@ -4,14 +4,10 @@ from selenium.webdriver.common.by import By
 
 class InventoryList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    # Header text: Inventory list
-    # ------------------------------------------------------------------------------------------------------------------
     inventory_list_header = (By.XPATH, "//button[@id='anor50-button-text-add']")
 
     def element_visible(self):
         return self.wait_for_element_visible(self.inventory_list_header)
-    # ------------------------------------------------------------------------------------------------------------------
-    # Toolbar: Add, Status, Delete many
     # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, "//button[@id='anor50-button-text-add']")
 
@@ -33,8 +29,6 @@ class InventoryList(BasePage):
     def click_delete_many_button(self):
         self.click(self.delete_many_button)
         self.click(self.click_delete_yes_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    # Button: View, Edit, Inactive, Delete one
     # ------------------------------------------------------------------------------------------------------------------
     view_button = (By.XPATH, "//button[@id='anor50-button-view']")
 
@@ -65,8 +59,6 @@ class InventoryList(BasePage):
     def click_set_price_button(self):
         self.click(self.set_price_button)
     # ------------------------------------------------------------------------------------------------------------------
-    # Button: First element, Checkbox
-    # ------------------------------------------------------------------------------------------------------------------
     inventory_list_first_elem = (By.XPATH, "(//div[@class='tbl-row']/div[3])[1]")
 
     def click_first_elem_button(self):
@@ -77,8 +69,6 @@ class InventoryList(BasePage):
     def click_checkbox_button(self, checkbox_button):
         element = self.driver.find_element(By.CSS_SELECTOR, checkbox_button)
         self.driver.execute_script("arguments[0].click();", element)
-    # ------------------------------------------------------------------------------------------------------------------
-    # Button: Filter, Show all
     # ------------------------------------------------------------------------------------------------------------------
     filter_button = (By.XPATH, "//button[@ng-click='openFilter()']")
 

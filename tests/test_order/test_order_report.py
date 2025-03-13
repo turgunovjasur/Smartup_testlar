@@ -267,7 +267,7 @@ def test_check_invoice_report_for_order_list(driver, test_data, minute_tolerance
         login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
         order_list = OrdersList(driver)
-        assert order_list.element_visible(), "❌ order_list sahifasi ochilmadi!"
+        assert order_list.element_visible(), "❌ order_list not open!"
         order_list.find_row(client_name)
 
         # Hozirgi vaqtni oldin olish
@@ -285,7 +285,7 @@ def test_check_invoice_report_for_order_list(driver, test_data, minute_tolerance
         files.sort(key=os.path.getctime, reverse=True)
 
         latest_file = files[0] if files else None
-        assert latest_file is not None, "❌ Invoice fayli yuklanmadi!"
+        assert latest_file is not None, "❌ Invoice file not download!"
 
         file_name = os.path.basename(latest_file)
 

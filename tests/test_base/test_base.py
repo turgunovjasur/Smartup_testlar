@@ -1,66 +1,57 @@
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.login_page import LoginPage
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
-from utils.exception import LoaderTimeoutError, ElementInteractionError, ElementVisibilityError, ElementNotFoundError
+from utils.exception import LoaderTimeoutError, ElementInteractionError, ElementVisibilityError, ElementNotFoundError, \
+    ElementNotClickableError
 from tests.conftest import test_data
 
 
 def logout(driver):
-    # Log
-    base_page = BasePage(driver)
     login_page = LoginPage(driver)
+
     try:
         login_page.click_navbar_button()
         if login_page.click_logout_button():
-            base_page.logger.info("Tizimdan chiqish muvaffaqiyatli amalga oshirildi")
             return True
+
+    except (ElementNotClickableError, ElementInteractionError):
+        raise
+
     except Exception:
-        base_page.logger.error(f"Tizimdan chiqishda xatolik yuz berdi")
-        return False
+        raise ElementInteractionError
 
 
 def login(driver, email, password):
-    base_page = BasePage(driver)
     login_page = LoginPage(driver)
 
     try:
-        base_page._wait_for_all_loaders(log_text='Login Page')
         login_page.element_visible()
         login_page.fill_form(email, password)
         login_page.click_button()
         return True
 
-    except (LoaderTimeoutError, ElementVisibilityError, ElementInteractionError) as e:
-        base_page.logger.error(e.message)
+    except (ElementNotClickableError, ElementInteractionError):
         raise
 
-    except Exception as e:
-        base_page.logger.error(f"Login Page: -> Unexpected error {str(e)}")
+    except Exception:
         raise
 
 
 def dashboard(driver):
-    base_page = BasePage(driver)
     dashboard_page = DashboardPage(driver)
 
     try:
-        base_page._wait_for_all_loaders(log_text='Dashboard Page')
-
         if dashboard_page.element_visible_session():
             dashboard_page.click_button_delete_session()
 
         if not dashboard_page.element_visible():
-            base_page.logger.error("Dashboard Page: Verification failed - elements not found")
-            raise ElementInteractionError("Dashboard Page: Failed to open")
-
+            raise ElementVisibilityError
         return True
 
-    except (LoaderTimeoutError, ElementVisibilityError, ElementInteractionError) as e:
-        base_page.logger.error(e.message)
+    except ElementInteractionError:
         raise
 
-    except Exception as e:
-        base_page.logger.error(f"Dashboard Page: -> Unexpected error {str(e)}")
+    except Exception:
         raise
 
 
@@ -69,8 +60,11 @@ def login_system(driver, email, password, filial_name, url):
     dashboard_page = DashboardPage(driver)
 
     try:
-        login(driver, email, password)
-        dashboard(driver)
+        if not login(driver, email, password):
+            raise ElementInteractionError
+
+        if not dashboard(driver):
+            raise ElementInteractionError
 
         if filial_name:
             dashboard_page.find_filial(filial_name)
@@ -81,17 +75,16 @@ def login_system(driver, email, password, filial_name, url):
 
         return True
 
-    except (ElementNotFoundError, ElementInteractionError) as e:
-        base_page.logger.error(e.message)
+    except ElementInteractionError:
         raise
 
-    except Exception as e:
-        base_page.logger.error(f"login_system: -> Unexpected error {str(e)}")
+    except Exception:
         raise
 
 
 def login_admin(driver, test_data, filial_name=None, email=None, password=None, url=None):
     """Admin sifatida tizimga kirish."""
+
     base_page = BasePage(driver)
     try:
         data = test_data["data"]
@@ -102,17 +95,19 @@ def login_admin(driver, test_data, filial_name=None, email=None, password=None, 
 
         if not login_system(driver, email, password, filial_name, url):
             base_page.logger.error("login_admin: Admin login failed")
-            raise
-
+            raise ElementInteractionError
         return True
 
-    except Exception as e:
-        base_page.logger.error(f"login_admin: -> Unexpected error: {str(e)}")
-        return False
+    except ElementInteractionError:
+        raise
+
+    except Exception:
+        raise
 
 
 def login_user(driver, test_data, filial_name=None, email=None, password=None, url=None):
     """User sifatida tizimga kirish."""
+
     base_page = BasePage(driver)
     try:
         data = test_data["data"]
@@ -123,10 +118,11 @@ def login_user(driver, test_data, filial_name=None, email=None, password=None, u
 
         if not login_system(driver, email, password, filial_name, url):
             base_page.logger.error("login_user: User login failed")
-            raise
-
+            raise ElementInteractionError
         return True
 
-    except Exception as e:
-        base_page.logger.error(f"login_user: -> Unexpected error: {str(e)}")
-        return False
+    except ElementInteractionError:
+        raise
+
+    except Exception:
+        raise

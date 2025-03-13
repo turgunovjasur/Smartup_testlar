@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
-from utils.exception import ElementInteractionError, ElementVisibilityError
+from utils.exception import ElementInteractionError, LoaderTimeoutError
 
 
 class DashboardPage(BasePage):
@@ -10,19 +10,24 @@ class DashboardPage(BasePage):
 
     def element_visible(self):
         try:
+            self._wait_for_all_loaders(log_text='Dashboard or ChangePassword')
+
             if self._wait_for_visibility(self.dashboard_header, timeout=10, error_message=False):
                 self.logger.info("Dashboard Page: Successfully opened")
                 return True
-        except Exception:
+        except LoaderTimeoutError:
+            raise
+        except ElementInteractionError:
             pass
 
         try:
             if self._wait_for_visibility(self.save_button, timeout=10, error_message=False):
                 self.logger.info("Dashboard Page (ChangePassword): Successfully opened")
                 return True
-        except Exception:
+        except ElementInteractionError:
             pass
 
+        self.logger.error("Dashboard Page: Verification failed - elements not found")
         return False
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
@@ -40,10 +45,16 @@ class DashboardPage(BasePage):
 
     def element_visible_session(self):
         try:
+            self._wait_for_all_loaders(log_text='Dashboard Page')
+
             if self._wait_for_visibility(self.active_session_header, timeout=5, error_message=False):
                 self.logger.info("‼️Old sessiya available!")
                 return True
-        except ElementVisibilityError:
+
+        except LoaderTimeoutError:
+            raise
+
+        except ElementInteractionError:
             self.logger.info("Old sessiya not available! Waited for 5 seconds.")
             return False
 
@@ -54,6 +65,7 @@ class DashboardPage(BasePage):
         try:
             if self.click(self.delete_session_button):
                 self.logger.info("Old session successfully deleted")
+
         except ElementInteractionError:
             self.logger.error("Unexpected error: -> while deleting the old session")
             raise

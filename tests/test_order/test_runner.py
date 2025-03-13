@@ -1,8 +1,16 @@
 import allure
 import pytest
+from tests.conftest import test_data
+from utils.driver_setup import driver
 from tests.test_reference.test_action import test_add_action
+from tests.test_order.test_order_return import test_order_return
 from tests.test_order.test_cashin import test_cashin_add_A, test_offset_add_A, test_offset_add_B
 from tests.test_order.test_order_for_action import test_add_order_for_action, test_edit_order_for_action
+from tests.test_order.test_order_edit import test_edit_order_with_consignment, test_edit_order_for_price_type_USA
+from tests.test_order.test_order_change_status import (
+    test_change_status_from_draft_to_archive, test_change_status_draft_and_archive,
+    test_change_status_draft_and_cancelled, test_change_status_draft_and_delivered
+)
 from tests.test_order.test_order_report import (
     test_check_report_for_order_list, test_check_report_for_order_history_list,
     test_add_template_for_order_invoice_report, test_check_invoice_report_for_order_list
@@ -20,13 +28,9 @@ from tests.test_order.test_life_cycle import (
     test_add_contract_for_client_A_UZB, test_add_contract_for_client_B_UZB, test_add_contract_for_client_C_USA,
 )
 from tests.test_order.test_order import (
-    test_order_copy_C_for_A_B, test_order_return, test_order_add_for_sub_filial_select,
-    test_add_order_with_consignment, test_edit_order_with_consignment,
-    test_change_status_for_order_A, test_change_status_for_order_B, test_change_status_for_order_C,
-    test_add_order_with_contract, test_add_order_with_price_type_USA, test_edit_order_for_price_type_USA
+    test_order_add_for_sub_filial_select, test_add_order_with_consignment,
+    test_add_order_with_contract, test_add_order_with_price_type_USA
 )
-from utils.driver_setup import driver
-from tests.conftest import test_data
 
 # All ------------------------------------------------------------------------------------------------------------------
 
@@ -64,46 +68,45 @@ test_cases = [
         {"name": "Setting Consignment", "func": test_setting_consignment},
 
         {"name": "Add Contract For Client UZB-A", "func": test_add_contract_for_client_A_UZB},
-        {"name": "Add Order With Consignment-A", "func": test_add_order_with_consignment},
+        {"name": "Add Order With Consignment-A",  "func": test_add_order_with_consignment},
         {"name": "Check Report For Order List-A", "func": test_check_report_for_order_list},
         {"name": "Edit Order With Consignment-A", "func": test_edit_order_with_consignment},
-        {"name": "Change Status For Order-A", "func": test_change_status_for_order_A},
+        {"name": "Change Status From Draft To Archive-A", "func": test_change_status_from_draft_to_archive},
         {"name": "Check Report For Order History List-A", "func": test_check_report_for_order_history_list},
         {"name": "Cashin Add-A", "func": test_cashin_add_A},
         {"name": "Offset Add-A", "func": test_offset_add_A},
 
-        {"name": "Add Contract For Client UZB-B", "func": test_add_contract_for_client_B_UZB},
-        {"name": "Add Order With Contract-B", "func": test_add_order_with_contract},
-        {"name": "Change Status For Order-B", "func": test_change_status_for_order_B},
-        {"name": "Offset Add-B", "func": test_offset_add_B},
+        {"name": "Add Contract For Client UZB-B",     "func": test_add_contract_for_client_B_UZB},
+        {"name": "Add Order With Contract-B",         "func": test_add_order_with_contract},
+        {"name": "Change Status Draft And Archive-B", "func": test_change_status_draft_and_archive},
+        {"name": "Offset Add-B",                      "func": test_offset_add_B},
 
-        {"name": "Add Contract For Client USA-C", "func": test_add_contract_for_client_C_USA},
-        {"name": "Add Order With Price Type-C", "func": test_add_order_with_price_type_USA},
-        {"name": "Test Setting Prepayment On", "func": test_setting_prepayment_on},
+        {"name": "Add Contract For Client USA-C",   "func": test_add_contract_for_client_C_USA},
+        {"name": "Add Order With Price Type-C",     "func": test_add_order_with_price_type_USA},
+        {"name": "Test Setting Prepayment On",      "func": test_setting_prepayment_on},
         {"name": "Edit Order For Price Type USA-C", "func": test_edit_order_for_price_type_USA},
-        {"name": "Test Setting Prepayment Off", "func": test_setting_prepayment_off},
-
+        {"name": "Test Setting Prepayment Off",     "func": test_setting_prepayment_off},
 
         {"name": "Add Template For Order Invoice Report", "func": test_add_template_for_order_invoice_report},
-        {"name": "Order Add For Sub Filial Select-C", "func": test_order_add_for_sub_filial_select},
+        {"name": "Order Add For Sub Filial Select-C",     "func": test_order_add_for_sub_filial_select},
         {"name": "Check Invoice Report For Order List-C", "func": test_check_invoice_report_for_order_list},
-        {"name": "Change Status For Order-C", "func": test_change_status_for_order_C},
+        {"name": "Change Status Draft And Cancelled-C",   "func": test_change_status_draft_and_cancelled},
 
-        {"name": "Add Action", "func": test_add_action},
-        {"name": "Add Order For Action-C", "func": test_add_order_for_action},
-        {"name": "Edit Order For Action-C", "func": test_edit_order_for_action},
-        {"name": "Change Status For Order-C", "func": test_change_status_for_order_C},
-        #
-        #
-        #
+        {"name": "Add Action",                          "func": test_add_action},
+        {"name": "Add Order For Action-C",              "func": test_add_order_for_action},
+        {"name": "Edit Order For Action-C",             "func": test_edit_order_for_action},
+        {"name": "Change Status Draft And Delivered-C", "func": test_change_status_draft_and_delivered},
+        {"name": "Order Return",                        "func": test_order_return}
+
+
         # {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
-        # {"name": "Order Return", "func": test_order_return},
     ]
 
 
 @pytest.mark.parametrize("test_case", test_cases)
 def test_all(driver, test_data, test_case):
-    """Barcha testlarni driver fixture bilan ishlashga moslash"""
+    """Barcha testlar"""
+
     with allure.step(test_case["name"]):
         try:
             test_case["func"](driver, test_data)

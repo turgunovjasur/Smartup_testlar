@@ -125,9 +125,7 @@ class OrdersList(BasePage):
 
     def click_change_status_button(self, status_name):
         self.click(self.change_status_one_button)
-        status_button = (
-            By.XPATH,
-            f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
+        status_button = (By.XPATH, f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
         self.click(status_button)
         self.click(self.yes_button)
     # -----------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,8 @@
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-from utils.exception import ElementInteractionError, ElementVisibilityError
+from utils.exception import ElementInteractionError, ElementVisibilityError, ElementNotClickableError, \
+    LoaderTimeoutError
 
 
 class LoginPage(BasePage):
@@ -10,10 +11,15 @@ class LoginPage(BasePage):
 
     def element_visible(self):
         try:
+            self._wait_for_all_loaders(log_text='Login Page')
             self._wait_for_visibility(self.login_header)
-            self.logger.info("Login Page: The 'logo' element is verified")
-        except ElementVisibilityError:
-            self.logger.warning("Login Page: The 'logo' element is not visible")
+            self.logger.info("Login Page: The 'LOGO' element is verified")
+
+        except LoaderTimeoutError:
+            raise
+
+        except ElementInteractionError:
+            self.logger.warning("Login Page: The 'LOGO' element is not visible")
             pass
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
@@ -26,6 +32,7 @@ class LoginPage(BasePage):
             password_success = self.input_text(self.password_input, password)
             if email_success and password_success:
                 self.logger.info("Login Page: Data entered successfully")
+
         except ElementInteractionError:
             self.logger.error(f"Login Page: Incorrect data -> email={email} or password={password}")
             raise
@@ -51,6 +58,12 @@ class LoginPage(BasePage):
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
     def click_logout_button(self):
-        self.click(self.logout_button)
-        self.click(self.yes_button)
+        try:
+            self.click(self.logout_button)
+            self.click(self.yes_button)
+            self.logger.info("Login Out: closed successfully")
+        except (ElementNotClickableError, ElementInteractionError):
+            self.logger.error("Login Out: system error")
+            raise
+
     # ------------------------------------------------------------------------------------------------------------------

@@ -35,6 +35,7 @@ def driver(request, test_data):
 
     # Selenium WebDriver'ni ishga tushirish
     driver = webdriver.Chrome(service=service, options=options)
+    driver.set_page_load_timeout(120)
     driver.get(url)
 
     yield driver
