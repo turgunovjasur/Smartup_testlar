@@ -58,6 +58,7 @@ class SettingAdd(BasePage):
             time.sleep(0.1)
         time.sleep(5)
         pyautogui.press('enter')
+        self.logger.info("Enter bosildi!")
 
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')

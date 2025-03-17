@@ -289,14 +289,14 @@ def test_check_invoice_report_for_order_list(driver, test_data, minute_tolerance
 
         file_name = os.path.basename(latest_file)
 
-        base_page.logger.info(f"✅ Yuklangan fayl nomi: {file_name}")
+        base_page.logger.info(f"✅ Loaded filename: {file_name}")
 
         # Regex
         regex_pattern = rf"{invoice_report_name}\((\d{{2}}\.\d{{2}}\.\d{{4}})\+(\d{{2}}_\d{{2}}(?:_\d{{2}})?)\)\.xlsx"
-        base_page.logger.info(f"🔎 Tekshirilayotgan regex: {regex_pattern}")
+        base_page.logger.info(f"🔎 Checked regex: {regex_pattern}")
 
         match = re.search(regex_pattern, file_name)
-        assert match, f"❌ Fayl nomi regexga mos kelmadi: {file_name}"
+        assert match, f"❌ File name != regex: {file_name}"
 
         file_date = match.group(1)  # 04.03.2025
         file_time = match.group(2)  # 12_33 yoki 12_33_11
@@ -308,14 +308,15 @@ def test_check_invoice_report_for_order_list(driver, test_data, minute_tolerance
         lower_bound = report_request_time - timedelta(minutes=minute_tolerance)
         upper_bound = report_request_time + timedelta(minutes=minute_tolerance)
 
-        base_page.logger.info(f"Tekshirilayotgan vaqt oralig'i: {lower_bound.strftime('%d.%m.%Y %H:%M')} - {upper_bound.strftime('%d.%m.%Y %H:%M')}")
-        base_page.logger.info(f"Fayl vaqti: {file_datetime.strftime('%d.%m.%Y %H:%M')}")
+        base_page.logger.info(f"Checked time interval: {lower_bound.strftime('%d.%m.%Y %H:%M')} - {upper_bound.strftime('%d.%m.%Y %H:%M')}")
+        base_page.logger.info(f"File time: {file_datetime.strftime('%d.%m.%Y %H:%M')}")
 
         assert lower_bound <= file_datetime <= upper_bound, (
-            f"❌ Yuklangan fayl vaqti noto‘g‘ri: {file_datetime}, kutilgan oraliq: "
+            f"❌ Downloaded file time incorrect: {file_datetime}, expected range: "
             f"{lower_bound.strftime('%d.%m.%Y %H:%M')} - {upper_bound.strftime('%d.%m.%Y %H:%M')}")
 
-        base_page.logger.info(f"✅ Oxirgi yuklangan fayl: {latest_file} (vaqti to‘g‘ri)")
+        base_page.logger.info(f"✅ Last loaded file: {latest_file} (time is right)")
+        base_page.logger.info(f"✅Test end: test_check_invoice_report_for_order_list")
 
     except AssertionError as ae:
         base_page.logger.error(f'❌ Assertion error: {str(ae)}')

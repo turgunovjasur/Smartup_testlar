@@ -1,6 +1,9 @@
+import os
 import random
+import re
 import time
 import pytest
+from datetime import datetime, timedelta
 
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
@@ -17,6 +20,7 @@ from autotest.anor.mkr.margin_list.margin_list import MarginList
 from autotest.anor.mkr.margin_list_attach.margin_list_attach import MarginListAttach
 from autotest.anor.mkr.payment_type_list.payment_type_list import PaymentTypeList
 from autotest.anor.mkr.payment_type_list_attach.payment_type_list_attach import PaymentTypeListAttach
+from autotest.anor.mkr.price_tag.price_tag import PriceTag
 from autotest.anor.mkr.price_type_add.price_type_add import PriceTypeAdd
 from autotest.anor.mkr.price_type_list.price_type_list import PriceTypeList
 from autotest.anor.mkr.price_type_list_attach.price_type_list_attch import PriceTypeListAttach
@@ -53,6 +57,8 @@ from autotest.anor.mrf.robot_view.robot_view import RobotView
 from autotest.anor.mrf.room_attachment.room_attachment import RoomAttachment
 from autotest.anor.mrf.subfilial_add.subfilial_add import SubFilialAdd
 from autotest.anor.mrf.subfilial_list.subfilial_list import SubFilialList
+from autotest.biruni.kl.license_list.license_list import LicenseList
+from autotest.biruni.kl.license_user_list.license_user_list import LicenseUserList
 from autotest.biruni.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.change_password.change_password import ChangePassword
@@ -162,7 +168,7 @@ def test_legal_person_add(driver, test_data, legal_person_name=None):
         # Open Legal Person List
         legal_person_list = LegalPersonList(driver)
         assert legal_person_list.element_visible(), "LegalPersonList not open!"
-        legal_person_list.click_add_button()
+        # legal_person_list.click_add_button()
 
         # Add Legal Person
         legal_person_add = LegalPersonAdd(driver)
@@ -692,27 +698,30 @@ def price_type_add(driver, test_data, price_type_name=None, currency_name=None, 
             name_a = 'Промо'
             price_type_list_attach.find_rows(name_a)
 
-            assert price_type_list.element_visible(), "PriceTypeList not open! (Промо)"
+            assert price_type_list.element_visible(), "PriceTypeList not open! after (Промо)"
             price_type_list.click_add_dropdown_button()
             name_b = 'Акция'
             price_type_list_attach.find_rows(name_b)
 
-            assert price_type_list.element_visible(), "PriceTypeList not open! (Акция)"
+            assert price_type_list.element_visible(), "PriceTypeList not open! after (Акция)"
             price_type_list.click_add_dropdown_button()
             name_c = 'Возврат'
             price_type_list_attach.find_rows(name_c)
 
-            assert price_type_list.element_visible(), "PriceTypeList not open! (Возврат)"
+            assert price_type_list.element_visible(), "PriceTypeList not open! after (Возврат)"
             price_type_list.click_add_dropdown_button()
             name_d = 'Передача забаланс'
             price_type_list_attach.find_rows(name_d)
 
-            assert price_type_list.element_visible(), "PriceTypeList not open! (Передача забаланс)"
+            assert price_type_list.element_visible(), "PriceTypeList not open! after (Передача забаланс)"
             price_type_list.click_add_dropdown_button()
             name_e = 'Обмен'
             price_type_list_attach.find_rows(name_e)
 
-        base_page.logger.info(f"✅ Price Type '{price_type_name}' added successfully! (Обмен)")
+            assert price_type_list.element_visible(), "PriceTypeList not open! after (Обмен)"
+            price_type_list.find_row(price_type_name)
+
+        base_page.logger.info(f"✅ Price Type '{price_type_name}' added successfully!")
 
     except AssertionError as ae:
         base_page.logger.error(f"❌ AssertionError: {str(ae)}")
@@ -900,6 +909,93 @@ def test_product_add(driver, test_data):
         base_page.logger.info(f"✅ Product '{product_name}' added successfully with prices:"
                               f" {price_type_name_UZB} = {product_price},"
                               f" {price_type_name_USA} = {product_price_USA}")
+
+    except AssertionError as ae:
+        base_page.logger.error(f"❌ AssertionError: {str(ae)}")
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
+
+    except Exception as e:
+        base_page.logger.error(f"❌ Error: {str(e)}")
+        base_page.take_screenshot("unexpected_error")
+        pytest.fail(str(e))
+
+
+def test_check_price_tag(driver, test_data, minute_tolerance=1):
+    """Test checking a price tag"""
+
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️ Running: check_price_tag")
+
+    # Test data
+    data = test_data["data"]
+    product_name = data["product_name"]
+    price_type_name = data["price_type_name_UZB"]
+    price_tag_name = data["price_tag_name"]
+
+
+    try:
+        # Login
+        login_user(driver, test_data, url='anor/mkr/price_type_list')
+
+        # Price Type List
+        price_type_list = PriceTypeList(driver)
+        assert price_type_list.element_visible(), "PriceTypeList not open!"
+        price_type_list.find_row(price_type_name)
+        price_type_list.click_price_tag_button()
+
+        # Price Tag
+        price_tag = PriceTag(driver)
+        assert price_tag.element_visible(), "PriceTag not open!"
+        price_tag.input_product_name(product_name)
+
+        # Hozirgi vaqtni oldin olish
+        report_request_time = datetime.now()
+        time.sleep(1)
+
+        price_tag.click_run_button()
+        time.sleep(3)
+
+        downloads_path = os.path.join(os.environ["USERPROFILE"], "Downloads")
+
+        # Yuklangan fayllarni olish va tekshirish
+        files = os.listdir(downloads_path)
+        files = [os.path.join(downloads_path, f) for f in files if f.endswith('.xlsx')]
+        files.sort(key=os.path.getctime, reverse=True)
+
+        latest_file = files[0] if files else None
+        assert latest_file is not None, "❌ Price Tag file not download!"
+
+        file_name = os.path.basename(latest_file)
+
+        base_page.logger.info(f"✅ Loaded filename: {file_name}")
+
+        # Regex
+        regex_pattern = rf"{price_tag_name}\((\d{{2}}\.\d{{2}}\.\d{{4}})\+(\d{{2}}_\d{{2}}(?:_\d{{2}})?)\)\.xlsx"
+        base_page.logger.info(f"🔎 Checked regex: {regex_pattern}")
+
+        match = re.search(regex_pattern, file_name)
+        assert match, f"❌ File name != regex: {file_name}"
+
+        file_date = match.group(1)  # 04.03.2025
+        file_time = match.group(2)  # 12_33 yoki 12_33_11
+        file_time = file_time[:5]  # Sekundni olib tashlaymiz (faqat HH:MM qoldiramiz)
+
+        file_datetime_str = f"{file_date} {file_time.replace('_', ':')}"  # "04.03.2025 12:33"
+        file_datetime = datetime.strptime(file_datetime_str, "%d.%m.%Y %H:%M")
+
+        lower_bound = report_request_time - timedelta(minutes=minute_tolerance)
+        upper_bound = report_request_time + timedelta(minutes=minute_tolerance)
+
+        base_page.logger.info(f"Checked time interval: {lower_bound.strftime('%d.%m.%Y %H:%M')} - {upper_bound.strftime('%d.%m.%Y %H:%M')}")
+        base_page.logger.info(f"File time: {file_datetime.strftime('%d.%m.%Y %H:%M')}")
+
+        assert lower_bound <= file_datetime <= upper_bound, (
+            f"❌ Downloaded file time incorrect: {file_datetime}, expected range: "
+            f"{lower_bound.strftime('%d.%m.%Y %H:%M')} - {upper_bound.strftime('%d.%m.%Y %H:%M')}")
+
+        base_page.logger.info(f"✅ Last loaded file: {latest_file} (time is right)")
+        base_page.logger.info(f"✅Test end: check_price_tag")
 
     except AssertionError as ae:
         base_page.logger.error(f"❌ AssertionError: {str(ae)}")
@@ -1604,7 +1700,7 @@ def grid_setting(driver, test_data):
         assert order_list.element_visible(), 'OrdersList not open after save!'
         order_list.check_header_option(option_name)
 
-        base_page.logger.info(f"✅Test end: grid_setting ")
+        base_page.logger.info(f"✅Test end: grid_setting")
 
     except AssertionError as ae:
         log_exception_chain(base_page.logger, ae)
@@ -1621,5 +1717,52 @@ def test_grid_setting(driver, test_data):
 
     grid_setting(driver, test_data)
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+def test_add_user_license(driver, test_data):
+    """Test configuring add user license."""
+
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️ Running: test_add_user_license")
+
+    # Test data
+    data = test_data["data"]
+    natural_person_name = data['natural_person_name']
+
+    try:
+        login_admin(driver, test_data, url='biruni/kl/license_list')
+
+        # License List
+        license_list = LicenseList(driver)
+        assert license_list.element_visible(), 'LicenseList not open!'
+        license_list.click_navbar_button()
+
+        assert license_list.licence_visible(), 'License and Document not open!'
+        license_list.click_tbl_row_button()
+        license_list.click_bind_user_button()
+
+        # License User List
+        license_user_list = LicenseUserList(driver)
+        assert license_user_list.element_visible(), 'LicenseUserList not open!'
+        license_user_list.click_all_checkbox()
+
+        assert license_user_list.element_visible(), 'LicenseUserList not open after user detach!'
+        license_user_list.click_detach_button()
+
+        assert license_user_list.attach_button_visible(), 'LicenseUserList not open! (Available users)'
+        license_user_list.find_row(natural_person_name)
+        license_user_list.click_attach_button()
+        assert license_user_list.attach_button_visible(), 'LicenseUserList not open after attach user! (Available users)'
+
+        base_page.logger.info(f"✅Test end: test_add_user_license ")
+
+    except AssertionError as ae:
+        log_exception_chain(base_page.logger, ae)
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
+    except Exception as e:
+        log_exception_chain(base_page.logger, e)
+        base_page.take_screenshot("unexpected_error")
+        pytest.fail(str(e))
 # ----------------------------------------------------------------------------------------------------------------------
 

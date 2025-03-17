@@ -4,14 +4,10 @@ from autotest.core.md.base_page import BasePage
 
 class PriceTypeList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    # Header text: Inventory list
-    # ------------------------------------------------------------------------------------------------------------------
     list_header = (By.XPATH, "//a[text()='Типы оплат']")
 
     def element_visible(self):
         return self.wait_for_element_visible(self.list_header)
-    # ------------------------------------------------------------------------------------------------------------------
-    # Toolbar: Add, Status, Delete many
     # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, "//button[@id='anor182-button-add']")
 
@@ -41,17 +37,20 @@ class PriceTypeList(BasePage):
         self.click(self.delete_many_button)
         self.click(self.click_delete_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
-    # Button: View, Edit, Inactive, Delete one
-    # ------------------------------------------------------------------------------------------------------------------
     view_button = (By.XPATH, "//button[@id='anor182-button-view']")
 
     def click_view_button(self):
         self.click(self.view_button)
     # ------------------------------------------------------------------------------------------------------------------
-    edit_button = (By.XPATH, "id('anor182-button-first_func')")
+    edit_button = (By.XPATH, '//button[@id="anor182-button-first_func"]')
 
     def click_edit_button(self):
         self.click(self.edit_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    price_tag_button = (By.XPATH, '//button[@ng-click="priceTag(row)"]')
+
+    def click_price_tag_button(self):
+        self.click(self.price_tag_button)
     # ------------------------------------------------------------------------------------------------------------------
     status_one_button = (By.XPATH, "id('anor182-button-change_state')")
     click_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
@@ -66,8 +65,6 @@ class PriceTypeList(BasePage):
     def click_delete_one_button(self):
         self.click(self.product_delete_one_button)
         self.click(self.click_yes_delete_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    # Button: First element, Checkbox
     # ------------------------------------------------------------------------------------------------------------------
     list_first_elem = (By.XPATH, "//div[@class='tbl-row'][1]/div[3]")
 
@@ -85,8 +82,6 @@ class PriceTypeList(BasePage):
     def click_checkbox_button(self, checkbox_button):
         element = self.driver.find_element(By.CSS_SELECTOR, checkbox_button)
         self.driver.execute_script("arguments[0].click();", element)
-    # ------------------------------------------------------------------------------------------------------------------
-    # Button: Filter, Show all
     # ------------------------------------------------------------------------------------------------------------------
     filter_button = (By.XPATH, "//button[@ng-click='openFilter()']")
 

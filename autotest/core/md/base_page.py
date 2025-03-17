@@ -37,7 +37,7 @@ class BasePage:
         self.driver = driver
         self.test_name = get_test_name()
         self.logger = configure_logging(self.test_name)
-        self.default_timeout = 30
+        self.default_timeout = 5
         self.default_page_load_timeout = 60
         self.actions = ActionChains(driver)
 
@@ -353,12 +353,12 @@ class BasePage:
             raise ElementNotFoundError(message, locator, e)
 
         except StaleElementReferenceException as e:
-            message = f"Element DOM da yangilandi."
+            message = f"Element DOM da yangilandi (scroll)."
             self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
             raise ElementStaleError(message, locator, e)
 
         except TimeoutException as e:
-            message = f"Element {timeout}s ichida sahifada ko'rinmadi."
+            message = f"Element {timeout}s ichida sahifada ko'rinmadi (scroll)."
             self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
             raise ScrollError(message, locator, e)
 
@@ -491,10 +491,10 @@ class BasePage:
 
             attempt += 1
 
-        message = f"Element barcha usullar bilan bosilmadi ({attempt-1}/{retries})"
-        self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+        message = f"Element barcha usullar bilan bosilmadi ({attempt}/{retries})"
+        self.logger.warning(f"{page_name}: {message}: {locator}")
         self.take_screenshot(f"{page_name.lower()}_click_all_error")
-        raise ElementInteractionError(message, locator, e)
+        raise ElementInteractionError(message, locator)
 
     # Wait -------------------------------------------------------------------------------------------------------------
 
@@ -542,10 +542,10 @@ class BasePage:
 
             attempt += 1
 
-        message = f"Element barcha usullar bilan topilmadi ({attempt-1}/{retries})"
-        self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+        message = f"Element barcha usullar bilan topilmadi ({attempt}/{retries})"
+        self.logger.warning(f"{page_name}: {message}: {locator}")
         self.take_screenshot(f"{page_name.lower()}_visible_all_error")
-        raise ElementInteractionError(message, locator, e)
+        raise ElementInteractionError(message, locator)
 
     # ------------------------------------------------------------------------------------------------------------------
     def _wait_for_presence_all(self, locator, timeout=None):

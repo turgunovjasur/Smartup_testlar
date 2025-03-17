@@ -1,6 +1,6 @@
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
-from utils.exception import LoaderTimeoutError, ElementVisibilityError
+from utils.exception import ElementVisibilityError
 
 
 class OrdersList(BasePage):

@@ -26,6 +26,7 @@ from tests.test_order.test_life_cycle import (
     test_currency_add, test_margin_add,
     test_setting_prepayment_on, test_setting_prepayment_off,
     test_add_contract_for_client_A_UZB, test_add_contract_for_client_B_UZB, test_add_contract_for_client_C_USA,
+    test_check_price_tag, test_add_user_license,
 )
 from tests.test_order.test_order import (
     test_order_add_for_sub_filial_select, test_add_order_with_consignment,
@@ -38,23 +39,26 @@ from tests.test_order.test_order import (
 # allure serve ./allure-results
 test_cases = [
         {"name": "Legal Person Add", "func": test_legal_person_add},
-        {"name": "Filial Create", "func": test_filial_create},
-        {"name": "Room Add", "func": test_room_add},
-        {"name": "Robot Add", "func": test_robot_add},
-        {"name": "Sub filial Add", "func": test_sub_filial_add},
+        {"name": "Filial Create",    "func": test_filial_create},
+        {"name": "Room Add",         "func": test_room_add},
+        {"name": "Robot Add",        "func": test_robot_add},
+        {"name": "Sub filial Add",   "func": test_sub_filial_add},
 
-        {"name": "Natural Person Add", "func": test_natural_person_add},
-        {"name": "User Create", "func": test_user_create},
-        {"name": "Adding Permissions", "func": test_adding_permissions_to_user},
+        {"name": "Natural Person Add",   "func": test_natural_person_add},
+        {"name": "User Create",          "func": test_user_create},
+        {"name": "Adding Permissions",   "func": test_adding_permissions_to_user},
+        # {"name": "Add User License",     "func": test_add_user_license},
         {"name": "User Change Password", "func": test_user_change_password},
-        #
+
         {"name": "Price Type Add (UZB)", "func": test_price_type_add_UZB},
         {"name": "Price Type Add (USA)", "func": test_price_type_add_USA},
-        {"name": "Payment Type Add", "func": test_payment_type_add},
-        {"name": "Sector Add", "func": test_sector_add},
-        {"name": "Product Add", "func": test_product_add},
-        {"name": "Currency Add", "func": test_currency_add},
-        {"name": "Margin Add", "func": test_margin_add},
+        {"name": "Payment Type Add",     "func": test_payment_type_add},
+        {"name": "Sector Add",           "func": test_sector_add},
+        {"name": "Product Add",          "func": test_product_add},
+
+        {"name": "Check Price Tag", "func": test_check_price_tag},
+        {"name": "Currency Add",    "func": test_currency_add},
+        {"name": "Margin Add",      "func": test_margin_add},
 
         {"name": "Natural Person Client Add-A", "func": test_natural_person_client_add_A},
         {"name": "Natural Person Client Add-B", "func": test_natural_person_client_add_B},
@@ -63,8 +67,8 @@ test_cases = [
         {"name": "Client Add-B", "func": test_client_add_B},
         {"name": "Client Add-C", "func": test_client_add_C},
 
-        {"name": "Room Attachment", "func": test_room_attachment},
-        {"name": "Init Balance", "func": test_init_balance},
+        {"name": "Room Attachment",     "func": test_room_attachment},
+        {"name": "Init Balance",        "func": test_init_balance},
         {"name": "Setting Consignment", "func": test_setting_consignment},
 
         {"name": "Add Contract For Client UZB-A", "func": test_add_contract_for_client_A_UZB},
@@ -101,7 +105,6 @@ test_cases = [
 
         # {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
     ]
-
 
 @pytest.mark.parametrize("test_case", test_cases)
 def test_all(driver, test_data, test_case):

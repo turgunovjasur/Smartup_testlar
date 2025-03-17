@@ -12,14 +12,14 @@ def test_data():
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
 
-        # "code_input": "autotest",
+        "code_input": "autotest",
         # "code_input": "test",
-        "code_input": "red_test",
-        # "cod": 1,
-        "cod": 44,
+        # "code_input": "red_test",
+        "cod": 4,
+        # "cod": 46,
         # "url": "https://smartup.merospharm.uz/login.html",
-        "url": "https://app3.greenwhite.uz/xtrade/login.html",
         # "url": "https://app3.greenwhite.uz/xtrade/login.html",
+        "url": "https://smartup.online/login.html",
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -50,6 +50,7 @@ def test_data():
 
         "price_type_name_UZB": f"Цена продажи UZB-{base_data['cod']}",
         "price_type_name_USA": f"Цена продажи USA-{base_data['cod']}",
+        "price_tag_name": "Ценник",
 
         "margin_name": f"Test_margin-{base_data['cod']}",
         "percent_value": 5,
