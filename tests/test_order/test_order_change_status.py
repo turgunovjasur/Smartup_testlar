@@ -3,6 +3,8 @@ from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
 from tests.test_base.test_base import login_user
+from utils.driver_setup import driver
+from tests.conftest import test_data
 
 
 def order_change_status(driver, test_data, client_name=None,

@@ -8,6 +8,8 @@ from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
 from tests.test_base.test_base import login_user
 from tests.test_order.test_cashin import test_cashin_add_C
+from utils.driver_setup import driver
+from tests.conftest import test_data
 
 
 def test_edit_order_with_consignment(driver, test_data):
@@ -134,7 +136,7 @@ def test_edit_order_for_price_type_USA(driver, test_data):
         base_page.open_new_window(cut_url + 'trade/tcs/cashin_list')
         test_cashin_add_C(driver, test_data, amount=int(get_total_amount))
 
-        base_page.switch_to_previous_window()
+        base_page.switch_window(direction="back")
         base_page.refresh_page()
         order_add_main.click_next_step_button()
         assert order_add_product.element_visible(), 'OrderEditProduct not open!'

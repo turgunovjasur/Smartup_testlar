@@ -1,6 +1,12 @@
 import allure
 import pytest
 from tests.conftest import test_data
+from tests.test_purchase.test_purchase import test_add_purchase, test_add_extra_cost
+from tests.test_reference.test_client import test_client_add_A, test_client_add_B, test_client_add_C
+from tests.test_reference.test_legal_person import test_add_legal_person, test_add_legal_person_by_supplier
+from tests.test_reference.test_natural_person import test_natural_person_add, test_natural_person_client_add_A, \
+    test_natural_person_client_add_B, test_natural_person_client_add_C
+from tests.test_reference.test_supplier import test_add_supplier
 from utils.driver_setup import driver
 from tests.test_reference.test_action import test_add_action
 from tests.test_order.test_order_return import test_order_return
@@ -16,17 +22,15 @@ from tests.test_order.test_order_report import (
     test_add_template_for_order_invoice_report, test_check_invoice_report_for_order_list
 )
 from tests.test_order.test_life_cycle import (
-    test_legal_person_add, test_filial_create, test_room_add, test_robot_add,
-    test_natural_person_add, test_user_create, test_adding_permissions_to_user, test_user_change_password,
+    test_filial_create, test_room_add, test_robot_add,
+    test_user_create, test_adding_permissions_to_user, test_user_change_password,
     test_payment_type_add, test_sector_add, test_product_add,
-    test_natural_person_client_add_A, test_natural_person_client_add_B, test_natural_person_client_add_C,
-    test_client_add_A, test_client_add_B, test_client_add_C,
     test_room_attachment, test_init_balance, test_setting_consignment, test_sub_filial_add,
     test_price_type_add_UZB, test_price_type_add_USA,
     test_currency_add, test_margin_add,
     test_setting_prepayment_on, test_setting_prepayment_off,
     test_add_contract_for_client_A_UZB, test_add_contract_for_client_B_UZB, test_add_contract_for_client_C_USA,
-    test_check_price_tag, test_add_user_license,
+    test_check_price_tag, test_add_user_license
 )
 from tests.test_order.test_order import (
     test_order_add_for_sub_filial_select, test_add_order_with_consignment,
@@ -38,7 +42,7 @@ from tests.test_order.test_order import (
 # pytest tests/test_order/test_runner.py::test_all -v --html=report.html --self-contained-html --alluredir=./allure-results
 # allure serve ./allure-results
 test_cases = [
-        {"name": "Legal Person Add", "func": test_legal_person_add},
+        {"name": "Add Legal Person", "func": test_add_legal_person},
         {"name": "Filial Create",    "func": test_filial_create},
         {"name": "Room Add",         "func": test_room_add},
         {"name": "Robot Add",        "func": test_robot_add},
@@ -100,10 +104,13 @@ test_cases = [
         {"name": "Add Order For Action-C",              "func": test_add_order_for_action},
         {"name": "Edit Order For Action-C",             "func": test_edit_order_for_action},
         {"name": "Change Status Draft And Delivered-C", "func": test_change_status_draft_and_delivered},
-        {"name": "Order Return",                        "func": test_order_return}
+        {"name": "Order Return",                        "func": test_order_return},
 
-
-        # {"name": "Order Copy-C for A,B", "func": test_order_copy_C_for_A_B},
+        # Purchase:
+        {"name": "Add Legal Person By Supplier", "func": test_add_legal_person_by_supplier},
+        {"name": "Add Supplier",   "func": test_add_supplier},
+        {"name": "Add Purchase",   "func": test_add_purchase},
+        {"name": "Add Extra Cost", "func": test_add_extra_cost},
     ]
 
 @pytest.mark.parametrize("test_case", test_cases)

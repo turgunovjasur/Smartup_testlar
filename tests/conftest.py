@@ -1,3 +1,5 @@
+import json
+import os
 import pytest
 
 
@@ -12,14 +14,14 @@ def test_data():
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
 
-        "code_input": "autotest",
+        # "code_input": "autotest",
         # "code_input": "test",
-        # "code_input": "red_test",
-        "cod": 4,
-        # "cod": 46,
+        "code_input": "red_test",
+        # "cod": 4,
+        "cod": 47,
         # "url": "https://smartup.merospharm.uz/login.html",
-        # "url": "https://app3.greenwhite.uz/xtrade/login.html",
-        "url": "https://smartup.online/login.html",
+        "url": "https://app3.greenwhite.uz/xtrade/login.html",  ##############
+        # "url": "https://smartup.online/login.html",
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -36,6 +38,7 @@ def test_data():
         "legal_person_name": f"legal_person-{base_data['cod']}",
         "natural_person_name": f"natural_person-{base_data['cod']}",
         "client_name": f"client-{base_data['cod']}",
+        "supplier_name": f"supplier-{base_data['cod']}",
         "contract_name": f"contract-{base_data['cod']}",
         "room_name": f"Test_room-{base_data['cod']}",
         "robot_name": f"Test_robot-{base_data['cod']}",
@@ -43,6 +46,7 @@ def test_data():
         "sector_name": f"Test_sector-{base_data['cod']}",
         "product_name": f"Test_product-{base_data['cod']}",
         "template_name": f"Test_invoice_report-{base_data['cod']}",
+        "expense_article_name": f"Test_expense_article-{base_data['cod']}",
         "role_name": "Админ",
         "warehouse_name": "Основной склад",
         "cash_register_name": "Основная касса",
@@ -86,3 +90,42 @@ def test_data():
             **error_massage
         }
     }
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+DATA_STORE_FILE = "data_store.json"
+
+# 🔸 Umumiy yozuvchi
+@pytest.fixture(scope="session")
+def save_data():
+    def _save(key, value):
+        data = {}
+        if os.path.exists(DATA_STORE_FILE):
+            with open(DATA_STORE_FILE, "r") as f:
+                try:
+                    data = json.load(f)
+                except json.JSONDecodeError:
+                    data = {}
+
+        data[key] = value
+
+        with open(DATA_STORE_FILE, "w") as f:
+            json.dump(data, f, indent=4)
+    return _save
+
+
+# 🔸 Umumiy o‘quvchi
+@pytest.fixture(scope="session")
+def load_data():
+    def _load(key):
+        if os.path.exists(DATA_STORE_FILE):
+            with open(DATA_STORE_FILE, "r") as f:
+                try:
+                    data = json.load(f)
+                    return data.get(key)
+                except json.JSONDecodeError:
+                    return None
+        return None
+    return _load
+
+# ----------------------------------------------------------------------------------------------------------------------

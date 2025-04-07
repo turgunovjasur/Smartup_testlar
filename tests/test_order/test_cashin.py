@@ -1,8 +1,6 @@
 import time
 import random
-
 import pytest
-
 from autotest.anor.mdeal.order.offset.offset.offset import Offset
 from autotest.anor.mdeal.order.offset.offset_detail_list.offset_detail_list import OffsetDetailList
 from autotest.anor.mdeal.order.offset.offset_list.offset_list import OffsetList

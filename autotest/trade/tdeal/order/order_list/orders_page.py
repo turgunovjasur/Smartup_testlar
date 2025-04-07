@@ -92,7 +92,6 @@ class OrdersList(BasePage):
 
     def find_row(self, client_name):
         self.find_row_and_click(element_name=client_name)
-
     # ------------------------------------------------------------------------------------------------------------------
 
     def check_header_option(self, option_name):
@@ -104,21 +103,11 @@ class OrdersList(BasePage):
 
         except ElementVisibilityError as e:
             raise AssertionError(f'Header option not visible: {option_name}!') from e
-
     # ------------------------------------------------------------------------------------------------------------------
     reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
 
     def click_reload_button(self):
         self.click(self.reload_button)
-
-    # ------------------------------------------------------------------------------------------------------------------
-    group_button = (By.XPATH, '//b-grid-controller[@name="table"]//div[@role="group"]/button')
-    grid_setting_button = (By.XPATH, '//b-grid-controller[@name="table"]//div[@role="group"]/div/a[@ng-click="openGridSetting()"]')
-
-    def click_group_button(self):
-        self.click(self.group_button)
-        self.click(self.grid_setting_button)
-
     # -----------------------------------------------------------------------------------------------------------------
     change_status_one_button = (By.XPATH, "//button[@id='trade81-button-change_status_one']")
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")

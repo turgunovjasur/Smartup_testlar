@@ -2,26 +2,27 @@ from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
-class GridSetting(BasePage):
+class VanAdd(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    group_button = (By.XPATH, '//b-grid-controller[@name="table"]//div[@role="group"]/button')
-    grid_setting_button = (By.XPATH, '//b-grid-controller[@name="table"]//div[@role="group"]/div/a[@ng-click="openGridSetting()"]')
-
-    def click_group_button(self):
-        self.click(self.group_button)
-        self.click(self.grid_setting_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
-    header = (By.XPATH, '//button[@ng-click="save()"]')
+    header = (By.XPATH, '//button[@ng-click="page.closet()"]')
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
+    name_input = (By.XPATH, '//input[@ng-model="d.name"]')
 
-    def click_options_button(self, option_name):
-        option = (By.XPATH, f'//ul[contains(@class, "gs-extra-list ui-sortable")]/li[@id="{option_name}"]/div')
-        self.click(option)
+    def input_name(self, van_name):
+        self.input_text(self.name_input, van_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    carrying_input = (By.XPATH, '//input[@ng-model="d.carrying"]')
+
+    def input_carrying(self, carrying_name):
+        self.input_text(self.carrying_input, carrying_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    van_number_input = (By.XPATH, '//input[@ng-model="d.van_number"]')
+
+    def input_van_number(self, van_number):
+        self.input_text(self.van_number_input, van_number)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
 

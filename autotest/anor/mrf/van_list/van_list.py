@@ -1,16 +1,16 @@
-from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
+from selenium.webdriver.common.by import By
 
 
-class ExtraCostPage(BasePage):
+class VanList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    extra_cost_page_header = (By.XPATH, "//div/descendant::div/h3/t[contains(text(), 'Основное')]")
+    header = (By.XPATH, '//button[@ng-click="add()"]')
 
     def element_visible(self):
-        self.wait_for_element_visible(self.extra_cost_page_header)
+        return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    next_step_button = (By.XPATH, "//div[@id= 'anor289-wizard-finishing']")
+    add_button = (By.XPATH, '//button[@ng-click="add()"]')
 
-    def click_button(self):
-        self.click(self.next_step_button)
+    def click_add_button(self):
+        self.click(self.add_button)
     # ------------------------------------------------------------------------------------------------------------------

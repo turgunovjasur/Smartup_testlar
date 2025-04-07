@@ -29,15 +29,12 @@ from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
 from autotest.anor.mkw.init_balance.init_inventory_balance_add.init_inventory_balance_add import InitInventoryBalanceAdd
 from autotest.anor.mkw.init_balance.init_inventory_balance_list.init_inventory_balance_list import \
     InitInventoryBalanceList
+from autotest.anor.mkw.supplier_add.supplier_add import SupplierAdd
+from autotest.anor.mkw.supplier_list.supplier_list import SupplierList
+from autotest.anor.mkw.supplier_view.supplier_view import SupplierView
 from autotest.anor.mr.filial_add.filial_add import FilialAdd
 from autotest.anor.mr.filial_list.filial_list import FilialList
 from autotest.anor.mr.filial_view.filial_view import FilialView
-from autotest.anor.mr.person.legal_person_add.legal_person_add import LegalPersonAdd
-from autotest.anor.mr.person.legal_person_list.legal_person_list import LegalPersonList
-from autotest.anor.mr.person.legal_person_view.legal_person_view import LegalPersonView
-from autotest.anor.mr.person.natural_person_add.natural_person_add import NaturalPersonAdd
-from autotest.anor.mr.person.natural_person_list.natural_person_list import NaturalPersonList
-from autotest.anor.mr.person.natural_person_view.natural_person_view import NaturalPersonView
 from autotest.anor.mr.product.inventory_add.inventory_new import InventoryNew
 from autotest.anor.mr.product.inventory_list.inventory_list import InventoryList
 from autotest.anor.mr.product.inventory_view.product_id import ProductId as ProductView
@@ -48,15 +45,14 @@ from autotest.anor.mr.sector_view.sector_view import SectorView
 from autotest.anor.mr.user_add.user_add import UserAdd
 from autotest.anor.mr.user_list.user_list import UserList
 from autotest.anor.mr.user_view.user_view import UserView
-from autotest.anor.mrf.client_add.client_add import ClientAdd
-from autotest.anor.mrf.client_list.client_list import ClientList
-from autotest.anor.mrf.client_view.client_view import ClientView
 from autotest.anor.mrf.robot_add.robot_add import RobotAdd
 from autotest.anor.mrf.robot_list.robot_list import RobotList
 from autotest.anor.mrf.robot_view.robot_view import RobotView
 from autotest.anor.mrf.room_attachment.room_attachment import RoomAttachment
 from autotest.anor.mrf.subfilial_add.subfilial_add import SubFilialAdd
 from autotest.anor.mrf.subfilial_list.subfilial_list import SubFilialList
+from autotest.anor.mrf.van_add.van_add import VanAdd
+from autotest.anor.mrf.van_list.van_list import VanList
 from autotest.biruni.kl.license_list.license_list import LicenseList
 from autotest.biruni.kl.license_user_list.license_user_list import LicenseUserList
 from autotest.biruni.md.biruni.grid_setting.grid_setting import GridSetting
@@ -76,13 +72,12 @@ from autotest.trade.trf.room_add.room_add import RoomAdd
 from autotest.trade.trf.room_list.room_list import RoomList
 from autotest.trade.trf.room_view.room_view import RoomView
 from tests.conftest import test_data
-from tests.test_base.test_base import login, dashboard, login_admin, login_user, logout
+from tests.test_base.test_base import dashboard, login_admin, login_user, logout
 from utils.driver_setup import driver
 from utils.exception import log_exception_chain
-from utils.screen_recorder import ScreenRecorder
 
 
-def test_company_creat(driver, test_data):
+def test_company_create(driver, test_data):
     # Log
     base_page = BasePage(driver)
     base_page.logger.info("Test run(▶️): test_company_creat")
@@ -146,61 +141,12 @@ def test_company_creat(driver, test_data):
 
     except Exception as e:
         base_page.logger.error(f'Unexpected error: {str(e)}')
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
-def test_legal_person_add(driver, test_data, legal_person_name=None):
-    """Test adding a legal person"""
 
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_legal_person_add")
 
-    # Test data
-    data = test_data["data"]
-    legal_person_name = legal_person_name or data["legal_person_name"]
-    base_page.logger.info(f"Data: name='{legal_person_name}'")
-
-    try:
-        # Login
-        login_admin(driver, test_data, url='anor/mr/person/legal_person_list')
-
-        # Open Legal Person List
-        legal_person_list = LegalPersonList(driver)
-        assert legal_person_list.element_visible(), "LegalPersonList not open!"
-        # legal_person_list.click_add_button()
-
-        # Add Legal Person
-        legal_person_add = LegalPersonAdd(driver)
-        assert legal_person_add.element_visible(), "LegalPersonAdd not open!"
-
-        legal_person_add.input_name(legal_person_name)
-        tin_number = random.randint(1, 999999999)
-        legal_person_add.input_tin(tin_number)
-        legal_person_add.click_save_button()
-
-        # Verify in List
-        assert legal_person_list.element_visible(), "LegalPersonList not open after save!"
-        legal_person_list.find_row(legal_person_name)
-        legal_person_list.click_view_button()
-
-        # Verify in View
-        legal_person_view = LegalPersonView(driver)
-        assert legal_person_view.element_visible(), "LegalPersonView not open!"
-        text = legal_person_view.check_text()
-
-        assert legal_person_name == text, f'Expected "{legal_person_name}", got "{text}"'
-        base_page.logger.info(f"✅ Verified: '{legal_person_name}'")
-
-    except AssertionError as ae:
-        base_page.logger.error(f'❌ AssertionError: {str(ae)}')
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-
-    except Exception as e:
-        base_page.logger.error(f'❌ Error: {str(e)}')
-        base_page.take_screenshot("unexpected_error")
-        pytest.fail(str(e))
+# ----------------------------------------------------------------------------------------------------------------------
 
 
 def test_filial_create(driver, test_data):
@@ -257,7 +203,6 @@ def test_filial_create(driver, test_data):
 
     except Exception as e:
         base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
@@ -308,7 +253,6 @@ def test_room_add(driver, test_data):
 
     except Exception as e:
         base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
@@ -324,7 +268,6 @@ def test_robot_add(driver, test_data):
     room_name = data["room_name"]
     robot_name = data["robot_name"]
     role_name = data["role_name"]
-    # role_name = "Экспедитор"
 
     try:
         # Login
@@ -363,7 +306,6 @@ def test_robot_add(driver, test_data):
 
     except Exception as e:
         base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
@@ -409,58 +351,10 @@ def test_sub_filial_add(driver, test_data):
 
     except Exception as e:
         base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
-def test_natural_person_add(driver, test_data, person_name=None):
-    """Test adding a natural person"""
 
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_natural_person_add")
-
-    # Test data
-    data = test_data["data"]
-    filial_name = data["filial_name"]
-    natural_person_name = person_name or data["natural_person_name"]
-
-    try:
-        # Login
-        login_admin(driver, test_data, filial_name=filial_name, url='anor/mr/person/natural_person_list')
-
-        # Open Natural Person List
-        natural_person_list = NaturalPersonList(driver)
-        assert natural_person_list.element_visible(), "NaturalPersonList not open!"
-        natural_person_list.click_add_button()
-
-        # Add Natural Person
-        natural_person_add = NaturalPersonAdd(driver)
-        assert natural_person_add.element_visible(), "NaturalPersonAdd not open!"
-        natural_person_add.input_name(natural_person_name)
-        natural_person_add.click_save_button()
-
-        # Verify in List
-        assert natural_person_list.element_visible(), "NaturalPersonList not open after save!"
-        natural_person_list.find_row(natural_person_name)
-        natural_person_list.click_view_button()
-
-        # Verify in View
-        natural_person_view = NaturalPersonView(driver)
-        assert natural_person_view.element_visible(), "NaturalPersonView not open!"
-        text = natural_person_view.check_text()
-        assert text == natural_person_name, f'Expected "{natural_person_name}", got "{text}"'
-
-        base_page.logger.info(f"✅ Natural Person '{natural_person_name}' added successfully!")
-
-    except AssertionError as ae:
-        base_page.logger.error(f"❌ AssertionError: {str(ae)}")
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-
-    except Exception as e:
-        base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
-        pytest.fail(str(e))
 
 
 def test_user_create(driver, test_data):
@@ -537,7 +431,6 @@ def test_user_create(driver, test_data):
 
     except Exception as e:
         base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
@@ -597,7 +490,6 @@ def test_adding_permissions_to_user(driver, test_data):
 
     except Exception as e:
         base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
@@ -633,7 +525,6 @@ def test_user_change_password(driver, test_data):
 
     except Exception as e:
         base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
@@ -1125,111 +1016,7 @@ def test_margin_add(driver, test_data):
         base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
-
 # ----------------------------------------------------------------------------------------------------------------------
-
-def test_natural_person_client_add_A(driver, test_data):
-    """Test adding natural person client A"""
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-A"
-    test_natural_person_add(driver, test_data, person_name=client_name)
-
-
-def test_natural_person_client_add_B(driver, test_data):
-    """Test adding natural person client B"""
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-B"
-    test_natural_person_add(driver, test_data, person_name=client_name)
-
-
-def test_natural_person_client_add_C(driver, test_data):
-    """Test adding natural person client C"""
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-C"
-    test_natural_person_add(driver, test_data, person_name=client_name)
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-def client_add(driver, test_data, client_name=None):
-    """Test adding a client"""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: client_add")
-
-    # Test data
-    data = test_data["data"]
-    client_name = client_name or data["client_name"]
-
-    try:
-        # Login
-        login_user(driver, test_data, url='anor/mrf/client_list')
-
-        # Open Client List
-        client_list = ClientList(driver)
-        assert client_list.element_visible(), "ClientList not open!"
-        client_list.click_add_button()
-
-        # Add Client
-        client_add = ClientAdd(driver)
-        assert client_add.element_visible(), "ClientAdd not open!"
-        client_add.click_radio_button()
-        client_add.input_name(client_name)
-        client_add.click_save_button()
-
-        # Verify in List
-        assert client_list.element_visible(), "ClientList not open after save!"
-        client_list.find_row(client_name)
-        client_list.click_view_button()
-
-        # Verify in View
-        client_view = ClientView(driver)
-        assert client_view.element_visible(), "ClientView not open!"
-        client_view.check_client_name()
-        client_view.click_close_button()
-
-        base_page.logger.info(f"✅ Client '{client_name}' added successfully!")
-
-    except AssertionError as ae:
-        base_page.logger.error(f"❌ AssertionError: {str(ae)}")
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-
-    except Exception as e:
-        base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
-        pytest.fail(str(e))
-
-
-def test_client_add_A(driver, test_data):
-    """Test adding client A"""
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-A"
-    client_add(driver, test_data, client_name=client_name)
-
-
-def test_client_add_B(driver, test_data):
-    """Test adding client B"""
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-B"
-    client_add(driver, test_data, client_name=client_name)
-
-
-def test_client_add_C(driver, test_data):
-    """Test adding client C"""
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-C"
-    client_add(driver, test_data, client_name=client_name)
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
 
 def test_room_attachment(driver, test_data):
     """Test attaching different elements to a room."""
@@ -1364,10 +1151,10 @@ def test_init_balance(driver, test_data):
         balance_list.click_reload_button()
         balance_list.find_row(product_name)
         balance_list.click_detail_button()
-        time.sleep(2)
+        balance_list.click_reload_button()
 
         balance = balance_list.check_balance_quantity()
-        assert balance == product_quantity, f"Error: Balance '{balance}' != product_quantity '{product_quantity}'"
+        assert balance == product_quantity, f"Error: Balance: '{balance}' != product_quantity: '{product_quantity}'"
 
         base_page.logger.info(
             f"✅ Balance successfully updated: {balance} pieces of '{product_name}' in '{warehouse_name}'.")
@@ -1414,7 +1201,6 @@ def test_setting_consignment(driver, test_data):
         pytest.fail(str(ae))
     except Exception as e:
         base_page.logger.error(f"❌ Unexpected error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
@@ -1490,7 +1276,6 @@ def test_order_request(driver, test_data):
         pytest.fail(str(ae))
     except Exception as e:
         base_page.logger.error(f"❌ Unexpected error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
 
@@ -1673,52 +1458,6 @@ def test_setting_prepayment_off(driver, test_data):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def grid_setting(driver, test_data):
-    """Test configuring grid settings."""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: grid_setting")
-
-    # Test data
-    option_name = "deal_id"
-
-    try:
-        login_user(driver, test_data, url='trade/tdeal/order/order_list')
-
-        # Orders List
-        order_list = OrdersList(driver)
-        assert order_list.element_visible(), 'OrdersList not open!'
-        order_list.click_group_button()
-
-        # Grid Setting
-        grid_setting = GridSetting(driver)
-        assert grid_setting.element_visible(), 'GridSetting not open!'
-        grid_setting.click_options_button(option_name)
-        grid_setting.click_save_button()
-
-        # Orders List
-        assert order_list.element_visible(), 'OrdersList not open after save!'
-        order_list.check_header_option(option_name)
-
-        base_page.logger.info(f"✅Test end: grid_setting")
-
-    except AssertionError as ae:
-        log_exception_chain(base_page.logger, ae)
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-    except Exception as e:
-        log_exception_chain(base_page.logger, e)
-        base_page.take_screenshot("unexpected_error")
-        pytest.fail(str(e))
-
-
-def test_grid_setting(driver, test_data):
-    """Grid setting"""
-
-    grid_setting(driver, test_data)
-
-# ----------------------------------------------------------------------------------------------------------------------
-
 def test_add_user_license(driver, test_data):
     """Test configuring add user license."""
 
@@ -1764,5 +1503,46 @@ def test_add_user_license(driver, test_data):
         log_exception_chain(base_page.logger, e)
         base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
+
 # ----------------------------------------------------------------------------------------------------------------------
 
+def test_add_van(driver, test_data):
+    """Test configuring add user license."""
+
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️ Running: test_add_van")
+
+    # Test data
+    data = test_data["data"]
+    van_name = "Maliba"
+    carrying_name = 500
+    van_number = "AB123456"
+
+    try:
+        login_user(driver, test_data, url='anor/mrf/van_list')
+
+        # VanList
+        van_list = VanList(driver)
+        assert van_list.element_visible(), 'VanList not open!'
+        van_list.click_add_button()
+
+        van_add = VanAdd(driver)
+        assert van_add.element_visible(), 'VanAdd not open!'
+        van_add.input_name(van_name)
+        van_add.input_carrying(carrying_name)
+        van_add.input_van_number(van_number)
+        van_add.click_save_button()
+        time.sleep(5)
+
+        base_page.logger.info(f"✅Test end: test_add_van ")
+
+    except AssertionError as ae:
+        log_exception_chain(base_page.logger, ae)
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
+    except Exception as e:
+        log_exception_chain(base_page.logger, e)
+        base_page.take_screenshot("unexpected_error")
+        pytest.fail(str(e))
+
+# ----------------------------------------------------------------------------------------------------------------------

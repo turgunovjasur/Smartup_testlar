@@ -4,6 +4,8 @@ from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
 from autotest.trade.tdeal.order.return_order.return_order import ReturnOrder
 from tests.test_base.test_base import login_user
+from utils.driver_setup import driver
+from tests.conftest import test_data
 
 
 def order_return(driver, test_data, client_name=None):

@@ -10,7 +10,6 @@ from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
 from tests.conftest import test_data
 from tests.test_base.test_base import login_user
 from autotest.core.md.base_page import BasePage
-from tests.test_order.test_cashin import test_cashin_add_C
 from utils.driver_setup import driver
 
 

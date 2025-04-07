@@ -1,9 +1,16 @@
+import pytest
+from autotest.biruni.md.biruni.grid_setting.grid_setting import GridSetting
+from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.login_page import LoginPage
-from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
-from utils.exception import LoaderTimeoutError, ElementInteractionError, ElementVisibilityError, ElementNotFoundError, \
-    ElementNotClickableError
 from tests.conftest import test_data
+
+from utils.exception import (
+    ElementInteractionError,
+    ElementVisibilityError,
+    ElementNotClickableError,
+    log_exception_chain
+)
 
 
 def logout(driver):
@@ -20,6 +27,7 @@ def logout(driver):
     except Exception:
         raise ElementInteractionError
 
+# ----------------------------------------------------------------------------------------------------------------------
 
 def login(driver, email, password):
     login_page = LoginPage(driver)
@@ -36,6 +44,7 @@ def login(driver, email, password):
     except Exception:
         raise
 
+# ----------------------------------------------------------------------------------------------------------------------
 
 def dashboard(driver):
     dashboard_page = DashboardPage(driver)
@@ -54,6 +63,7 @@ def dashboard(driver):
     except Exception:
         raise
 
+# ----------------------------------------------------------------------------------------------------------------------
 
 def login_system(driver, email, password, filial_name, url):
     base_page = BasePage(driver)
@@ -81,6 +91,7 @@ def login_system(driver, email, password, filial_name, url):
     except Exception:
         raise
 
+# ----------------------------------------------------------------------------------------------------------------------
 
 def login_admin(driver, test_data, filial_name=None, email=None, password=None, url=None):
     """Admin sifatida tizimga kirish."""
@@ -104,6 +115,7 @@ def login_admin(driver, test_data, filial_name=None, email=None, password=None, 
     except Exception:
         raise
 
+# ----------------------------------------------------------------------------------------------------------------------
 
 def login_user(driver, test_data, filial_name=None, email=None, password=None, url=None):
     """User sifatida tizimga kirish."""
@@ -126,3 +138,34 @@ def login_user(driver, test_data, filial_name=None, email=None, password=None, u
 
     except Exception:
         raise
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def test_grid_setting_(driver, test_data, option_name=None):
+    """Test configuring grid settings."""
+
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️ Running: test_grid_setting")
+
+    try:
+        # List
+        grid_setting = GridSetting(driver)
+        grid_setting.click_group_button()
+
+        # Grid Setting
+        assert grid_setting.element_visible(), 'GridSetting not open!'
+        grid_setting.click_options_button(option_name)
+        grid_setting.click_save_button()
+
+        base_page.logger.info(f"✅Test end: test_grid_setting")
+
+    except AssertionError as ae:
+        log_exception_chain(base_page.logger, ae)
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
+    except Exception as e:
+        log_exception_chain(base_page.logger, e)
+        base_page.take_screenshot("unexpected_error")
+        pytest.fail(str(e))
+
+# ----------------------------------------------------------------------------------------------------------------------

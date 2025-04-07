@@ -1,20 +1,22 @@
-import time
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
 class ReturnList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    return_header = (By.XPATH, "//ul/li/a[contains(text(), 'Причины возврата')]")
+    return_header = (By.XPATH, '//button[@ng-if="q.sc.first"]')
 
     def element_visible(self):
-        assert "Причины возврата" in self.get_text(self.return_header), "'Return' page did not open!"
+        return self.wait_for_element_visible(self.return_header)
     # ------------------------------------------------------------------------------------------------------------------
-    list_first_elem = (By.XPATH, "(//div[@class='tbl-row']/div[2])[1]")
+    add_button = (By.XPATH, '//button[@ng-if="q.sc.first"]')
 
-    def click_first_elem_button(self):
-        time.sleep(2)
-        self.click(self.list_first_elem)
+    def click_add_button(self):
+        self.click(self.add_button)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def find_row(self, client_name):
+        self.find_row_and_click(element_name=client_name)
     # ------------------------------------------------------------------------------------------------------------------
     view_button = (By.XPATH, "//button[@ng-click='view(row)']")
 
@@ -32,5 +34,17 @@ class ReturnList(BasePage):
 
     def click_delete_one_button(self):
         self.click(self.delete_one_button)
+        self.click(self.yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    archive_one_button = (By.XPATH, '//button[@ng-click="archiveOne(row)"]')
+
+    def click_archive_one_button(self):
+        self.click(self.archive_one_button)
+        self.click(self.yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    shipped_one_button = (By.XPATH, '//button[@ng-click="shippedOne(row)"]')
+
+    def click_shipped_one_button(self):
+        self.click(self.shipped_one_button)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------
