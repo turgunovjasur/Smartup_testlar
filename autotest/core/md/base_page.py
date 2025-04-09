@@ -37,7 +37,7 @@ class BasePage:
         self.driver = driver
         self.test_name = get_test_name()
         self.logger = configure_logging(self.test_name)
-        self.default_timeout = 10
+        self.default_timeout = 5
         self.default_page_load_timeout = 120
         self.actions = ActionChains(driver)
 
@@ -446,7 +446,7 @@ class BasePage:
         attempt = 0
         while attempt < retries:
             try:
-                self._wait_for_all_loaders(log_text='Run click')
+                self._wait_for_all_loaders(log_text='click')
                 element_dom = self._wait_for_presence(locator)
                 self._scroll_to_element(element_dom, locator)
                 element_clickable = self._wait_for_clickable(locator)
@@ -455,14 +455,14 @@ class BasePage:
 
                 time.sleep(retry_delay)
                 self.logger.info("Retry Click sinab ko'riladi...")
-                self._wait_for_all_loaders(log_text='Run retry click')
+                self._wait_for_all_loaders(log_text='retry click')
                 element_clickable = self._wait_for_clickable(locator)
                 if element_clickable and self._click(element_clickable, locator, retry=True):
                     return True
 
                 time.sleep(retry_delay)
                 self.logger.info("Majburiy JS Click sinab ko'riladi...")
-                self._wait_for_all_loaders(log_text='Run JS click')
+                self._wait_for_all_loaders(log_text='JS click')
                 element_dom = self._wait_for_presence(locator)
                 if element_dom and self._click_js(element_dom, locator):
                     return True
@@ -636,7 +636,7 @@ class BasePage:
                 return True
 
             except (ElementStaleError, ScrollError):
-                self.logger.warning("Input yangilandi, qayta urinish ({attempt + 1})...")
+                self.logger.warning(f"Input yangilandi, qayta urinish ({attempt + 1})...")
                 attempt += 1
                 time.sleep(retry_delay)
 
@@ -716,7 +716,7 @@ class BasePage:
         attempt = 0
         while attempt < retries:
             try:
-                self._wait_for_all_loaders(log_text='Run get_text')
+                self._wait_for_all_loaders(log_text='get_text')
                 element_dom = self._wait_for_presence(locator)
                 self._scroll_to_element(element_dom, locator)
 
@@ -729,8 +729,8 @@ class BasePage:
                 attempt += 1
                 time.sleep(retry_delay)
 
-            except ElementVisibilityError:
-                self.logger.warning(f"Element topilmadi, vaqt tugadi!")
+            except (ElementVisibilityError, ElementNotFoundError) as e:
+                self.logger.warning(f"Element topilmadi, vaqt tugadi: {str(e)}")
                 return None
 
             except Exception as e:
@@ -835,6 +835,8 @@ class BasePage:
         "forward" - yangi oynaga o'tadi
         """
         try:
+            self._wait_for_all_loaders(log_text="switch_window")
+
             handles = self.driver.window_handles
 
             if len(handles) < 2:

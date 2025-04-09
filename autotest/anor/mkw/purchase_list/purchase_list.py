@@ -43,12 +43,10 @@ class PurchaseList(BasePage):
         self.click(self.report_button)
         self.click(self.items_button)
 
-    # get_row_report = (By.XPATH, '//td[@class="bsr-25"][3]')
-    get_header_report = (By.XPATH, '//div[@class="navbar-brand report-brand"]/a')
+    get_extra_cost_report = (By.XPATH, '(//tr/td/following-sibling::td[@class="bsr-26"])[5]')
 
     def get_extra_cost_amount_for_report(self):
-        # return self.get_numeric_value(self.get_row_report)
-        return self.wait_for_element_visible(self.get_header_report)
+        return self.get_numeric_value(self.get_extra_cost_report)
     # ------------------------------------------------------------------------------------------------------------------
     reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
 

@@ -15,13 +15,14 @@ class ExtraCostAdd(BasePage):
 
     def input_articles(self):
         self.click(self.articles_input)
-
-        if not self._wait_for_visibility(self.get_row, timeout=5, error_message=True):
+        try:
+            self._wait_for_visibility(self.get_row, timeout=5, error_message=False)
+            self.click(self.get_row)
+            return True
+        except Exception as e:
+            self.logger.warning(f"Article not found! Article is added. Error: {e}")
             self.click(self.add_articles_button)
             return False
-
-        self.click(self.get_row)
-        return True
     # ------------------------------------------------------------------------------------------------------------------
     corr_templates_input = (By.XPATH, '//b-input[@name="corr_templates"]//input')
     corr_templates_options = (By.XPATH, '//b-input[@name="corr_templates"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
@@ -34,7 +35,8 @@ class ExtraCostAdd(BasePage):
     def input_amount(self, extra_cost_amount):
         self.input_text(self.amount_input, extra_cost_amount)
     # ------------------------------------------------------------------------------------------------------------------
-    note_input = (By.XPATH, '//textarea[@ng-model="d.note"]')
+    # note_input = (By.XPATH, '//textarea[@ng-model="d.note"]')
+    note_input = (By.XPATH, '//div[@ng-repeat="ref_type in d.corr_ref_types"]/following-sibling::div//textarea[@ng-model="d.note"]')
 
     def input_note(self, note_text):
         self.input_text(self.note_input, note_text)
@@ -55,8 +57,21 @@ class ExtraCostAdd(BasePage):
     def input_price(self, product_price):
         self.input_text(self.price_input, product_price)
     # ------------------------------------------------------------------------------------------------------------------
-    save_button = (By.XPATH, '//button[@ng-click="save()"]')
+    price_checkbox = (By.XPATH, '//input[@type="checkbox" and @ng-model="d.affects_the_price"]/following-sibling::span')
 
-    def click_save_button(self):
-        self.click(self.save_button)
+    def click_price_checkbox(self, method=None):
+        """method must be one of ('A', 'Q', 'W', 'V', 'M') or None"""
+        self.click(self.price_checkbox)
+        if method in ('A', 'Q', 'W', 'V', 'M'):
+            radio_button = (By.XPATH, f'//input[@type="radio" and @value="{method}"]/following-sibling::span')
+            self.click(radio_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    save_button = (By.XPATH, '//button[@ng-click="save()"]')
+    post_button = (By.XPATH, '//button[@ng-click="post()"]')
+
+    def click_save_button(self, post=False):
+        if post:
+            self.click(self.post_button)
+        else:
+            self.click(self.save_button)
     # ------------------------------------------------------------------------------------------------------------------

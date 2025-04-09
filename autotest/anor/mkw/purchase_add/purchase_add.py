@@ -15,6 +15,11 @@ class PurchaseAdd(BasePage):
     def input_supplier(self, supplier_name):
         self.click_options(self.supplier_input, self.supplier_options, supplier_name)
     # ------------------------------------------------------------------------------------------------------------------
+    checkbox_input = (By.XPATH, '//div[@id="anor289-input-checkbox-extracostenabled"]//span')
+
+    def click_checkbox(self):
+        self.click(self.checkbox_input)
+    # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, '//button[@id="anor289-button-nextstep"]')
     save_button = (By.XPATH, '//button[@id="anor289-button-save"]')
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
@@ -46,4 +51,18 @@ class PurchaseAdd(BasePage):
 
     def input_purchase_number(self, purchase_number):
         self.input_text(self.purchase_number_input, purchase_number)
+    # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    extra_cost_input = (By.XPATH, '//b-input[@id="anor289-input-binput-extracostnumber"]//input')
+    add_input = (By.XPATH, '//b-input[@id="anor289-input-binput-extracostnumber"]//a[@ng-click="_$bInput.onAddClick()"]')
+
+    def input_extra_cost(self):
+        self.click(self.extra_cost_input)
+        self.click(self.add_input)
+    # ------------------------------------------------------------------------------------------------------------------
+    calc_extra_cost_button = (By.XPATH, '//button[@id="anor289-button-calcextracost"]')
+
+    def click_calc_extra_cost_button(self):
+        self.click(self.calc_extra_cost_button)
     # ------------------------------------------------------------------------------------------------------------------
