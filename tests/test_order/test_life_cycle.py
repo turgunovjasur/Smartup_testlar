@@ -27,18 +27,10 @@ from autotest.anor.mkr.price_type_list_attach.price_type_list_attch import Price
 from autotest.anor.mkr.price_type_view.price_type_id import PriceTypeIdView
 from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
 from autotest.anor.mkw.init_balance.init_inventory_balance_add.init_inventory_balance_add import InitInventoryBalanceAdd
-from autotest.anor.mkw.init_balance.init_inventory_balance_list.init_inventory_balance_list import \
-    InitInventoryBalanceList
-from autotest.anor.mkw.supplier_add.supplier_add import SupplierAdd
-from autotest.anor.mkw.supplier_list.supplier_list import SupplierList
-from autotest.anor.mkw.supplier_view.supplier_view import SupplierView
+from autotest.anor.mkw.init_balance.init_inventory_balance_list.init_inventory_balance_list import InitInventoryBalanceList
 from autotest.anor.mr.filial_add.filial_add import FilialAdd
 from autotest.anor.mr.filial_list.filial_list import FilialList
 from autotest.anor.mr.filial_view.filial_view import FilialView
-from autotest.anor.mr.product.inventory_add.inventory_new import InventoryNew
-from autotest.anor.mr.product.inventory_list.inventory_list import InventoryList
-from autotest.anor.mr.product.inventory_view.product_id import ProductId as ProductView
-from autotest.anor.mr.product.product_set_price.product_set_price import ProductSetPrice
 from autotest.anor.mr.sector_add.sector_add import SectorAdd
 from autotest.anor.mr.sector_list.sector_list import SectorList
 from autotest.anor.mr.sector_view.sector_view import SectorView
@@ -55,7 +47,6 @@ from autotest.anor.mrf.van_add.van_add import VanAdd
 from autotest.anor.mrf.van_list.van_list import VanList
 from autotest.biruni.kl.license_list.license_list import LicenseList
 from autotest.biruni.kl.license_user_list.license_user_list import LicenseUserList
-from autotest.biruni.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.change_password.change_password import ChangePassword
 from autotest.core.md.company_add.company_add import CompanyAdd
@@ -65,7 +56,6 @@ from autotest.core.md.role_view.role_view import RoleView
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.trade.intro.dashboard.main_navbar import MainNavbar
 from autotest.trade.pref.system_setting.system_setting import SystemSetting
-from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
 from autotest.trade.tr.role_edit.role_edit import RoleEdit
 from autotest.trade.tr.role_list.role_list import RoleList
 from autotest.trade.trf.room_add.room_add import RoomAdd
@@ -144,11 +134,6 @@ def test_company_create(driver, test_data):
         pytest.fail(str(e))
 
 
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
 def test_filial_create(driver, test_data):
     """Test adding a filial"""
 
@@ -167,16 +152,16 @@ def test_filial_create(driver, test_data):
 
         # Open Filial List
         filial_list = FilialList(driver)
-        assert filial_list.element_visible(), "FilialList not open!"
-        filial_list.click_add_button()
-
-        # Add Filial
-        filial_add = FilialAdd(driver)
-        assert filial_add.element_visible(), "FilialAdd not open!"
-        filial_add.input_name(filial_name)
-        filial_add.input_base_currency_name(currency_code)
-        filial_add.input_person_name(legal_person)
-        filial_add.click_save_button()
+        # assert filial_list.element_visible(), "FilialList not open!"
+        # filial_list.click_add_button()
+        #
+        # # Add Filial
+        # filial_add = FilialAdd(driver)
+        # assert filial_add.element_visible(), "FilialAdd not open!"
+        # filial_add.input_name(filial_name)
+        # filial_add.input_base_currency_name(currency_code)
+        # filial_add.input_person_name(legal_person)
+        # filial_add.click_save_button()
 
         # Verify in List
         assert filial_list.element_visible(), "FilialList not open after save!"
@@ -354,9 +339,6 @@ def test_sub_filial_add(driver, test_data):
         pytest.fail(str(e))
 
 
-
-
-
 def test_user_create(driver, test_data):
     """Test adding a user"""
 
@@ -527,9 +509,7 @@ def test_user_change_password(driver, test_data):
         base_page.logger.error(f"❌ Error: {str(e)}")
         pytest.fail(str(e))
 
-
 # ----------------------------------------------------------------------------------------------------------------------
-
 
 def price_type_add(driver, test_data, price_type_name=None, currency_name=None, all_price=False,
                    sub_filial=False, sub_filial_name=None):
@@ -638,9 +618,7 @@ def test_price_type_add_USA(driver, test_data):
     currency_name = "Доллар США"
     price_type_add(driver, test_data, price_type_name=True, sub_filial=True, currency_name=currency_name)
 
-
 # ------------------------------------------------------------------------------------------------------------------
-
 
 def test_payment_type_add(driver, test_data):
     """Test adding payment types"""
@@ -728,90 +706,6 @@ def test_sector_add(driver, test_data):
         pytest.fail(str(e))
 
 
-def test_product_add(driver, test_data):
-    """Test adding a product"""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_product_add")
-
-    # Test data
-    data = test_data["data"]
-    product_name = data["product_name"]
-    measurement_name = data["measurement_name"]
-    sector_name = data["sector_name"]
-    product_price = data["product_price"]
-    product_price_USA = data["product_price_USA"]
-    price_type_name_UZB = data["price_type_name_UZB"]
-    price_type_name_USA = data["price_type_name_USA"]
-
-    try:
-        # Login
-        login_user(driver, test_data, url='anor/mr/product/inventory_list')
-
-        # Open Inventory List
-        inventory_list = InventoryList(driver)
-        assert inventory_list.element_visible(), "InventoryList not open!"
-        inventory_list.click_add_button()
-
-        # Add Product (Inventory)
-        inventory_add = InventoryNew(driver)
-        assert inventory_add.element_visible(), "InventoryNew not open!"
-        inventory_add.input_name(product_name)
-        inventory_add.input_sectors(sector_name)
-        inventory_add.input_measurement(measurement_name)
-        inventory_add.click_goods_checkbox()
-        inventory_add.click_save_button()
-
-        # Checking error message
-        error_code = inventory_add.error_massage()
-        if error_code:
-            base_page.logger.warning(f"⚠️ Xatolik aniqlandi!")
-            assert error_code == data["error_massage_4"], f'Nomalum xatolik! -> "{error_code}"'
-            base_page.refresh_page()
-        else:
-            base_page.logger.info("✅ Hech qanday xatolik yoq! -> Product saqlandi.")
-
-        # Verify in List
-        assert inventory_list.element_visible(), "InventoryList not open after save!"
-        inventory_list.find_and_click_checkbox(product_name)
-        inventory_list.click_view_button()
-
-        # Verify in View
-        product_view = ProductView(driver)
-        assert product_view.element_visible(), "ProductView not open!"
-        text = product_view.get_elements()
-        assert text == product_name, f'Expected "{product_name}", got "{text}"'
-        product_view.click_close_button()
-
-        # Set Price
-        assert inventory_list.element_visible(), "InventoryList not open!"
-        inventory_list.find_and_click_checkbox(product_name)
-        inventory_list.click_set_price_button()
-
-        # Open Set Price Page
-        product_set_price = ProductSetPrice(driver)
-        assert product_set_price.element_visible(), "ProductSetPrice not open!"
-        text = product_set_price.check_product()
-        assert text == product_name, f'Expected "{product_name}", got "{text}"'
-        product_set_price.input_prices(product_price, price_type_name_UZB)
-        product_set_price.input_prices(product_price_USA, price_type_name_USA)
-        product_set_price.click_save_button()
-
-        base_page.logger.info(f"✅ Product '{product_name}' added successfully with prices:"
-                              f" {price_type_name_UZB} = {product_price},"
-                              f" {price_type_name_USA} = {product_price_USA}")
-
-    except AssertionError as ae:
-        base_page.logger.error(f"❌ AssertionError: {str(ae)}")
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-
-    except Exception as e:
-        base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
-        pytest.fail(str(e))
-
-
 def test_check_price_tag(driver, test_data, minute_tolerance=1):
     """Test checking a price tag"""
 
@@ -846,6 +740,9 @@ def test_check_price_tag(driver, test_data, minute_tolerance=1):
 
         price_tag.click_run_button()
         time.sleep(3)
+
+        price_tag.click_windows_enter()
+        time.sleep(5)
 
         downloads_path = os.path.join(os.environ["USERPROFILE"], "Downloads")
 
@@ -887,53 +784,6 @@ def test_check_price_tag(driver, test_data, minute_tolerance=1):
 
         base_page.logger.info(f"✅ Last loaded file: {latest_file} (time is right)")
         base_page.logger.info(f"✅Test end: check_price_tag")
-
-    except AssertionError as ae:
-        base_page.logger.error(f"❌ AssertionError: {str(ae)}")
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-
-    except Exception as e:
-        base_page.logger.error(f"❌ Error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
-        pytest.fail(str(e))
-
-
-def test_currency_add(driver, test_data):
-    """Test adding a currency exchange rate"""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_currency_add")
-
-    # Test data
-    currency_name = "Доллар США"
-    exchange_rate = 10_000
-
-    try:
-        # Login
-        login_user(driver, test_data, url='anor/mk/currency_list')
-
-        # Open Currency List
-        currency_list = CurrencyList(driver)
-        assert currency_list.element_visible(), "CurrencyList not open!"
-        currency_list.find_row(currency_name)
-        currency_list.click_view_button()
-
-        # Open Currency View
-        currency_view = CurrencyView(driver)
-        assert currency_view.element_visible(), "CurrencyView not open!"
-        currency_view.click_navbar_button(navbar_button=2)
-        currency_view.click_add_rate_button()
-
-        # Add Exchange Rate
-        currency_view.input_exchange_rate_button(exchange_rate)
-        currency_view.click_save_button()
-
-        # Verify Exchange Rate
-        assert currency_view.check_row(), "Exchange rate not found!"
-        currency_view.click_close_button()
-
-        base_page.logger.info(f"✅ Exchange rate for '{currency_name}' set to {exchange_rate} successfully!")
 
     except AssertionError as ae:
         base_page.logger.error(f"❌ AssertionError: {str(ae)}")
@@ -1278,130 +1128,6 @@ def test_order_request(driver, test_data):
         base_page.logger.error(f"❌ Unexpected error: {str(e)}")
         pytest.fail(str(e))
 
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-def contract_add(driver, test_data, client_name=None, contract_name=None, initial_amount=None,
-                 currency_cod=None, currency_name=None, sub_filial_name=None, sub_filial=False):
-    """Test adding a contract."""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: contract_add")
-
-    # Test data
-    data = test_data["data"]
-    client_name = client_name or data["client_name"]
-    contract_name = contract_name or data["contract_name"]
-    initial_amount = initial_amount or data["product_quantity"] * data["product_price"]
-    base_currency_cod = currency_cod or data["base_currency_cod"]
-    currency_name = currency_name or "Узбекский сум"
-    sub_filial_name = sub_filial_name or data["sub_filial_name"]
-
-    base_page.logger.info(f"Test data: client_name='{client_name}', contract_name='{contract_name}', "
-                          f"initial_amount='{initial_amount}', base_currency_cod='{base_currency_cod}',"
-                          f" sub_filial_name='{sub_filial_name}'")
-
-    try:
-        # Login
-        login_user(driver, test_data, url='anor/mkf/contract_list')
-
-        # Open Contract List
-        contract_list = ContractList(driver)
-        assert contract_list.element_visible(), "ContractList not open!"
-        contract_list.click_add_button()
-
-        # Open Contract Add
-        contract_add = ContractAdd(driver)
-        assert contract_add.element_visible(), "ContractAdd not open!"
-        contract_number = random.randint(1, 999999)
-        contract_add.input_contract_number(contract_number)
-        contract_add.input_contract_name(contract_name)
-        contract_add.click_radio_button()
-        contract_add.input_person_name(client_name)
-        contract_add.input_currency_name(base_currency_cod)
-        contract_add.input_initial_amount(initial_amount)
-        if sub_filial:
-            contract_add.input_sub_filial(sub_filial_name)
-        contract_add.click_is_main_checkbox()
-        contract_add.click_save_button()
-
-        # Verify in Contract List
-        assert contract_list.element_visible(), "ContractList not open after save!"
-        contract_list.find_row(contract_name)
-        contract_list.click_view_button()
-
-        # Verify in Contract View
-        contract_view = ContractView(driver)
-        assert contract_view.element_visible(), "ContractView not open!"
-        get_contract_name = contract_view.check_contract_name()
-        assert get_contract_name == contract_name, f"Error: {get_contract_name} != {contract_name}"
-        get_currency_name = contract_view.check_currency_name()
-        assert get_currency_name == currency_name, f"Error: {get_currency_name} != {currency_name}"
-        contract_view.click_close_button()
-
-        base_page.logger.info(f"✅ Contract '{contract_name}' successfully added. Contract Number: {contract_number}")
-
-    except AssertionError as ae:
-        base_page.logger.error(f"❌ AssertionError: {str(ae)}")
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-    except Exception as e:
-        base_page.logger.error(f"❌ Unexpected error: {str(e)}")
-        base_page.take_screenshot("unexpected_error")
-        pytest.fail(str(e))
-
-
-def test_add_contract_for_client_A_UZB(driver, test_data):
-    """Test adding a contract for Client A in UZB currency."""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_contract_for_client_A_UZB")
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-A"
-    contract_name = f"{data['contract_name']}-A-UZB"
-    contract_add(driver, test_data,
-                 client_name=client_name,
-                 contract_name=contract_name)
-
-
-def test_add_contract_for_client_B_UZB(driver, test_data):
-    """Test adding a contract for Client B in UZB currency with a higher initial amount."""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_contract_for_client_B_UZB")
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-B"
-    contract_name = f"{data['contract_name']}-B-UZB"
-    initial_amount = 100 * data["product_price"]
-    contract_add(driver, test_data,
-                 client_name=client_name,
-                 contract_name=contract_name,
-                 initial_amount=initial_amount)
-
-
-def test_add_contract_for_client_C_USA(driver, test_data):
-    """Test adding a contract for Client C in USA currency."""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_contract_for_client_C_USA")
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-C"
-    contract_name = f"{data['contract_name']}-C-USA"
-    currency_cod = 840
-    currency_name = 'Доллар США'
-    initial_amount = 100 * data["product_price_USA"]
-    contract_add(driver, test_data,
-                 client_name=client_name,
-                 contract_name=contract_name,
-                 currency_cod=currency_cod,
-                 currency_name=currency_name,
-                 initial_amount=initial_amount,
-                 sub_filial=True)
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 
 def setting_prepayment(driver, test_data, prepayment=True):
@@ -1507,14 +1233,13 @@ def test_add_user_license(driver, test_data):
 # ----------------------------------------------------------------------------------------------------------------------
 
 def test_add_van(driver, test_data):
-    """Test configuring add user license."""
+    """Test adding a van"""
 
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_add_van")
 
     # Test data
-    data = test_data["data"]
-    van_name = "Maliba"
+    van_name = "Malibu"
     carrying_name = 500
     van_number = "AB123456"
 

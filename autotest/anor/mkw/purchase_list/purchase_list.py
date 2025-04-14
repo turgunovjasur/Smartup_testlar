@@ -1,5 +1,6 @@
-from autotest.core.md.base_page import BasePage
+
 from selenium.webdriver.common.by import By
+from autotest.core.md.base_page import BasePage
 
 
 class PurchaseList(BasePage):
@@ -45,8 +46,12 @@ class PurchaseList(BasePage):
 
     get_extra_cost_report = (By.XPATH, '(//tr/td/following-sibling::td[@class="bsr-26"])[5]')
 
-    def get_extra_cost_amount_for_report(self):
+    def get_extra_cost_total_amount_for_report(self):
         return self.get_numeric_value(self.get_extra_cost_report)
+
+    def get_extra_cost_amount_for_report(self, product_name):
+        get_extra_cost = (By.XPATH, f'//td[text()="{product_name}"]/following-sibling::td[7]')
+        return self.get_numeric_value(get_extra_cost)
     # ------------------------------------------------------------------------------------------------------------------
     reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
 

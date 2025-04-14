@@ -17,10 +17,10 @@ def test_data():
         # "code_input": "autotest",
         # "code_input": "test",
         "code_input": "red_test",
-        # "cod": 4,
+        # "cod": 5,
         "cod": 47,
         # "url": "https://smartup.merospharm.uz/login.html",
-        "url": "https://app3.greenwhite.uz/xtrade/login.html",  ##############
+        "url": "https://app3.greenwhite.uz/xtrade/login.html",
         # "url": "https://smartup.online/login.html",
     }
     filial_data = {
@@ -45,6 +45,7 @@ def test_data():
         "sub_filial_name": f"Test_sub_filial-{base_data['cod']}",
         "sector_name": f"Test_sector-{base_data['cod']}",
         "product_name": f"Test_product-{base_data['cod']}",
+        "product_name_2": f"Test_product-{base_data['cod']}-2",
         "template_name": f"Test_invoice_report-{base_data['cod']}",
         "expense_article_name": f"Test_expense_article-{base_data['cod']}",
         "role_name": "Админ",

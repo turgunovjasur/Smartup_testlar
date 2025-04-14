@@ -24,6 +24,14 @@ def driver(request, test_data):
     options.add_argument('--disable-gpu')                     # GPU bilan bog'liq xatoliklarni oldini olish
     options.add_argument('--no-sandbox')                      # Xavfsizlik rejimini o'chirish
     options.add_argument('--disable-dev-shm-usage')           # Xotira bilan bog'liq xatoliklarni oldini olish
+    options.add_argument("--incognito")                       # Autofill, cookie, parol saqlash bloklanadi
+    options.add_argument("--disable-features=AutofillServerCommunication,PasswordManagerEnabled,PasswordCheck")
+
+    # Parol saqlash modalini o'chirish uchun kerakli sozlamalar
+    options.add_experimental_option("prefs", {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False
+    })
 
     # GPU va WebGL bilan bog‘liq muammolarni oldini olish
     options.add_experimental_option('excludeSwitches', ['enable-logging'])  # Chrome loglarini kamaytirish

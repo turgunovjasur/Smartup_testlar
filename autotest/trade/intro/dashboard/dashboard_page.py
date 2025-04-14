@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
-from utils.exception import ElementInteractionError, LoaderTimeoutError
+from utils.exception import ElementInteractionError, LoaderTimeoutError, ElementVisibilityError
 
 
 class DashboardPage(BasePage):
@@ -11,25 +11,23 @@ class DashboardPage(BasePage):
     def element_visible(self):
         try:
             self._wait_for_all_loaders(log_text='Dashboard or ChangePassword')
+            self._wait_for_visibility(self.dashboard_header, timeout=30)
+            self.logger.info("Dashboard Page: Successfully opened")
+            return True
 
-            if self._wait_for_visibility(self.dashboard_header, timeout=10, error_message=False):
-                self.logger.info("Dashboard Page: Successfully opened")
-                return True
-        except LoaderTimeoutError:
-            raise
-        except ElementInteractionError:
-            pass
+        except (ElementVisibilityError, LoaderTimeoutError) as e:
+            self.logger.debug(f"Dashboard Page: Error: {str(e)}")
 
         try:
-            if self._wait_for_visibility(self.save_button, timeout=10, error_message=False):
-                self.logger.info("Dashboard Page (ChangePassword): Successfully opened")
-                return True
-        except ElementInteractionError:
-            pass
+            self._wait_for_visibility(self.save_button, timeout=30)
+            self.logger.info("Dashboard Page (ChangePassword): Successfully opened")
+            return True
+
+        except ElementVisibilityError as e:
+            self.logger.warning(f"Dashboard Page: Error: {str(e)}")
 
         self.logger.error("Dashboard Page: Verification failed - elements not found")
         return False
-    # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     filial_list_button = (By.XPATH, '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')
 
@@ -46,15 +44,14 @@ class DashboardPage(BasePage):
     def element_visible_session(self):
         try:
             self._wait_for_all_loaders(log_text='Dashboard Page')
-
-            if self._wait_for_visibility(self.active_session_header, timeout=5, error_message=False):
-                self.logger.info("‼️Old sessiya available!")
-                return True
+            self._wait_for_visibility(self.active_session_header, timeout=5, error_message=False)
+            self.logger.info("‼️Old sessiya available!")
+            return True
 
         except LoaderTimeoutError:
             raise
 
-        except ElementInteractionError:
+        except ElementVisibilityError:
             self.logger.info("Old sessiya not available! Waited for 5 seconds.")
             return False
 
@@ -62,13 +59,8 @@ class DashboardPage(BasePage):
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 
     def click_button_delete_session(self):
-        try:
-            if self.click(self.delete_session_button):
-                self.logger.info("Old session successfully deleted")
-
-        except ElementInteractionError:
-            self.logger.error("Unexpected error: -> while deleting the old session")
-            raise
+        self.click(self.delete_session_button)
+        self.logger.info("Old session successfully deleted")
     # ------------------------------------------------------------------------------------------------------------------
     # navbar buttons
     # ------------------------------------------------------------------------------------------------------------------

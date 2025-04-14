@@ -335,8 +335,8 @@ class BasePage:
 
         try:
             if element is None:
-                raise ElementNotFoundError(message="Element topilmadi, scroll qilish imkonsiz", locator=locator)
-
+                raise ElementNotFoundError(message="Element topilmadi, scroll qilish imkonsiz",
+                                           locator=locator)
             if element.is_displayed():
                 return element
 
@@ -616,7 +616,7 @@ class BasePage:
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def input_text(self, locator, text, retries=3, retry_delay=1):
+    def input_text(self, locator, text, retries=3, retry_delay=2):
         """Element topib, matn kiritish funksiyasi"""
 
         page_name = self.__class__.__name__
@@ -635,12 +635,12 @@ class BasePage:
                 self.logger.info(f"Input: send_key -> '{text}'")
                 return True
 
-            except (ElementStaleError, ScrollError):
+            except ElementStaleError:
                 self.logger.warning(f"Input yangilandi, qayta urinish ({attempt + 1})...")
                 attempt += 1
                 time.sleep(retry_delay)
 
-            except (ElementNotFoundError, LoaderTimeoutError) as e:
+            except (LoaderTimeoutError, ElementNotFoundError, ScrollError) as e:
                 message = "Input topilmadi yoki yuklanmadi. Input bekor qilindi."
                 self.logger.error(f"{page_name}: {message}: {locator}")
                 self.take_screenshot(f"{page_name.lower()}_input_not_found_error")
@@ -660,8 +660,8 @@ class BasePage:
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def clear_element(self, locator, retries=3, retry_delay=1):
-        """ Elementni tozalash (clear) barqaror mexanizm bilan """
+    def clear_element(self, locator, retries=3, retry_delay=2):
+        """ Elementni tozalash."""
 
         page_name = self.__class__.__name__
         self.logger.debug(f"{page_name}: Running -> clear_element: {locator}")
@@ -674,18 +674,17 @@ class BasePage:
                 self._scroll_to_element(element_dom, locator)
                 element = self._wait_for_clickable(locator)
 
-                # 1️⃣ Element readonly yoki disable emasligini tekshirish
+                # Element readonly yoki disable emasligini tekshirish
                 if not element.is_enabled() or element.get_attribute("readonly"):
                     self.logger.warning(f"⚠️ Elementni tozalab bo‘lmadi, u readonly yoki disabled! {locator}")
                     return False
 
-                # 2️⃣ Elementning ko‘rinadiganligini tekshirish
+                # Elementning ko‘rinadiganligini tekshirish
                 if not element.is_displayed():
                     self.logger.warning(f"⚠️ Element ko‘rinmayapti, JavaScript orqali tozalaymiz: {locator}")
                     self.driver.execute_script("arguments[0].value = '';", element)
                     return True
 
-                # 3️⃣ clear()
                 element.clear()
                 self.logger.info(f"Element muvaffaqiyatli tozalandi: {locator}")
                 return True
@@ -703,7 +702,7 @@ class BasePage:
                 self.logger.error(f"❌ Element textni o‘chirishda kutilmagan xato: {str(e)}")
                 return False
 
-        self.logger.warning(f"⚠️ Element {retries} marta urinishdan keyin tozalanmadi: {locator}")
+        self.logger.warning(f"⚠️ Element {retries} marta urinishdan keyin ham tozalanmadi: {locator}")
         return False
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -722,8 +721,12 @@ class BasePage:
 
                 element = self._wait_for_visibility(locator)
                 self.logger.info(f"Element: text -> '{element.text}'")
-                return element.text if element else None
-
+                # return element.text if element else None
+                if element:
+                    return element.text
+                else:
+                    self.logger.warning(f"element: {element}, element.text: {element.text}")
+                    return None
             except ElementStaleError:
                 self.logger.warning(f"Element yangilandi, qayta urinish ({attempt + 1})...")
                 attempt += 1
@@ -809,9 +812,9 @@ class BasePage:
             self.driver.switch_to.window(self.driver.window_handles[-1])
             self.driver.get(url)
 
-            if self._wait_for_all_loaders(log_text='check_new_window'):
-                self.logger.info(f"URL muvaffaqiyatli ochildi: {url}")
-                return True
+            self._wait_for_all_loaders(log_text='check_new_window')
+            self.logger.info(f"URL muvaffaqiyatli ochildi: {url}")
+            return True
 
         except LoaderTimeoutError:
             message = "Yangi oyna ochish uchun berilgan vaqt tugadi"
@@ -1158,11 +1161,11 @@ class BasePage:
                     if element_dom and self._click_js(element_dom, checkbox_locator):
                         return True
 
-            except (ElementStaleError, ScrollError, JavaScriptError) as e:
+            except (ElementStaleError, JavaScriptError) as e:
                 self.logger.warning(f"{page_name}: {str(e)}, qayta urinish ({attempt + 1}/{retries})")
                 time.sleep(retry_delay)
 
-            except (ElementNotFoundError, LoaderTimeoutError) as e:
+            except (ElementNotFoundError, LoaderTimeoutError, ScrollError) as e:
                 message = "Element topilmadi yoki yuklanmadi. Click bekor qilindi."
                 self.logger.error(f"{page_name}: {message}: {row_locator}: {str(e)}")
                 self.take_screenshot(f"{page_name.lower()}_find_row_not_found_error")

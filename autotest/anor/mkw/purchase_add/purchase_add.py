@@ -31,18 +31,18 @@ class PurchaseAdd(BasePage):
             self.click(self.save_button)
             self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------
-    product_input = (By.XPATH, '//b-input[@id="anor289-input-binput-fastsearchquery-G-0"]//input')
-    product_options = (By.XPATH, '//b-input[@id="anor289-input-binput-fastsearchquery-G-0"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
+    product_input = (By.XPATH, '(//b-input[contains(@id,"anor289-input-binput-fastsearchquery-G-")])[last()]//input')
+    product_options = (By.XPATH, '((//b-input[contains(@id,"anor289-input-binput-fastsearchquery-G-")])[last()])//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
 
     def input_product(self, product_name):
         self.click_options(self.product_input, self.product_options, product_name)
     # ------------------------------------------------------------------------------------------------------------------
-    quantity_input = (By.XPATH, '//input[@id="anor289-input-text-quantity-G-0"]')
+    quantity_input = (By.XPATH, '(//input[contains(@id,"anor289-input-text-quantity-G-")])[last()-1]')
 
     def input_quantity(self, product_quantity):
         self.input_text(self.quantity_input, product_quantity)
     # ------------------------------------------------------------------------------------------------------------------
-    price_input = (By.XPATH, '//input[@id="anor289-input-text-price-G-0"]')
+    price_input = (By.XPATH, '(//input[contains(@id,"anor289-input-text-price-G-")])[last()-1]')
 
     def input_price(self, product_price):
         self.input_text(self.price_input, product_price)
@@ -65,4 +65,9 @@ class PurchaseAdd(BasePage):
 
     def click_calc_extra_cost_button(self):
         self.click(self.calc_extra_cost_button)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def get_product_total_amount(self, product_name):
+        get_product = (By.XPATH, f'//div[@id="extra_cost_products"]//div[text()="{product_name}"]/following-sibling::div/input')
+        self.get_numeric_value(get_product)
     # ------------------------------------------------------------------------------------------------------------------

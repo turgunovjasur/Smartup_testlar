@@ -27,15 +27,36 @@ class InventoryNew(BasePage):
     def click_goods_checkbox(self):
         self.click(self.goods_checkbox)
     # ------------------------------------------------------------------------------------------------------------------
+    suppliers_input = (By.XPATH, '//b-input[@name="suppliers"]//input')
+    suppliers_options = (By.XPATH, '//b-input[@name="suppliers"]//div[contains(@class,"hint-item")]/div[contains(@class,"form-row")]/div')
+
+    def input_suppliers(self, supplier_name):
+        self.click_options(self.suppliers_input, self.suppliers_options, supplier_name)
+    # ------------------------------------------------------------------------------------------------------------------
     product_checkbox = (By.XPATH, "//label[@id='anor66-input-checkbox-inventory_kinds-P']")
 
     def click_product_checkbox(self):
         self.click(self.product_checkbox)
     # ------------------------------------------------------------------------------------------------------------------
-    product_order_input = (By.XPATH, "//div[@id='anor66-input-text-order_no']/input")
+    weight_netto_input = (By.XPATH, '//input[@ng-model="d.weight_netto"]')
 
-    def input_order(self, product_order):
-        self.input_text(self.product_order_input, product_order)
+    def input_weight_netto(self, weight_netto):
+        self.input_text(self.weight_netto_input, weight_netto)
+    # ------------------------------------------------------------------------------------------------------------------
+    weight_brutto_input = (By.XPATH, '//input[@ng-model="d.weight_brutto"]')
+
+    def input_weight_brutto(self, weight_brutto):
+        self.input_text(self.weight_brutto_input, weight_brutto)
+    # ------------------------------------------------------------------------------------------------------------------
+    litre_input = (By.XPATH, '//input[@ng-model="d.litr"]')
+
+    def input_litre(self, litre):
+        self.input_text(self.litre_input, litre)
+    # ------------------------------------------------------------------------------------------------------------------
+    # product_order_input = (By.XPATH, "//div[@id='anor66-input-text-order_no']/input")
+    #
+    # def input_order(self, product_order):
+    #     self.input_text(self.product_order_input, product_order)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, "//button[@id='anor66-button-save']")
 

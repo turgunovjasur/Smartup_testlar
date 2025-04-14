@@ -1,3 +1,4 @@
+import pyautogui
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
@@ -20,4 +21,9 @@ class PriceTag(BasePage):
 
     def click_run_button(self):
         self.click(self.run_button)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def click_windows_enter(self):
+        pyautogui.press('enter')
+        self.logger.info("Fayl muvaffaqiyatli tanlandi!")
     # ------------------------------------------------------------------------------------------------------------------

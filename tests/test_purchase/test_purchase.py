@@ -84,7 +84,7 @@ def test_add_purchase(driver, test_data, save_data):
         pytest.fail(str(e))
 
 
-def test_add_extra_cost(driver, test_data, load_data, save_data):
+def test_add_extra_cost(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Test run: test_add_extra_cost")
 
@@ -209,9 +209,9 @@ def test_add_extra_cost(driver, test_data, load_data, save_data):
         pytest.fail(str(e))
 
 
-def test_add_purchase_with_extra_cost(driver, test_data, save_data, load_data):
+def test_add_purchase_with_extra_cost_sum(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️Test run: test_add_purchase")
+    base_page.logger.info("▶️Test run: test_add_purchase_with_extra_cost_sum")
 
     # Log
     data = test_data["data"]
@@ -228,77 +228,77 @@ def test_add_purchase_with_extra_cost(driver, test_data, save_data, load_data):
 
         # List
         purchase_list = PurchaseList(driver)
-        # assert purchase_list.element_visible(), "PurchaseList not open!"
-        # purchase_list.click_add_button()
-        #
-        # # Add
-        # purchase_add = PurchaseAdd(driver)
-        # assert purchase_add.element_visible(), "PurchaseAdd not open!"
-        # purchase_add.input_supplier(supplier_name)
-        # purchase_add.click_checkbox()
-        # purchase_add.click_next_step_button()
-        #
-        # # Add: 2
-        # assert purchase_add.element_visible(), "PurchaseAdd not open after main!"
-        # purchase_add.input_product(product_name)
-        # purchase_add.input_quantity(product_quantity)
-        # purchase_add.input_price(product_price)
-        # purchase_add.click_next_step_button()
-        #
-        # # Add: 3
-        # assert purchase_add.element_visible(), "PurchaseAdd not open after product!"
-        # purchase_add.input_extra_cost()
-        #
-        # # Add Extra Cost
-        # extra_cost_add = ExtraCostAdd(driver)
-        # assert extra_cost_add.element_visible(), "ExtraCostAdd not open!"
-        #
-        # if not extra_cost_add.input_articles():
-        #     # ExpenseArticleAdd
-        #     expense_article_add = ExpenseArticleAdd(driver)
-        #     assert expense_article_add.element_visible(), "ExpenseArticleAdd not open!"
-        #     expense_article_add.input_name(expense_article_name)
-        #     expense_article_add.click_save_button()
-        #     assert extra_cost_add.element_visible(), "ExtraCostAdd not open after ExpenseArticleAdd!"
-        #
-        # extra_cost_add.input_corr_templates(corr_template_name)
-        # extra_cost_add.input_amount(extra_cost_amount)
-        #
-        # note_text = random.randint(10000, 99999)
-        # save_data("note_text_2", note_text)
-        # extra_cost_add.input_note(note_text)
-        # extra_cost_add.click_price_checkbox()
-        # extra_cost_add.click_save_button(post=True)
-        #
-        # # Add: 3
-        # assert purchase_add.element_visible(), "PurchaseAdd not open after ExtraCostAdd!"
-        # purchase_add.click_calc_extra_cost_button()
-        # purchase_add.click_next_step_button()
-        #
-        # # Add: 4
-        # assert purchase_add.element_visible(), "PurchaseAdd not open after Calc Extra Cost!"
-        # purchase_number = random.randint(1000000, 99999999)
-        # save_data("purchase_number_2", purchase_number)
-        # purchase_add.input_purchase_number(purchase_number)
-        # purchase_add.click_next_step_button(save_button=True)
-        #
-        # # List
-        # assert purchase_list.element_visible(), "PurchaseList not open after save!"
-        # purchase_list.click_reload_button()
+        assert purchase_list.element_visible(), "PurchaseList not open!"
+        purchase_list.click_add_button()
+
+        # Add
+        purchase_add = PurchaseAdd(driver)
+        assert purchase_add.element_visible(), "PurchaseAdd not open!"
+        purchase_add.input_supplier(supplier_name)
+        purchase_add.click_checkbox()
+        purchase_add.click_next_step_button()
+
+        # Add: 2
+        assert purchase_add.element_visible(), "PurchaseAdd not open after main!"
+        purchase_add.input_product(product_name)
+        purchase_add.input_quantity(product_quantity)
+        purchase_add.input_price(product_price)
+        purchase_add.click_next_step_button()
+
+        # Add: 3
+        assert purchase_add.element_visible(), "PurchaseAdd not open after product!"
+        purchase_add.input_extra_cost()
+
+        # Add Extra Cost
+        extra_cost_add = ExtraCostAdd(driver)
+        assert extra_cost_add.element_visible(), "ExtraCostAdd not open!"
+
+        if not extra_cost_add.input_articles():
+            # ExpenseArticleAdd
+            expense_article_add = ExpenseArticleAdd(driver)
+            assert expense_article_add.element_visible(), "ExpenseArticleAdd not open!"
+            expense_article_add.input_name(expense_article_name)
+            expense_article_add.click_save_button()
+            assert extra_cost_add.element_visible(), "ExtraCostAdd not open after ExpenseArticleAdd!"
+
+        extra_cost_add.input_corr_templates(corr_template_name)
+        extra_cost_add.input_amount(extra_cost_amount)
+
+        note_text = random.randint(10000, 99999)
+        save_data("note_text_2", note_text)
+        extra_cost_add.input_note(note_text)
+        extra_cost_add.click_price_checkbox()
+        extra_cost_add.click_save_button(post=True)
+
+        # Add: 3
+        assert purchase_add.element_visible(), "PurchaseAdd not open after ExtraCostAdd!"
+        purchase_add.click_calc_extra_cost_button()
+        purchase_add.click_next_step_button()
+
+        # Add: 4
+        assert purchase_add.element_visible(), "PurchaseAdd not open after Calc Extra Cost!"
+        purchase_number = random.randint(1000000, 99999999)
+        save_data("purchase_number_2", purchase_number)
+        purchase_add.input_purchase_number(purchase_number)
+        purchase_add.click_next_step_button(save_button=True)
+
+        # List
+        assert purchase_list.element_visible(), "PurchaseList not open after save!"
+        purchase_list.click_reload_button()
         purchase_number = load_data("purchase_number_2")
         assert purchase_number is not None, "purchase_number_2 not found!"
-        # purchase_list.find_row(purchase_number)
-        # purchase_list.click_view_button()
-        #
-        # # View
-        # purchase_view = PurchaseView(driver)
-        # assert purchase_view.element_visible(), "PurchaseView not open!"
-        # purchase_view.click_close_button()
-        #
-        # # List
-        # assert purchase_list.element_visible(), "PurchaseList not open after view!"
-        # purchase_list.find_row(purchase_number)
-        # purchase_list.click_post_button()
+        purchase_list.find_row(purchase_number)
+        purchase_list.click_view_button()
+
+        # View
+        purchase_view = PurchaseView(driver)
+        assert purchase_view.element_visible(), "PurchaseView not open!"
+        purchase_view.click_close_button()
+
+        # List
+        assert purchase_list.element_visible(), "PurchaseList not open after view!"
+        purchase_list.find_row(purchase_number)
+        purchase_list.click_post_button()
 
         # List
         assert purchase_list.element_visible(), "PurchaseList not open after post!"
@@ -318,7 +318,7 @@ def test_add_purchase_with_extra_cost(driver, test_data, save_data, load_data):
 
         # Check report
         base_page.switch_window(direction="forward")
-        get_amount_rep = purchase_list.get_extra_cost_amount_for_report()
+        get_amount_rep = purchase_list.get_extra_cost_total_amount_for_report()
         total_amount = (product_quantity * product_price) + extra_cost_amount
         assert get_amount_rep == total_amount, f"{get_amount_rep} != {total_amount}"
         base_page.switch_window(direction="back")
@@ -326,7 +326,150 @@ def test_add_purchase_with_extra_cost(driver, test_data, save_data, load_data):
         # List
         assert purchase_list.element_visible(), "PurchaseList not open after check report!"
 
-        base_page.logger.info(f"✅Test end: test_add_purchase successfully!")
+        base_page.logger.info(f"✅Test end: test_add_purchase_with_extra_cost_sum")
+
+    except AssertionError as ae:
+        base_page.logger.error(f'Assertion error: {str(ae)}')
+        base_page.take_screenshot("assertion_error")
+        pytest.fail(str(ae))
+    except Exception as e:
+        pytest.fail(str(e))
+
+
+def test_add_purchase_with_extra_cost_quantity(driver, test_data, save_data, load_data):
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️Test run: test_add_purchase_with_extra_cost_quantity")
+
+    # Log
+    data = test_data["data"]
+    supplier_name = data["supplier_name"]
+    product_name = data["product_name"]
+    product_name_2 = data["product_name_2"]
+    expense_article_name = data["expense_article_name"]
+    corr_template_name = "Долг поставщикам"
+
+    product_quantity_1 = 20
+    product_quantity_2 = 100
+    product_quantity_total = 120
+
+    product_price = data["product_price"]  # 12_000
+    extra_cost_amount = product_price * 10  # 120_000
+
+
+    try:
+        login_user(driver, test_data, url='anor/mkw/purchase/purchase_list')
+
+        # List
+        purchase_list = PurchaseList(driver)
+        assert purchase_list.element_visible(), "PurchaseList not open!"
+        purchase_list.click_add_button()
+
+        # Add
+        purchase_add = PurchaseAdd(driver)
+        assert purchase_add.element_visible(), "PurchaseAdd not open!"
+        purchase_add.input_supplier(supplier_name)
+        purchase_add.click_checkbox()
+        purchase_add.click_next_step_button()
+
+        # Add: 2
+        assert purchase_add.element_visible(), "PurchaseAdd not open after main!"
+        purchase_add.input_product(product_name)
+        purchase_add.input_quantity(product_quantity_1)
+        purchase_add.input_price(product_price)
+
+        purchase_add.input_product(product_name_2)
+        purchase_add.input_quantity(product_quantity_2)
+        purchase_add.input_price(product_price)
+
+        purchase_add.click_next_step_button()
+        time.sleep(2)
+
+        # Add: 3
+        assert purchase_add.element_visible(), "PurchaseAdd not open after product!"
+        purchase_add.input_extra_cost()
+
+        # Add Extra Cost
+        extra_cost_add = ExtraCostAdd(driver)
+        assert extra_cost_add.element_visible(), "ExtraCostAdd not open!"
+
+        if not extra_cost_add.input_articles():
+            # ExpenseArticleAdd
+            expense_article_add = ExpenseArticleAdd(driver)
+            assert expense_article_add.element_visible(), "ExpenseArticleAdd not open!"
+            expense_article_add.input_name(expense_article_name)
+            expense_article_add.click_save_button()
+            assert extra_cost_add.element_visible(), "ExtraCostAdd not open after ExpenseArticleAdd!"
+
+        extra_cost_add.input_corr_templates(corr_template_name)
+        extra_cost_add.input_amount(extra_cost_amount)
+
+        note_text = random.randint(10000, 99999)
+        save_data("note_text_2", note_text)
+        extra_cost_add.input_note(note_text)
+        extra_cost_add.click_price_checkbox(method="Q")
+        extra_cost_add.click_save_button(post=True)
+
+        # Add: 3
+        assert purchase_add.element_visible(), "PurchaseAdd not open after ExtraCostAdd!"
+        purchase_add.click_calc_extra_cost_button()
+        purchase_add.click_next_step_button()
+
+        # Add: 4
+        assert purchase_add.element_visible(), "PurchaseAdd not open after Calc Extra Cost!"
+        purchase_number = random.randint(1000000, 99999999)
+        save_data("purchase_number_2", purchase_number)
+        purchase_add.input_purchase_number(purchase_number)
+        purchase_add.click_next_step_button(save_button=True)
+
+        # List
+        assert purchase_list.element_visible(), "PurchaseList not open after save!"
+        purchase_list.click_reload_button()
+        purchase_number = load_data("purchase_number_2")
+        assert purchase_number is not None, "purchase_number_2 not found!"
+        purchase_list.find_row(purchase_number)
+        purchase_list.click_view_button()
+
+        # View
+        purchase_view = PurchaseView(driver)
+        assert purchase_view.element_visible(), "PurchaseView not open!"
+        purchase_view.click_close_button()
+
+        # List
+        assert purchase_list.element_visible(), "PurchaseList not open after view!"
+        purchase_list.find_row(purchase_number)
+        purchase_list.click_report_button()
+        time.sleep(2)
+
+        # Check report
+        base_page.switch_window(direction="forward")
+
+        # Har bir mahsulotning bazaviy narxi
+        purchase_amount_1 = product_quantity_1 * product_price  # 20 * 12000 = 240_000
+        purchase_amount_2 = product_quantity_2 * product_price  # 100 * 12000 = 1_200_000
+
+        # Jami purchase narxi
+        total_purchase = purchase_amount_1 + purchase_amount_2  # 1_440_000
+
+        # Har bir mahsulotga extra cost ulushini hisoblash
+        extra_cost_1 = round((purchase_amount_1 / total_purchase) * extra_cost_amount)  # 20_000
+        extra_cost_2 = round((purchase_amount_2 / total_purchase) * extra_cost_amount)  # 100_000
+
+        # Yakuniy summalar (Qo‘shimcha xarajat bilan)
+        final_amount_1 = purchase_amount_1 + extra_cost_1  # 260_000
+        final_amount_2 = purchase_amount_2 + extra_cost_2  # 1_300_000
+
+        get_product_amount_rep_1 = purchase_list.get_extra_cost_amount_for_report(product_name)
+        get_product_amount_rep_2 = purchase_list.get_extra_cost_amount_for_report(product_name_2)
+
+        assert get_product_amount_rep_1 == final_amount_1, f"{get_product_amount_rep_1} != {final_amount_1}"
+        assert get_product_amount_rep_2 == final_amount_2, f"{get_product_amount_rep_2} != {final_amount_2}"
+
+        base_page.switch_window(direction="back")
+
+        # List
+        assert purchase_list.element_visible(), "PurchaseList not open after check report!"
+
+        base_page.logger.info(f"✅Test end: test_add_purchase_with_extra_cost_quantity")
 
     except AssertionError as ae:
         base_page.logger.error(f'Assertion error: {str(ae)}')

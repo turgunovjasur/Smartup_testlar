@@ -8,48 +8,46 @@ from tests.conftest import test_data
 from utils.exception import (
     ElementInteractionError,
     ElementVisibilityError,
-    ElementNotClickableError,
     log_exception_chain
 )
 
 
 def logout(driver):
-    login_page = LoginPage(driver)
-
     try:
+        base_page = BasePage(driver)
+        login_page = LoginPage(driver)
+
         login_page.click_navbar_button()
         if login_page.click_logout_button():
             return True
 
-    except (ElementNotClickableError, ElementInteractionError):
+    except Exception as e:
+        base_page.logger.debug(f"Dashboard Page: Error: {str(e)}")
         raise
-
-    except Exception:
-        raise ElementInteractionError
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 def login(driver, email, password):
-    login_page = LoginPage(driver)
-
     try:
+        base_page = BasePage(driver)
+        login_page = LoginPage(driver)
+
         login_page.element_visible()
         login_page.fill_form(email, password)
         login_page.click_button()
         return True
 
-    except (ElementNotClickableError, ElementInteractionError):
-        raise
-
-    except Exception:
+    except Exception as e:
+        base_page.logger.debug(f"Dashboard Page: Error: {str(e)}")
         raise
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 def dashboard(driver):
-    dashboard_page = DashboardPage(driver)
-
     try:
+        base_page = BasePage(driver)
+        dashboard_page = DashboardPage(driver)
+
         if dashboard_page.element_visible_session():
             dashboard_page.click_button_delete_session()
 
@@ -57,47 +55,39 @@ def dashboard(driver):
             raise ElementVisibilityError
         return True
 
-    except ElementInteractionError:
-        raise
-
-    except Exception:
+    except Exception as e:
+        base_page.logger.debug(f"Dashboard Page: Error: {str(e)}")
         raise
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 def login_system(driver, email, password, filial_name, url):
-    base_page = BasePage(driver)
-    dashboard_page = DashboardPage(driver)
-
     try:
+        base_page = BasePage(driver)
+        dashboard_page = DashboardPage(driver)
+
         if not login(driver, email, password):
             raise ElementInteractionError
 
         if not dashboard(driver):
             raise ElementInteractionError
 
-        if filial_name:
-            dashboard_page.find_filial(filial_name)
-
-        if url:
-            cut_url = base_page.cut_url()
-            base_page.open_new_window(cut_url + url)
-
+        dashboard_page.find_filial(filial_name)
+        cut_url = base_page.cut_url()
+        base_page.open_new_window(cut_url + url)
         return True
 
-    except ElementInteractionError:
-        raise
-
-    except Exception:
+    except Exception as e:
+        base_page.logger.debug(f"Dashboard Page: Error: {str(e)}")
         raise
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 def login_admin(driver, test_data, filial_name=None, email=None, password=None, url=None):
     """Admin sifatida tizimga kirish."""
-
-    base_page = BasePage(driver)
     try:
+        base_page = BasePage(driver)
+
         data = test_data["data"]
         filial_name = filial_name or data["Administration_name"]
         email = email or data["email"]
@@ -109,19 +99,17 @@ def login_admin(driver, test_data, filial_name=None, email=None, password=None, 
             raise ElementInteractionError
         return True
 
-    except ElementInteractionError:
-        raise
-
-    except Exception:
+    except Exception as e:
+        base_page.logger.debug(f"Dashboard Page: Error: {str(e)}")
         raise
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 def login_user(driver, test_data, filial_name=None, email=None, password=None, url=None):
     """User sifatida tizimga kirish."""
-
-    base_page = BasePage(driver)
     try:
+        base_page = BasePage(driver)
+
         data = test_data["data"]
         filial_name = filial_name or data["filial_name"]
         email = email or data["email_user"]
@@ -133,21 +121,18 @@ def login_user(driver, test_data, filial_name=None, email=None, password=None, u
             raise ElementInteractionError
         return True
 
-    except ElementInteractionError:
-        raise
-
-    except Exception:
+    except Exception as e:
+        base_page.logger.debug(f"Dashboard Page: Error: {str(e)}")
         raise
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 def test_grid_setting_(driver, test_data, option_name=None):
     """Test configuring grid settings."""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_grid_setting")
-
     try:
+        base_page = BasePage(driver)
+        base_page.logger.info("▶️ Running: test_grid_setting")
+
         # List
         grid_setting = GridSetting(driver)
         grid_setting.click_group_button()
