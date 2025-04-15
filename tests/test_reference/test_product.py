@@ -11,7 +11,7 @@ from utils.driver_setup import driver
 from tests.conftest import test_data
 
 
-def product_add(driver, test_data, product_name, supplier=False):
+def product_add(driver, test_data, product_name, supplier=False, weight_netto=None, weight_brutto=None, litre=None):
     """Test adding a product"""
 
     base_page = BasePage(driver)
@@ -45,9 +45,12 @@ def product_add(driver, test_data, product_name, supplier=False):
         inventory_add.click_goods_checkbox()
         if supplier:
             inventory_add.input_suppliers(supplier_name)
-        inventory_add.input_weight_netto(weight_netto=1000)
-        inventory_add.input_weight_brutto(weight_brutto=1200)
-        inventory_add.input_litre(litre=200)
+        if weight_netto is not None:
+            inventory_add.input_weight_netto(weight_netto)
+        if weight_brutto is not None:
+            inventory_add.input_weight_brutto(weight_brutto)
+        if litre is not None:
+            inventory_add.input_litre(litre)
         time.sleep(1)
         inventory_add.click_save_button()
 
@@ -105,7 +108,7 @@ def test_product_add_as_product_1(driver, test_data):
     # Test data
     data = test_data["data"]
     product_name = data["product_name"]
-    product_add(driver, test_data, product_name)
+    product_add(driver, test_data, product_name, weight_netto=1000, weight_brutto=1100, litre=100)
 
 
 def test_product_add_as_product_2(driver, test_data):
@@ -114,4 +117,4 @@ def test_product_add_as_product_2(driver, test_data):
     # Test data
     data = test_data["data"]
     product_name = data["product_name_2"]
-    product_add(driver, test_data, product_name, supplier=True)
+    product_add(driver, test_data, product_name, supplier=True, weight_netto=2000, weight_brutto=2100, litre=200)

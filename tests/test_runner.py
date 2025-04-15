@@ -7,8 +7,7 @@ from tests.test_reference.test_action import test_add_action
 from tests.test_finance.test_currency import test_currency_add
 from tests.test_reference.test_supplier import test_add_supplier
 from tests.test_order.test_order_return import test_order_return
-from tests.test_reference.test_product import test_product_add_as_product_1
-
+from tests.test_reference.test_product import test_product_add_as_product_1, test_product_add_as_product_2
 
 from tests.test_finance.test_contract import (
     test_add_contract_for_client_A_UZB,
@@ -18,7 +17,8 @@ from tests.test_finance.test_contract import (
 from tests.test_purchase.test_purchase import (
     test_add_purchase,
     test_add_extra_cost,
-    test_add_purchase_with_extra_cost_sum
+    test_add_purchase_with_extra_cost_sum, test_add_purchase_with_extra_cost_quantity,
+    test_add_purchase_with_extra_cost_weight_brutto
 )
 from tests.test_reference.test_client import (
     test_client_add_A,
@@ -109,7 +109,7 @@ test_cases = [
         # {"name": "Price Type Add (USA)", "func": test_price_type_add_USA},
         # {"name": "Payment Type Add",     "func": test_payment_type_add},
         # {"name": "Sector Add",           "func": test_sector_add},
-        {"name": "Add Product-1",        "func": test_product_add_as_product_1},
+        # {"name": "Add Product-1",        "func": test_product_add_as_product_1},
         #
         # {"name": "Check Price Tag", "func": test_check_price_tag},
         # {"name": "Currency Add",    "func": test_currency_add},
@@ -147,7 +147,7 @@ test_cases = [
         # {"name": "Edit Order For Price Type USA-C", "func": test_edit_order_for_price_type_USA},
         # {"name": "Test Setting Prepayment Off",     "func": test_setting_prepayment_off},
         #
-        {"name": "Add Template For Order Invoice Report", "func": test_add_template_for_order_invoice_report},
+        # {"name": "Add Template For Order Invoice Report", "func": test_add_template_for_order_invoice_report},
         # {"name": "Order Add For Sub Filial Select-C",     "func": test_order_add_for_sub_filial_select},
         # {"name": "Check Invoice Report For Order List-C", "func": test_check_invoice_report_for_order_list},
         # {"name": "Change Status Draft And Cancelled-C",   "func": test_change_status_draft_and_cancelled},
@@ -163,7 +163,11 @@ test_cases = [
         {"name": "Add Supplier",                     "func": test_add_supplier},
         {"name": "Add Purchase",                     "func": test_add_purchase},
         {"name": "Add Extra Cost",                   "func": test_add_extra_cost},
-        {"name": "Add Purchase With Extra Cost Sum", "func": test_add_purchase_with_extra_cost_sum},
+
+        {"name": "Add Purchase With Extra Cost Sum",           "func": test_add_purchase_with_extra_cost_sum},
+        {"name": "Add Product-2",                              "func": test_product_add_as_product_2},
+        {"name": "Add Purchase With Extra Cost Quantity",      "func": test_add_purchase_with_extra_cost_quantity},
+        {"name": "Add Purchase With Extra Cost Weight Brutto", "func": test_add_purchase_with_extra_cost_weight_brutto},
     ]
 
 @pytest.mark.parametrize("test_case", test_cases)

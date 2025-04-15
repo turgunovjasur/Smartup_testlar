@@ -17,10 +17,10 @@ def test_data():
         # "code_input": "autotest",
         # "code_input": "test",
         "code_input": "red_test",
-        # "cod": 5,
         "cod": 47,
         # "url": "https://smartup.merospharm.uz/login.html",
         "url": "https://app3.greenwhite.uz/xtrade/login.html",
+        # "url": "http://localhost:8081/smartup5x_trade/login.html",
         # "url": "https://smartup.online/login.html",
     }
     filial_data = {

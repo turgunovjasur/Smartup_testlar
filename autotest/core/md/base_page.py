@@ -717,9 +717,9 @@ class BasePage:
             try:
                 self._wait_for_all_loaders(log_text='get_text')
                 element_dom = self._wait_for_presence(locator)
+                element = self._wait_for_visibility(locator)
                 self._scroll_to_element(element_dom, locator)
 
-                element = self._wait_for_visibility(locator)
                 self.logger.info(f"Element: text -> '{element.text}'")
                 # return element.text if element else None
                 if element:
@@ -830,13 +830,7 @@ class BasePage:
     # ------------------------------------------------------------------------------------------------------------------
 
     def switch_window(self, direction="back"):
-        """
-        Oynalar o‘rtasida switch qilish.
 
-        :param direction:
-        "back" - avvalgi oynaga qaytadi,
-        "forward" - yangi oynaga o'tadi
-        """
         try:
             self._wait_for_all_loaders(log_text="switch_window")
 
@@ -850,9 +844,12 @@ class BasePage:
                 self.driver.close()  # joriy oynani yopadi
                 self.driver.switch_to.window(handles[-2])  # avvalgi oynaga o‘tadi
                 log_text = 'switch_to_previous_window'
+
             elif direction == "forward":
-                self.driver.switch_to.window(handles[-1])  # yangi ochilgan oynaga o‘tadi
+                self.driver.switch_to.window(self.driver.window_handles[-1])
+                # self.driver.switch_to.window(handles[-1])
                 log_text = 'switch_to_new_window'
+
             else:
                 self.logger.error(f"Noto‘g‘ri direction parametri: {direction}")
                 return False

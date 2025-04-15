@@ -77,7 +77,7 @@ def test_company_create(driver, test_data):
 
     try:
         # Login
-        login_admin(driver, test_data, data['email_company'], data['password_company'])
+        login_admin(driver, test_data, email=data['email_company'], password=data['password_company'])
 
         # Dashboard
         dashboard(driver)
@@ -152,16 +152,16 @@ def test_filial_create(driver, test_data):
 
         # Open Filial List
         filial_list = FilialList(driver)
-        # assert filial_list.element_visible(), "FilialList not open!"
-        # filial_list.click_add_button()
-        #
-        # # Add Filial
-        # filial_add = FilialAdd(driver)
-        # assert filial_add.element_visible(), "FilialAdd not open!"
-        # filial_add.input_name(filial_name)
-        # filial_add.input_base_currency_name(currency_code)
-        # filial_add.input_person_name(legal_person)
-        # filial_add.click_save_button()
+        assert filial_list.element_visible(), "FilialList not open!"
+        filial_list.click_add_button()
+
+        # Add Filial
+        filial_add = FilialAdd(driver)
+        assert filial_add.element_visible(), "FilialAdd not open!"
+        filial_add.input_name(filial_name)
+        filial_add.input_base_currency_name(currency_code)
+        filial_add.input_person_name(legal_person)
+        filial_add.click_save_button()
 
         # Verify in List
         assert filial_list.element_visible(), "FilialList not open after save!"
