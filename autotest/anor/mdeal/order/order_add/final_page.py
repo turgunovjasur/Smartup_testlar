@@ -40,7 +40,8 @@ class OrderAddFinal(BasePage):
         """Joriy sanaga `add_days` kun qo'shib, uni kiritish."""
 
         # Sana hisoblash
-        future_date = (datetime.now() + timedelta(days=add_days)).strftime("%d.%m.%Y %H:%M:%S")
+        # future_date = (datetime.now() + timedelta(days=add_days)).strftime("%d.%m.%Y %H:%M:%S")
+        future_date = (datetime.now() + timedelta(days=add_days)).strftime("%d.%m.%Y")
 
         # Input maydonlarga kiritish
         self.input_text(self.consignment_date_input, future_date)

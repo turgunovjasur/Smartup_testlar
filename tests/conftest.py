@@ -14,14 +14,14 @@ def test_data():
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
 
-        # "code_input": "autotest",
+        "code_input": "autotest",
         # "code_input": "test",
-        "code_input": "red_test",
-        "cod": 47,
+        # "code_input": "red_test",
+        "cod": 7,
         # "url": "https://smartup.merospharm.uz/login.html",
-        "url": "https://app3.greenwhite.uz/xtrade/login.html",
+        # "url": "https://app3.greenwhite.uz/xtrade/login.html",
         # "url": "http://localhost:8081/smartup5x_trade/login.html",
-        # "url": "https://smartup.online/login.html",
+        "url": "https://smartup.online/login.html",
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",

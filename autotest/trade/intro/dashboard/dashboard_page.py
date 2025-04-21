@@ -11,7 +11,7 @@ class DashboardPage(BasePage):
     def element_visible(self):
         try:
             self._wait_for_all_loaders(log_text='Dashboard or ChangePassword')
-            self._wait_for_visibility(self.dashboard_header, timeout=30)
+            self._wait_for_visibility(self.dashboard_header, timeout=10)
             self.logger.info("Dashboard Page: Successfully opened")
             return True
 
@@ -19,7 +19,7 @@ class DashboardPage(BasePage):
             self.logger.debug(f"Dashboard Page: Error: {str(e)}")
 
         try:
-            self._wait_for_visibility(self.save_button, timeout=30)
+            self._wait_for_visibility(self.save_button, timeout=2)
             self.logger.info("Dashboard Page (ChangePassword): Successfully opened")
             return True
 
