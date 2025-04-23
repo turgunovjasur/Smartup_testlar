@@ -4,7 +4,7 @@ from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
-class CisLink(BasePage):
+class SalesWork(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     header = (By.XPATH, '//button[@ng-click="page.close()"]')
 
@@ -34,7 +34,7 @@ class CisLink(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # Setting
     # ------------------------------------------------------------------------------------------------------------------
-    header_setting = (By.XPATH, '//button[@b-hotkey="close"]')
+    header_setting = (By.XPATH, '//button[@ng-click="q.show_setting = false"]')
 
     def element_visible_setting(self):
         return self.wait_for_element_visible(self.header_setting)
