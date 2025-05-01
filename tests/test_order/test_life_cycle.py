@@ -1,20 +1,13 @@
-import os
 import random
-import re
 import time
 import pytest
-from datetime import datetime, timedelta
 
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
 from autotest.anor.mdeal.order.order_add.order_request_view.order_request_view import OrderRequestView
 from autotest.anor.mdeal.order.order_request_list.order_request_list import OrderRequestList
-from autotest.anor.mk.currency_list.currency_list import CurrencyList
-from autotest.anor.mk.currency_view.currency_view import CurrencyView
-from autotest.anor.mkf.contract_add.contract_add import ContractAdd
-from autotest.anor.mkf.contract_list.contract_list import ContractList
-from autotest.anor.mkf.contract_view.contract_view import ContractView
+
 from autotest.anor.mkr.margin_add.margin_add import MarginAdd
 from autotest.anor.mkr.margin_list.margin_list import MarginList
 from autotest.anor.mkr.margin_list_attach.margin_list_attach import MarginListAttach
@@ -63,21 +56,28 @@ from autotest.trade.trf.room_list.room_list import RoomList
 from autotest.trade.trf.room_view.room_view import RoomView
 from tests.conftest import test_data
 from tests.test_base.test_base import dashboard, login_admin, login_user, logout
+from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 from utils.driver_setup import driver
-from utils.exception import log_exception_chain
 
 
 def test_company_create(driver, test_data):
     # Log
     base_page = BasePage(driver)
-    base_page.logger.info("Test run(▶️): test_company_creat")
+    base_page.logger.info("▶️ Running: test_company_create")
 
     # Test data
     data = test_data["data"]
+    email = data['email_company']
+    password = data['password_company']
+    code_input = data["code_input"]
+    name_company = data["name_company"]
+    plan_account = data["plan_account"]
+    bank_name = data["bank_name"]
 
     try:
         # Login
-        login_admin(driver, test_data, email=data['email_company'], password=data['password_company'])
+        login_admin(driver, test_data, email, password,
+                    dashboard_check=False, change_password_check=False, url=False)
 
         # Dashboard
         dashboard(driver)
@@ -87,42 +87,39 @@ def test_company_create(driver, test_data):
         # Main Navbar
         main_navbar = MainNavbar(driver)
         assert main_navbar.element_visible(), 'MainNavbar not open!'
-        base_page.logger.info('MainNavbar successfully opened.')
         main_navbar.click_company_button()
 
         # Company List
         company_list = CompanyList(driver)
         assert company_list.element_visible(), 'CompanyList not open!'
-        base_page.logger.info('CompanyList successfully opened.')
         company_list.click_add_button()
 
         # Company Add
         company_add = CompanyAdd(driver)
         assert company_add.element_visible(), 'CompanyAdd not open!'
-        base_page.logger.info('CompanyAdd successfully opened.')
-        company_add.input_code(data["code_input"])
-        company_add.input_name(data["name_company"])
-        company_add.input_plan_accounts(data["plan_account"])
-        company_add.input_bank(data["bank_name"])
+        company_add.input_code(code_input)
+        company_add.input_name(name_company)
+        company_add.input_plan_accounts(plan_account)
+        company_add.input_bank(bank_name)
         company_add.input_checkbox()
         company_add.click_save_button()
 
         # Verify Company List
         assert company_list.element_visible(), 'CompanyList not open after save!'
-        company_list.find_company(data["code_input"])
+        company_list.find_company(code_input)
         company_list.click_view_button()
 
         # Company View
         company_view = CompanyView(driver)
         assert company_view.element_visible(), 'CompanyView not open!'
         text = company_view.check_filial_text()
-        assert data["name_company"] == text, f'Expected company name "{data["name_company"]}", but got "{text}"'
-        base_page.logger.info(f"Company name verified: '{data['name_company']}'")
+        assert name_company == text, f'Expected company name "{name_company}", but got "{text}"'
 
         company_view.click_navbar_button()
         company_view.click_checkbox()
         company_view.click_close_button()
-        base_page.logger.info(f"✅ Company '{data['name_company']}' successfully added!")
+
+        base_page.logger.info(f"✅ Company '{name_company}' successfully added!")
 
     except AssertionError as ae:
         base_page.logger.error(f'AssertionError: {str(ae)}')
@@ -177,7 +174,11 @@ def test_filial_create(driver, test_data):
         filial_view.click_navbar_button()
         filial_view.click_project_checkbox()
         filial_view.click_checkbox_button()
+        filial_view.click_save_button()
         filial_view.click_close_button()
+
+        # Verify in List
+        assert filial_list.element_visible(), "FilialList not open after check project modul!"
 
         base_page.logger.info(f"✅ Filial '{filial_name}' added successfully!")
 
@@ -440,8 +441,8 @@ def test_adding_permissions_to_user(driver, test_data):
         # Edit Role
         role_edit = RoleEdit(driver)
         assert role_edit.element_visible(), "RoleEdit not open!"
-        if not role_edit.check_checkbox():
-            role_edit.click_checkboxes()
+        role_edit.checkbox_quantity()
+        role_edit.click_checkboxes()
         role_edit.click_save_button()
 
         # Verify in List
@@ -487,7 +488,8 @@ def test_user_change_password(driver, test_data):
 
     try:
         # Login
-        login_user(driver, test_data, filial_name=False, url=False)
+        login_user(driver, test_data, dashboard_check=False, change_password_check=True,
+                                      filial_name=False, url=False)
 
         # Change Password
         change_password = ChangePassword(driver)
@@ -497,6 +499,8 @@ def test_user_change_password(driver, test_data):
         change_password.input_rewritten_password(password_user)
         change_password.click_save_button()
         time.sleep(2)
+        dashboard_page = DashboardPage(driver)
+        assert dashboard_page.element_visible_dashboard(), "DashboardPage not open!"
 
         base_page.logger.info(f"✅ Password changed successfully!")
 
@@ -706,7 +710,7 @@ def test_sector_add(driver, test_data):
         pytest.fail(str(e))
 
 
-def test_check_price_tag(driver, test_data, minute_tolerance=1):
+def test_check_price_tag(driver, test_data):
     """Test checking a price tag"""
 
     base_page = BasePage(driver)
@@ -716,8 +720,6 @@ def test_check_price_tag(driver, test_data, minute_tolerance=1):
     data = test_data["data"]
     product_name = data["product_name"]
     price_type_name = data["price_type_name_UZB"]
-    price_tag_name = data["price_tag_name"]
-
 
     try:
         # Login
@@ -733,56 +735,9 @@ def test_check_price_tag(driver, test_data, minute_tolerance=1):
         price_tag = PriceTag(driver)
         assert price_tag.element_visible(), "PriceTag not open!"
         price_tag.input_product_name(product_name)
-
-        # Hozirgi vaqtni oldin olish
-        report_request_time = datetime.now()
-        time.sleep(1)
-
         price_tag.click_run_button()
-        time.sleep(3)
+        generate_and_verify_download(driver, file_name='PriceTag', file_type='xlsx')
 
-        price_tag.click_windows_enter()
-        time.sleep(5)
-
-        downloads_path = os.path.join(os.environ["USERPROFILE"], "Downloads")
-
-        # Yuklangan fayllarni olish va tekshirish
-        files = os.listdir(downloads_path)
-        files = [os.path.join(downloads_path, f) for f in files if f.endswith('.xlsx')]
-        files.sort(key=os.path.getctime, reverse=True)
-
-        latest_file = files[0] if files else None
-        assert latest_file is not None, "❌ Price Tag file not download!"
-
-        file_name = os.path.basename(latest_file)
-
-        base_page.logger.info(f"✅ Loaded filename: {file_name}")
-
-        # Regex
-        regex_pattern = rf"{price_tag_name}\((\d{{2}}\.\d{{2}}\.\d{{4}})\+(\d{{2}}_\d{{2}}(?:_\d{{2}})?)\)\.xlsx"
-        base_page.logger.info(f"🔎 Checked regex: {regex_pattern}")
-
-        match = re.search(regex_pattern, file_name)
-        assert match, f"❌ File name != regex: {file_name}"
-
-        file_date = match.group(1)  # 04.03.2025
-        file_time = match.group(2)  # 12_33 yoki 12_33_11
-        file_time = file_time[:5]  # Sekundni olib tashlaymiz (faqat HH:MM qoldiramiz)
-
-        file_datetime_str = f"{file_date} {file_time.replace('_', ':')}"  # "04.03.2025 12:33"
-        file_datetime = datetime.strptime(file_datetime_str, "%d.%m.%Y %H:%M")
-
-        lower_bound = report_request_time - timedelta(minutes=minute_tolerance)
-        upper_bound = report_request_time + timedelta(minutes=minute_tolerance)
-
-        base_page.logger.info(f"Checked time interval: {lower_bound.strftime('%d.%m.%Y %H:%M')} - {upper_bound.strftime('%d.%m.%Y %H:%M')}")
-        base_page.logger.info(f"File time: {file_datetime.strftime('%d.%m.%Y %H:%M')}")
-
-        assert lower_bound <= file_datetime <= upper_bound, (
-            f"❌ Downloaded file time incorrect: {file_datetime}, expected range: "
-            f"{lower_bound.strftime('%d.%m.%Y %H:%M')} - {upper_bound.strftime('%d.%m.%Y %H:%M')}")
-
-        base_page.logger.info(f"✅ Last loaded file: {latest_file} (time is right)")
         base_page.logger.info(f"✅Test end: check_price_tag")
 
     except AssertionError as ae:
@@ -1222,11 +1177,9 @@ def test_add_user_license(driver, test_data):
         base_page.logger.info(f"✅Test end: test_add_user_license ")
 
     except AssertionError as ae:
-        log_exception_chain(base_page.logger, ae)
         base_page.take_screenshot("assertion_error")
         pytest.fail(str(ae))
     except Exception as e:
-        log_exception_chain(base_page.logger, e)
         base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 
@@ -1262,11 +1215,9 @@ def test_add_van(driver, test_data):
         base_page.logger.info(f"✅Test end: test_add_van ")
 
     except AssertionError as ae:
-        log_exception_chain(base_page.logger, ae)
         base_page.take_screenshot("assertion_error")
         pytest.fail(str(ae))
     except Exception as e:
-        log_exception_chain(base_page.logger, e)
         base_page.take_screenshot("unexpected_error")
         pytest.fail(str(e))
 

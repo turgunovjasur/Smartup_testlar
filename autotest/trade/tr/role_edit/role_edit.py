@@ -17,15 +17,25 @@ class RoleEdit(BasePage):
         text = self.get_text(self.checkbox_text)
         return text.lower() == 'да'
     # ------------------------------------------------------------------------------------------------------------------
+    checkboxes = (By.XPATH, '//div[contains(@class,"mb-4")]//label/span')
+
+    def checkbox_quantity(self):
+        checkboxes = self._wait_for_presence_all(self.checkboxes)
+        print(f"Checkboxlar soni: {len(checkboxes)}")
+    # ------------------------------------------------------------------------------------------------------------------
 
     def click_checkboxes(self):
-        for i in range(2, 29):
-            checkbox = (By.XPATH, f'(//label/span)[{i}]')
+        xpath_string = '//div[contains(@class,"mb-4")]//label/span'
+        checkboxes = self._wait_for_presence_all((By.XPATH, xpath_string))
+        checkbox_quantity = len(checkboxes)
+
+        for i in range(1, checkbox_quantity + 1):
+            input_xpath = f'({xpath_string})[{i}]/ancestor::label/input[@type="checkbox"]'
             try:
-                self.click(checkbox)
-                # time.sleep(0.5)
+                time.sleep(0.1)
+                self.click_checkbox((By.XPATH, input_xpath), state=True)
             except Exception as e:
-                print(f"Checkbox {i} da xatolik: {str(e)}")
+                self.logger.warning(f"Checkbox {i} da xatolik: {str(e)}")
                 continue
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')

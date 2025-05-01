@@ -1,60 +1,40 @@
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
-from utils.exception import ElementInteractionError, LoaderTimeoutError, ElementVisibilityError
+from utils.exception import LoaderTimeoutError, ElementVisibilityError
 
 
 class DashboardPage(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     dashboard_header = (By.XPATH, "//div/h3[contains(text(), 'Trade')]")
+
+    def element_visible_dashboard(self):
+        return self.wait_for_element_visible(self.dashboard_header)
+    # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
 
-    def element_visible(self):
-        try:
-            self._wait_for_all_loaders(log_text='Dashboard or ChangePassword')
-            self._wait_for_visibility(self.dashboard_header, timeout=10)
-            self.logger.info("Dashboard Page: Successfully opened")
-            return True
-
-        except (ElementVisibilityError, LoaderTimeoutError) as e:
-            self.logger.debug(f"Dashboard Page: Error: {str(e)}")
-
-        try:
-            self._wait_for_visibility(self.save_button, timeout=2)
-            self.logger.info("Dashboard Page (ChangePassword): Successfully opened")
-            return True
-
-        except ElementVisibilityError as e:
-            self.logger.warning(f"Dashboard Page: Error: {str(e)}")
-
-        self.logger.error("Dashboard Page: Verification failed - elements not found")
-        return False
+    def element_visible_change_password(self):
+        return self.wait_for_element_visible(self.save_button)
     # ------------------------------------------------------------------------------------------------------------------
     filial_list_button = (By.XPATH, '//div[contains(@class, "hover")]//div[@class="pt-3 px-2"]')
 
     def find_filial(self, filial_name):
         self.click(self.filial_list_button)
-        self.find_row_and_click(element_name="filial_name",
-                                xpath_pattern=f"//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), '{filial_name}')]")
-
+        self.find_row_and_click(element_name="filial_name", xpath_pattern=f"//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), '{filial_name}')]")
     # ------------------------------------------------------------------------------------------------------------------
     # visible_session
     # ------------------------------------------------------------------------------------------------------------------
     active_session_header = (By.XPATH, "//h3/t[contains(text(),'Активные сеансы')]")
 
     def element_visible_session(self):
+        self._wait_for_all_loaders(log_text='Dashboard Page')
         try:
-            self._wait_for_all_loaders(log_text='Dashboard Page')
-            self._wait_for_visibility(self.active_session_header, timeout=5, error_message=False)
+            self.wait_for_element(self.active_session_header, timeout=5, wait_type="visibility", error_message=False)
             self.logger.info("‼️Old sessiya available!")
             return True
-
-        except LoaderTimeoutError:
-            raise
 
         except ElementVisibilityError:
             self.logger.info("Old sessiya not available! Waited for 5 seconds.")
             return False
-
     # ------------------------------------------------------------------------------------------------------------------
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 

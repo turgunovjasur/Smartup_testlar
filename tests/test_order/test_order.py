@@ -53,6 +53,8 @@ def order_add(driver, test_data,
         order_add_main.click_rooms_input(room_name)
         order_add_main.click_robots_input(robot_name)
         order_add_main.click_persons_input(client_name)
+        # order_add_main.get_persons_value()
+        # time.sleep(3)
         if sub_filial is True:
             order_add_main.click_sub_filial_input(sub_filial_name)
         if contract is True:

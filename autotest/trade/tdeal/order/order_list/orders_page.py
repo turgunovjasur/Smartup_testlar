@@ -97,7 +97,7 @@ class OrdersList(BasePage):
     def check_header_option(self, option_name):
         try:
             option = (By.XPATH, f'//div[contains(@class, "tbl-header")]//div[@sort-header="{option_name}"]')
-            element = self._wait_for_visibility(option)
+            element = self.wait_for_element(option, wait_type="visibility")
             self.logger.info(f'Header option appeared: {option_name}!')
             return element
 

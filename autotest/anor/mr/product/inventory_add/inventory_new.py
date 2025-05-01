@@ -12,8 +12,8 @@ class InventoryNew(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     name_input = (By.XPATH, '//div[@id= "anor66-input-text-name"]/input')
 
-    def input_name(self, name_elem):
-        self.input_text(self.name_input, name_elem)
+    def input_name(self, product_name):
+        self.input_text(self.name_input, product_name)
     # ------------------------------------------------------------------------------------------------------------------
     measurement_input = (By.XPATH, '//div[@id= "anor66-input-text-measure_short_name"]//b-input[@name="measures"]//input')
     measurement_elem = (By.XPATH, '//div[@id= "anor66-input-text-measure_short_name"]//b-input[@name="measures"]'
@@ -69,7 +69,7 @@ class InventoryNew(BasePage):
         """Error xabarini tekshirish va olish"""
 
         try:
-            self._wait_for_visibility(self.error_massage_xpath, timeout=5, error_message=False)
+            self.wait_for_element(self.error_massage_xpath, timeout=5, wait_type="visibility", error_message=False)
         except ElementVisibilityError:
             return False
 
@@ -83,5 +83,6 @@ class InventoryNew(BasePage):
     sectors_elem = (By.XPATH, '//b-input[@name="sectors"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
 
     def input_sectors(self, sector_name):
-        self.click_options(self.clear_button, self.sectors_elem, sector_name)
+        self.click(self.clear_button)
+        self.click_options(self.sectors_input, self.sectors_elem, sector_name)
     # ------------------------------------------------------------------------------------------------------------------

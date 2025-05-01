@@ -15,7 +15,7 @@ class LicenseUserList(BasePage):
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
     def click_all_checkbox(self):
-        element = self._wait_for_presence(self.all_checkbox)
+        element = self.wait_for_element(self.all_checkbox, wait_type="presence")
         self._click_js(element, self.all_checkbox)
         self.click(self.detach_checked_button)
         self.click(self.yes_button)
