@@ -8,7 +8,6 @@ class LoginPage(BasePage):
 
     def element_visible(self):
         return self.wait_for_element_visible(self.login_header)
-
     # ------------------------------------------------------------------------------------------------------------------
     email_input = (By.XPATH, '//input[@id="login"]')
     password_input = (By.XPATH, '//input[@id="password"]')

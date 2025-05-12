@@ -77,7 +77,7 @@ class OrderAddFinal(BasePage):
     booked_payment_amount_input = (By.XPATH, '//input[@ng-model="d.booked_payment_amount"]')
 
     def input_booked_payment_amount(self, prepayment_amount):
-        self.input_text(self.booked_payment_amount_input, prepayment_amount)
+        self.input_text(self.booked_payment_amount_input, prepayment_amount, check=True)
     # ------------------------------------------------------------------------------------------------------------------
     prev_step_button = (By.XPATH, '//button[@id="anor279-button-prev_step"]')
 

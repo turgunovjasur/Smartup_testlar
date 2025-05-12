@@ -1,5 +1,7 @@
 import allure
 import pytest
+
+from autotest.core.md.base_page import BasePage
 from tests.conftest import test_data
 from utils.driver_setup import driver
 
@@ -163,7 +165,7 @@ test_cases = [
         {"name": "Add Supplier",                     "func": test_add_supplier},
         {"name": "Add Purchase",                     "func": test_add_purchase},
         {"name": "Add Extra Cost",                   "func": test_add_extra_cost},
-        #
+
         {"name": "Add Purchase With Extra Cost Sum",           "func": test_add_purchase_with_extra_cost_sum},
         {"name": "Add Product-2",                              "func": test_product_add_as_product_2},
         {"name": "Add Purchase With Extra Cost Quantity",      "func": test_add_purchase_with_extra_cost_quantity},
@@ -172,6 +174,8 @@ test_cases = [
 
 @pytest.mark.parametrize("test_case", test_cases)
 def test_all(driver, test_data, save_data, load_data, test_case):
+    base_page = BasePage(driver)
+
     with allure.step(test_case["name"]):
         try:
             func_name = test_case["func"].__name__
@@ -195,6 +199,7 @@ def test_all(driver, test_data, save_data, load_data, test_case):
                 name=f"Assertion Error - {test_case['name']}",
                 attachment_type=allure.attachment_type.TEXT
             )
+            base_page.logger.error(f"❌ AssertionError: {str(ae)}")
             print(f"❌ {test_case['name']} failed with assertion error: {ae}")
             pytest.fail(f"Assertion failed: {test_case['name']}")
 
@@ -204,6 +209,8 @@ def test_all(driver, test_data, save_data, load_data, test_case):
                 name=f"Error Log - {test_case['name']}",
                 attachment_type=allure.attachment_type.TEXT
             )
+            base_page.logger.error(f"❌ Error: {str(e)}")
             print(f"❌ {test_case['name']} failed with error: {e}")
             pytest.fail(f"Test failed: {test_case['name']}. Stopping execution.")
+
 

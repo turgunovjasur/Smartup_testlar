@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
+from utils.exception import ElementVisibilityError
 
 
 class ChangePassword(BasePage):
@@ -30,5 +31,9 @@ class ChangePassword(BasePage):
 
     def click_save_button(self):
         self.click(self.save_button)
-        self.click(self.yes_button)
+        try:
+            self.click(self.yes_button)
+        except ElementVisibilityError as e:
+            self.logger.warning(f"Qayta urinish: {str(e)}")
+            self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------

@@ -48,19 +48,16 @@ class DashboardPage(BasePage):
 
     def click_main_button(self):
         self.click(self.main_button)
-
     # ------------------------------------------------------------------------------------------------------------------
     sales_button = (By.XPATH, "//li/a/span[contains(text(), 'Продажа')]")
 
     def click_sales_button(self):
         self.click(self.sales_button)
-
     # ------------------------------------------------------------------------------------------------------------------
     warehouse_button = (By.XPATH, "//ul/li[3]/a[@class='menu-link menu-toggle']")
 
     def click_warehouse_button(self):
         self.click(self.warehouse_button)
-
     # ------------------------------------------------------------------------------------------------------------------
     reference_button = (By.XPATH, "//li/a/span[contains(text(), 'Справочники')]")
 

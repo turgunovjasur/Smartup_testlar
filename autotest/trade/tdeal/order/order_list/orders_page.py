@@ -9,38 +9,32 @@ class OrdersList(BasePage):
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
-
     # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, "//button[@id='trade81-button-add']")
 
     def click_add_button(self):
         self.click(self.add_button)
-
     # ------------------------------------------------------------------------------------------------------------------
     view_button = (By.XPATH, "//button[@id='trade81-button-view']")
 
     def click_view_button(self):
         self.click(self.view_button)
-
     # ------------------------------------------------------------------------------------------------------------------
     edit_button = (By.XPATH, '//button[@id="trade81-button-edit"]')
 
     def click_edit_button(self):
         self.click(self.edit_button)
-
     # ------------------------------------------------------------------------------------------------------------------
     copy_button = (By.XPATH, '//button[@id="trade81-button-show_copy_modal"]')
 
     def click_copy_button(self):
         self.click(self.copy_button)
-
     # ------------------------------------------------------------------------------------------------------------------
     report_one_button = (By.XPATH, '//button[@id="trade81-button-report_one"]')
     options_report_one = (By.XPATH, '//button[@id="trade81-button-report_one"]/following-sibling::ul/li/a/span')
 
     def click_report_one_button(self, report_name):
         self.click_options(self.report_one_button, self.options_report_one, report_name)
-
     # ------------------------------------------------------------------------------------------------------------------
 
     def click_reports_all_button(self, report_name, all_button=False):
@@ -48,21 +42,18 @@ class OrdersList(BasePage):
             self.click(self.report_one_button)
         options = (By.XPATH, f'//button[@id="trade81-button-report_one"]/following-sibling::ul/li//*[self::span or self::t][contains(text(),"{report_name}")]')
         self.click(options)
-
     # ------------------------------------------------------------------------------------------------------------------
     invoice_report_one_button = (By.XPATH, '//div[@class="tbl-row-action"]//button/t[contains(text(),"Счет-фактуры")]')
 
     def click_invoice_reports_all_button(self, invoice_report_name):
         self.click(self.invoice_report_one_button)
-        options = (By.XPATH, f'//div[@class="tbl-row-action"]//button/following-sibling::ul/li//*[self::span or self::t][contains(text(),"{invoice_report_name}")]')
+        options = (By.XPATH, f'//span[contains(text(),"{invoice_report_name}")]/preceding-sibling::button[contains(@ng-click,"invoiceOne")]')
         self.click(options)
-
     # ------------------------------------------------------------------------------------------------------------------
     return_button = (By.XPATH, '//button[@id="trade81-button-edit"]')
 
     def click_return_button(self):
         self.click(self.return_button)
-
     # ------------------------------------------------------------------------------------------------------------------
     # Modal Copy
 
@@ -70,7 +61,6 @@ class OrdersList(BasePage):
 
     def element_visible_copy_title(self):
         return self.wait_for_element_visible(self.copy_title)
-
     # ------------------------------------------------------------------------------------------------------------------
     persons_input = (By.XPATH, '//b-input[@name="persons"]//input[@ng-model="_$bInput.searchValue"]')
     clear_button = (By.XPATH, '//b-input[@name="persons"]//span[@class="clear-button"]')
@@ -80,7 +70,6 @@ class OrdersList(BasePage):
         self.click(self.clear_button)
         self.click_options(self.persons_input, self.options_persons, client_name_A)
         self.click_options(self.persons_input, self.options_persons, client_name_B)
-
     # ------------------------------------------------------------------------------------------------------------------
     copy_save_button = (By.XPATH, '//button[@ng-click="copy()"]')
 

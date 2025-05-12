@@ -166,7 +166,8 @@ def test_return_id(driver, test_data):
 
         # Open Balance List
         cut_url = base_page.cut_url()
-        base_page.open_new_window(cut_url + 'anor/mkw/balance/balance_list')
+        # base_page.open_new_window(cut_url + 'anor/mkw/balance/balance_list')
+        base_page.switch_window(direction="new", url=cut_url + 'anor/mkw/balance/balance_list')
 
         balance_list = BalanceList(driver)
         assert balance_list.element_visible(), "BalanceList not open!"
