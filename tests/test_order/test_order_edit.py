@@ -1,5 +1,4 @@
 import time
-import pytest
 from autotest.anor.mdeal.order.order_add.create_order_page import OrderAddMain
 from autotest.anor.mdeal.order.order_add.final_page import OrderAddFinal
 from autotest.anor.mdeal.order.order_add.goods_page import OrderAddProduct
@@ -8,8 +7,7 @@ from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
 from tests.test_base.test_base import login_user
 from tests.test_order.test_cashin import test_cashin_add_C
-from utils.driver_setup import driver
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 
 
 def test_edit_order_with_consignment(driver, test_data):

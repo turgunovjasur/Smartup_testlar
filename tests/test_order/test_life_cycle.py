@@ -53,10 +53,9 @@ from autotest.trade.tr.role_list.role_list import RoleList
 from autotest.trade.trf.room_add.room_add import RoomAdd
 from autotest.trade.trf.room_list.room_list import RoomList
 from autotest.trade.trf.room_view.room_view import RoomView
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 from tests.test_base.test_base import dashboard, login_admin, login_user, logout
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
-from utils.driver_setup import driver
 from utils.exception import ElementNotFoundError
 
 
@@ -426,7 +425,7 @@ def test_user_change_password(driver, test_data):
     change_password.input_new_password(password_user)
     change_password.input_rewritten_password(password_user)
     change_password.input_current_password(password_user)
-
+    time.sleep(2)
     change_password.click_save_button()
     time.sleep(2)
 

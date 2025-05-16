@@ -2,8 +2,13 @@ import allure
 import pytest
 
 from autotest.core.md.base_page import BasePage
-from tests.conftest import test_data
-from utils.driver_setup import driver
+from tests.conftest import driver, test_data
+from tests.test_rep.integration.cislink.test_cislink import test_check_report_cis_link
+from tests.test_rep.integration.integration_three.test_integration_three import test_check_report_integration_three
+from tests.test_rep.integration.integration_two.test_integration_two import test_check_report_integration_two
+from tests.test_rep.integration.optimum.test_optimum import test_check_report_optimum
+from tests.test_rep.integration.saleswork.test_saleswork import test_check_report_sales_work
+from tests.test_rep.integration.spot.test_spot import test_check_report_spot_2d
 
 from tests.test_reference.test_action import test_add_action
 from tests.test_finance.test_currency import test_currency_add
@@ -92,8 +97,6 @@ from tests.test_order.test_order import (
 
 # All ------------------------------------------------------------------------------------------------------------------
 
-# pytest tests/test_runner.py::test_all -v --html=report.html --self-contained-html --alluredir=./allure-results
-# allure serve ./allure-results
 test_cases = [
         {"name": "Add Legal Person", "func": test_add_legal_person},
         {"name": "Filial Create",    "func": test_filial_create},
@@ -170,47 +173,61 @@ test_cases = [
         {"name": "Add Product-2",                              "func": test_product_add_as_product_2},
         {"name": "Add Purchase With Extra Cost Quantity",      "func": test_add_purchase_with_extra_cost_quantity},
         {"name": "Add Purchase With Extra Cost Weight Brutto", "func": test_add_purchase_with_extra_cost_weight_brutto},
+
+        {"name": "Check Report CisLink", "func": test_check_report_cis_link},
+        {"name": "Check Report Integration Three", "func": test_check_report_integration_three},
+        {"name": "Check Report Integration Two", "func": test_check_report_integration_two},
+        {"name": "Check Report Optimum", "func": test_check_report_optimum},
+        {"name": "Check Report Sales Work", "func": test_check_report_sales_work},
+        {"name": "Check Report Spot 2d", "func": test_check_report_spot_2d},
     ]
 
-@pytest.mark.parametrize("test_case", test_cases)
+# pytest tests/test_runner.py::test_all -v --self-contained-html --alluredir=./allure-results
+# allure serve ./allure-results
+# Parametrize uchun ID lar yaratish
+test_ids = [tc["name"] for tc in test_cases]
+
+@pytest.mark.parametrize("test_case", test_cases, ids=test_ids)
 def test_all(driver, test_data, save_data, load_data, test_case):
     base_page = BasePage(driver)
+    test_name = test_case["name"]
+    test_func = test_case["func"]
+    func_name = test_func.__name__
 
-    with allure.step(test_case["name"]):
+    with allure.step(test_name):
+        allure.dynamic.title(test_name)
+        base_page.logger.debug(f"{'='*10} {test_name} {'='*10}")
+        base_page.logger.info(f"▶️ Test started: {test_name}")
+
         try:
-            func_name = test_case["func"].__name__
-
+            # Maxsus argumentlar bilan ishlaydigan testlar
             if func_name == "test_add_purchase":
-                test_case["func"](driver, test_data, save_data)
-            elif func_name in ["test_add_extra_cost",
-                               "test_add_purchase_with_extra_cost",
-                               "test_add_purchase_with_extra_cost_sum",
-                               "test_add_purchase_with_extra_cost_quantity",
-                               "test_add_purchase_with_extra_cost_weight_brutto"]:
-                test_case["func"](driver, test_data, save_data, load_data)
+                test_func(driver, test_data, save_data)
+            elif func_name in {
+                "test_add_extra_cost",
+                "test_add_purchase_with_extra_cost",
+                "test_add_purchase_with_extra_cost_sum",
+                "test_add_purchase_with_extra_cost_quantity",
+                "test_add_purchase_with_extra_cost_weight_brutto"
+            }:
+                test_func(driver, test_data, save_data, load_data)
             else:
-                test_case["func"](driver, test_data)
+                test_func(driver, test_data)
 
-            print(f"✅ {test_case['name']} passed.")
+            base_page.logger.info(f"✅ Test passed: {test_name}")
 
         except AssertionError as ae:
-            allure.attach(
-                body=str(ae),
-                name=f"Assertion Error - {test_case['name']}",
-                attachment_type=allure.attachment_type.TEXT
-            )
-            base_page.logger.error(f"❌ AssertionError: {str(ae)}")
-            print(f"❌ {test_case['name']} failed with assertion error: {ae}")
-            pytest.fail(f"Assertion failed: {test_case['name']}")
+            error_msg = f"Assertion failed: {test_name} -> {str(ae)}"
+            base_page.logger.error(error_msg)
+            base_page.logger.info(f"❌ Test failed: {test_name}")
+            allure.attach(body=error_msg, name=f"❌ {test_name}", attachment_type=allure.attachment_type.TEXT)
+            pytest.fail(error_msg, pytrace=True)
+            raise SystemExit(1)
 
         except Exception as e:
-            allure.attach(
-                body=str(e),
-                name=f"Error Log - {test_case['name']}",
-                attachment_type=allure.attachment_type.TEXT
-            )
-            base_page.logger.error(f"❌ Error: {str(e)}")
-            print(f"❌ {test_case['name']} failed with error: {e}")
-            pytest.fail(f"Test failed: {test_case['name']}. Stopping execution.")
-
-
+            error_msg = f"Exception: {test_name} -> {str(e)}"
+            base_page.logger.error(error_msg)
+            base_page.logger.info(f"❌ Test failed: {test_name}")
+            allure.attach(body=error_msg, name=f"❌ {test_name}", attachment_type=allure.attachment_type.TEXT)
+            pytest.fail(error_msg, pytrace=True)
+            raise SystemExit(1)

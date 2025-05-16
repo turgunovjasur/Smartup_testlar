@@ -26,7 +26,7 @@ class FilialAdd(BasePage):
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
     def input_base_currency_name(self, base_currency_cod):
-        self.click(self.base_currency_name_input)
+        # self.click(self.base_currency_name_input)
         self.click_options(self.base_currency_name_input, self.currency_options, base_currency_cod)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------

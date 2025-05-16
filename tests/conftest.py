@@ -1,6 +1,50 @@
 import json
 import os
 import pytest
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+
+
+driver_path = ChromeDriverManager().install()
+
+@pytest.fixture
+def driver(request, test_data):
+    data = test_data["data"]
+    url = data["url"]
+
+    service = ChromeService(driver_path)
+
+    # Fixturega parametr berish (default=False)
+    headless = request.config.getoption("--headless", default=False)
+
+    options = Options()
+    if headless:
+        options.add_argument("--headless=new")  # headless rejim yoqiladi
+
+    options.add_argument("--start-maximized")
+    options.add_argument("--force-device-scale-factor=0.90")
+    options.add_argument("--ignore-ssl-errors=yes")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--incognito")
+    options.add_argument("--disable-features=AutofillServerCommunication,PasswordManagerEnabled,PasswordCheck")
+    options.add_experimental_option("prefs", {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False
+    })
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
+
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.set_page_load_timeout(120)
+    driver.get(url)
+
+    yield driver
+    driver.quit()
 
 
 @pytest.fixture(scope="session")
@@ -17,8 +61,8 @@ def test_data():
         "code_input": "autotest",
         # "code_input": "test",
         # "code_input": "red_test",
-        "cod": 11,
-        # "cod": 50,
+        "cod": 20,
+        # "cod": 51,
         # "url": "https://smartup.merospharm.uz/login.html",
         # "url": "https://app3.greenwhite.uz/xtrade/login.html",
         # "url": "http://localhost:8081/smartup5x_trade/login.html",

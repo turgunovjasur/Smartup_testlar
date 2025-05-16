@@ -6,10 +6,9 @@ from autotest.anor.mdeal.order.order_add.order_select.order_select import OrderS
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 from tests.test_base.test_base import login_user
 from autotest.core.md.base_page import BasePage
-from utils.driver_setup import driver
 
 # Order Add ------------------------------------------------------------------------------------------------------------
 

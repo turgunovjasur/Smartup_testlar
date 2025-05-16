@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 

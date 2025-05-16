@@ -1,6 +1,5 @@
 import time
 import random
-import pytest
 from autotest.anor.mdeal.order.offset.offset.offset import Offset
 from autotest.anor.mdeal.order.offset.offset_detail_list.offset_detail_list import OffsetDetailList
 from autotest.anor.mdeal.order.offset.offset_list.offset_list import OffsetList
@@ -8,8 +7,8 @@ from autotest.core.md.base_page import BasePage
 from autotest.trade.tcs.cashin_add.cashin_add import CashinAdd
 from autotest.trade.tcs.cashin_list.cashin_list import CashinList
 from autotest.trade.tcs.cashin_view.cashin_view import CashinView
-from tests.test_base.test_base import test_data, login_user
-from utils.driver_setup import driver
+from tests.test_base.test_base import login_user
+from tests.conftest import driver, test_data
 
 
 def cashin_add(driver, test_data, client_name=None, login=True, amount=None):

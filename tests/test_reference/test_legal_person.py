@@ -4,8 +4,7 @@ from autotest.anor.mr.person.legal_person_list.legal_person_list import LegalPer
 from autotest.anor.mr.person.legal_person_view.legal_person_view import LegalPersonView
 from autotest.core.md.base_page import BasePage
 from tests.test_base.test_base import login_admin, login_user
-from utils.driver_setup import driver
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 
 
 def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
@@ -13,6 +12,7 @@ def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
 
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_legal_person_add")
+
     base_page.logger.info(f"Data: name='{person_name}'")
     url = 'anor/mr/person/legal_person_list'
 
@@ -47,7 +47,6 @@ def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
     text = legal_person_view.check_text()
 
     assert person_name == text, f"{person_name} != {text}"
-    base_page.logger.info(f"✅ Verified: '{person_name}'")
 
 
 def test_add_legal_person(driver, test_data):

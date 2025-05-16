@@ -4,8 +4,7 @@ from autotest.anor.mkf.contract_list.contract_list import ContractList
 from autotest.anor.mkf.contract_view.contract_view import ContractView
 from autotest.core.md.base_page import BasePage
 from tests.test_base.test_base import login_user
-from utils.driver_setup import driver
-from tests.conftest import test_data
+from tests.conftest import test_data, driver
 
 
 def contract_add(driver, test_data, client_name=None, contract_name=None, initial_amount=None,

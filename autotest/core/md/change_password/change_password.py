@@ -30,10 +30,11 @@ class ChangePassword(BasePage):
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
     def click_save_button(self):
-        self.click(self.save_button)
         try:
+            self.click(self.save_button)
             self.click(self.yes_button)
         except ElementVisibilityError as e:
             self.logger.warning(f"Qayta urinish: {str(e)}")
+            self.click(self.save_button)
             self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------

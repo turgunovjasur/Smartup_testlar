@@ -1,14 +1,11 @@
 import time
-
-import pytest
 from autotest.anor.mr.product.inventory_add.inventory_new import InventoryNew
 from autotest.anor.mr.product.inventory_list.inventory_list import InventoryList
 from autotest.anor.mr.product.product_set_price.product_set_price import ProductSetPrice
 from autotest.anor.mr.product.inventory_view.product_id import ProductId as ProductView
 from autotest.core.md.base_page import BasePage
 from tests.test_base.test_base import login_user
-from utils.driver_setup import driver
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 
 
 def product_add(driver, test_data, product_name, supplier=False, weight_netto=None, weight_brutto=None, litre=None):

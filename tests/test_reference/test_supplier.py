@@ -1,12 +1,10 @@
-import pytest
 from autotest.anor.mkw.supplier_add.supplier_add import SupplierAdd
 from autotest.anor.mkw.supplier_list.supplier_list import SupplierList
 from autotest.anor.mkw.supplier_product_list.supplier_product_list import SupplierProductList
 from autotest.anor.mkw.supplier_view.supplier_view import SupplierView
 from autotest.core.md.base_page import BasePage
 from tests.test_base.test_base import login_user
-from utils.driver_setup import driver
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 
 
 def test_add_supplier(driver, test_data):

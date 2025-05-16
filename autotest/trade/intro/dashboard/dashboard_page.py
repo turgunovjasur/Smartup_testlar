@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
-from utils.exception import LoaderTimeoutError, ElementVisibilityError
+from utils.exception import ElementVisibilityError
 
 
 class DashboardPage(BasePage):

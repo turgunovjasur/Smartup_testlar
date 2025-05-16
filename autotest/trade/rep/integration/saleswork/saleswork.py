@@ -1,5 +1,3 @@
-import time
-import pyautogui
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -21,23 +19,18 @@ class SalesWork(BasePage):
     def click_generate(self):
         self.click(self.generate_button)
     # ------------------------------------------------------------------------------------------------------------------
-    def click_enter_windows(self):
-        pyautogui.press('enter')
-        self.logger.info("Enter bosildi!")
-    # ------------------------------------------------------------------------------------------------------------------
-    def input_file_name_windows(self, file_name):
-        integer = f'{file_name}'
-        for init in integer:
-            pyautogui.write(init)
-            time.sleep(0.1)
-        self.logger.info(f"File name kiritildi: {file_name}")
-    # ------------------------------------------------------------------------------------------------------------------
     # Setting
     # ------------------------------------------------------------------------------------------------------------------
     header_setting = (By.XPATH, '//button[@ng-click="q.show_setting = false"]')
 
     def element_visible_setting(self):
         return self.wait_for_element_visible(self.header_setting)
+    # ------------------------------------------------------------------------------------------------------------------
+    product_groups_input = (By.XPATH, '//b-input[@name="product_groups"]//input')
+    options_product_groups = (By.XPATH, '//b-input[@name="product_groups"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def input_product_groups(self, product_group_name):
+        self.click_options(self.product_groups_input, self.options_product_groups, product_group_name)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
 

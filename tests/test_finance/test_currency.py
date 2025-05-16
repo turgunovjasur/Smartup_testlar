@@ -1,10 +1,8 @@
-import pytest
 from autotest.anor.mk.currency_list.currency_list import CurrencyList
 from autotest.anor.mk.currency_view.currency_view import CurrencyView
 from autotest.core.md.base_page import BasePage
 from tests.test_base.test_base import login_user
-from utils.driver_setup import driver
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 
 
 def test_currency_add(driver, test_data):

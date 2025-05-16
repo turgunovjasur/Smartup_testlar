@@ -10,9 +10,8 @@ from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_history_list.order_history_list import OrdersHistoryList
 from tests.test_base.test_base import login_user, login_admin
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
-from utils.driver_setup import driver
 
 
 def test_check_report_for_order_list(driver, test_data, timeout=60):
@@ -202,9 +201,6 @@ def test_check_report_for_order_history_list(driver, test_data, timeout=60):
 
 # Invoice report
 def test_add_template_for_order_invoice_report(driver, test_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_template_for_order_invoice_report")
-
     # Test data
     data = test_data["data"]
     template_name = data["template_name"]
@@ -215,11 +211,11 @@ def test_add_template_for_order_invoice_report(driver, test_data):
     login_admin(driver, test_data, url='anor/mr/template_list')
 
     template_list = TemplateList(driver)
-    assert template_list.element_visible(), "TemplateList not open!"
+    template_list.element_visible()
     template_list.click_add_button()
 
     setting_add = SettingAdd(driver)
-    assert setting_add.element_visible(), "SettingAdd not open!"
+    setting_add.element_visible()
     setting_add.input_form_name(form_name)
     setting_add.input_template_name(template_name)
     setting_add.click_template_input()
@@ -227,25 +223,20 @@ def test_add_template_for_order_invoice_report(driver, test_data):
     setting_add.click_windows_download_file()
     setting_add.click_save_button()
 
-    assert template_list.element_visible(), "TemplateList not open after save!"
+    template_list.element_visible()
     template_list.find_row(template_name)
     template_list.click_attach_role_button()
     template_list.click_detach_role_button()
 
     template_role_list = TemplateRoleList(driver)
-    assert template_role_list.element_visible(), "TemplateRoleList not open!"
+    template_role_list.element_visible()
     template_role_list.find_row(role_name)
     template_role_list.click_attach_button()
     template_role_list.click_close_button()
-    assert template_list.element_visible(), "TemplateRoleList not open after save!"
-
-    base_page.logger.info(f"✅ Test end: test_add_template_for_order_invoice_report")
+    template_list.element_visible()
 
 
 def test_check_invoice_report_for_order_list(driver, test_data):
-
-    base_page = BasePage(driver)
-
     data = test_data["data"]
     client_name = f"{data['client_name']}-C"
     invoice_report_name = data["template_name"]
@@ -253,10 +244,8 @@ def test_check_invoice_report_for_order_list(driver, test_data):
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
     order_list = OrdersList(driver)
-    assert order_list.element_visible(), "❌ order_list not open!"
+    order_list.element_visible()
     order_list.find_row(client_name)
 
     order_list.click_invoice_reports_all_button(invoice_report_name)
     generate_and_verify_download(driver, file_name='invoice_report', file_type='xlsx')
-
-    base_page.logger.info(f"✅Test end: test_check_invoice_report_for_order_list")

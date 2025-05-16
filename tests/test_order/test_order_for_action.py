@@ -1,5 +1,4 @@
 import time
-import pytest
 from autotest.anor.mdeal.order.order_add.create_order_page import OrderAddMain
 from autotest.anor.mdeal.order.order_add.final_page import OrderAddFinal
 from autotest.anor.mdeal.order.order_add.goods_page import OrderAddProduct
@@ -8,14 +7,10 @@ from autotest.core.md.base_page import BasePage
 from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
 from tests.test_base.test_base import login_user
-from tests.conftest import test_data
-from utils.driver_setup import driver
+from tests.conftest import driver, test_data
 
 
 def test_add_order_for_action(driver, test_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_order_for_action")
-
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -36,14 +31,14 @@ def test_add_order_for_action(driver, test_data):
     # Orders List
     order_list = OrdersList(driver)
     base_page = BasePage(driver)
-    assert order_list.element_visible(), 'OrdersList not open!'
+    order_list.element_visible()
     order_list.click_add_button()
 
     # ------------------------------------------------------------------------------------------------------------------
 
     # Order Step-1
     order_add_main = OrderAddMain(driver)
-    assert order_add_main.element_visible(), 'OrderAddMain not open!'
+    order_add_main.element_visible()
     order_add_main.click_rooms_input(room_name)
     order_add_main.click_robots_input(robot_name)
     order_add_main.click_persons_input(client_name)
@@ -55,16 +50,16 @@ def test_add_order_for_action(driver, test_data):
 
     # Order Step-2
     order_add_product = OrderAddProduct(driver)
-    assert order_add_product.element_visible(), 'OrderAddProduct not open!'
+    order_add_product.element_visible()
     order_add_product.click_setting_button()
 
     # Grid Setting
     grid_setting = GridSetting(driver)
-    assert grid_setting.element_visible(), '(OrderAddProduct) -> GridSetting not open!'
+    grid_setting.element_visible()
     grid_setting.click_save_default_button()
 
     # Order Step-2
-    assert order_add_product.element_visible(), 'OrderAddProduct not open!'
+    order_add_product.element_visible()
     order_add_product.input_name_product(product_name, warehouse_name, price_type_name)
     order_add_product.input_quantity(product_quantity)
     # order_add_product.click_percent_value_button(percent_value)
@@ -78,7 +73,7 @@ def test_add_order_for_action(driver, test_data):
 
     # Order Step-3
     order_add_final = OrderAddFinal(driver)
-    assert order_add_final.element_visible(), 'OrderAddFinal not open!'
+    order_add_final.element_visible()
     order_add_final.input_payment_type(payment_type_name)
     total_amount_margin = order_add_final.check_total_amount()  # 108
 
@@ -94,21 +89,21 @@ def test_add_order_for_action(driver, test_data):
     # ------------------------------------------------------------------------------------------------------------------
 
     # Orders List
-    assert order_list.element_visible(), 'OrdersList not open!'
+    order_list.element_visible()
     order_list.click_reload_button()
     order_list.find_row(client_name)
     order_list.click_view_button()
 
     # Orders View
     order_view = OrderView(driver)
-    assert order_view.element_visible(), 'OrderView not open!'
+    order_view.element_visible()
     order_id = order_view.check_order_id()
     base_page.logger.info(f"Order id: {order_id}")
     order_view.click_setting_button()
 
     # Grid Setting
     grid_setting = GridSetting(driver)
-    assert grid_setting.element_visible(), '(OrderView) -> GridSetting not open!'
+    grid_setting.element_visible()
     grid_setting.click_save_default_button()
 
     get_quantity, get_price, get_total_sum = order_view.check_items()
@@ -117,13 +112,9 @@ def test_add_order_for_action(driver, test_data):
     assert get_total_sum == total_sum, f"Error: get_total_sum: {get_total_sum} != total_sum: {total_sum}"
 
     order_view.click_close_button()
-    base_page.logger.info(f"✅ Test end: test_add_order_for_action")
 
 
 def test_edit_order_for_action(driver, test_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_edit_order_for_action")
-
     data = test_data["data"]
     product_price = data["product_price_USA"]
     client_name = f"{data['client_name']}-C"
@@ -136,7 +127,7 @@ def test_edit_order_for_action(driver, test_data):
     # Orders List
     order_list = OrdersList(driver)
     base_page = BasePage(driver)
-    assert order_list.element_visible(), 'OrdersList not open!'
+    order_list.element_visible()
     order_list.click_reload_button()
     order_list.find_row(client_name)
     order_list.click_edit_button()
@@ -145,31 +136,31 @@ def test_edit_order_for_action(driver, test_data):
 
     # Order Step-1
     order_add_main = OrderAddMain(driver)
-    assert order_add_main.element_visible(), 'OrderAddMain not open!'
+    order_add_main.element_visible()
     order_add_main.click_next_step_button()
 
     # ------------------------------------------------------------------------------------------------------------------
 
     # Order Step-2
     order_add_product = OrderAddProduct(driver)
-    assert order_add_product.element_visible(), 'OrderAddProduct not open!'
+    order_add_product.element_visible()
     order_add_product.input_quantity(edit_product_quantity)
     order_add_product.click_setting_button()
 
     # Grid Setting
     grid_setting = GridSetting(driver)
-    assert grid_setting.element_visible(), '(OrderAddProduct) -> GridSetting not open!'
+    grid_setting.element_visible()
     grid_setting.click_save_default_button()
 
     # Order Step-2
-    assert order_add_product.element_visible(), 'OrderAddProduct not open!'
+    order_add_product.element_visible()
     order_add_product.click_next_step_button()
 
     # ------------------------------------------------------------------------------------------------------------------
 
     # Order Step-3
     order_add_final = OrderAddFinal(driver)
-    assert order_add_final.element_visible(), 'OrderAddFinal not open!'
+    order_add_final.element_visible()
     total_amount_margin = order_add_final.check_total_amount()  # 96
     assert total_amount_margin == edit_product_quantity * product_price, \
         f"{total_amount_margin} != {edit_product_quantity} * {product_price}"
@@ -180,21 +171,21 @@ def test_edit_order_for_action(driver, test_data):
     # ------------------------------------------------------------------------------------------------------------------
 
     # Orders List
-    assert order_list.element_visible(), 'OrdersList not open after save!'
+    order_list.element_visible()
     order_list.click_reload_button()
     order_list.find_row(client_name)
     order_list.click_view_button()
 
     # Orders View
     order_view = OrderView(driver)
-    assert order_view.element_visible(), 'OrderView not open!'
+    order_view.element_visible()
     order_id = order_view.check_order_id()
     base_page.logger.info(f"Order id: {order_id}")
     order_view.click_setting_button()
 
     # Grid Setting
     grid_setting = GridSetting(driver)
-    assert grid_setting.element_visible(), '(OrderView) -> GridSetting not open!'
+    grid_setting.element_visible()
     grid_setting.click_save_default_button()
 
     get_quantity, get_price, get_total_sum = order_view.check_items()
@@ -203,4 +194,3 @@ def test_edit_order_for_action(driver, test_data):
     assert get_total_sum == total_amount_margin, f"Error: get_total_sum: {get_total_sum} != total_amount_margin: {total_amount_margin}"
 
     order_view.click_close_button()
-    base_page.logger.info(f"✅ Test end: test_edit_order_for_action")

@@ -2,7 +2,7 @@ from autotest.biruni.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.login_page import LoginPage
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 
 
 def logout(driver):

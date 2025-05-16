@@ -38,7 +38,7 @@ class BasePage:
         self.test_name = get_test_name()
         self.logger = configure_logging(self.test_name)
         self.default_timeout = 20
-        self.default_page_load_timeout = 180
+        self.default_page_load_timeout = 120
         self.actions = ActionChains(driver)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -281,7 +281,6 @@ class BasePage:
 
     # ------------------------------------------------------------------------------------------------------------------
 
-
     def _scroll_to_element(self, element, locator, timeout=None):
         """Elementga scroll qilish."""
 
@@ -330,6 +329,7 @@ class BasePage:
             self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
             raise ElementInteractionError(message, locator, e)
 
+    # ------------------------------------------------------------------------------------------------------------------
 
     def wait_for_element(self, locator, timeout=None, wait_type="presence", error_message=True):
         """
@@ -799,40 +799,52 @@ class BasePage:
             self.logger.info(f"Option avvaldan tanlangan: {selected_text}")
             return True
         else:
+            self.logger.info(f"Input tozalanmoqda...")
             self.clear_element(input_locator)
+            return False
 
 
     def click_options(self, input_locator, options_locator, element_text, scroll=30):
         """
         Dropdown bilan ishlash uchun funksiya.
         options_locator = (By.XPATH, '//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
         """
+
         page_name = self.__class__.__name__
-        self.logger.debug(f"{page_name}: Running: -> click_options: {input_locator}")
+        self.logger.debug(f"{page_name}: Running -> click_options: {element_text} - {input_locator}")
 
         try:
-            if self._is_choose_dropdown_option(input_locator, element_text=element_text):
+            # 1-qadam: Avvaldan tanlanganligini tekshirish
+            if self._is_choose_dropdown_option(input_locator, element_text):
                 return True
 
-            # 1. Dropdown'ni ochish
-            element_visibility = self.wait_for_element(input_locator, timeout=10, wait_type="clickable")
-            self._click(element_visibility, input_locator)
+            # 2-qadam: Dropdown ochish uchun inputga click qilish
+            element_clickable = self.wait_for_element(input_locator, wait_type="clickable")
+            self._click(element_clickable, input_locator)
 
-            # 2. Optionlarning to'liq yuklanishini kutish
-            self.logger.info(f"Optionlar yuklanmoqda...")
+            # 3-qadam: Optionlar yuklanishini kutish
+            self.logger.info("Optionlar yuklanmoqda...")
             try:
                 options = self._wait_for_presence_all(options_locator, visible_only=True)
             except ElementNotFoundError:
-                self.logger.warning(f"Optionlar yuklanmadi, qayta urinish...")
-                if self._is_choose_dropdown_option(input_locator, element_text=element_text):
-                    return True
+                self.logger.warning("Optionlar DOM da topilmadi!")
+                if self._is_choose_dropdown_option(input_locator, element_text):
+                    return True  # DOMda yo‘q, ammo allaqachon tanlangan
+                raise  # DOMda yo‘q va tanlanmagan → xatoni qayta chiqarish
 
-            # 3. Optionni birinchi ekranda qidirish
+            # Agar ro‘yxat bo‘sh bo‘lsa
+            if not options:
+                self.logger.warning("Optionlar ro‘yxati bo‘sh (visible_only=True)")
+                if self._is_choose_dropdown_option(input_locator, element_text):
+                    return True  # bo‘sh ro‘yxat, lekin allaqachon tanlangan
+
+            # 4-qadam: Option ichidan qidirib topish va bosish
             if self._find_and_click_option(element_text, options, options_locator):
                 if self._check_dropdown_closed(options_locator):
                     return True
 
-            # 4. Scroll qilishga tayyorgarlik
+            # Agar topilmasa scroll orqali qidirish
             self.logger.info(f"{element_text} topilmadi. Scroll orqali qidirilmoqda...")
             dropdown_container = self._find_visible_container(options_locator)
 
@@ -840,29 +852,30 @@ class BasePage:
                 self.driver.execute_script("arguments[0].scrollTop += arguments[0].offsetHeight;", dropdown_container)
                 time.sleep(0.5)
 
-                options = self._wait_for_presence_all(options_locator)
+                options = self._wait_for_presence_all(options_locator, visible_only=True)
                 if self._find_and_click_option(element_text, options, options_locator):
                     if self._check_dropdown_closed(options_locator):
                         return True
 
-                # Scroll holatini tekshirish
+                # Scroll tugaganligini aniqlash
                 current_scroll = self.driver.execute_script("return arguments[0].scrollTop;", dropdown_container)
-                max_scroll = self.driver.execute_script("return arguments[0].scrollHeight - arguments[0].clientHeight;",
-                                                        dropdown_container)
+                max_scroll = self.driver.execute_script(
+                    "return arguments[0].scrollHeight - arguments[0].clientHeight;", dropdown_container
+                )
                 if current_scroll >= max_scroll:
                     self.logger.info(f"{page_name}: Scroll oxiriga yetildi.")
                     break
 
-            # 5. Element topilmadi
+            # Option topilmasa xatolik
             message = f"{page_name}: '{element_text}' barcha urinishlardan so‘ng ham topilmadi"
             self.logger.warning(message)
             raise ElementNotFoundError(message, options_locator)
 
         except Exception as e:
-            message = f"{page_name}: click_options() da kutilmagan xatolik"
-            self.logger.error(f"{message}: {str(e)}")
+            message = f"{page_name}: click_options() da kutilmagan xatolik - {str(e)}"
+            self.logger.error(message)
             self.take_screenshot(f"{page_name.lower()}_click_options_error")
-            raise ElementInteractionError(message, options_locator, e)
+            raise
 
 
     def _find_and_click_option(self, element, options, options_locator):
@@ -968,7 +981,7 @@ class BasePage:
             message = f"Konteyner qidirishda kutilmagan xato"
             self.logger.error(f"{page_name}: {message}: {str(e)}")
             self.take_screenshot(f"{page_name.lower()}_dropdown_error")
-            raise ElementInteractionError(message, options_locator, e)
+            raise
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -1064,7 +1077,7 @@ class BasePage:
         message = f"Element barcha usullar bilan bosilmadi ({attempt}/{retries})"
         self.logger.error(f"{page_name}: {message}: {row_locator}: {str(e)}")
         self.take_screenshot(f"{page_name.lower()}_click_row_error")
-        raise ElementInteractionError(message, row_locator, e)
+        raise
 
     # ------------------------------------------------------------------------------------------------------------------
 

@@ -1,11 +1,9 @@
-import pytest
 from autotest.anor.mcg.action_add.action_add import ActionAdd
 from autotest.anor.mcg.action_list.action_list import ActionList
 from autotest.anor.mcg.action_view.action_view import ActionIdView
 from autotest.core.md.base_page import BasePage
 from tests.test_base.test_base import login_user
-from utils.driver_setup import driver
-from tests.conftest import test_data
+from tests.conftest import driver, test_data
 
 
 def test_add_action(driver, test_data):
