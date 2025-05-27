@@ -58,15 +58,12 @@ def test_data():
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
 
-        "code_input": "autotest",
-        # "code_input": "test",
-        # "code_input": "red_test",
-        "cod": 20,
-        # "cod": 51,
-        # "url": "https://smartup.merospharm.uz/login.html",
-        # "url": "https://app3.greenwhite.uz/xtrade/login.html",
-        # "url": "http://localhost:8081/smartup5x_trade/login.html",
-        "url": "https://smartup.online/login.html",
+        # "code_input": "autotest",
+        "code_input": "red_test",
+        # "cod": 21,
+        "cod": 51,
+        # "url": "https://smartup.online/login.html",
+        "url": "https://app3.greenwhite.uz/xtrade/login.html",
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -97,18 +94,26 @@ def test_data():
         "warehouse_name": "Основной склад",
         "cash_register_name": "Основная касса",
         "measurement_name": "Количество",
+        "payment_type_name": "Наличные деньги",
+        "price_tag_name": "Ценник",
 
         "price_type_name_UZB": f"Цена продажи UZB-{base_data['cod']}",
         "price_type_name_USA": f"Цена продажи USA-{base_data['cod']}",
-        "price_tag_name": "Ценник",
-
         "margin_name": f"Test_margin-{base_data['cod']}",
         "percent_value": 5,
-
-        "payment_type_name": "Наличные деньги",
         "product_quantity": 1_000,
+
         "product_price": 12_000,
         "product_price_USA": 12,
+
+        "product_weight_brutto": 1_100,
+        "product_weight_brutto_2": 2_100,
+
+        "product_weight_netto": 1_000,
+        "product_weight_netto_2": 2_000,
+
+        "product_litre": 100,
+        "product_litre_2": 200,
     }
     order_status = {
         "Draft": "Черновик",
@@ -139,39 +144,47 @@ def test_data():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-DATA_STORE_FILE = "data_store.json"
+# 🔹 Umumiy JSON fayl manzili
+DATA_STORE_FILE = os.path.join(os.path.dirname(__file__), "data_store.json")
 
-# 🔸 Umumiy yozuvchi
+
+# 🔸 JSON ga ma'lumot yozuvchi fixture
 @pytest.fixture(scope="session")
 def save_data():
     def _save(key, value):
         data = {}
+
+        # Agar fayl mavjud bo‘lsa, mavjud ma'lumotlarni o‘qib olamiz
         if os.path.exists(DATA_STORE_FILE):
-            with open(DATA_STORE_FILE, "r") as f:
+            with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
                 try:
                     data = json.load(f)
                 except json.JSONDecodeError:
                     data = {}
 
+        # Yangi qiymatni qo‘shamiz
         data[key] = value
 
-        with open(DATA_STORE_FILE, "w") as f:
-            json.dump(data, f, indent=4)
+        # JSON faylga yozamiz
+        with open(DATA_STORE_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+
     return _save
 
 
-# 🔸 Umumiy o‘quvchi
+# 🔸 JSON dan ma'lumot o‘quvchi fixture
 @pytest.fixture(scope="session")
 def load_data():
     def _load(key):
         if os.path.exists(DATA_STORE_FILE):
-            with open(DATA_STORE_FILE, "r") as f:
+            with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
                 try:
                     data = json.load(f)
                     return data.get(key)
                 except json.JSONDecodeError:
                     return None
         return None
+
     return _load
 
 # ----------------------------------------------------------------------------------------------------------------------

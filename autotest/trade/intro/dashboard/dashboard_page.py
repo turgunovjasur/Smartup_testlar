@@ -28,8 +28,8 @@ class DashboardPage(BasePage):
     def element_visible_session(self):
         self._wait_for_all_loaders(log_text='Dashboard Page')
         try:
-            self.wait_for_element(self.active_session_header, timeout=5, wait_type="visibility", error_message=False)
-            self.logger.info("‼️Old sessiya available!")
+            self.wait_for_element(self.active_session_header, timeout=2, wait_type="visibility", error_message=False)
+            self.logger.info("Old sessiya available!")
             return True
 
         except ElementVisibilityError:

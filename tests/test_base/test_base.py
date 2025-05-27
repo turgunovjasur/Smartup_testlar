@@ -21,9 +21,10 @@ def login(driver, test_data, email, password):
     email = email or data["email"]
     password = password or data["password"]
 
-    assert login_page.element_visible(), "LoginPage not open!"
+    login_page.element_visible()
     login_page.fill_form(email, password)
     login_page.click_button()
+    login_page.check_error_message_absence()
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -35,15 +36,16 @@ def dashboard(driver, dashboard_check=False, change_password_check=False, filial
         dashboard_page.click_button_delete_session()
 
     if dashboard_check:
-        assert dashboard_page.element_visible_dashboard(), "DashboardPage not open!"
+        dashboard_page.element_visible_dashboard()
 
     if change_password_check:
-        assert dashboard_page.element_visible_change_password(), "ChangePassword Page not open!"
+        dashboard_page.element_visible_change_password()
 
     if filial_name:
         dashboard_page.find_filial(filial_name)
 
     if url:
+        base_page.switch_window(direction="prepare")
         cut_url = base_page.cut_url()
         base_page.switch_window(direction="new", url=cut_url + url)
 
@@ -100,18 +102,13 @@ def login_user(driver, test_data,
 
 def test_grid_setting_(driver, test_data, option_name=None):
     """Test configuring grid settings."""
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_grid_setting")
-
     # List
     grid_setting = GridSetting(driver)
     grid_setting.click_group_button()
 
     # Grid Setting
-    assert grid_setting.element_visible(), 'GridSetting not open!'
+    grid_setting.element_visible()
     grid_setting.click_options_button(option_name)
     grid_setting.click_save_button()
-
-    base_page.logger.info(f"✅Test end: test_grid_setting")
 
 # ----------------------------------------------------------------------------------------------------------------------

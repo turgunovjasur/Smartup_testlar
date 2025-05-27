@@ -2,22 +2,20 @@ from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
 
-class InputId(BasePage):
+class InputView(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    input_id_header = (By.XPATH, "//h5/t[contains(text(),'Основная информация')]")
+    header = (By.XPATH, "//h5/t[contains(text(),'Основная информация')]")
 
     def element_visible(self):
-        self.wait_for_element_visible(self.input_id_header)
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    inventory_button = (By.XPATH, "//div[@id='anor390-navbar_item-items']/a")
+    get_input_number = (By.XPATH, '//div[@id="anor390-navbar-header-information"]//t[@p1="d.input_number"]')
 
-    def fill_form(self):
-        self.click(self.inventory_button)
+    def check_input_number(self):
+        return self.get_numeric_value(self.get_input_number)
     # ------------------------------------------------------------------------------------------------------------------
-    total_amount = (By.XPATH, "//div[@class='tbl-row ng-scope']/div[10]")
-    quantity = (By.XPATH, "//div[@class='tbl-row ng-scope']/div[8]")
+    close_button = (By.XPATH, '//button[@ng-click="page.close()"]')
 
-    def get_elements(self):
-        self.check_count(self.total_amount)
-        self.check_count(self.quantity)
+    def click_close_button(self):
+        self.click(self.close_button)
     # ------------------------------------------------------------------------------------------------------------------

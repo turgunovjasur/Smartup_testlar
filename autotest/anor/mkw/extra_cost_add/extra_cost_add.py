@@ -16,7 +16,6 @@ class ExtraCostAdd(BasePage):
     def input_articles(self):
         self.click(self.articles_input)
         try:
-            # self._wait_for_visibility(self.get_row, timeout=5, error_message=False)
             self.wait_for_element(self.get_row, timeout=5, wait_type="visibility", error_message=False)
             self.click(self.get_row)
             return True

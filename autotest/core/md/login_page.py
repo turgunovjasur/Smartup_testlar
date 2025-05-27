@@ -21,10 +21,15 @@ class LoginPage(BasePage):
     def click_button(self):
         self.click(self.signup_button)
     # ------------------------------------------------------------------------------------------------------------------
-    error_massage = (By.XPATH, "//span[@id='error']")
+    error_message = (By.XPATH, "//span[@id='error']")
 
-    def get_error_text(self):
-        self.wait_for_element_visible(self.error_massage)
+    def check_error_message_absence(self):
+        element = self.wait_for_element(self.error_message, wait_type="presence", error_message=False)
+        text = element.get_attribute("textContent").strip().replace("\xa0", "").replace("\n", "")
+        if text:
+            self.logger.error(f"Error text identified: '{text}'")
+            self.take_screenshot(f"login_page_error_message")
+            raise AssertionError("An unexpected error came out on the login page.")
     # ------------------------------------------------------------------------------------------------------------------
     # Logout
     # ------------------------------------------------------------------------------------------------------------------

@@ -1,8 +1,14 @@
+import json
+import operator
 import os
 import re
 import time
+from collections import defaultdict
+
 import allure
 from datetime import datetime
+
+from mouseinfo import screenshot
 from selenium.webdriver import Keys
 from colorama import init
 from selenium.webdriver.common.by import By
@@ -37,8 +43,8 @@ class BasePage:
         self.driver = driver
         self.test_name = get_test_name()
         self.logger = configure_logging(self.test_name)
-        self.default_timeout = 20
-        self.default_page_load_timeout = 120
+        self.default_timeout = 10
+        self.default_page_load_timeout = 60
         self.actions = ActionChains(driver)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -102,6 +108,8 @@ class BasePage:
         self.logger.error(message)
         raise LoaderTimeoutError(message)
 
+    # ------------------------------------------------------------------------------------------------------------------
+
     def _wait_for_block_ui_absence(self, timeout=None, retry_interval=0.5):
         """Block UI yo'qolishini kutish. JavaScript va DOM orqali Block UI holatini tekshiradi."""
 
@@ -153,6 +161,8 @@ class BasePage:
         message = f"Block UI {timeout}s ichida yo'qolmadi (Jami vaqt: {total_time:.2f}s)"
         self.logger.error(message)
         raise LoaderTimeoutError(message, locator=block_ui_selector)
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     def _check_spinner_absence(self, timeout=None, retry_interval=0.5):
         timeout = timeout or self.default_timeout
@@ -214,6 +224,8 @@ class BasePage:
         self.logger.error(message)
         raise LoaderTimeoutError(message, locator)
 
+    # ------------------------------------------------------------------------------------------------------------------
+
     def _wait_for_all_loaders(self, timeout=None, log_text=None):
         """Sahifaning to'liq barqaror holatga kelishini kutish."""
 
@@ -245,14 +257,10 @@ class BasePage:
             self.logger.warning(message)
             errors.append(message)
 
-        if len(errors) == 3:
             full_error_message = "\n".join(errors)
             self.logger.error(f"{status_text} Barcha yuklanish funksiyalari muvaffaqiyatsiz tugadi.\n{full_error_message}")
             self.take_screenshot("timeout_error")
             raise LoaderTimeoutError(message=full_error_message)
-
-        self.logger.debug(f"{'='*10} {status_text} Finished waiting {'='*10}")
-        return True
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -267,6 +275,8 @@ class BasePage:
             if error_message:
                 self.logger.warning(f"❗{'Retry ' if retry else ''}Click ishlamadi: {locator}")
             return False
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     def _click_js(self, element, locator=None, retry=False):
         """JavaScript orqali majburiy bosish."""
@@ -331,7 +341,7 @@ class BasePage:
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def wait_for_element(self, locator, timeout=None, wait_type="presence", error_message=True):
+    def wait_for_element(self, locator, timeout=None, wait_type="presence", error_message=True, screenshot=None):
         """
         Umumiy kutish funksiyasi:
         - "presence" => DOMda mavjudligini kutadi
@@ -366,6 +376,8 @@ class BasePage:
             message = f"Element {timeout}s ichida {wait_type} shartiga yetmadi."
             if error_message:
                 self.logger.warning(f"{page_name}: {message}: {locator}: {str(e)}")
+            if screenshot:
+                self.take_screenshot(f"{page_name}_{screenshot}")
 
             if wait_type == "visibility":
                 raise ElementVisibilityError(message, locator, e)
@@ -722,38 +734,71 @@ class BasePage:
             raise
 
     # ------------------------------------------------------------------------------------------------------------------
-
     def switch_window(self, direction, url=None):
-        """Brauzer oynalar o'rtasida o'tish funksiyasi.
+        """
+        Brauzer oynalar (tabs/windows) o‘rtasida o'tishni amalga oshiradi.
 
-        direction:
-        - "back" => avvalgi oynaga o‘tadi
-        - "forward" => yangi oynaga o‘tadi
-        - "new" => yangi oynaga berilgan url bilan o‘tadi
+        Parameters:
+            direction (str):
+                - "prepare" -> hozirgi oynalar ro‘yxatini eslab qoladi
+                - "back"    -> avvalgi oynaga o‘tadi (joriy oynani yopadi)
+                - "forward" -> yangi oyna ochilganini aniqlaydi va unga o‘tadi
+                - "new"     -> yangi tab ochadi va URL'ga o'tadi
         """
         try:
-            self._wait_for_all_loaders(log_text="switch_window")
-
             current_window_id = self.driver.current_window_handle
-            handles = self.driver.window_handles
+            self.logger.debug(f"Joriy oyna ID: {current_window_id}")
 
-            if direction == "back":
-                self.driver.close()  # joriy oynani yopadi
-                self.driver.switch_to.window(handles[-2])  # avvalgi oynaga o‘tadi
+            if direction == "prepare":
+                self._saved_handles = self.driver.window_handles.copy()
+                self.logger.debug(f"Oynalar ro'yxati saqlandi: {self._saved_handles}")
+                return
+
+            elif direction == "back":
+                handles = self.driver.window_handles
+                self.driver.close()
+                self.driver.switch_to.window(handles[-2])
+                target_window_id = handles[-2]
+                self.logger.info(f"Avvalgi oynaga o'tilmoqda: {current_window_id} -> {target_window_id}")
                 log_text = 'switch_to_previous_window'
-                self.logger.info("Avvalgi oynaga o'tilmoqda.")
 
             elif direction == "forward":
-                self.driver.switch_to.window(self.driver.window_handles[-1])
+                saved_handles = getattr(self, '_saved_handles', [])
+                self.logger.debug("Yangi oynaning ochilishini kutish boshlandi...")
+
+                new_window_id = None
+                for i in range(20):  # 0.5s * 20 = 10s
+                    time.sleep(0.5)
+                    handles_now = self.driver.window_handles
+                    new_ids = list(set(handles_now) - set(saved_handles))
+                    self.logger.debug(f"Tekshiruv {i + 1}: handles = {handles_now}")
+                    if new_ids:
+                        new_window_id = new_ids[0]
+                        self.logger.info(f"⏺ Yangi oyna topildi: {new_window_id}")
+                        break
+
+                if not new_window_id:
+                    self.logger.warning("Yangi oyna topilmadi, oxirgi oynaga o‘tilmoqda.")
+                    new_window_id = self.driver.window_handles[-1]
+
+                self.driver.switch_to.window(new_window_id)
                 log_text = 'switch_to_new_window'
-                self.logger.info("Yangi oynaga o'tilmoqda.")
+                self.logger.info(f"Yangi oynaga o'tilmoqda: {current_window_id} -> {new_window_id}")
 
             elif direction == "new" and url:
+                handles_before = self.driver.window_handles.copy()
                 self.driver.execute_script("window.open('');")
-                self.driver.switch_to.window(self.driver.window_handles[-1])
+                time.sleep(1)
+                new_handles = self.driver.window_handles
+                new_ids = list(set(new_handles) - set(handles_before))
+                target_window_id = new_ids[0] if new_ids else new_handles[-1]
+                self.driver.switch_to.window(target_window_id)
                 self.driver.get(url)
                 log_text = 'switch_to_new_tab'
-                self.logger.info(f"URL muvaffaqiyatli ochildi: {url}")
+                self.logger.info(f"url bo'yicha yangi oyna ochildi: {current_window_id} -> {target_window_id} | URL: {url}")
+
+            else:
+                raise Exception(f"Noto‘g‘ri direction: {direction}")
 
             time.sleep(2)
             if self._wait_for_all_loaders(log_text=log_text):
@@ -766,9 +811,83 @@ class BasePage:
             raise
 
         except Exception as e:
-            self.logger.error(f"{direction} oynaga o‘tishda xato: {str(e)}", exc_info=True)
+            self.logger.error(f"{direction} oynaga o‘tishda xato: {str(e)}")
             self.take_screenshot(f"switch_{direction}_error")
             raise
+
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def check_file_and_status_code(self, url_part, code=200, comparison="==", log=False, document_type=None, timeout=10):
+        """
+        Performance log orqali sahifa (yoki berilgan turdagi fayl) yuklanishining status kodini solishtiradi.
+
+        Parametrlar:
+        - url_part: URLning ichida bo'lishi kerak bo'lgan qism
+        - code: qaysi status code bilan solishtirilsin (masalan: 200, 404, 500)
+        - comparison: solishtirish turi: "==", "!=", ">", ">=", "<", "<="
+        - log: True bo'lsa, barcha Network.responseReceived loglar yoziladi
+        - document_type: faqat ma'lum turdagi fayllarni tekshiradi
+        - timeout: kutish vaqti (sekundlarda)
+        """
+        compare_ops = {
+            "==": operator.eq,
+            "!=": operator.ne,
+            ">": operator.gt,
+            ">=": operator.ge,
+            "<": operator.lt,
+            "<=": operator.le
+        }
+
+        if comparison not in compare_ops:
+            raise ValueError(f"Noto'g'ri comparison: {comparison}. Faqat: {list(compare_ops.keys())}")
+
+        start_time = time.time()
+        last_error = None
+
+        while time.time() - start_time < timeout:
+            try:
+                logs = self.driver.get_log("performance")
+
+                if log:
+                    self.logger.debug("📊 URL orqali performance log tekshirilmoqda...")
+
+                for entry in reversed(logs):
+                    try:
+                        message = json.loads(entry["message"])["message"]
+                        if message["method"] != "Network.responseReceived":
+                            continue
+
+                        response = message["params"]["response"]
+                        url = response.get("url", "")
+                        status = response.get("status")
+                        resource_type = message["params"].get("type")
+
+                        if log:
+                            self.logger.debug(f"{status} → {resource_type} → {url}")
+
+                        # document_type bo'lsa, tekshiramiz
+                        if document_type and resource_type != document_type:
+                            continue
+
+                        if url_part in url:
+                            self.logger.info(f"✅ Topildi: {status} → {resource_type} → {url}")
+                            if compare_ops[comparison](status, code):
+                                return True
+                            else:
+                                last_error = f"❌ Status mos emas: {status} {comparison} {code}"
+                                continue
+
+                    except Exception as e:
+                        self.logger.warning(f"⚠️ Logda xatolik: {e}")
+                        continue
+
+                time.sleep(0.5)  # Yangi log'lar yozilishini kutamiz
+
+            except Exception as e:
+                last_error = f"❌ Performance logni o'qishda xatolik: {str(e)}"
+                continue
+
+        raise Exception(last_error or f"{url_part} bo'yicha so'rov {timeout} sekund ichida topilmadi")
 
     # ------------------------------------------------------------------------------------------------------------------
 

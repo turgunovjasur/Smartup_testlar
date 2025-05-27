@@ -94,7 +94,10 @@ def test_product_add_as_product_1(driver, test_data):
     # Test data
     data = test_data["data"]
     product_name = data["product_name"]
-    product_add(driver, test_data, product_name, weight_netto=1000, weight_brutto=1100, litre=100)
+    brutto = data["product_weight_brutto"]
+    netto = data["product_weight_netto"]
+    litre = data["product_litre"]
+    product_add(driver, test_data, product_name, weight_netto=netto, weight_brutto=brutto, litre=litre)
 
 
 def test_product_add_as_product_2(driver, test_data):
@@ -103,4 +106,7 @@ def test_product_add_as_product_2(driver, test_data):
     # Test data
     data = test_data["data"]
     product_name = data["product_name_2"]
-    product_add(driver, test_data, product_name, supplier=True, weight_netto=2000, weight_brutto=2100, litre=200)
+    brutto = data["product_weight_brutto_2"]
+    netto = data["product_weight_netto_2"]
+    litre = data["product_litre_2"]
+    product_add(driver, test_data, product_name, supplier=True, weight_netto=netto, weight_brutto=brutto, litre=litre)

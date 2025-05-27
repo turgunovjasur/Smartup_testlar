@@ -19,37 +19,12 @@ class PurchaseList(BasePage):
     def click_view_button(self):
         self.click(self.view_button)
     # ------------------------------------------------------------------------------------------------------------------
-    transactions_button = (By.XPATH, '//button[@id="anor288-button-transactions"]')
-
-    def click_transactions_button(self):
-        self.click(self.transactions_button)
-
-    get_row = (By.XPATH, '(//td[@class="bsr-27" and @colspan="2"])[2]')
-
-    def get_extra_cost_amount(self):
-        return self.get_numeric_value(self.get_row)
-    # ------------------------------------------------------------------------------------------------------------------
     post_button = (By.XPATH, '//button[@id="anor288-button-post"]')
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
     def click_post_button(self):
         self.click(self.post_button)
         self.click(self.yes_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    report_button = (By.XPATH, '//button[@ng-click="openChat(row.purchase_id)"]/following-sibling::div/button')
-    items_button = (By.XPATH, '//button[contains(@class,"btn btn-xs")]/following-sibling::span')
-
-    def click_report_button(self):
-        self.click(self.report_button)
-        self.click(self.items_button)
-
-    def get_extra_cost_total_amount_for_report(self):
-        get_extra_cost_total_amount = (By.XPATH, '//td[text()="Итог"]/following-sibling::td[5]')
-        return self.get_numeric_value(get_extra_cost_total_amount)
-
-    def get_extra_cost_amount_for_report(self, product_name):
-        get_extra_cost = (By.XPATH, f'//td[text()="{product_name}"]/following-sibling::td[7]')
-        return self.get_numeric_value(get_extra_cost)
     # ------------------------------------------------------------------------------------------------------------------
     reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
 
@@ -75,4 +50,36 @@ class PurchaseList(BasePage):
     def click_delete_one_button(self):
         self.click(self.delete_one_button)
         self.click(self.delete_yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    # transaction
+    # ------------------------------------------------------------------------------------------------------------------
+    transactions_button = (By.XPATH, '//button[@id="anor288-button-transactions"]')
+
+    def click_transactions_button(self):
+        self.click(self.transactions_button)
+
+    def check_transaction_body(self, timeout):
+        report_body = (By.XPATH, '//div[@id="report-content"]')
+        self.wait_for_element(report_body, timeout=timeout, wait_type='visibility', screenshot='purchase_transaction_not_open')
+    # ------------------------------------------------------------------------------------------------------------------
+    # report
+    # ------------------------------------------------------------------------------------------------------------------
+    report_button = (By.XPATH, '//button[@ng-click="openChat(row.purchase_id)"]/following-sibling::div/button')
+    items_button = (By.XPATH, '//button[contains(@class,"btn btn-xs")]/following-sibling::span')
+
+    def click_report_button(self):
+        self.click(self.report_button)
+        self.click(self.items_button)
+
+    def get_extra_cost_total_amount_for_report(self, td=4):
+        get_extra_cost_total_amount = (By.XPATH, f'//td[text()="Итог"]/following-sibling::td[{td}]')
+        return self.get_numeric_value(get_extra_cost_total_amount)
+
+    def get_extra_cost_amount_for_report(self, product_name, td=6):
+        get_extra_cost = (By.XPATH, f'//td[text()="{product_name}"]/following-sibling::td[{td}]')
+        return self.get_numeric_value(get_extra_cost)
+
+    def check_report_body(self, timeout):
+        report_body = (By.XPATH, '//div[@id="report-content"]')
+        self.wait_for_element(report_body, timeout=timeout, wait_type='visibility', screenshot='purchase_report_not_open')
     # ------------------------------------------------------------------------------------------------------------------
