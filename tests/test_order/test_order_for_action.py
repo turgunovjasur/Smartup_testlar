@@ -1,11 +1,11 @@
 import time
-from autotest.anor.mdeal.order.order_add.create_order_page import OrderAddMain
-from autotest.anor.mdeal.order.order_add.final_page import OrderAddFinal
-from autotest.anor.mdeal.order.order_add.goods_page import OrderAddProduct
+from autotest.anor.mdeal.order.order_add.create_add_main import OrderAddMain
+from autotest.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
+from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
-from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
+from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from tests.test_base.test_base import login_user
 from tests.conftest import driver, test_data
 
@@ -132,14 +132,10 @@ def test_edit_order_for_action(driver, test_data):
     order_list.find_row(client_name)
     order_list.click_edit_button()
 
-    # ------------------------------------------------------------------------------------------------------------------
-
     # Order Step-1
     order_add_main = OrderAddMain(driver)
     order_add_main.element_visible()
     order_add_main.click_next_step_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
 
     # Order Step-2
     order_add_product = OrderAddProduct(driver)
@@ -156,8 +152,6 @@ def test_edit_order_for_action(driver, test_data):
     order_add_product.element_visible()
     order_add_product.click_next_step_button()
 
-    # ------------------------------------------------------------------------------------------------------------------
-
     # Order Step-3
     order_add_final = OrderAddFinal(driver)
     order_add_final.element_visible()
@@ -167,8 +161,6 @@ def test_edit_order_for_action(driver, test_data):
     order_add_final.input_status()
     order_add_final.click_save_button()
     time.sleep(2)
-
-    # ------------------------------------------------------------------------------------------------------------------
 
     # Orders List
     order_list.element_visible()

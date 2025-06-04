@@ -10,10 +10,6 @@ from tests.conftest import test_data, driver
 def contract_add(driver, test_data, client_name=None, contract_name=None, initial_amount=None,
                  currency_cod=None, currency_name=None, sub_filial_name=None, sub_filial=False):
     """Test adding a contract."""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: contract_add")
-
     # Test data
     data = test_data["data"]
     client_name = client_name or data["client_name"]
@@ -28,12 +24,12 @@ def contract_add(driver, test_data, client_name=None, contract_name=None, initia
 
     # Open Contract List
     contract_list = ContractList(driver)
-    assert contract_list.element_visible(), "ContractList not open!"
+    contract_list.element_visible()
     contract_list.click_add_button()
 
     # Open Contract Add
     contract_add = ContractAdd(driver)
-    assert contract_add.element_visible(), "ContractAdd not open!"
+    contract_add.element_visible()
     contract_number = random.randint(1, 999999)
     contract_add.input_contract_number(contract_number)
     contract_add.input_contract_name(contract_name)
@@ -47,20 +43,18 @@ def contract_add(driver, test_data, client_name=None, contract_name=None, initia
     contract_add.click_save_button()
 
     # Verify in Contract List
-    assert contract_list.element_visible(), "ContractList not open after save!"
+    contract_list.element_visible()
     contract_list.find_row(contract_name)
     contract_list.click_view_button()
 
     # Verify in Contract View
     contract_view = ContractView(driver)
-    assert contract_view.element_visible(), "ContractView not open!"
+    contract_view.element_visible()
     get_contract_name = contract_view.check_contract_name()
     assert get_contract_name == contract_name, f"Error: {get_contract_name} != {contract_name}"
     get_currency_name = contract_view.check_currency_name()
     assert get_currency_name == currency_name, f"Error: {get_currency_name} != {currency_name}"
     contract_view.click_close_button()
-
-    base_page.logger.info(f"✅ Contract '{contract_name}' successfully added. Contract Number: {contract_number}")
 
 
 def test_add_contract_for_client_A_UZB(driver, test_data):

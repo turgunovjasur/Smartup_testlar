@@ -2,18 +2,12 @@ import random
 from autotest.anor.mr.person.legal_person_add.legal_person_add import LegalPersonAdd
 from autotest.anor.mr.person.legal_person_list.legal_person_list import LegalPersonList
 from autotest.anor.mr.person.legal_person_view.legal_person_view import LegalPersonView
-from autotest.core.md.base_page import BasePage
 from tests.test_base.test_base import login_admin, login_user
 from tests.conftest import driver, test_data
 
 
 def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
     """Test adding a legal person"""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_legal_person_add")
-
-    base_page.logger.info(f"Data: name='{person_name}'")
     url = 'anor/mr/person/legal_person_list'
 
     # Login
@@ -24,12 +18,12 @@ def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
 
     # Open Legal Person List
     legal_person_list = LegalPersonList(driver)
-    assert legal_person_list.element_visible(), "LegalPersonList not open!"
+    legal_person_list.element_visible()
     legal_person_list.click_add_button()
 
     # Add Legal Person
     legal_person_add = LegalPersonAdd(driver)
-    assert legal_person_add.element_visible(), "LegalPersonAdd not open!"
+    legal_person_add.element_visible()
 
     legal_person_add.input_name(person_name)
     tin_number = random.randint(1, 999999999)
@@ -37,13 +31,13 @@ def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
     legal_person_add.click_save_button()
 
     # Verify in List
-    assert legal_person_list.element_visible(), "LegalPersonList not open after save!"
+    legal_person_list.element_visible()
     legal_person_list.find_row(person_name)
     legal_person_list.click_view_button()
 
     # Verify in View
     legal_person_view = LegalPersonView(driver)
-    assert legal_person_view.element_visible(), "LegalPersonView not open!"
+    legal_person_view.element_visible()
     text = legal_person_view.check_text()
 
     assert person_name == text, f"{person_name} != {text}"

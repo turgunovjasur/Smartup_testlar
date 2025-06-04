@@ -7,8 +7,7 @@ class OffsetDetailList(BasePage):
     header = (By.XPATH, '//button[@ng-click="page.close()"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
-    # ------------------------------------------------------------------------------------------------------------------
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, client_name):

@@ -25,12 +25,12 @@ def test_return(driver, test_data):
 
     # List
     return_list = ReturnList(driver)
-    assert return_list.element_visible(), "ReturnList not open!"
+    return_list.element_visible()
     return_list.click_add_button()
 
     # Add
     return_add = ReturnAdd(driver)
-    assert return_add.element_visible(), "ReturnAdd not open!"
+    return_add.element_visible()
     return_add.input_room(room_name)
     return_add.input_robot(robot_name)
     return_add.input_warehouse(warehouse_name)
@@ -54,13 +54,13 @@ def test_return(driver, test_data):
     return_add.click_next_step_button(save_button=True)
 
     # List
-    assert return_list.element_visible(), "ReturnList not open after save!"
+    return_list.element_visible()
     return_list.find_row(client_name)
     return_list.click_view_button()
 
     # View
     return_view = ReturnView(driver)
-    assert return_view.element_visible(), "ReturnView not open!"
+    return_view.element_visible()
     get_quantity, get_margin, get_total_sum = return_view.check_items()
     assert get_quantity == product_quantity, f"{get_quantity} != {product_quantity}"
     total_sum = (product_quantity * product_price) - ((product_quantity * product_price) * (percent_value / 100))
@@ -68,16 +68,18 @@ def test_return(driver, test_data):
     return_view.click_close_button()
 
     # List
-    assert return_list.element_visible(), "ReturnList not open after view!"
+    return_list.element_visible()
     return_list.find_row(client_name)
     return_list.click_draft_one_button()
-    assert return_list.element_visible(), "ReturnList not open after draft!"
+    return_list.element_visible()
     return_list.find_row(client_name)
     return_list.click_delete_one_button()
-    assert return_list.element_visible(), "ReturnList not open after delete!"
+    return_list.element_visible()
 
 
 def test_return_id(driver, test_data):
+    base_page = BasePage(driver)
+
     # Log
     data = test_data["data"]
     warehouse_name = data["warehouse_name"]
@@ -95,12 +97,12 @@ def test_return_id(driver, test_data):
 
     # List
     return_list = ReturnList(driver)
-    assert return_list.element_visible(), "ReturnList not open!"
+    return_list.element_visible()
     return_list.click_add_button()
 
     # Add
     return_add = ReturnAdd(driver)
-    assert return_add.element_visible(), "ReturnAdd not open!"
+    return_add.element_visible()
     return_add.input_order_deals(client_name)
     return_add.input_warehouse(warehouse_name)
     return_add.input_sub_filial(sub_filial_name)
@@ -122,13 +124,13 @@ def test_return_id(driver, test_data):
     return_add.click_next_step_button(save_button=True)
 
     # List
-    assert return_list.element_visible(), "ReturnList not open after save!"
+    return_list.element_visible()
     return_list.find_row(client_name)
     return_list.click_view_button()
 
     # View
     return_view = ReturnView(driver)
-    assert return_view.element_visible(), "ReturnView not open!"
+    return_view.element_visible()
     get_quantity, get_margin, get_total_sum = return_view.check_items()
     assert get_quantity == product_quantity, f"{get_quantity} != {product_quantity}"
     total_sum = (product_quantity * product_price) - 20000
@@ -136,21 +138,21 @@ def test_return_id(driver, test_data):
     return_view.click_close_button()
 
     # List
-    assert return_list.element_visible(), "ReturnList not open after view!"
+    return_list.element_visible()
     return_list.find_row(client_name)
     return_list.click_shipped_one_button()
-    assert return_list.element_visible(), "ReturnList not open after shipped!"
+    return_list.element_visible()
     return_list.find_row(client_name)
     return_list.click_archive_one_button()
-    assert return_list.element_visible(), "ReturnList not open after archive!"
+    return_list.element_visible()
 
     # Open Balance List
-    base_page = BasePage(driver)
+    base_page.switch_window(direction="prepare")
     cut_url = base_page.cut_url()
     base_page.switch_window(direction="new", url=cut_url + 'anor/mkw/balance/balance_list')
 
     balance_list = BalanceList(driver)
-    assert balance_list.element_visible(), "BalanceList not open!"
+    balance_list.element_visible()
     balance_list.click_reload_button()
     balance_list.find_row(product_name)
     balance_list.click_detail_button()
@@ -163,7 +165,7 @@ def test_return_id(driver, test_data):
 
     return_list.find_row(client_name)
     return_list.click_draft_one_button()
-    assert return_list.element_visible(), "ReturnList not open after draft!"
+    return_list.element_visible()
     return_list.find_row(client_name)
     return_list.click_delete_one_button()
-    assert return_list.element_visible(), "ReturnList not open after delete!"
+    return_list.element_visible()

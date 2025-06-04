@@ -7,8 +7,7 @@ class CashinView(BasePage):
     header = (By.XPATH, '//button[@ng-click="page.close()"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
-    # ------------------------------------------------------------------------------------------------------------------
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     get_cashin_number = (By.XPATH, '//div[@class="b-offcanvas-hide"]/span[1]')
 

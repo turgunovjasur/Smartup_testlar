@@ -1,16 +1,16 @@
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
-from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
+from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from autotest.trade.tdeal.order.return_order.return_order import ReturnOrder
 from tests.test_base.test_base import login_user
 from tests.conftest import driver, test_data
 
 
 def order_return(driver, test_data, client_name=None):
+    base_page = BasePage(driver)
+
     # Log
     data = test_data["data"]
-
-    base_page = BasePage(driver)
 
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 

@@ -10,9 +10,7 @@ from tests.conftest import driver, test_data
 
 def product_add(driver, test_data, product_name, supplier=False, weight_netto=None, weight_brutto=None, litre=None):
     """Test adding a product"""
-
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_product_add")
 
     # Test data
     data = test_data["data"]
@@ -29,12 +27,12 @@ def product_add(driver, test_data, product_name, supplier=False, weight_netto=No
 
     # Open Inventory List
     inventory_list = InventoryList(driver)
-    assert inventory_list.element_visible(), "InventoryList not open!"
+    inventory_list.element_visible()
     inventory_list.click_add_button()
 
     # Add Product (Inventory)
     inventory_add = InventoryNew(driver)
-    assert inventory_add.element_visible(), "InventoryNew not open!"
+    inventory_add.element_visible()
     inventory_add.input_name(product_name)
     inventory_add.input_sectors(sector_name)
     inventory_add.input_measurement(measurement_name)
@@ -66,26 +64,24 @@ def product_add(driver, test_data, product_name, supplier=False, weight_netto=No
 
     # Verify in View
     product_view = ProductView(driver)
-    assert product_view.element_visible(), "ProductView not open!"
+    product_view.element_visible()
     text = product_view.get_elements()
     assert text == product_name, f'Expected "{product_name}", got "{text}"'
     product_view.click_close_button()
 
     # Set Price
-    assert inventory_list.element_visible(), "InventoryList not open!"
+    inventory_list.element_visible()
     inventory_list.find_and_click_checkbox(product_name)
     inventory_list.click_set_price_button()
 
     # Open Set Price Page
     product_set_price = ProductSetPrice(driver)
-    assert product_set_price.element_visible(), "ProductSetPrice not open!"
+    product_set_price.element_visible()
     text = product_set_price.check_product()
     assert text == product_name, f'Expected "{product_name}", got "{text}"'
     product_set_price.input_prices(product_price, price_type_name_UZB)
     product_set_price.input_prices(product_price_USA, price_type_name_USA)
     product_set_price.click_save_button()
-
-    base_page.logger.info(f"✅ Test end: test_product_add")
 
 
 def test_product_add_as_product_1(driver, test_data):

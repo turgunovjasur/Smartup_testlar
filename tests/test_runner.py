@@ -3,7 +3,10 @@ import pytest
 
 from autotest.core.md.base_page import BasePage
 from tests.conftest import driver, test_data
+from tests.test_cashin.test_cashin import test_cashin_add_A
 from tests.test_input.test_input import test_add_input, test_add_input_with_extra_cost
+from tests.test_movement.test_movement import test_add_internal_movement
+from tests.test_offset.test_offset import test_offset_add_A, test_offset_add_B
 from tests.test_rep.integration.cislink.test_cislink import test_check_report_cis_link
 from tests.test_rep.integration.integration_three.test_integration_three import test_check_report_integration_three
 from tests.test_rep.integration.integration_two.test_integration_two import test_check_report_integration_two
@@ -13,7 +16,6 @@ from tests.test_rep.integration.spot.test_spot import test_check_report_spot_2d
 
 from tests.test_reference.test_action import test_add_action
 from tests.test_finance.test_currency import test_currency_add
-from tests.test_reference.test_supplier import test_add_supplier
 from tests.test_order.test_order_return import test_order_return
 from tests.test_reference.test_product import test_product_add_as_product_1, test_product_add_as_product_2
 
@@ -42,11 +44,6 @@ from tests.test_reference.test_natural_person import (
     test_natural_person_client_add_A,
     test_natural_person_client_add_B,
     test_natural_person_client_add_C
-)
-from tests.test_order.test_cashin import (
-    test_cashin_add_A,
-    test_offset_add_A,
-    test_offset_add_B
 )
 from tests.test_order.test_order_for_action import (
     test_add_order_for_action,
@@ -86,8 +83,7 @@ from tests.test_order.test_life_cycle import (
     test_margin_add,
     test_setting_prepayment_on,
     test_setting_prepayment_off,
-    test_check_price_tag,
-    test_add_user_license
+    test_check_price_tag, test_add_user_license
 )
 from tests.test_order.test_order import (
     test_order_add_for_sub_filial_select,
@@ -95,6 +91,8 @@ from tests.test_order.test_order import (
     test_add_order_with_contract,
     test_add_order_with_price_type_USA
 )
+from tests.test_warehouse.test_supplier import test_add_supplier
+from tests.test_warehouse.test_warehouse import test_add_warehouse
 
 # All ------------------------------------------------------------------------------------------------------------------
 
@@ -190,6 +188,9 @@ test_cases = [
         {"name": "Check Report Optimum",                       "func": test_check_report_optimum},
         {"name": "Check Report Sales Work",                    "func": test_check_report_sales_work},
         {"name": "Check Report Spot 2d",                       "func": test_check_report_spot_2d},
+
+        {"name": "Add Warehouse",                              "func": test_add_warehouse},
+        {"name": "Add Internal Movement",                      "func": test_add_internal_movement},
     ]
 
 # pytest tests/test_runner.py::test_all -v --self-contained-html --alluredir=./allure-results
@@ -210,6 +211,12 @@ def test_all(driver, test_data, save_data, load_data, test_case):
         base_page.logger.info(f"▶️ Test started: {test_name}")
 
         try:
+            # ❗ test_add_user_license faqat smartup.online saytida ishlasin
+            if func_name == "test_add_user_license" and test_data["data"]["url"] != "https://smartup.online/login.html":
+                skip_reason = "⚠️ test_add_user_license bu URL uchun tegishli emas, test o'tkazib yuborildi."
+                base_page.logger.warning(skip_reason)
+                pytest.skip(skip_reason)
+
             # Maxsus argumentlar bilan ishlaydigan testlar
             if func_name in {
                 "test_add_purchase",

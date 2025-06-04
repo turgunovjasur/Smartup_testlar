@@ -9,7 +9,6 @@ class CurrencyList(BasePage):
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, currency_name):
         self.find_row_and_click(element_name=currency_name)

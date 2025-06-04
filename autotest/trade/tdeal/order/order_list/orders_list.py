@@ -8,7 +8,7 @@ class OrdersList(BasePage):
     header = (By.XPATH, '//button[@id="trade81-button-add"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, "//button[@id='trade81-button-add']")
 
@@ -19,6 +19,14 @@ class OrdersList(BasePage):
 
     def click_view_button(self):
         self.click(self.view_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    view_dropdown = (By.XPATH, '//button[@id="trade81-button-view"]/following-sibling::button')
+
+    def click_view_dropdown(self, file_name):
+        """file_name = ['Файлы', 'Проводки']"""
+        self.click(self.view_dropdown)
+        dropdown = (By.XPATH, f'//button[@id="trade81-button-view"]/following-sibling::div/a[contains(text(),"{file_name}")]')
+        self.click(dropdown)
     # ------------------------------------------------------------------------------------------------------------------
     edit_button = (By.XPATH, '//button[@id="trade81-button-edit"]')
 

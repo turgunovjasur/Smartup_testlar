@@ -52,18 +52,16 @@ def test_data():
     """Test data"""
     base_data = {
         "email_company": "admin@head",
-        "password_company": "greenwhite",
+        "password_company": "", # <--
         "name_company": "red test",
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
 
-        # "code_input": "autotest",
-        "code_input": "red_test",
-        # "cod": 21,
-        "cod": 51,
-        # "url": "https://smartup.online/login.html",
-        "url": "https://app3.greenwhite.uz/xtrade/login.html",
+        "code_input": "autotest",
+        "cod": 21,
+        "url": "https://smartup.online/login.html",
+        # "url": "https://app3.greenwhite.uz/xtrade/login.html",
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -92,6 +90,7 @@ def test_data():
         "expense_article_name": f"Test_expense_article-{base_data['cod']}",
         "role_name": "Админ",
         "warehouse_name": "Основной склад",
+        "minor_warehouse_name": "Minor warehouse",
         "cash_register_name": "Основная касса",
         "measurement_name": "Количество",
         "payment_type_name": "Наличные деньги",

@@ -8,10 +8,6 @@ from tests.conftest import driver, test_data
 
 def client_add(driver, test_data, client_name=None):
     """Test adding a client"""
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: client_add")
-
     # Test data
     data = test_data["data"]
     client_name = client_name or data["client_name"]
@@ -21,28 +17,26 @@ def client_add(driver, test_data, client_name=None):
 
     # Open Client List
     client_list = ClientList(driver)
-    assert client_list.element_visible(), "ClientList not open!"
+    client_list.element_visible()
     client_list.click_add_button()
 
     # Add Client
     client_add = ClientAdd(driver)
-    assert client_add.element_visible(), "ClientAdd not open!"
+    client_add.element_visible()
     client_add.click_radio_button()
     client_add.input_name(client_name)
     client_add.click_save_button()
 
     # Verify in List
-    assert client_list.element_visible(), "ClientList not open after save!"
+    client_list.element_visible()
     client_list.find_row(client_name)
     client_list.click_view_button()
 
     # Verify in View
     client_view = ClientView(driver)
-    assert client_view.element_visible(), "ClientView not open!"
+    client_view.element_visible()
     client_view.check_client_name()
     client_view.click_close_button()
-
-    base_page.logger.info(f"✅ Client '{client_name}' added successfully!")
 
 
 def test_client_add_A(driver, test_data):

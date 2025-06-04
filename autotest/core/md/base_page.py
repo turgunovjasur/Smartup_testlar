@@ -3,12 +3,10 @@ import operator
 import os
 import re
 import time
-from collections import defaultdict
 
 import allure
 from datetime import datetime
 
-from mouseinfo import screenshot
 from selenium.webdriver import Keys
 from colorama import init
 from selenium.webdriver.common.by import By
@@ -290,6 +288,24 @@ class BasePage:
             return False
 
     # ------------------------------------------------------------------------------------------------------------------
+    def _click_(self, element, locator=None, retry=False, error_message=True, use_js=False):
+        page_name = self.__class__.__name__
+        click_type = "JS-Click" if use_js else "Click"
+
+        try:
+            if use_js:
+                self.driver.execute_script("arguments[0].click();", element)
+            else:
+                element.click()
+
+            self.logger.info(f"⏺ {page_name}: {'Retry ' if retry else ''}{click_type}: {locator}")
+            return True
+
+        except WebDriverException:
+            if error_message:
+                self.logger.warning(f"❗{'Retry ' if retry else ''}{click_type} ishlamadi: {locator}")
+            return False
+    # ------------------------------------------------------------------------------------------------------------------
 
     def _scroll_to_element(self, element, locator, timeout=None):
         """Elementga scroll qilish."""
@@ -308,11 +324,6 @@ class BasePage:
             if element.is_displayed():
                 self.logger.info(f"{page_name}: Scroll muvaffaqiyatli bajarildi: {locator}")
                 return element
-
-            # WebDriverWait(self.driver, timeout).until(lambda d: element.is_displayed())
-            #
-            # self.logger.info(f"{page_name}: Scroll muvaffaqiyatli bajarildi: {locator}")
-            # return element
 
         except NoSuchElementException as e:
             message = f"Element topilmadi, scroll ishlamadi."
@@ -668,7 +679,7 @@ class BasePage:
                 self._scroll_to_element(element_dom, locator)
                 element = self.wait_for_element(locator, wait_type="visibility")
 
-                self.logger.info(f"Element: text -> '{element.text}'")
+                self.logger.info(f"{page_name}: Element: text -> '{element.text}'")
                 return element.text if element else None
 
             except ElementStaleError:
@@ -690,7 +701,7 @@ class BasePage:
 
         text = self.get_text(locator)
         if not text:
-            self.logger.error(f"{page_name}: Element topilmadi")
+            self.logger.error(f"{page_name}: Element topilmadi -> '{text}'")
             raise
 
         text = text.strip()
@@ -706,11 +717,14 @@ class BasePage:
 
         # Bir nechta nuqta bo‘lsa, noto‘g‘ri format deb hisoblaymiz
         if numeric_value.count('.') > 1:
-            self.logger.error(f"{page_name}: Noto'g'ri raqam formati - {text}")
+            self.logger.error(f"{page_name}: Noto'g'ri raqam formati -> '{text}'")
             return None
 
         try:
-            return float(numeric_value) if numeric_value else None  # `None` bo‘lsa, `None` qaytadi
+            result = float(numeric_value) if numeric_value else None  # `None` bo‘lsa, `None` qaytadi
+            self.logger.info(f"{page_name}: Element -> Float -> '{result}'")
+            return result
+
         except ValueError as e:
             self.logger.error(f"{page_name}: Float ga o'tkazishda xato - {str(e)}")
             return None
@@ -905,7 +919,7 @@ class BasePage:
             raise
 
         except Exception as e:
-            self.logger.error(f"Sahifani yangilashda xato: {str(e)}", exc_info=True)
+            self.logger.error(f"Sahifani yangilashda xato: {str(e)}")
             self.take_screenshot("refresh_page_error")
             raise
 
@@ -923,13 +937,12 @@ class BasePage:
             return False
 
 
-    def click_options(self, input_locator, options_locator, element_text, scroll=30):
+    def click_options(self, input_locator, options_locator, element_text, scroll=30, screenshot=True):
         """
         Dropdown bilan ishlash uchun funksiya.
         options_locator = (By.XPATH, '//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
         """
-
         page_name = self.__class__.__name__
         self.logger.debug(f"{page_name}: Running -> click_options: {element_text} - {input_locator}")
 
@@ -986,9 +999,16 @@ class BasePage:
                     break
 
             # Option topilmasa xatolik
-            message = f"{page_name}: '{element_text}' barcha urinishlardan so‘ng ham topilmadi"
+            message = f"'{element_text}' option scroll dan so‘ng ham topilmadi"
             self.logger.warning(message)
             raise ElementNotFoundError(message, options_locator)
+
+        except ElementNotFoundError as e:
+            message = f"{page_name}: ElementNotFoundError - {str(e)}"
+            self.logger.error(message)
+            if screenshot:
+                self.take_screenshot(f"{page_name.lower()}_click_options_not_found_error")
+            raise
 
         except Exception as e:
             message = f"{page_name}: click_options() da kutilmagan xatolik - {str(e)}"
@@ -1051,10 +1071,10 @@ class BasePage:
                 continue
 
             except ElementVisibilityError as eve:
-                self.logger.warning(f"❌ Dropdown yopilmadi! {str(eve)}")
+                self.logger.warning(f"Dropdown yopilmadi! {str(eve)}")
                 continue
 
-        self.logger.error(f"❌ Dropdown yopilmadi ({retry_count} marta urinishdan keyin ham).")
+        self.logger.error(f"Dropdown yopilmadi ({retry_count} marta urinishdan keyin ham).")
         self.take_screenshot(f"{self.__class__.__name__.lower()}_dropdown_close_error")
         return False
 
@@ -1085,11 +1105,11 @@ class BasePage:
                                 self.logger.info(f"{page_name}: Tanlangan konteyner: '{selector}', elementlar soni: {len(elements_inside)}")
                                 return container
                         except StaleElementReferenceException:
-                            self.logger.warning(f"⚠️ {page_name}: StaleElementReferenceException: '{selector}' qayta yuklanmoqda")
+                            self.logger.warning(f"{page_name}: StaleElementReferenceException: '{selector}' qayta yuklanmoqda")
                             continue
 
                 except TimeoutException:
-                    self.logger.warning(f"⚠️ {page_name}: Timeout kutish: '{selector}' topilmadi")
+                    self.logger.warning(f"{page_name}: Timeout kutish: '{selector}' topilmadi")
                     continue
 
             message = f"{page_name}: Ko'rinadigan dropdown konteyner topilmadi"

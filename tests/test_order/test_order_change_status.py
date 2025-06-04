@@ -1,6 +1,6 @@
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
-from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
+from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from tests.test_base.test_base import login_user
 from tests.conftest import driver, test_data
 
@@ -19,11 +19,11 @@ def order_change_status(driver, test_data, client_name=None,
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
     if draft:  # Draft
-        assert order_list.element_visible(), 'OrdersList not open!'
+        order_list.element_visible()
         order_list.find_row(client_name)
         order_list.click_view_button()
 
-        assert order_view.element_visible(), 'OrderView not open!'
+        order_view.element_visible()
         order_id = order_view.check_order_id()
         base_page.logger.info(f"Order id: {order_id}")
         text = order_view.check_status()
@@ -34,12 +34,12 @@ def order_change_status(driver, test_data, client_name=None,
     # ------------------------------------------------------------------------------------------------------------------
 
     if new:  # New
-        assert order_list.element_visible(), 'OrdersList not open after Draft!'
+        order_list.element_visible()
         order_list.click_change_status_button(data["New"])
         order_list.find_row(client_name)
         order_list.click_view_button()
 
-        assert order_view.element_visible(), 'OrderView not open after New!'
+        order_view.element_visible()
         text = order_view.check_status()
         assert text == data["New"], f'{text} != {data["New"]}'
         new_quantity, new_price, new_sum = order_view.check_items()
@@ -49,12 +49,12 @@ def order_change_status(driver, test_data, client_name=None,
     # ------------------------------------------------------------------------------------------------------------------
 
     if processing:  # Processing
-        assert order_list.element_visible(), 'OrdersList not open after New!'
+        order_list.element_visible()
         order_list.click_change_status_button(data["Processing"])
         order_list.find_row(client_name)
         order_list.click_view_button()
 
-        assert order_view.element_visible(), 'OrderView not open after Processing!'
+        order_view.element_visible()
         text = order_view.check_status()
         assert text == data["Processing"], f'{text} != {data["Processing"]}'
         processing_quantity, processing_price, processing_sum = order_view.check_items()
@@ -64,12 +64,12 @@ def order_change_status(driver, test_data, client_name=None,
     # ------------------------------------------------------------------------------------------------------------------
 
     if pending:  # Pending
-        assert order_list.element_visible(), 'OrdersList not open after Processing!'
+        order_list.element_visible()
         order_list.click_change_status_button(data["Pending"])
         order_list.find_row(client_name)
         order_list.click_view_button()
 
-        assert order_view.element_visible(), 'OrderView not open after Pending!'
+        order_view.element_visible()
         text = order_view.check_status()
         assert text == data["Pending"], f'{text} != {data["Pending"]}'
         pending_quantity, pending_price, pending_sum = order_view.check_items()
@@ -79,12 +79,12 @@ def order_change_status(driver, test_data, client_name=None,
     # ------------------------------------------------------------------------------------------------------------------
 
     if shipped:  # Shipped
-        assert order_list.element_visible(), 'OrdersList not open after Pending!'
+        order_list.element_visible()
         order_list.click_change_status_button(data["Shipped"])
         order_list.find_row(client_name)
         order_list.click_view_button()
 
-        assert order_view.element_visible(), 'OrderView not open after Shipped!'
+        order_view.element_visible()
         text = order_view.check_status()
         assert text == data["Shipped"], f'{text} != {data["Shipped"]}'
         shipped_quantity, shipped_price, shipped_sum = order_view.check_items()
@@ -94,12 +94,12 @@ def order_change_status(driver, test_data, client_name=None,
     # ------------------------------------------------------------------------------------------------------------------
 
     if delivered:  # Delivered
-        assert order_list.element_visible(), 'OrdersList not open after Shipped!'
+        order_list.element_visible()
         order_list.click_change_status_button(data["Delivered"])
         order_list.find_row(client_name)
         order_list.click_view_button()
 
-        assert order_view.element_visible(), 'OrderView not open after Delivered!'
+        order_view.element_visible()
         text = order_view.check_status()
         assert text == data["Delivered"], f'{text} != {data["Delivered"]}'
         delivered_quantity, delivered_price, delivered_sum = order_view.check_items()
@@ -109,17 +109,15 @@ def order_change_status(driver, test_data, client_name=None,
     # ------------------------------------------------------------------------------------------------------------------
 
     if archive:  # Archive
-        assert order_list.element_visible(), f"OrdersList not open after 'Delivered'!"
+        order_list.element_visible()
         order_list.click_change_status_button(data["Archive"])
-        assert order_list.element_visible(), 'OrdersList not open after Archive!'
+        order_list.element_visible()
     # ------------------------------------------------------------------------------------------------------------------
 
     if cancelled:  # Cancelled
-        assert order_list.element_visible(), 'OrdersList not open after Draft!'
+        order_list.element_visible()
         order_list.click_change_status_button(data["Cancelled"])
-        assert order_list.element_visible(), 'OrdersList not open after Cancelled!'
-
-    base_page.logger.info(f"✅Test end: order_change_status")
+        order_list.element_visible()
 
 
 def test_change_status_from_draft_to_archive(driver, test_data):

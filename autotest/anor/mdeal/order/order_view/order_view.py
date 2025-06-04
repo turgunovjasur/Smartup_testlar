@@ -8,7 +8,7 @@ class OrderView(BasePage):
     header = (By.XPATH, "//div[@class='card-title']/h5/t")
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     order_id = (By.XPATH, "(//div[@class='card-body']/div/div/div/div[@class='col-sm'])[1]")
 
@@ -43,29 +43,72 @@ class OrderView(BasePage):
     def check_client_name(self):
         return self.get_text(self.get_client_name)
     # ------------------------------------------------------------------------------------------------------------------
+    close_button = (By.XPATH, "//button[@id='trade82-button-close']")
+
+    def click_close_button(self):
+        self.click(self.close_button)
+    # ------------------------------------------------------------------------------------------------------------------
     # navbar_button='consignment'
     # ------------------------------------------------------------------------------------------------------------------
 
-    def click_tablist_button(self, navbar_button):
-        tablist_button = (By.XPATH, f'//div[@class="card-title"]/ul[@role="tablist"]//span[contains(text(), "{navbar_button}")]')
+    def click_tablist_button(self, tablist_name):
+        """
+        tablist_name = [
+        'Основная информация', 'Консигнация', 'Визиты', 'Дополнительная информация', 'Примечания', 'Чат', 'История изменений'
+        ]
+        """
+        tablist_button = (By.XPATH, f'//div[@class="card-title"]/ul[@role="tablist"]//span[contains(text(), "{tablist_name}")]')
         self.click(tablist_button)
     # ------------------------------------------------------------------------------------------------------------------
     get_row_consignment = (By.XPATH, '//b-pg-grid[@name="consignments"]//div[@class="tbl-body"]//div[contains(@class, "tbl-no-data-row") and contains(text(), "нет данных")]')
 
     def check_row_consignment(self):
         return self.wait_for_element_visible(self.get_row_consignment)
+    # ------------------------------------------------------------------------------------------------------------------
 
     def check_consignments(self, add_date):
+        """add_date = [30, 20, 10]"""
         current_date = datetime.now()
         future_date = current_date + timedelta(days=add_date)
         formatted_date = future_date.strftime("%d.%m.%Y")
         get_consignment_amount = (By.XPATH, f"//b-pg-grid[@name='consignments']//div[contains(@class, 'tbl-row')]/div[contains(@class, 'tbl-cell') and contains(text(), '{formatted_date}')]/following-sibling::div[1]")
         # print(f'formatted_date: {formatted_date}')
         return self.get_text(get_consignment_amount)
-    # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
-    close_button = (By.XPATH, "//button[@id='trade82-button-close']")
 
-    def click_close_button(self):
-        self.click(self.close_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    # navbar_button='audit'
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def click_navbar_button(self, navbar_name):
+        """navbar_name = ['Название', 'ТМЦ']"""
+        audit = (By.XPATH, f'//div[contains(@ng-show,"audit")]//a[contains(text(),"{navbar_name}")]')
+        self.click(audit)
+    # ------------------------------------------------------------------------------------------------------------------
+    get_header = (By.XPATH, '//b-grid[@name="header_audits"]')
+    get_product = (By.XPATH, '//b-grid[@name="product_audits"]')
+
+    def check_tablist_body(self, header=False, product=False):
+        if header:
+            self.wait_for_element_visible(self.get_header)
+        if product:
+            self.wait_for_element_visible(self.get_product)
+    # ------------------------------------------------------------------------------------------------------------------
+    def find_row(self, product_name):
+        self.find_row_and_click(element_name=product_name,
+                                xpath_pattern=f"//b-grid//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and normalize-space(text())='{product_name}']")
+    # ------------------------------------------------------------------------------------------------------------------
+    audit_details_button = (By.XPATH, "//button[@ng-click=\"auditDetails(row, 'products')\"]")
+
+    def click_audit_details_button(self):
+        self.click(self.audit_details_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    get_order_audit = (By.XPATH, '//div[@role="tabpanel"]//b-pg-grid[@name="order_audits"]')
+
+    def check_get_order_audit_body(self):
+        self.wait_for_element_visible(self.get_order_audit)
+    # ------------------------------------------------------------------------------------------------------------------
+    close_toolbar_button = (By.XPATH, '//div[contains(@class,"b-toolbar")]/button[@ng-click="page.close()"]')
+
+    def click_close_toolbar_button(self):
+        self.click(self.close_toolbar_button)
     # ------------------------------------------------------------------------------------------------------------------

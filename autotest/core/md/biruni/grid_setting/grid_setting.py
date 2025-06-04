@@ -7,8 +7,7 @@ class GridSetting(BasePage):
     header_save = (By.XPATH, '//button[@ng-click="save()"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header_save)
-    # ------------------------------------------------------------------------------------------------------------------
+        self.wait_for_element_visible(self.header_save)
     # ------------------------------------------------------------------------------------------------------------------
     save_default_button = (By.XPATH, '//button[@ng-click="saveDefault()"]')
     yes_default_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')

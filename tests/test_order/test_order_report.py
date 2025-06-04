@@ -9,7 +9,7 @@ from autotest.biruni.ker.template_role_list.template_role_list import TemplateRo
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_history_list.order_history_list import OrdersHistoryList
 from tests.test_base.test_base import login_user, login_admin
-from autotest.trade.tdeal.order.order_list.orders_page import OrdersList
+from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from tests.conftest import driver, test_data
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 
@@ -44,7 +44,7 @@ def test_check_report_for_order_list(driver, test_data, timeout=60):
         login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
         order_list = OrdersList(driver)
-        assert order_list.element_visible(), "order_list not open!"
+        order_list.element_visible()
         order_list.find_row(client_name)
 
         for index, report_name in enumerate(report_names):
@@ -137,7 +137,7 @@ def test_check_report_for_order_history_list(driver, test_data, timeout=60):
         login_user(driver, test_data, url='trade/tdeal/order/order_history_list')
 
         order_history_list = OrdersHistoryList(driver)
-        assert order_history_list.element_visible(), "order_history_list not open!"
+        order_history_list.element_visible()
         order_history_list.find_row(client_name)
 
         for index, report_name in enumerate(report_names):

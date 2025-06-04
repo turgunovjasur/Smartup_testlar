@@ -7,16 +7,15 @@ class Offset(BasePage):
     header = (By.XPATH, '//button[@ng-click="page.close()"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
-    # ------------------------------------------------------------------------------------------------------------------
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     check_row = ("//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]"
                  "//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']"
                  "/ancestor::div[@class='tbl-cell']/following-sibling::div[9]//button")
 
     def find_row(self, client_name):
-        locator = (By.XPATH, self.check_row.replace('{client_name}', client_name))
-        return self.click(locator)
+        locator = (By.XPATH, self.check_row.replace(f'{client_name}', client_name))
+        self.click(locator)
     # ------------------------------------------------------------------------------------------------------------------
     get_balance = ("//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']"
                    "/ancestor::div[@class='tbl-cell']/following-sibling::div[5]/div")
@@ -43,8 +42,7 @@ class Offset(BasePage):
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------
     cashboxes_input = (By.XPATH, '//b-input[@name="cashboxes"]//input')
-    cashboxes_locator = (
-        By.XPATH, '//b-input[@name="cashboxes"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+    cashboxes_locator = (By.XPATH, '//b-input[@name="cashboxes"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def input_cashboxes(self, cash_register_name):
         self.click_options(self.cashboxes_input, self.cashboxes_locator, cash_register_name)

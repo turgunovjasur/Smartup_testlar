@@ -25,12 +25,12 @@ def test_add_action(driver, test_data):
 
     # Contract List
     action_list = ActionList(driver)
-    assert action_list.element_visible(), 'ActionList not open!'
+    action_list.element_visible()
     action_list.click_add_button()
 
     # Contract List
     action_add = ActionAdd(driver)
-    assert action_add.element_visible(), 'ActionAdd not open!'
+    action_add.element_visible()
     action_add.input_name(action_name)
     action_add.input_room(room_name)
     action_add.input_bonus_warehouse(warehouse_name)
@@ -43,14 +43,13 @@ def test_add_action(driver, test_data):
     action_add.input_bonus_kind()
     action_add.click_save_button()
 
-    assert action_list.element_visible(), 'ActionList not open after save!'
+    action_list.element_visible()
     action_list.find_row(action_name)
     action_list.click_view_button()
 
     # Contract List
     action_view = ActionIdView(driver)
-    assert action_view.element_visible(), 'ActionIdView not open!'
+    action_view.element_visible()
     get_action_name = action_view.get_elements()
     assert get_action_name == action_name, f"Error: {get_action_name} != {action_name}"
     action_view.click_close_button()
-    base_page.logger.info(f"✅ Test end: test_add_action")
