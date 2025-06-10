@@ -204,8 +204,11 @@ def test_edit_order_for_price_type_USA(driver, test_data):
     order_add_product.element_visible()
     order_add_product.click_next_step_button()
 
+    # ------------------------------------------------------------------------------------------------------------------
+
+    # Order Add Final
+    order_add_final.element_visible()
     order_add_final.input_booked_payment_amount(prepayment_amount)  # 60_000
-    time.sleep(5)
     order_add_final.input_status(status=4)
     order_add_final.click_save_button()
 

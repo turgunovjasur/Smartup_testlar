@@ -89,7 +89,7 @@ from tests.test_order.test_order import (
     test_order_add_for_sub_filial_select,
     test_add_order_with_consignment,
     test_add_order_with_contract,
-    test_add_order_with_price_type_USA
+    test_add_order_with_price_type_USA, test_copy_order
 )
 from tests.test_warehouse.test_supplier import test_add_supplier
 from tests.test_warehouse.test_warehouse import test_add_warehouse
@@ -146,10 +146,11 @@ test_cases = [
         {"name": "Add Order With Contract-B",                "func": test_add_order_with_contract},
         {"name": "Change Status Draft And Archive-B",        "func": test_change_status_draft_and_archive},
         {"name": "Offset Add-B",                             "func": test_offset_add_B},
-        #
+
         # Order with Price Type USA:
         {"name": "Add Contract For Client USA-C",            "func": test_add_contract_for_client_C_USA},
         {"name": "Add Order With Price Type-C",              "func": test_add_order_with_price_type_USA},
+        {"name": "Copy Order",                               "func": test_copy_order},
         {"name": "Test Setting Prepayment On",               "func": test_setting_prepayment_on},
         {"name": "Edit Order For Price Type USA-C",          "func": test_edit_order_for_price_type_USA},
         {"name": "Test Setting Prepayment Off",              "func": test_setting_prepayment_off},
@@ -159,7 +160,7 @@ test_cases = [
         {"name": "Order Add For Sub Filial Select-C",        "func": test_order_add_for_sub_filial_select},
         {"name": "Check Invoice Report For Order List-C",    "func": test_check_invoice_report_for_order_list},
         {"name": "Change Status Draft And Cancelled-C",      "func": test_change_status_draft_and_cancelled},
-        #
+
         # Order with Action:
         {"name": "Add Action",                               "func": test_add_action},
         {"name": "Add Order For Action-C",                   "func": test_add_order_for_action},

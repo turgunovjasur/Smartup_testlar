@@ -5,9 +5,6 @@ from selenium.webdriver.common.by import By
 
 
 class OverloadList(BasePage):
-    def __init__(self, driver):
-        super().__init__(driver)
-        self.driver = driver
     # ------------------------------------------------------------------------------------------------------------------
     # Header text: Overload list
     # ------------------------------------------------------------------------------------------------------------------
@@ -28,7 +25,7 @@ class OverloadList(BasePage):
     click_status_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_status_many_button(self):
-        self.click_circle(self.status_many_button)
+        self.click(self.status_many_button)
         self.click(self.passive_many_button)
         self.click(self.click_status_yes_button)
     # ------------------------------------------------------------------------------------------------------------------
@@ -36,7 +33,7 @@ class OverloadList(BasePage):
     click_delete_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_delete_many_button(self):
-        self.click_circle(self.delete_many_button)
+        self.click(self.delete_many_button)
         self.click(self.click_delete_yes_button)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -56,7 +53,7 @@ class OverloadList(BasePage):
     click_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_status_one_button(self):
-        self.click_circle(self.status_one_button)
+        self.click(self.status_one_button)
         self.click(self.click_yes_button)
 
     # ------------------------------------------------------------------------------------------------------------------

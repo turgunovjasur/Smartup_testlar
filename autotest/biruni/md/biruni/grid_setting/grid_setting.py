@@ -11,8 +11,6 @@ class GridSetting(BasePage):
         self.click(self.group_button)
         self.click(self.grid_setting_button)
     # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
     header = (By.XPATH, '//button[@ng-click="save()"]')
 
     def element_visible(self):
@@ -27,4 +25,16 @@ class GridSetting(BasePage):
 
     def click_save_button(self):
         self.click(self.save_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    save_default_button = (By.XPATH, '//button[@ng-click="saveDefault()"]')
+    yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
+
+    def click_save_default_button(self):
+        self.click(self.save_default_button)
+        self.click(self.yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def click_search_type_switch(self, search_type):
+        locator = (By.XPATH, f'//input[@ng-model="d.search"]/following-sibling::span[contains(text(),"{search_type}")]/../input')
+        self.click_checkbox(locator)
     # ------------------------------------------------------------------------------------------------------------------

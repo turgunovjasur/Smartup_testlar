@@ -33,6 +33,14 @@ class OrdersList(BasePage):
     def click_edit_button(self):
         self.click(self.edit_button)
     # ------------------------------------------------------------------------------------------------------------------
+    edit_dropdown = (By.XPATH, '//button[@id="trade81-button-edit"]/following-sibling::button')
+
+    def click_edit_dropdown(self, file_name):
+        """file_name = ['Прикрепить', 'Настройки типа цены', 'Настройка брони']"""
+        self.click(self.edit_dropdown)
+        dropdown = (By.XPATH, f'//button[@id="trade81-button-edit"]/following-sibling::div/a[contains(text(),"{file_name}")]')
+        self.click(dropdown)
+    # ------------------------------------------------------------------------------------------------------------------
     copy_button = (By.XPATH, '//button[@id="trade81-button-show_copy_modal"]')
 
     def click_copy_button(self):
@@ -63,29 +71,6 @@ class OrdersList(BasePage):
     def click_return_button(self):
         self.click(self.return_button)
     # ------------------------------------------------------------------------------------------------------------------
-    # Modal Copy
-
-    copy_title = (By.XPATH, "//h4/t[contains(text(), 'Копировать заказ')]")
-
-    def element_visible_copy_title(self):
-        return self.wait_for_element_visible(self.copy_title)
-    # ------------------------------------------------------------------------------------------------------------------
-    persons_input = (By.XPATH, '//b-input[@name="persons"]//input[@ng-model="_$bInput.searchValue"]')
-    clear_button = (By.XPATH, '//b-input[@name="persons"]//span[@class="clear-button"]')
-    options_persons = (By.XPATH, '//b-input[@name="persons"]//div[contains(@class,"hint")]//div[contains(@class,"hint-item")]/div')
-
-    def input_persons(self, client_name_A, client_name_B):
-        self.click(self.clear_button)
-        self.click_options(self.persons_input, self.options_persons, client_name_A)
-        self.click_options(self.persons_input, self.options_persons, client_name_B)
-    # ------------------------------------------------------------------------------------------------------------------
-    copy_save_button = (By.XPATH, '//button[@ng-click="copy()"]')
-
-    def click_copy_save_button(self):
-        self.click(self.copy_save_button)
-
-    # Modal Copy
-    # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, client_name):
         self.find_row_and_click(element_name=client_name)
@@ -115,3 +100,24 @@ class OrdersList(BasePage):
         self.click(status_button)
         self.click(self.yes_button)
     # -----------------------------------------------------------------------------------------------------------------
+    # Modal Copy
+    # ------------------------------------------------------------------------------------------------------------------
+    copy_title = (By.XPATH, "//h4/t[contains(text(), 'Копировать заказ')]")
+
+    def element_visible_copy_title(self):
+        self.wait_for_element_visible(self.copy_title)
+    # ------------------------------------------------------------------------------------------------------------------
+    clear_button = (By.XPATH, '//b-input[@name="persons"]//span[@class="clear-button"]')
+
+    persons_input = (By.XPATH, '//b-input[@name="persons"]//input[@ng-model="_$bInput.searchValue"]')
+    options_persons = (By.XPATH, '//b-input[@name="persons"]//div[contains(@class,"hint")]//div[contains(@class,"hint-item")]/div')
+
+    def input_persons(self, client_name):
+        self.click(self.clear_button)
+        self.click_options(self.persons_input, self.options_persons, client_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    copy_save_button = (By.XPATH, '//button[@ng-click="copy()"]')
+
+    def click_copy_save_button(self):
+        self.click(self.copy_save_button)
+    # ------------------------------------------------------------------------------------------------------------------

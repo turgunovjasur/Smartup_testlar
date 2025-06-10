@@ -6,18 +6,20 @@ from autotest.anor.mdeal.order.order_add.order_select.order_select import OrderS
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.anor.mkw.product_file_list.product_file_list import ProductFileList
 from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
+from autotest.trade.tdeal.order.order_attach_data.order_attach_data import OrderAttachData
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
+from autotest.trade.tdeal.order.transactions.transactions import Transaction
 from tests.conftest import driver, test_data
-from tests.test_base.test_base import login_user
+from tests.test_base.test_base import login_user, grid_setting
 from autotest.core.md.base_page import BasePage
 
-# Order Add ------------------------------------------------------------------------------------------------------------
+# ======================================================================================================================
 
 def order_add(driver, test_data,
               client_name=None, contract_name=None, product_quantity=None, error_massage=False, return_quantity=None,
               consignment=None, consignment_amount=None, current_date_add_day=None, sub_filial=False, contract=True,
               price_type_name=None, product_price_USA=None, margin=False, select=False, setting=False, status=1,
-              audit=False, file=False, transactions=False):
+              audit=False, file=False, transactions=False, attach_data=False):
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -72,18 +74,16 @@ def order_add(driver, test_data,
     order_add_product = OrderAddProduct(driver)
     order_add_product.element_visible()
 
+    # Grid Setting
     if setting:
         order_add_product.click_setting_button()
-
-        # Grid Setting
         grid_setting = GridSetting(driver)
         grid_setting.element_visible()
         grid_setting.click_save_default_button()
 
+    # Order Select
     if select:
         order_add_product.click_select_button()
-
-        # Order Select
         order_select = OrderSelect(driver)
         order_select.element_visible()
         order_select.input_warehouses(warehouse_name)
@@ -150,10 +150,9 @@ def order_add(driver, test_data,
     order_id = order_view.check_order_id()
     base_page.logger.info(f"Order ID: {order_id}")
 
+    # Grid Setting
     if setting:
         order_view.click_setting_button()
-
-        # Grid Setting
         grid_setting = GridSetting(driver)
         grid_setting.element_visible()
         grid_setting.click_save_default_button()
@@ -224,7 +223,14 @@ def order_add(driver, test_data,
         order_list.click_reload_button()
         order_list.element_visible()
         order_list.find_row(client_name)
-        order_list.click_view_dropdown(file_name='Проводки')
+
+        # Transaction
+        base_page.switch_window(direction="prepare")
+        order_list.click_view_dropdown(file_name="Проводки")
+        base_page.switch_window(direction="forward")
+        transaction = Transaction(driver)
+        transaction.check_transaction_body(timeout=20)
+        base_page.switch_window(direction="back")
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -233,7 +239,25 @@ def order_add(driver, test_data,
 
     # ------------------------------------------------------------------------------------------------------------------
 
+    # transactions
+    if attach_data:
+        order_list.click_reload_button()
+        order_list.element_visible()
+        order_list.find_row(client_name)
+        order_list.click_edit_dropdown(file_name="Прикрепить")
 
+        # OrderAttachData
+        order_attach_data = OrderAttachData(driver)
+        order_attach_data.element_visible()
+        order_attach_data.click_delivery_date_checkbox(days=5)
+        order_attach_data.click_save_button()
+
+    # ------------------------------------------------------------------------------------------------------------------
+
+    # Orders List
+    order_list.element_visible()
+
+# ======================================================================================================================
 
 def test_add_order_with_consignment(driver, test_data):
     base_page = BasePage(driver)
@@ -255,6 +279,7 @@ def test_add_order_with_consignment(driver, test_data):
               consignment_amount=consignment_amount,
               current_date_add_day=current_date_add_day)
 
+# ======================================================================================================================
 
 def test_add_order_with_contract(driver, test_data):
     base_page = BasePage(driver)
@@ -273,6 +298,7 @@ def test_add_order_with_contract(driver, test_data):
               return_quantity=return_quantity,
               error_massage=True)
 
+# ======================================================================================================================
 
 def test_add_order_with_price_type_USA(driver, test_data):
     base_page = BasePage(driver)
@@ -293,8 +319,10 @@ def test_add_order_with_price_type_USA(driver, test_data):
               margin=True,
               status=2,
               file=True,
-              transactions=True)
+              transactions=True,
+              attach_data=True)
 
+# ======================================================================================================================
 
 def test_order_add_for_sub_filial_select(driver, test_data):
     base_page = BasePage(driver)
@@ -318,116 +346,64 @@ def test_order_add_for_sub_filial_select(driver, test_data):
               select=True,
               setting=True)
 
-# Copy -----------------------------------------------------------------------------------------------------------------
+# ======================================================================================================================
 
-def order_copy(driver, test_data, client_name=None, client_name_copy_A=None, client_name_copy_B=None):
-    login_user(driver, test_data, url='trade/tdeal/order/order_list')
+def copy_order(driver, test_data, login=True, choose_client_name=None):
+    # data
+    data = test_data["data"]
+    client_name = f"{data['client_name']}-C"
+
+    # ------------------------------------------------------------------------------------------------------------------
+
+    # login
+    if login:
+        login_user(driver, test_data, url='trade/tdeal/order/order_list')
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     # List
     order_list = OrdersList(driver)
     order_list.element_visible()
+    order_list.click_reload_button()
     order_list.find_row(client_name)
     order_list.click_copy_button()
 
     # Copy
     order_list.element_visible_copy_title()
-    order_list.input_persons(client_name_copy_A, client_name_copy_B)
+    order_list.input_persons(choose_client_name)
     order_list.click_copy_save_button()
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     # List
     order_list.element_visible()
-    order_list.find_row(client_name_copy_A)
+    order_list.find_row(choose_client_name)
     order_list.click_view_button()
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     # View client_A
     order_view = OrderView(driver)
     order_view.element_visible()
     get_client_name = order_view.check_client_name()
-    assert get_client_name == client_name_copy_A, f"{get_client_name} != {client_name_copy_A}"
+    assert get_client_name == choose_client_name, f"{get_client_name} != {choose_client_name}"
     order_view.click_close_button()
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     # List
-    order_list.click_reload_button()
     order_list.element_visible()
-    order_list.find_row(client_name_copy_B)
-    order_list.click_view_button()
-
-    # View client_B
-    order_view.element_visible()
-    get_client_name = order_view.check_client_name()
-    assert get_client_name == client_name_copy_B, f"{get_client_name} != {client_name_copy_B}"
-    order_view.click_close_button()
 
 
-def test_order_copy_C_for_A_B(driver, test_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_order_copy_C_for_A_B")
-
+def test_copy_order(driver, test_data):
+    # Test data
     data = test_data["data"]
-    client_name = f"{data['client_name']}-C"
-    client_name_copy_A = f"{data['client_name']}-A"
-    client_name_copy_B = f"{data['client_name']}-B"
-    order_copy(driver, test_data,
-               client_name=client_name,
-               client_name_copy_A=client_name_copy_A,
-               client_name_copy_B=client_name_copy_B)
+    client_name_A = f"{data['client_name']}-A"
+    client_name_B = f"{data['client_name']}-B"
+    copy_order(driver, test_data, login=True, choose_client_name=client_name_A)
+    copy_order(driver, test_data, login=False, choose_client_name=client_name_B)
 
-# Order list -----------------------------------------------------------------------------------------------------------
+    # search_type
+    grid_setting(driver, test_data, option_name="deal_id", search_type="ИД заказа")
 
-def order_list(driver, test_data):
-    # Log
-    data = test_data()["data"]
-
-    login_user(driver, test_data, url='trade/tdeal/order/order_list')
-
-    order_list = OrdersList(driver)
-    order_view = OrderView(driver)
-
-    # Order_A
-    order_list.element_visible()
-    order_list.click_reload_button()
-    order_list.find_row(f"{data['client_name']}-A")
-    order_list.click_view_button()
-    order_view.element_visible()
-    get_order_id_A = order_view.check_order_id()
-    get_quantity_A, get_price_A = order_view.check_items()
-    order_view.click_close_button()
-
-    # Order_B
-    order_list.element_visible()
-    order_list.click_reload_button()
-    order_list.find_row(f"{data['client_name']}-B")
-    order_list.click_view_button()
-    order_view.element_visible()
-    get_order_id_B = order_view.check_order_id()
-    get_quantity_B, get_price_B = order_view.check_items()
-    order_view.click_close_button()
-
-    # Order_C
-    order_list.element_visible()
-    order_list.click_reload_button()
-    order_list.find_row(f"{data['client_name']}-C")
-    order_list.click_view_button()
-    order_view.element_visible()
-    get_order_id_C = order_view.check_order_id()
-    get_quantity_C, get_price_C = order_view.check_items()
-    order_view.click_close_button()
-
-    print(f"get_order_id_A: {get_order_id_A}")
-    print(f"get_quantity_A: {get_quantity_A}")
-    print(f"get_price_A: {get_price_A}")
-
-    print(f"get_order_id_B: {get_order_id_B}")
-    print(f"get_quantity_B: {get_quantity_B}")
-    print(f"get_price_B: {get_price_B}")
-
-    print(f"get_order_id_C: {get_order_id_C}")
-    print(f"get_quantity_C: {get_quantity_C}")
-    print(f"get_price_C: {get_price_C}")
-
-
-def test_order_list(driver, test_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_order_list")
-
-    order_list(driver, test_data)
+# ======================================================================================================================

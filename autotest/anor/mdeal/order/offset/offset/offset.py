@@ -9,27 +9,20 @@ class Offset(BasePage):
     def element_visible(self):
         self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    check_row = ("//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]"
-                 "//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']"
-                 "/ancestor::div[@class='tbl-cell']/following-sibling::div[9]//button")
 
     def find_row(self, client_name):
-        locator = (By.XPATH, self.check_row.replace(f'{client_name}', client_name))
-        self.click(locator)
+        check_row = (By.XPATH, f"//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']/ancestor::div[@class='tbl-cell']/following-sibling::div[9]//button")
+        self.click(check_row)
     # ------------------------------------------------------------------------------------------------------------------
-    get_balance = ("//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']"
-                   "/ancestor::div[@class='tbl-cell']/following-sibling::div[5]/div")
 
     def check_balance(self, client_name):
-        locator = (By.XPATH, self.get_balance.replace('{client_name}', client_name))
-        return self.get_numeric_value(locator)
+        get_balance = (By.XPATH, f"//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']/ancestor::div[@class='tbl-cell']/following-sibling::div[5]/div")
+        return self.get_numeric_value(get_balance)
     # ------------------------------------------------------------------------------------------------------------------
-    get_balance_payment = ("//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']"
-                   "/ancestor::div[@class='tbl-cell']/following-sibling::div[7]/div")
 
     def check_balance_payment(self, client_name):
-        locator = (By.XPATH, self.get_balance_payment.replace('{client_name}', client_name))
-        return self.get_numeric_value(locator)
+        get_balance_payment = (By.XPATH, f"//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']""/ancestor::div[@class='tbl-cell']/following-sibling::div[7]/div")
+        return self.get_numeric_value(get_balance_payment)
     # ------------------------------------------------------------------------------------------------------------------
     post_button = (By.XPATH, '//button[@ng-click="post()"]')
 

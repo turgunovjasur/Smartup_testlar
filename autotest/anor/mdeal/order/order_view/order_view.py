@@ -53,9 +53,8 @@ class OrderView(BasePage):
 
     def click_tablist_button(self, tablist_name):
         """
-        tablist_name = [
-        'Основная информация', 'Консигнация', 'Визиты', 'Дополнительная информация', 'Примечания', 'Чат', 'История изменений'
-        ]
+        tablist_name = ['Основная информация', 'Консигнация', 'Визиты', 'Дополнительная информация',
+                        'Примечания', 'Чат', 'История изменений']
         """
         tablist_button = (By.XPATH, f'//div[@class="card-title"]/ul[@role="tablist"]//span[contains(text(), "{tablist_name}")]')
         self.click(tablist_button)
