@@ -107,7 +107,7 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data):
 
     save_data("order_id_1", get_values["ИД заказа"])
 
-    assert get_values["Штат"] == robot_name,                   f"{get_values["Штат"]} != {robot_name}"
+    assert get_values["Штат"] == robot_name,                   f'{get_values["Штат"]} != {robot_name}'
     assert get_values["Статус"] == status_name,                f"{get_values["Статус"]} != {status_name}"
     assert get_values["Клиент"] == client_name,                f"{get_values["Клиент"]} != {client_name}"
     assert get_values["Рабочая зона"] == room_name,            f"{get_values["Рабочая зона"]} != {room_name}"
