@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
@@ -20,5 +21,6 @@ class NaturalPersonAdd(BasePage):
 
     def click_save_button(self):
         self.click(self.save_button)
+        time.sleep(2)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------

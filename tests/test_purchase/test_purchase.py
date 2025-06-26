@@ -9,8 +9,8 @@ from autotest.anor.mkw.purchase_add.purchase_add import PurchaseAdd
 from autotest.anor.mkw.purchase_list.purchase_list import PurchaseList
 from autotest.anor.mkw.purchase_view.purchase_view import PurchaseView
 from autotest.core.md.base_page import BasePage
-from tests.test_base.test_base import login_user, grid_setting
-from tests.conftest import driver, test_data, save_data, load_data
+from flows.auth_flow import login_user
+from flows.grid_setting_flow import grid_setting
 
 
 def add_purchase(driver, test_data, save_data, save_purchase_number):
@@ -137,7 +137,7 @@ def test_add_extra_cost(driver, test_data, save_data, load_data):
     # List
     extra_cost_list.element_visible()
     if not extra_cost_list.find_row(note_text):
-        grid_setting(driver, test_data, option_name)
+        grid_setting(driver, option_name)
         extra_cost_list.element_visible()
         base_page.refresh_page()
         extra_cost_list.find_row(note_text)

@@ -1,5 +1,4 @@
 import time
-
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -12,28 +11,22 @@ class SystemSetting(BasePage):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def click_navbar_button(self, navbar_button):
-        button = (By.XPATH, f'(//div[@class="navi navi-bolder navi-hover navi-active navi-link-rounded"]/div/a)[{navbar_button}]')
+    def click_navbar_button(self, navbar_name):
+        button = (By.XPATH, f'//div[contains(@class,"navi navi-bolder")]//span/t[contains(text(),"{navbar_name}")]')
         self.click(button)
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     order_header = (By.XPATH, '//div[@class="card-title"]/h5/t[contains(text(), "Заказы")]')
 
     def element_visible_order(self):
-        return self.wait_for_element_visible(self.order_header)
+        self.wait_for_element_visible(self.order_header)
     # ------------------------------------------------------------------------------------------------------------------
     # Consignment
     # ------------------------------------------------------------------------------------------------------------------
-    consignment_checkbox_text = (By.XPATH, '//input[@type="checkbox" and @ng-model="d.consignment_allow"]/following-sibling::span/t')
+    consignment_checkbox = (By.XPATH, '//input[@ng-model="d.consignment_allow"]/../input')
 
-    def check_checkbox_text(self):
-        text = self.get_text(self.consignment_checkbox_text)
-        return text.lower() == 'да'
-    # ------------------------------------------------------------------------------------------------------------------
-    consignment_checkbox = (By.XPATH, '//input[@type="checkbox" and @ng-model="d.consignment_allow"]/following-sibling::span')
-
-    def click_checkbox_consignment(self):
-        self.click(self.consignment_checkbox)
+    def checkbox_consignment(self, state):
+        return self.click_checkbox(self.consignment_checkbox, state)
     # ------------------------------------------------------------------------------------------------------------------
     consignment_day_limit_input = (By.XPATH, '//input[@ng-model="d.consignment_day_limit"]')
 
@@ -42,16 +35,10 @@ class SystemSetting(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # Prepayment
     # ------------------------------------------------------------------------------------------------------------------
-    prepayment_checkbox_text = (By.XPATH, '//input[@type="checkbox" and @ng-model="d.deal_booked_payment_allow"]/following-sibling::span/t')
+    prepayment_checkbox = (By.XPATH, '//input[@ng-model="d.deal_booked_payment_allow"]/../input')
 
-    def check_checkbox_prepayment(self):
-        text = self.get_text(self.prepayment_checkbox_text)
-        return text.lower() == 'да'
-    # ------------------------------------------------------------------------------------------------------------------
-    prepayment_checkbox = (By.XPATH, '//input[@type="checkbox" and @ng-model="d.deal_booked_payment_allow"]/following-sibling::span')
-
-    def click_checkbox_prepayment(self):
-        self.click(self.prepayment_checkbox)
+    def checkbox_prepayment(self, state):
+        return self.click_checkbox(self.prepayment_checkbox, state)
     # ------------------------------------------------------------------------------------------------------------------
     prepayment_input = (By.XPATH, '//div[@ng-model="d.deal_booked_payment_allow_by_status"]')
 

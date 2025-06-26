@@ -8,9 +8,8 @@ from autotest.biruni.ker.setting_add.setting_add import SettingAdd
 from autotest.biruni.ker.template_role_list.template_role_list import TemplateRoleList
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_history_list.order_history_list import OrdersHistoryList
-from tests.test_base.test_base import login_user, login_admin
+from flows.auth_flow import login_user, login_admin
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
-from tests.conftest import driver, test_data
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 
 

@@ -7,7 +7,7 @@ class LoginPage(BasePage):
     login_header = (By.XPATH, '//div[@class="loginbox__logo"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.login_header)
+        self.wait_for_element_visible(self.login_header)
     # ------------------------------------------------------------------------------------------------------------------
     email_input = (By.XPATH, '//input[@id="login"]')
     password_input = (By.XPATH, '//input[@id="password"]')

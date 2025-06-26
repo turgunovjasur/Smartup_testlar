@@ -2,25 +2,26 @@ from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
-class SalesWork(BasePage):
+class SalesWorkTemplateAdd(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = (By.XPATH, '//button[@ng-click="page.close()"]')
+    header = (By.XPATH, '//button[@ng-click="save()"]')
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    select_template_button = (By.XPATH, "//button[@ng-click='selectTemplate()']")
+    name_input = (By.XPATH, '//input[@ng-model="d.name"]')
 
-    def click_select_template(self):
-        self.click(self.select_template_button)
+    def input_name(self, template_name):
+        self.input_text(self.name_input, template_name)
     # ------------------------------------------------------------------------------------------------------------------
-    generate_button = (By.XPATH, '//button[@ng-click="generate()"]')
+    product_groups_input = (By.XPATH, '//b-input[@name="product_groups"]//input')
+    options_product_groups = (By.XPATH, '//b-input[@name="product_groups"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
-    def click_generate(self):
-        self.click(self.generate_button)
+    def input_product_groups(self, product_group_name):
+        self.click_options(self.product_groups_input, self.options_product_groups, product_group_name)
     # ------------------------------------------------------------------------------------------------------------------
-    templates_input = (By.XPATH, '//b-input[@name="templates"]//input')
+    save_button = (By.XPATH, '//button[@ng-click="save()"]')
 
-    def input_templates(self):
-        return self.input_text(self.templates_input, get_value=True)
+    def click_save(self):
+        self.click(self.save_button)
     # ------------------------------------------------------------------------------------------------------------------

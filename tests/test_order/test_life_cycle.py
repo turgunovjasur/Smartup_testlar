@@ -45,16 +45,13 @@ from autotest.core.md.company_add.company_add import CompanyAdd
 from autotest.core.md.company_list.company_list import CompanyList
 from autotest.core.md.company_view.company_view import CompanyView
 from autotest.core.md.role_view.role_view import RoleView
-from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
-from autotest.trade.intro.dashboard.main_navbar import MainNavbar
 from autotest.trade.pref.system_setting.system_setting import SystemSetting
 from autotest.trade.tr.role_edit.role_edit import RoleEdit
 from autotest.trade.tr.role_list.role_list import RoleList
 from autotest.trade.trf.room_add.room_add import RoomAdd
 from autotest.trade.trf.room_list.room_list import RoomList
 from autotest.trade.trf.room_view.room_view import RoomView
-from tests.conftest import driver, test_data
-from tests.test_base.test_base import dashboard, login_admin, login_user, logout
+from flows.auth_flow import login_admin, login_user, logout
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 from utils.exception import ElementNotFoundError
 
@@ -62,26 +59,14 @@ from utils.exception import ElementNotFoundError
 def test_company_create(driver, test_data):
     # Test data
     data = test_data["data"]
-    email = data['email_company']
-    password = data['password_company']
     code_input = data["code_input"]
     name_company = data["name_company"]
     plan_account = data["plan_account"]
     bank_name = data["bank_name"]
 
     # Login
-    login_admin(driver, test_data, email, password,
-                dashboard_check=False, change_password_check=False, url=False)
-
-    # Dashboard
-    dashboard(driver)
-    dashboard_page = DashboardPage(driver)
-    dashboard_page.click_main_button()
-
-    # Main Navbar
-    main_navbar = MainNavbar(driver)
-    main_navbar.element_visible()
-    main_navbar.click_company_button()
+    login_admin(driver, test_data, email=data['email_company'], password=data['password_company'],
+                dashboard_check=False, change_password_check=False, url="biruni/md/company_list")
 
     # Company List
     company_list = CompanyList(driver)
@@ -371,8 +356,8 @@ def test_user_change_password(driver, test_data):
     password_user = data["password_user"]
 
     # Login
-    login_user(driver, test_data, dashboard_check=False, change_password_check=True,
-                                  filial_name=False, url=False)
+    login_user(driver, test_data, dashboard_check=False, change_password_check=True, filial_name=False, url=False)
+
     # Change Password
     change_password = ChangePassword(driver)
     change_password.element_visible()
@@ -728,27 +713,6 @@ def test_init_balance(driver, test_data):
     assert balance == product_quantity, f"Error: Balance: '{balance}' != product_quantity: '{product_quantity}'"
 
 
-def test_setting_consignment(driver, test_data):
-    """Test enabling consignment settings."""
-    system_setting = SystemSetting(driver)
-
-    # Login
-    login_user(driver, test_data, url='trade/pref/system_setting')
-
-    # Open System Setting
-    system_setting.element_visible()
-    system_setting.click_navbar_button(navbar_button=6)
-
-    # Configure Consignment
-    system_setting.element_visible_order()
-    if not system_setting.check_checkbox_text():
-        system_setting.click_checkbox_consignment()
-        system_setting.input_consignment_day_limit(day_limit=90)
-
-    # Save Settings
-    system_setting.click_save_button()
-
-
 def test_order_request(driver, test_data):
     """Test creating an order request."""
     # Test data
@@ -805,31 +769,50 @@ def test_order_request(driver, test_data):
     order_request_list.element_visible()
     order_request_list.click_status_button()
 
-# ----------------------------------------------------------------------------------------------------------------------
 
-def setting_prepayment(driver, test_data, prepayment=True):
-    """Test enabling and configuring prepayment settings."""
-    # Test data
-    data = test_data["data"]
-    status_name = data['Delivered']
+def test_setting_consignment(driver, test_data, **kwargs):
+    """Test enabling consignment settings."""
 
-    system_setting = SystemSetting(driver)
+    consignment = kwargs.get("consignment", True)
 
     # Login
     login_user(driver, test_data, url='trade/pref/system_setting')
 
     # System setting
+    system_setting = SystemSetting(driver)
     system_setting.element_visible()
-    system_setting.click_navbar_button(navbar_button=6)
+    system_setting.click_navbar_button(navbar_name='Заказ')
+
+    # Configure Consignment
+    system_setting.element_visible_order()
+    if consignment:
+        if system_setting.checkbox_consignment(state=True):
+            system_setting.input_consignment_day_limit(day_limit=90)
+    if not consignment:
+        system_setting.checkbox_consignment(state=False)
+    system_setting.click_save_button()
+    system_setting.element_visible_order()
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def setting_prepayment(driver, test_data, prepayment):
+    """Test enabling and configuring prepayment settings."""
+    # Login
+    login_user(driver, test_data, url='trade/pref/system_setting')
+
+    # System setting
+    system_setting = SystemSetting(driver)
+    system_setting.element_visible()
+    system_setting.click_navbar_button(navbar_name='Заказ')
+
+    # Configure Prepayment
     system_setting.element_visible_order()
     if prepayment:
-        if not system_setting.check_checkbox_prepayment():
-            system_setting.click_checkbox_prepayment()
-            system_setting.input_prepayment(status_name)
+        if system_setting.checkbox_prepayment(state=True):
+            system_setting.input_prepayment(test_data["data"]['Delivered'])
             system_setting.input_prepayment_min_percent(payment_min_percent=50)
     if not prepayment:
-        if system_setting.check_checkbox_prepayment():
-            system_setting.click_checkbox_prepayment()
+        system_setting.checkbox_prepayment(state=False)
     system_setting.click_save_button()
     system_setting.element_visible_order()
 

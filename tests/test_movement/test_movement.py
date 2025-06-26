@@ -4,8 +4,7 @@ from autotest.anor.mkw.movement.movement_add.movement_add import MovementAdd
 from autotest.anor.mkw.movement.movement_list.movement_list import MovementList
 from autotest.anor.mkw.movement.movement_view.movement_view import MovementView
 from autotest.core.md.base_page import BasePage
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def test_add_internal_movement(driver, test_data):

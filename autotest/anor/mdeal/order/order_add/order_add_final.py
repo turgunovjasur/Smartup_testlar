@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 from datetime import datetime, timedelta
@@ -10,12 +12,12 @@ class OrderAddFinal(BasePage):
     def element_visible(self):
         return self.wait_for_element_visible(self.header_text)
     # ------------------------------------------------------------------------------------------------------------------
-    booked_payment_allowed_input = (By.XPATH, '//div[contains(@ng-show, "d.booked_payment_allowed")]//t[contains(text(),"Баланс клиента")]/ancestor::label/following-sibling::span')
+    booked_payment_allowed_input = (By.XPATH, '//div[contains(@ng-show, "booked_payment_allowed")]//t[contains(text(),"Баланс клиента")]/ancestor::label/following-sibling::span')
 
     def get_booked_payment_allowed(self):
         return self.get_numeric_value(self.booked_payment_allowed_input)
     # ------------------------------------------------------------------------------------------------------------------
-    booked_payment_percentage_input = (By.XPATH, '//div[contains(@ng-show, "d.booked_payment_allowed")]//t[contains(text(),"Минимальный процент предоплаты")]/ancestor::label/following-sibling::span')
+    booked_payment_percentage_input = (By.XPATH, '//div[contains(@ng-show, "booked_payment_allowed")]//t[contains(text(),"Минимальный процент предоплаты")]/ancestor::label/following-sibling::span')
 
     def get_booked_payment_percentage(self):
         return self.get_numeric_value(self.booked_payment_percentage_input)
@@ -39,10 +41,8 @@ class OrderAddFinal(BasePage):
         """Joriy sanaga `add_days` kun qo'shib, uni kiritish."""
 
         # Sana hisoblash
-        # future_date = (datetime.now() + timedelta(days=add_days)).strftime("%d.%m.%Y %H:%M:%S")
         future_date = (datetime.now() + timedelta(days=add_days)).strftime("%d.%m.%Y")
 
-        # Input maydonlarga kiritish
         self.input_text(self.consignment_date_input, future_date)
         self.input_text(self.consignment_amount_input, consignment_amount)
     # ------------------------------------------------------------------------------------------------------------------
@@ -51,6 +51,11 @@ class OrderAddFinal(BasePage):
     def input_status(self, status=1):
         self.click(self.status_input)
         status_options = (By.XPATH, f'//div[@id="anor279-ui_select-status"]//div[@role="option"][{status}]')
+        self.click(status_options)
+
+    def input_status_2(self, status_name):
+        self.click(self.status_input)
+        status_options = (By.XPATH, f'//div[@id="anor279-ui_select-status"]//div[@role="option"]//span[normalize-space(.)="{status_name}"]')
         self.click(status_options)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
@@ -64,8 +69,7 @@ class OrderAddFinal(BasePage):
 
     def error_massage(self):
         full_text = self.get_text(self.error_massage_xpath)
-        error_code = full_text.split('—')[
-            0].strip()
+        error_code = full_text.split('—')[0].strip()
         return error_code
     # ------------------------------------------------------------------------------------------------------------------
     close_button = (By.XPATH, '//div[@id="biruniAlertExtended"]//div[@class="modal-content"]//button[@class="close p-4 m-n4"]')

@@ -1,8 +1,9 @@
+import pytest
 from autotest.trade.rep.integration.integration_three.integration_three import IntegrationThree
-from tests.test_base.test_base import login_admin
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_admin
 
 
+@pytest.mark.integration_report
 def test_check_report_integration_three(driver, test_data):
     login_admin(driver, test_data, url='trade/rep/integration/integration_three')
 

@@ -9,8 +9,8 @@ from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.trade.tdeal.order.order_attach_data.order_attach_data import OrderAttachData
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from autotest.trade.tdeal.order.transactions.transactions import Transaction
-from tests.conftest import driver, test_data
-from tests.test_base.test_base import login_user, grid_setting
+from flows.grid_setting_flow import grid_setting
+from flows.auth_flow import login_user
 from autotest.core.md.base_page import BasePage
 
 # ======================================================================================================================
@@ -147,7 +147,7 @@ def order_add(driver, test_data,
     # Orders View
     order_view = OrderView(driver)
     order_view.element_visible()
-    order_id = order_view.check_order_id()
+    order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
     base_page.logger.info(f"Order ID: {order_id}")
 
     # Grid Setting
@@ -345,65 +345,5 @@ def test_order_add_for_sub_filial_select(driver, test_data):
               margin=True,
               select=True,
               setting=True)
-
-# ======================================================================================================================
-
-def copy_order(driver, test_data, login=True, choose_client_name=None):
-    # data
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-C"
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # login
-    if login:
-        login_user(driver, test_data, url='trade/tdeal/order/order_list')
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # List
-    order_list = OrdersList(driver)
-    order_list.element_visible()
-    order_list.click_reload_button()
-    order_list.find_row(client_name)
-    order_list.click_copy_button()
-
-    # Copy
-    order_list.element_visible_copy_title()
-    order_list.input_persons(choose_client_name)
-    order_list.click_copy_save_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # List
-    order_list.element_visible()
-    order_list.find_row(choose_client_name)
-    order_list.click_view_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # View client_A
-    order_view = OrderView(driver)
-    order_view.element_visible()
-    get_client_name = order_view.check_client_name()
-    assert get_client_name == choose_client_name, f"{get_client_name} != {choose_client_name}"
-    order_view.click_close_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # List
-    order_list.element_visible()
-
-
-def test_copy_order(driver, test_data):
-    # Test data
-    data = test_data["data"]
-    client_name_A = f"{data['client_name']}-A"
-    client_name_B = f"{data['client_name']}-B"
-    copy_order(driver, test_data, login=True, choose_client_name=client_name_A)
-    copy_order(driver, test_data, login=False, choose_client_name=client_name_B)
-
-    # search_type
-    grid_setting(driver, test_data, option_name="deal_id", search_type="ИД заказа")
 
 # ======================================================================================================================

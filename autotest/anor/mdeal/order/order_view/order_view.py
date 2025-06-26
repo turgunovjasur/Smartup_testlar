@@ -10,10 +10,17 @@ class OrderView(BasePage):
     def element_visible(self):
         self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    order_id = (By.XPATH, "(//div[@class='card-body']/div/div/div/div[@class='col-sm'])[1]")
 
-    def check_order_id(self):
-        return self.get_numeric_value(self.order_id)
+    def get_input_value_in_order_view(self, input_name, data_type="text"):
+        data_types = {
+            "numeric": self.get_numeric_value,
+            "text": self.get_text
+        }
+        if data_type not in data_types:
+            raise ValueError(f"Incorrect data_type: {data_type}. Allowed values: 'numeric', 'text'")
+
+        locator = (By.XPATH, f'//t[contains(text(),"{input_name}")]/../../span')
+        return data_types[data_type](locator)
     # ------------------------------------------------------------------------------------------------------------------
     setting_button = (By.XPATH, '//b-pg-controller[@name="goods_items_view"]//div[@role="group"]/button')
     setting_tbl_button = (By.XPATH, '//b-pg-controller[@name="goods_items_view"]//div[@role="group"]/div[@x-placement="bottom-end"]/a')
@@ -21,11 +28,6 @@ class OrderView(BasePage):
     def click_setting_button(self):
         self.click(self.setting_button)
         self.click(self.setting_tbl_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    get_status = (By.XPATH, '(//form[@name="form"]//div[@class="row"]//div[@class="col-sm-12"]/span)[1]')
-
-    def check_status(self):
-        return self.get_text(self.get_status)
     # ------------------------------------------------------------------------------------------------------------------
     get_product_total_quantity = (By.XPATH, "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Общее кол-во']]")
     get_product_total_price = (By.XPATH, "//b-pg-grid[@name='goods_items_view']/following-sibling::div//div[contains(@class, 'sg-cell') and t[text()='Сумма']]")
@@ -37,11 +39,6 @@ class OrderView(BasePage):
         price = self.get_numeric_value(self.get_product_total_price)
         total_sum = self.get_numeric_value(self.get_product_total_sum)
         return quantity, price, total_sum
-    # ------------------------------------------------------------------------------------------------------------------
-    get_client_name = (By.XPATH, '//form[@name="form"]//div[@class="form-group"]//t[contains(text(), "Клиент")]/ancestor::label/following-sibling::span')
-
-    def check_client_name(self):
-        return self.get_text(self.get_client_name)
     # ------------------------------------------------------------------------------------------------------------------
     close_button = (By.XPATH, "//button[@id='trade82-button-close']")
 
@@ -62,7 +59,7 @@ class OrderView(BasePage):
     get_row_consignment = (By.XPATH, '//b-pg-grid[@name="consignments"]//div[@class="tbl-body"]//div[contains(@class, "tbl-no-data-row") and contains(text(), "нет данных")]')
 
     def check_row_consignment(self):
-        return self.wait_for_element_visible(self.get_row_consignment)
+        self.wait_for_element_visible(self.get_row_consignment)
     # ------------------------------------------------------------------------------------------------------------------
 
     def check_consignments(self, add_date):

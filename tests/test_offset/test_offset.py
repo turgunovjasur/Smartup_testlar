@@ -5,8 +5,7 @@ from autotest.anor.mdeal.order.offset.offset_list.offset_list import OffsetList
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tcs.cashin_list.cashin_list import CashinList
 from autotest.trade.tcs.cashin_view.cashin_view import CashinView
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def offset_add(driver, test_data, client_name=None, payment=False):

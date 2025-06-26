@@ -4,29 +4,70 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="04.06.2025">
-      <change afterPath="$PROJECT_DIR$/autotest/core/md/base2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_attach_data/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_attach_data/order_attach_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/transactions/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/transactions/transactions.py" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="10.06.2025">
+      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork_template_list.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/order/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/order/sales_report_constructor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/order_b_grid_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/order_copy_modal.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flows/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flows/auth_flow.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flows/grid_setting_flow.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flows/order_flows/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_order/test_order_demo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Smartup_testlar.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Smartup_testlar.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_list/overload_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mcg/overload_list/overload_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/offset/offset.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/offset/offset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_view/order_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_view/order_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/biruni/md/biruni/grid_setting/grid_setting.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/md/biruni/grid_setting/grid_setting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/contract_add/contract_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mkf/contract_add/contract_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_add/filial_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/filial_add/filial_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_add/natural_person_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_add/natural_person_add.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/login_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/login_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/dashboard_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/intro/dashboard/dashboard_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/pref/system_setting/system_setting.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/pref/system_setting/system_setting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/orders_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/orders_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/report.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_base/test_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_base/test_base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qa-testing-documentation.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_base/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork_template_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_base/test_base.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_contract.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finance/test_contract.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_currency.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finance/test_currency.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_input/test_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_input/test_input.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_movement/test_movement.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_movement/test_movement.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_offset/test_offset.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_offset/test_offset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_purchase/data_store.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_for_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_for_action.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_return.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_action.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_natural_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_natural_person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/cislink/test_cislink.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/cislink/test_cislink.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_three/test_integration_three.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/integration_three/test_integration_three.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_two/test_integration_two.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/integration_two/test_integration_two.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/optimum/test_optimum.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/optimum/test_optimum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/rep_main_funksiya.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/rep_main_funksiya.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/saleswork/test_saleswork.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/saleswork/test_saleswork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/spot/test_spot.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/spot/test_spot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_return/test_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_return/test_return.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/all_test_runner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/test_supplier.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_warehouse/test_supplier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/test_warehouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_warehouse/test_warehouse.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,8 +98,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$USER_HOME$/AppData/Local/Temp/0cae178d-4447-4154-9097-5ee2686772bf_dars_5.zip.2bf/dars_5/tests.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Temp/cc5cec99-d1a5-4e4b-a28f-b1128800aa72_dars_5.zip.a72/dars_5/login_page.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/c0b13a53-a4d8-47e4-b0e9-fb6cae86b435_dars_10.zip.435/dars_10/main.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/d72ec025-2ee2-438f-9be2-4825f959500d_dars_10.zip.00d/dars_10/main.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/autotest/trade/intro/dashboard/dashboard_page.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/tests/test_order/test_life_cycle.py" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -76,121 +117,138 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python tests.pytest for conftest.test_data.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_action.test_add_action.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_cashin.test_offset_add_B.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_cislink.test_check_report_cis_link.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_cislink.test_check_report_integration_two.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_cislink.test_check_report_sales_work.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_cislink.test_check_report_spot_2d.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_contract.test_add_contract_for_client_A_UZB.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_input.test_add_input.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_input.test_add_input_with_extra_cost.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_integration_three.test_check_report_integration_three.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_integration_two.test_check_report_integration_two.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_legal_person.test_add_legal_person.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_legal_person.test_add_legal_person_by_supplier.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_legal_person.test_add_supplier.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_add_supplier.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_add_user_license.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_add_van.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_adding_permissions_to_user.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_check_price_tag.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_company_create.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_filial_create.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_legal_person_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_margin_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_natural_person_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_payment_type_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_price_type_add_USA.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_price_type_add_UZB.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_product_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_product_add_as_product_2.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_robot_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_room_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_sector_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_setting_prepayment_on.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_sub_filial_add.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_user_change_password.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_user_create.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_life_cycle.test_user_license.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_movement.test_add_movement.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_offset.test_offset_add_A.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_optimum.test_check_report_optimum.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_add_order_with_consignment.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_add_order_with_contract.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_add_order_with_price_type_USA.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_change_status_draft_and_cancelled.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_change_status_draft_and_delivered.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_change_status_for_order_B.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_change_status_for_order_C.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_copy_order.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_order_add_for_sub_filial_select.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_order_list.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order.test_order_return.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order_edit.test_edit_order_for_price_type_USA.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order_edit.test_edit_order_with_consignment.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order_for_action.test_add_order_for_action.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order_for_action.test_edit_order_for_action.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order_report.test_check_invoice_report_for_order_list.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_order_return.test_order_return.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_product.test_product_add_as_product_1.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_product.test_product_add_as_product_2.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_purchase.test_add_extra_cost.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_purchase.test_add_purchase.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_purchase.test_add_purchase_for_input.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_purchase.test_add_purchase_for_input_with_extra_cost.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_quantity.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_sum.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_return.test_return.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_return.test_return_id.executor&quot;: &quot;Debug&quot;,
-    &quot;Python tests.pytest for test_runner.test_all.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_runner.test_all_report.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_saleswork.test_check_report_sales_work.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_spot.test_check_report_spot_2d.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_supplier.test_add_supplier.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_warehouse.test_add_warehouse.executor&quot;: &quot;Run&quot;,
-    &quot;Python.1_vazifa.executor&quot;: &quot;Run&quot;,
-    &quot;Python.2-dars_uy_ishi.executor&quot;: &quot;Run&quot;,
-    &quot;Python.4_dars.QA.executor&quot;: &quot;Run&quot;,
-    &quot;Python.HomeWork_1.executor&quot;: &quot;Run&quot;,
-    &quot;Python.QA- 4-dars vazifasi (O.Uzakov) (2).executor&quot;: &quot;Run&quot;,
-    &quot;Python.QA- 4-dars vazifasi (O.Uzakov) (3).executor&quot;: &quot;Run&quot;,
-    &quot;Python.QA- 4-dars vazifasi (O.Uzakov).executor&quot;: &quot;Run&quot;,
-    &quot;Python.QA.topshiriq_3.executor&quot;: &quot;Run&quot;,
-    &quot;Python.dars.executor&quot;: &quot;Run&quot;,
-    &quot;Python.find_koordinata.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;ShowUsagesActions.previewPropertyKey&quot;: &quot;true&quot;,
-    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jasur.turgunov/Desktop/ish/Smartup_testlar&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.pytest for conftest.test_data.executor": "Run",
+    "Python tests.pytest for test_action.test_add_action.executor": "Run",
+    "Python tests.pytest for test_cashin.test_offset_add_B.executor": "Run",
+    "Python tests.pytest for test_cislink.test_check_report_cis_link.executor": "Run",
+    "Python tests.pytest for test_cislink.test_check_report_integration_two.executor": "Run",
+    "Python tests.pytest for test_cislink.test_check_report_sales_work.executor": "Run",
+    "Python tests.pytest for test_cislink.test_check_report_spot_2d.executor": "Run",
+    "Python tests.pytest for test_contract.test_add_contract_for_client_A_UZB.executor": "Run",
+    "Python tests.pytest for test_input.test_add_input.executor": "Run",
+    "Python tests.pytest for test_input.test_add_input_with_extra_cost.executor": "Run",
+    "Python tests.pytest for test_integration_three.test_check_report_integration_three.executor": "Run",
+    "Python tests.pytest for test_integration_two.test_check_report_integration_two.executor": "Run",
+    "Python tests.pytest for test_legal_person.test_add_legal_person.executor": "Run",
+    "Python tests.pytest for test_legal_person.test_add_legal_person_by_supplier.executor": "Run",
+    "Python tests.pytest for test_legal_person.test_add_supplier.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_add_supplier.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_add_user_license.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_add_van.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_adding_permissions_to_user.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_check_price_tag.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_company_create.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_filial_create.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_legal_person_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_margin_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_natural_person_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_payment_type_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_price_type_add_USA.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_price_type_add_UZB.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_product_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_product_add_as_product_2.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_robot_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_room_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_sector_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_setting_consignment.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_setting_prepayment_off.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_setting_prepayment_on.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_sub_filial_add.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_user_change_password.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_user_create.executor": "Run",
+    "Python tests.pytest for test_life_cycle.test_user_license.executor": "Run",
+    "Python tests.pytest for test_movement.test_add_movement.executor": "Run",
+    "Python tests.pytest for test_offset.test_offset_add_A.executor": "Run",
+    "Python tests.pytest for test_optimum.test_check_report_optimum.executor": "Run",
+    "Python tests.pytest for test_order.test_add_order_with_consignment.executor": "Run",
+    "Python tests.pytest for test_order.test_add_order_with_contract.executor": "Run",
+    "Python tests.pytest for test_order.test_add_order_with_price_type_USA.executor": "Run",
+    "Python tests.pytest for test_order.test_change_status_draft_and_cancelled.executor": "Run",
+    "Python tests.pytest for test_order.test_change_status_draft_and_delivered.executor": "Run",
+    "Python tests.pytest for test_order.test_change_status_for_order_B.executor": "Run",
+    "Python tests.pytest for test_order.test_change_status_for_order_C.executor": "Run",
+    "Python tests.pytest for test_order.test_copy_order.executor": "Run",
+    "Python tests.pytest for test_order.test_copy_search_filter_in_order_list.executor": "Run",
+    "Python tests.pytest for test_order.test_demoqa_title.executor": "Run",
+    "Python tests.pytest for test_order.test_order_add_for_sub_filial_select.executor": "Run",
+    "Python tests.pytest for test_order.test_order_list.executor": "Run",
+    "Python tests.pytest for test_order.test_order_return.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_add_order_with_consignment.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_add_order_with_consignment_demo.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_copy_search_filter_in_order_list.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_copy_search_filter_in_order_list_2.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_copy_search_filter_in_order_list_demo.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_edit_order_with_consignment.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_edit_order_with_consignment_demo.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_order.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_order_change_status_demo.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_order_demo_all.executor": "Run",
+    "Python tests.pytest for test_order_demo.test_sales_report_constructor.executor": "Run",
+    "Python tests.pytest for test_order_edit.test_edit_order_for_price_type_USA.executor": "Run",
+    "Python tests.pytest for test_order_edit.test_edit_order_with_consignment.executor": "Run",
+    "Python tests.pytest for test_order_for_action.test_add_order_for_action.executor": "Run",
+    "Python tests.pytest for test_order_for_action.test_edit_order_for_action.executor": "Run",
+    "Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report.executor": "Run",
+    "Python tests.pytest for test_order_report.test_check_invoice_report_for_order_list.executor": "Run",
+    "Python tests.pytest for test_order_return.test_order_return.executor": "Run",
+    "Python tests.pytest for test_product.test_product_add_as_product_1.executor": "Run",
+    "Python tests.pytest for test_product.test_product_add_as_product_2.executor": "Run",
+    "Python tests.pytest for test_purchase.test_add_extra_cost.executor": "Run",
+    "Python tests.pytest for test_purchase.test_add_purchase.executor": "Run",
+    "Python tests.pytest for test_purchase.test_add_purchase_for_input.executor": "Run",
+    "Python tests.pytest for test_purchase.test_add_purchase_for_input_with_extra_cost.executor": "Run",
+    "Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost.executor": "Run",
+    "Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_quantity.executor": "Run",
+    "Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_sum.executor": "Run",
+    "Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto.executor": "Run",
+    "Python tests.pytest for test_return.test_return.executor": "Run",
+    "Python tests.pytest for test_return.test_return_id.executor": "Debug",
+    "Python tests.pytest for test_runner.test_all.executor": "Run",
+    "Python tests.pytest for test_runner.test_all_report.executor": "Run",
+    "Python tests.pytest for test_saleswork.test_check_report_sales_work.executor": "Run",
+    "Python tests.pytest for test_spot.test_check_report_spot_2d.executor": "Run",
+    "Python tests.pytest for test_supplier.test_add_supplier.executor": "Run",
+    "Python tests.pytest for test_warehouse.test_add_warehouse.executor": "Run",
+    "Python tests.pytest in test_order_demo.py.executor": "Run",
+    "Python.1_vazifa.executor": "Run",
+    "Python.2-dars_uy_ishi.executor": "Run",
+    "Python.4_dars.QA.executor": "Run",
+    "Python.HomeWork_1.executor": "Run",
+    "Python.QA- 4-dars vazifasi (O.Uzakov) (2).executor": "Run",
+    "Python.QA- 4-dars vazifasi (O.Uzakov) (3).executor": "Run",
+    "Python.QA- 4-dars vazifasi (O.Uzakov).executor": "Run",
+    "Python.QA.topshiriq_3.executor": "Run",
+    "Python.dars.executor": "Run",
+    "Python.driver.executor": "Run",
+    "Python.find_koordinata.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "ShowUsagesActions.previewPropertyKey": "true",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/jasur.turgunov/Desktop/ish/Smartup_testlar",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\flows\order_flows" />
+      <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar" />
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\tests\test_warehouse" />
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mrf" />
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mkw" />
-      <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mkw\supplier_add" />
-      <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\tests" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_order.test_copy_order">
-    <configuration name="pytest for test_life_cycle.test_add_user_license" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.pytest for test_order_demo.test_order_change_status_demo">
+    <configuration name="pytest for test_life_cycle.test_setting_consignment" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -203,28 +261,11 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_life_cycle.test_add_user_license&quot;" />
+      <option name="_new_target" value="&quot;test_life_cycle.test_setting_consignment&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_offset.test_offset_add_A" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_offset" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_offset.test_offset_add_A&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_order.test_add_order_with_price_type_USA" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_order_demo.test_add_order_with_consignment_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -237,11 +278,11 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_order.test_add_order_with_price_type_USA&quot;" />
+      <option name="_new_target" value="&quot;test_order_demo.test_add_order_with_consignment_demo&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_order.test_copy_order" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_order_demo.test_copy_search_filter_in_order_list_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -254,11 +295,11 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_order.test_copy_order&quot;" />
+      <option name="_new_target" value="&quot;test_order_demo.test_copy_search_filter_in_order_list_demo&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_order.test_order_list" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_order_demo.test_edit_order_with_consignment_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -271,17 +312,41 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_order.test_order_list&quot;" />
+      <option name="_new_target" value="&quot;test_order_demo.test_edit_order_with_consignment_demo&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest for test_order_demo.test_order_change_status_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="Smartup_testlar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_order_demo.test_order_change_status_demo&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python tests.pytest for test_life_cycle.test_setting_consignment" />
+      <item itemvalue="Python tests.pytest for test_order_demo.test_add_order_with_consignment_demo" />
+      <item itemvalue="Python tests.pytest for test_order_demo.test_copy_search_filter_in_order_list_demo" />
+      <item itemvalue="Python tests.pytest for test_order_demo.test_edit_order_with_consignment_demo" />
+      <item itemvalue="Python tests.pytest for test_order_demo.test_order_change_status_demo" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_order.test_copy_order" />
-        <item itemvalue="Python tests.pytest for test_order.test_order_list" />
-        <item itemvalue="Python tests.pytest for test_order.test_add_order_with_price_type_USA" />
-        <item itemvalue="Python tests.pytest for test_life_cycle.test_add_user_license" />
-        <item itemvalue="Python tests.pytest for test_offset.test_offset_add_A" />
+        <item itemvalue="Python tests.pytest for test_order_demo.test_order_change_status_demo" />
+        <item itemvalue="Python tests.pytest for test_order_demo.test_copy_search_filter_in_order_list_demo" />
+        <item itemvalue="Python tests.pytest for test_order_demo.test_edit_order_with_consignment_demo" />
+        <item itemvalue="Python tests.pytest for test_order_demo.test_add_order_with_consignment_demo" />
+        <item itemvalue="Python tests.pytest for test_life_cycle.test_setting_consignment" />
       </list>
     </recent_temporary>
   </component>
@@ -389,7 +454,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749029534287</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="10.06.2025">
+      <option name="closed" value="true" />
+      <created>1749549471041</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1749549471041</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -415,6 +488,7 @@
     <MESSAGE value="Update drver and all tests(16.05.2025)" />
     <MESSAGE value="27.05.2025" />
     <MESSAGE value="04.06.2025" />
-    <option name="LAST_COMMIT_MESSAGE" value="04.06.2025" />
+    <MESSAGE value="10.06.2025" />
+    <option name="LAST_COMMIT_MESSAGE" value="10.06.2025" />
   </component>
 </project>

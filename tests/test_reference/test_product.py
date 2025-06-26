@@ -4,8 +4,7 @@ from autotest.anor.mr.product.inventory_list.inventory_list import InventoryList
 from autotest.anor.mr.product.product_set_price.product_set_price import ProductSetPrice
 from autotest.anor.mr.product.inventory_view.product_id import ProductId as ProductView
 from autotest.core.md.base_page import BasePage
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def product_add(driver, test_data, product_name, supplier=False, weight_netto=None, weight_brutto=None, litre=None):

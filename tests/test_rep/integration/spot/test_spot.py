@@ -1,12 +1,13 @@
 import random
+import pytest
 from autotest.trade.rep.integration.spot.spot import Spot
 from autotest.trade.rep.integration.spot_template_add.spot_template_add import SpotTemplateAdd
 from autotest.trade.rep.integration.spot_template_list.spot_template_list import SpotTemplateList
-from tests.test_base.test_base import login_admin
+from flows.auth_flow import login_admin
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
-from tests.conftest import driver, test_data
 
 
+@pytest.mark.integration_report
 def test_check_report_spot_2d(driver, test_data):
     product_group_name = 'Группа'
     random_nomer = random.randint(10000, 99999)

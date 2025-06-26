@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
@@ -28,6 +30,7 @@ class FilialAdd(BasePage):
     def input_base_currency_name(self, base_currency_cod):
         # self.click(self.base_currency_name_input)
         self.click_options(self.base_currency_name_input, self.currency_options, base_currency_cod)
+        time.sleep(2)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------
     person_name_input = (By.XPATH, '//b-input[@name="legal_persons"]//input')

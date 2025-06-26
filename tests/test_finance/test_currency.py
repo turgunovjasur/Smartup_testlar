@@ -1,7 +1,6 @@
 from autotest.anor.mk.currency_list.currency_list import CurrencyList
 from autotest.anor.mk.currency_view.currency_view import CurrencyView
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def test_currency_add(driver, test_data):

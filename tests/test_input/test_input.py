@@ -5,8 +5,7 @@ from autotest.anor.mkw.input.input_add.input_add import InputAdd
 from autotest.anor.mkw.input.input_list.input_list import InputList
 from autotest.anor.mkw.input.input_view.input_view import InputView
 from autotest.core.md.base_page import BasePage
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data, save_data, load_data
+from flows.auth_flow import login_user
 
 
 def test_add_input(driver, test_data, save_data, load_data):

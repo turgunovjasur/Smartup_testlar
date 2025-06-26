@@ -1,8 +1,7 @@
 from autotest.anor.mr.person.natural_person_add.natural_person_add import NaturalPersonAdd
 from autotest.anor.mr.person.natural_person_list.natural_person_list import NaturalPersonList
 from autotest.anor.mr.person.natural_person_view.natural_person_view import NaturalPersonView
-from tests.test_base.test_base import login_admin
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_admin
 
 
 def test_natural_person_add(driver, test_data, person_name=None):

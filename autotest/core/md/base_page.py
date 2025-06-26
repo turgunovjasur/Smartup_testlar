@@ -15,16 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from utils.logger import get_test_name, configure_logging
 
-from utils.exception import (
-    ElementInteractionError,
-    ElementNotFoundError,
-    ElementStaleError,
-    ElementNotClickableError,
-    ScrollError,
-    LoaderTimeoutError,
-    ElementVisibilityError,
-    JavaScriptError
-)
+from utils.exception import *
 from selenium.common.exceptions import (
     TimeoutException,
     StaleElementReferenceException,
@@ -397,11 +388,24 @@ class BasePage:
             element_presence = self.wait_for_element(locator, wait_type="presence")
             self._scroll_to_element(element_presence, locator)
 
-            if element_presence.is_selected() != state:
+            start_state = element_presence.is_selected()
+            self.logger.info(f"{page_name}: Checkbox start_state: {start_state}")
+
+            if start_state != state:
                 self._click_js(element_presence, locator)
                 self.logger.info(f"Checkbox {'yoqildi' if state else 'o‘chirildi'}: {locator}")
             else:
                 self.logger.info(f"Checkbox avvaldan {'yoqilgan' if state else 'o‘chirilgan'}: {locator}")
+
+            element_presence = self.wait_for_element(locator, wait_type="presence")
+            final_state = element_presence.is_selected()
+            self.logger.info(f"{page_name}: Checkbox final_state: {final_state}")
+
+            if final_state == state:
+                return True
+            else:
+                self.logger.warning(f"{page_name}: Checkbox state_error: {start_state} != {final_state}")
+                return False
 
         except Exception as e:
             message = "Checkbox holatini o‘zgartirishda xatolik yuz berdi."
@@ -410,36 +414,48 @@ class BasePage:
 
     # ==================================================================================================================
 
-    def click(self, locator, retries=3, retry_delay=2):
+    def click_drag_and_drop(self, source, target):
+        source = self.wait_for_element(source, wait_type="clickable")
+        target = self.wait_for_element(target, wait_type="clickable")
+
+        self.actions.drag_and_drop(source, target).perform()
+
+    # ==================================================================================================================
+
+    def click(self, locator, retries=3, retry_delay=2, _click=True, _click_retry=True, _click_js=True):
         """Elementni bosish funksiyasi"""
 
         page_name = self.__class__.__name__
         self.logger.debug(f"{page_name}: Running click: {locator}")
 
+        time.sleep(1)
         attempt = 0
         while attempt < retries:
             try:
-                self._wait_for_all_loaders(log_text='click')
-                element_dom = self.wait_for_element(locator, wait_type="presence")
-                self._scroll_to_element(element_dom, locator)
-                self.wait_for_element(locator, wait_type="visibility")
-                element_clickable = self.wait_for_element(locator, wait_type="clickable")
-                if element_clickable and self._click(element_clickable, locator):
-                    return True
+                if _click:
+                    self._wait_for_all_loaders(log_text='click')
+                    element_dom = self.wait_for_element(locator, wait_type="presence")
+                    self._scroll_to_element(element_dom, locator)
+                    self.wait_for_element(locator, wait_type="visibility")
+                    element_clickable = self.wait_for_element(locator, wait_type="clickable")
+                    if element_clickable and self._click(element_clickable, locator):
+                        return True
 
-                time.sleep(retry_delay)
-                self.logger.info("Retry Click sinab ko'riladi...")
-                self._wait_for_all_loaders(log_text='retry click')
-                element_clickable = self.wait_for_element(locator, wait_type="clickable")
-                if element_clickable and self._click(element_clickable, locator, retry=True):
-                    return True
+                if _click_retry:
+                    time.sleep(retry_delay)
+                    self.logger.info("Retry Click sinab ko'riladi...")
+                    self._wait_for_all_loaders(log_text='retry click')
+                    element_clickable = self.wait_for_element(locator, wait_type="clickable")
+                    if element_clickable and self._click(element_clickable, locator, retry=True):
+                        return True
 
-                time.sleep(retry_delay)
-                self.logger.info("Majburiy JS Click sinab ko'riladi...")
-                self._wait_for_all_loaders(log_text='JS click')
-                element_dom = self.wait_for_element(locator, wait_type="presence")
-                if element_dom and self._click_js(element_dom, locator):
-                    return True
+                if _click_js:
+                    time.sleep(retry_delay)
+                    self.logger.info("JS Click sinab ko'riladi...")
+                    self._wait_for_all_loaders(log_text='JS click')
+                    element_dom = self.wait_for_element(locator, wait_type="presence")
+                    if element_dom and self._click_js(element_dom, locator):
+                        return True
 
             except (ElementStaleError, ScrollError, JavaScriptError) as e:
                 self.logger.warning(f"{page_name}: Qayta urinish ({attempt + 1}/{retries}): {str(e)}")
@@ -455,7 +471,7 @@ class BasePage:
         message = f"Element barcha usullar bilan bosilmadi ({attempt}/{retries})"
         self.logger.warning(f"{page_name}: {message}: {locator}")
         self.take_screenshot(f"{page_name.lower()}_click_all_error")
-        raise ElementInteractionError(message, locator)
+        raise
 
     # ==================================================================================================================
 
@@ -492,7 +508,7 @@ class BasePage:
         message = f"Element barcha usullar bilan topilmadi ({attempt}/{retries})"
         self.logger.warning(f"{page_name}: {message}: {locator}")
         self.take_screenshot(f"{page_name.lower()}_visible_all_error")
-        raise ElementInteractionError(message, locator)
+        raise
 
     # ==================================================================================================================
 
@@ -515,13 +531,13 @@ class BasePage:
 
         except TimeoutException as e:
             message = "Elementlar ro'yhati topilmadi."
-            self.logger.error(f"{page_name}: {message}: {locator}")
+            self.logger.warning(f"{page_name}: {message}: {locator}")
             raise ElementNotFoundError(message, locator, e)
 
         except Exception as e:
             message = "Elementlarni ro'yhatini qidirishda kutilmagan xato."
             self.logger.error(f"{page_name}: {message}: {str(e)}")
-            raise ElementInteractionError(message, locator, e)
+            raise
 
     # ==================================================================================================================
 
@@ -1118,7 +1134,8 @@ class BasePage:
 
     # ==================================================================================================================
 
-    def find_row_and_click(self, element_name, timeout=5, retries=3, retry_delay=2, xpath_pattern=None, click=True, checkbox=False):
+    def find_row_and_click(self, element_name, timeout=5, retries=3, xpath_pattern=None, limit_and_search=True,
+                           click=True, _click=True, _click_retry=True, checkbox=False):
         """Jadvaldagi qatorni topish va ustiga bosish funksiyasi."""
 
         timeout = timeout or self.default_timeout
@@ -1131,8 +1148,7 @@ class BasePage:
 
         row_locator = (By.XPATH, xpath_pattern.format(element_name))
         limit_change_button = (By.XPATH, '//button[@class="btn btn-default rounded-0 ng-binding"]')
-        limit_option = (
-            By.XPATH, f'//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
+        limit_option = (By.XPATH, f'//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
         checkbox_locator = (By.XPATH, f"//div[contains(@class, 'tbl-row') and .//div[text()='{element_name}']]//span")
         search_input = (By.XPATH, '//b-grid-controller//input[@type="search"]')
 
@@ -1141,54 +1157,40 @@ class BasePage:
 
         attempt = 0
         while attempt < retries:
+            self._wait_for_all_loaders(log_text='find_and_click_row')
             try:
-                self._wait_for_all_loaders(log_text='find_and_click_row')
                 try:
                     elements = self._wait_for_presence_all(row_locator, timeout)
                 except ElementNotFoundError:
-                    if not limit_raised:
-                        self.logger.info(f"{page_name}: '{element_name}' topilmadi, jadval limiti oshirilmoqda...")
-                        self._click(self.wait_for_element(limit_change_button, wait_type="clickable"))
-                        self._click(self.wait_for_element(limit_option, wait_type="clickable"))
-                        self.logger.info("Limit oshirildi.")
-                        limit_raised = True
-                        continue
+                    if limit_and_search:
+                        self.logger.info(f"{page_name}: '{element_name}' topilmadi.")
+                        if not limit_raised:
+                            self.logger.info(f"{page_name}: '{element_name}' topilmadi, jadval limiti oshirilmoqda...")
+                            self._click(self.wait_for_element(limit_change_button, wait_type="clickable"))
+                            self._click(self.wait_for_element(limit_option, wait_type="clickable"))
+                            self.logger.info("Limit oshirildi.")
+                            limit_raised = True
+                            continue
 
-                    elif not search_used:
-                        self.logger.warning(f"{page_name}: Limit oshirilganidan keyin ham '{element_name}' topilmadi. Qidiruvga berilmoqda...")
-                        element = self.wait_for_element(search_input, wait_type="clickable")
-                        if element:
-                            element.clear()
-                            element.send_keys(element_name)
-                            element.send_keys(Keys.RETURN)
-                        search_used = True
-                        continue
+                        elif not search_used:
+                            self.logger.warning(f"{page_name}: '{element_name}' topilmadi. Qidiruvga berilmoqda...")
+                            element = self.wait_for_element(search_input, wait_type="clickable")
+                            if element:
+                                element.clear()
+                                element.send_keys(element_name)
+                                element.send_keys(Keys.RETURN)
+                            search_used = True
+                            continue
 
-                    else:
-                        message = f"{element_name} topilmadi, Limit va Qidiruv da ham"
-                        self.logger.error(message)
-                        raise ElementNotFoundError(message, row_locator)
-
-                target_element = elements[0]
-                self._scroll_to_element(target_element, row_locator)
+                        else:
+                            message = f"{element_name} topilmadi, Limit va Qidiruv da ham"
+                            self.logger.error(message)
+                            raise ElementNotFoundError(message, row_locator)
+                    raise
+                self._scroll_to_element(elements[0], row_locator)
 
                 if click:
-                    element_clickable = self.wait_for_element(row_locator, wait_type="clickable")
-                    if element_clickable and self._click(element_clickable, row_locator):
-                        return True
-
-                    time.sleep(retry_delay)
-                    self.logger.info(f"Retry Click sinab ko'riladi...")
-                    self._wait_for_all_loaders(log_text='Run -> retry click')
-                    element_clickable = self.wait_for_element(row_locator, wait_type="clickable")
-                    if element_clickable and self._click(element_clickable, row_locator, retry=True):
-                        return True
-
-                    time.sleep(retry_delay)
-                    self.logger.info(f"Majburiy JS Click sinab ko'riladi...")
-                    self._wait_for_all_loaders(log_text='Run -> JS click')
-                    element_dom = self.wait_for_element(row_locator, wait_type="presence")
-                    if element_dom and self._click_js(element_dom, row_locator):
+                    if self.click(row_locator, _click=_click, _click_retry=_click_retry):
                         return True
 
                 if checkbox:
@@ -1198,7 +1200,7 @@ class BasePage:
 
             except (ElementStaleError, JavaScriptError) as e:
                 self.logger.warning(f"{page_name}: {str(e)}, qayta urinish ({attempt + 1}/{retries})")
-                time.sleep(retry_delay)
+                time.sleep(2)
 
             except Exception as e:
                 self.logger.error(f"{page_name}: Kutilmagan xatolik: {str(e)}")
@@ -1208,7 +1210,7 @@ class BasePage:
             attempt += 1
 
         message = f"Element barcha usullar bilan bosilmadi ({attempt}/{retries})"
-        self.logger.error(f"{page_name}: {message}: {row_locator}: {str(e)}")
+        self.logger.error(f"{page_name}: {message}: {row_locator}")
         self.take_screenshot(f"{page_name.lower()}_click_row_error")
         raise
 

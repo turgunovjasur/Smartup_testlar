@@ -2,8 +2,7 @@ from autotest.anor.mkw.supplier_add.supplier_add import SupplierAdd
 from autotest.anor.mkw.supplier_list.supplier_list import SupplierList
 from autotest.anor.mkw.supplier_product_list.supplier_product_list import SupplierProductList
 from autotest.anor.mkw.supplier_view.supplier_view import SupplierView
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def test_add_supplier(driver, test_data):

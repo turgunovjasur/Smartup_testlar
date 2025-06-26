@@ -59,7 +59,9 @@ def test_data():
         "base_currency_cod": 860,
 
         "code_input": "autotest",
-        "cod": 28,
+        # "code_input": "red_test",
+        "cod": 32,
+        # "cod": 57,
         "url": "https://smartup.online/login.html",
         # "url": "https://app3.greenwhite.uz/xtrade/login.html",
     }

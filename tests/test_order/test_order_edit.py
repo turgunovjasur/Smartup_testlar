@@ -5,8 +5,7 @@ from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduc
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 from tests.test_cashin.test_cashin import test_cashin_add_C
 
 
@@ -83,7 +82,7 @@ def test_edit_order_with_consignment(driver, test_data):
     # Orders View
     order_view = OrderView(driver)
     order_view.element_visible()
-    order_id = order_view.check_order_id()
+    order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
     get_quantity, get_price, total_sum = order_view.check_items()
     assert get_quantity == product_quantity_edit, f'Error: get_quantity: {get_quantity} != product_quantity_edit: {product_quantity_edit}'
     assert get_price == product_quantity_edit * product_price, f'Error: {get_quantity} != {product_quantity_edit} * {product_price}'
@@ -93,7 +92,6 @@ def test_edit_order_with_consignment(driver, test_data):
     order_view.click_close_button()
 
     # ------------------------------------------------------------------------------------------------------------------
-
 
 def test_edit_order_for_price_type_USA(driver, test_data):
     # Test data
@@ -231,7 +229,7 @@ def test_edit_order_for_price_type_USA(driver, test_data):
     # OrderView
     order_view = OrderView(driver)
     order_view.element_visible()
-    text = order_view.check_status()
+    text = order_view.get_input_value_in_order_view(input_name="Статус")
     assert text == data["Delivered"], f'Error: text: {text} != Delivered: {data["Delivered"]}'
     order_view.click_close_button()
 

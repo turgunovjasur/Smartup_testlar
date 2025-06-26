@@ -3,21 +3,18 @@ from autotest.anor.mkf.contract_add.contract_add import ContractAdd
 from autotest.anor.mkf.contract_list.contract_list import ContractList
 from autotest.anor.mkf.contract_view.contract_view import ContractView
 from autotest.core.md.base_page import BasePage
-from tests.test_base.test_base import login_user
-from tests.conftest import test_data, driver
+from flows.auth_flow import login_user
 
 
-def contract_add(driver, test_data, client_name=None, contract_name=None, initial_amount=None,
-                 currency_cod=None, currency_name=None, sub_filial_name=None, sub_filial=False):
+def contract_add(driver, test_data, **kwargs):
     """Test adding a contract."""
     # Test data
-    data = test_data["data"]
-    client_name = client_name or data["client_name"]
-    contract_name = contract_name or data["contract_name"]
-    initial_amount = initial_amount or data["product_quantity"] * data["product_price"]
-    base_currency_cod = currency_cod or data["base_currency_cod"]
-    currency_name = currency_name or "Узбекский сум"
-    sub_filial_name = sub_filial_name or data["sub_filial_name"]
+    is_main = kwargs.get("is_main", True)
+    client_name = kwargs.get("client_name")
+    contract_name = kwargs.get("contract_name")
+    initial_amount = kwargs.get("initial_amount")
+    currency_name = kwargs.get("currency_name", "Узбекский сум")
+    sub_filial_name = kwargs.get("sub_filial_name")
 
     # Login
     login_user(driver, test_data, url='anor/mkf/contract_list')
@@ -35,11 +32,11 @@ def contract_add(driver, test_data, client_name=None, contract_name=None, initia
     contract_add.input_contract_name(contract_name)
     contract_add.click_radio_button()
     contract_add.input_person_name(client_name)
-    contract_add.input_currency_name(base_currency_cod)
+    contract_add.input_currency_name(currency_name)
     contract_add.input_initial_amount(initial_amount)
-    if sub_filial:
+    if sub_filial_name:
         contract_add.input_sub_filial(sub_filial_name)
-    contract_add.click_is_main_checkbox()
+    contract_add.click_is_main_checkbox(state=is_main)
     contract_add.click_save_button()
 
     # Verify in Contract List
@@ -66,9 +63,13 @@ def test_add_contract_for_client_A_UZB(driver, test_data):
     data = test_data["data"]
     client_name = f"{data['client_name']}-A"
     contract_name = f"{data['contract_name']}-A-UZB"
+    initial_amount = data["product_quantity"] * data["product_price"]
+
     contract_add(driver, test_data,
                  client_name=client_name,
-                 contract_name=contract_name)
+                 contract_name=contract_name,
+                 initial_amount=initial_amount,
+                 is_main=False)
 
 
 def test_add_contract_for_client_B_UZB(driver, test_data):
@@ -81,10 +82,12 @@ def test_add_contract_for_client_B_UZB(driver, test_data):
     client_name = f"{data['client_name']}-B"
     contract_name = f"{data['contract_name']}-B-UZB"
     initial_amount = 100 * data["product_price"]
+
     contract_add(driver, test_data,
                  client_name=client_name,
                  contract_name=contract_name,
-                 initial_amount=initial_amount)
+                 initial_amount=initial_amount,
+                 is_main=False)
 
 
 def test_add_contract_for_client_C_USA(driver, test_data):
@@ -99,10 +102,13 @@ def test_add_contract_for_client_C_USA(driver, test_data):
     currency_cod = 840
     currency_name = 'Доллар США'
     initial_amount = 100 * data["product_price_USA"]
+    sub_filial_name = data["sub_filial_name"]
+
     contract_add(driver, test_data,
                  client_name=client_name,
                  contract_name=contract_name,
                  currency_cod=currency_cod,
                  currency_name=currency_name,
                  initial_amount=initial_amount,
-                 sub_filial=True)
+                 sub_filial_name=sub_filial_name,
+                 is_main=False)

@@ -2,8 +2,7 @@ from autotest.anor.mkw.warehouse_add.warehouse_add import WarehouseAdd
 from autotest.anor.mkw.warehouse_list.warehouse_list import WarehouseList
 from autotest.anor.mkw.warehouse_type_add.warehouse_type_add import WarehouseTypeAdd
 from autotest.anor.mkw.warehouse_view.warehouse_view import WarehouseView
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def test_add_warehouse(driver, test_data):

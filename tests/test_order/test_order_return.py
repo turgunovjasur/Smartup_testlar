@@ -2,8 +2,7 @@ from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from autotest.trade.tdeal.order.return_order.return_order import ReturnOrder
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def order_return(driver, test_data, client_name=None):
@@ -23,8 +22,8 @@ def order_return(driver, test_data, client_name=None):
     # View
     order_view = OrderView(driver)
     order_view.element_visible()
-    get_order_id = order_view.check_order_id()
-    get_status = order_view.check_status()
+    get_order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
+    get_status = order_view.get_input_value_in_order_view(input_name="Статус")
     assert get_status == data["Delivered"], f'{get_status} != {data["Delivered"]}'
     get_quantity, get_price, total_sum = order_view.check_items()
     base_page.logger.info(
@@ -52,9 +51,9 @@ def order_return(driver, test_data, client_name=None):
 
     # Order View
     order_view.element_visible()
-    get_order_id_last = order_view.check_order_id()
+    get_order_id_last = order_view.get_input_value_in_order_view(input_name="ИД заказа")
     assert get_order_id == get_order_id_last, f'{get_order_id} != {get_order_id_last}'
-    get_status_last = order_view.check_status()
+    get_status_last = order_view.get_input_value_in_order_view(input_name="Статус")
     assert get_status_last == data["Delivered"], f'{get_status_last} != {data["Delivered"]}'
     get_quantity, get_price, total_sum = order_view.check_items()
     assert get_price == 0, f"Error: get_price: {get_price} != fact: {0}"

@@ -33,7 +33,7 @@ class ContractAdd(BasePage):
         self.click_options(self.person_name_input, self.options_person_name, person_name)
     # ------------------------------------------------------------------------------------------------------------------
     currency_name_input = (By.XPATH, '//form[@name="form"]//b-input[@name="currencies"]//input')
-    options_currency_name = (By.XPATH, '//form[@name="form"]//b-input[@name="currencies"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
+    options_currency_name = (By.XPATH, '//form[@name="form"]//b-input[@name="currencies"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[2]')
 
     def input_currency_name(self, currency_name):
         self.click_options(self.currency_name_input, self.options_currency_name, currency_name)
@@ -49,10 +49,10 @@ class ContractAdd(BasePage):
     def input_sub_filial(self, sub_filial_name):
         self.click_options(self.sub_filial_input, self.options_sub_filial, sub_filial_name)
     # ------------------------------------------------------------------------------------------------------------------
-    is_main_checkbox = (By.XPATH, '//input[@ng-model="d.is_main"]/following-sibling::span')
+    is_main_checkbox = (By.XPATH, '//input[@ng-model="d.is_main"]')
 
-    def click_is_main_checkbox(self):
-        self.click(self.is_main_checkbox)
+    def click_is_main_checkbox(self, state):
+        self.click_checkbox(self.is_main_checkbox, state=state)
     # ------------------------------------------------------------------------------------------------------------------
     allow_auto_consignment_checkbox = (By.XPATH, '//input[@ng-model="d.allow_auto_consignment"]/following-sibling::span')
 

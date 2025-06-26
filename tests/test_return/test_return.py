@@ -3,8 +3,7 @@ from autotest.anor.mdeal.return_.return_list.return_list import ReturnList
 from autotest.anor.mdeal.return_.return_view.return_view import ReturnView
 from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
 from autotest.core.md.base_page import BasePage
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def test_return(driver, test_data):

@@ -1,8 +1,7 @@
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def order_change_status(driver, test_data, client_name=None,
@@ -24,9 +23,9 @@ def order_change_status(driver, test_data, client_name=None,
         order_list.click_view_button()
 
         order_view.element_visible()
-        order_id = order_view.check_order_id()
+        order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
         base_page.logger.info(f"Order id: {order_id}")
-        text = order_view.check_status()
+        text = order_view.get_input_value_in_order_view(input_name="Статус")
         base_page.logger.info(f"Order status name: {text}")
         assert text == data["Draft"], f'{text} != {data["Draft"]}'
         draft_quantity, draft_price, draft_sum = order_view.check_items()
@@ -40,7 +39,7 @@ def order_change_status(driver, test_data, client_name=None,
         order_list.click_view_button()
 
         order_view.element_visible()
-        text = order_view.check_status()
+        text = order_view.get_input_value_in_order_view(input_name="Статус")
         assert text == data["New"], f'{text} != {data["New"]}'
         new_quantity, new_price, new_sum = order_view.check_items()
         assert draft_quantity == new_quantity, f'Error: draft_quantity: {draft_quantity} != new_quantity: {new_quantity}'
@@ -55,7 +54,7 @@ def order_change_status(driver, test_data, client_name=None,
         order_list.click_view_button()
 
         order_view.element_visible()
-        text = order_view.check_status()
+        text = order_view.get_input_value_in_order_view(input_name="Статус")
         assert text == data["Processing"], f'{text} != {data["Processing"]}'
         processing_quantity, processing_price, processing_sum = order_view.check_items()
         assert draft_quantity == processing_quantity, f'Error: draft_quantity: {draft_quantity} != processing_quantity: {processing_quantity}'
@@ -70,7 +69,7 @@ def order_change_status(driver, test_data, client_name=None,
         order_list.click_view_button()
 
         order_view.element_visible()
-        text = order_view.check_status()
+        text = order_view.get_input_value_in_order_view(input_name="Статус")
         assert text == data["Pending"], f'{text} != {data["Pending"]}'
         pending_quantity, pending_price, pending_sum = order_view.check_items()
         assert draft_quantity == pending_quantity, f'Error: draft_quantity: {draft_quantity} != pending_quantity: {pending_quantity}'
@@ -85,7 +84,7 @@ def order_change_status(driver, test_data, client_name=None,
         order_list.click_view_button()
 
         order_view.element_visible()
-        text = order_view.check_status()
+        text = order_view.get_input_value_in_order_view(input_name="Статус")
         assert text == data["Shipped"], f'{text} != {data["Shipped"]}'
         shipped_quantity, shipped_price, shipped_sum = order_view.check_items()
         assert draft_quantity == shipped_quantity, f'Error: draft_quantity: {draft_quantity} != shipped_quantity: {shipped_quantity}'
@@ -100,7 +99,7 @@ def order_change_status(driver, test_data, client_name=None,
         order_list.click_view_button()
 
         order_view.element_visible()
-        text = order_view.check_status()
+        text = order_view.get_input_value_in_order_view(input_name="Статус")
         assert text == data["Delivered"], f'{text} != {data["Delivered"]}'
         delivered_quantity, delivered_price, delivered_sum = order_view.check_items()
         assert draft_quantity == delivered_quantity, f'Error: draft_quantity: {draft_quantity} != delivered_quantity: {delivered_quantity}'

@@ -1,9 +1,7 @@
 from autotest.anor.mrf.client_add.client_add import ClientAdd
 from autotest.anor.mrf.client_list.client_list import ClientList
 from autotest.anor.mrf.client_view.client_view import ClientView
-from autotest.core.md.base_page import BasePage
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def client_add(driver, test_data, client_name=None):

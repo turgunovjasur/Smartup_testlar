@@ -2,8 +2,7 @@ import random
 from autotest.anor.mr.person.legal_person_add.legal_person_add import LegalPersonAdd
 from autotest.anor.mr.person.legal_person_list.legal_person_list import LegalPersonList
 from autotest.anor.mr.person.legal_person_view.legal_person_view import LegalPersonView
-from tests.test_base.test_base import login_admin, login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user, login_admin
 
 
 def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):

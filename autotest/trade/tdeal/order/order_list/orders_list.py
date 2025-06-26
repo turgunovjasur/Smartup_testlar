@@ -1,6 +1,5 @@
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
-from utils.exception import ElementVisibilityError
 
 
 class OrdersList(BasePage):
@@ -72,25 +71,9 @@ class OrdersList(BasePage):
         self.click(self.return_button)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def find_row(self, client_name):
-        self.find_row_and_click(element_name=client_name)
+    def find_row(self, client_name, _click=False, _click_retry=False):
+        self.find_row_and_click(element_name=client_name, _click=_click, _click_retry=_click_retry)
     # ------------------------------------------------------------------------------------------------------------------
-
-    def check_header_option(self, option_name):
-        try:
-            option = (By.XPATH, f'//div[contains(@class, "tbl-header")]//div[@sort-header="{option_name}"]')
-            element = self.wait_for_element(option, wait_type="visibility")
-            self.logger.info(f'Header option appeared: {option_name}!')
-            return element
-
-        except ElementVisibilityError as e:
-            raise AssertionError(f'Header option not visible: {option_name}!') from e
-    # ------------------------------------------------------------------------------------------------------------------
-    reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
-
-    def click_reload_button(self):
-        self.click(self.reload_button)
-    # -----------------------------------------------------------------------------------------------------------------
     change_status_one_button = (By.XPATH, "//button[@id='trade81-button-change_status_one']")
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
@@ -99,25 +82,47 @@ class OrdersList(BasePage):
         status_button = (By.XPATH, f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
         self.click(status_button)
         self.click(self.yes_button)
-    # -----------------------------------------------------------------------------------------------------------------
-    # Modal Copy
-    # ------------------------------------------------------------------------------------------------------------------
-    copy_title = (By.XPATH, "//h4/t[contains(text(), 'Копировать заказ')]")
 
-    def element_visible_copy_title(self):
-        self.wait_for_element_visible(self.copy_title)
-    # ------------------------------------------------------------------------------------------------------------------
-    clear_button = (By.XPATH, '//b-input[@name="persons"]//span[@class="clear-button"]')
+    # ==================================================================================================================
+    # b-grid-controller
 
-    persons_input = (By.XPATH, '//b-input[@name="persons"]//input[@ng-model="_$bInput.searchValue"]')
-    options_persons = (By.XPATH, '//b-input[@name="persons"]//div[contains(@class,"hint")]//div[contains(@class,"hint-item")]/div')
+    search_input = (By.XPATH, '//b-grid-controller[@name="table"]//input')
 
-    def input_persons(self, client_name):
-        self.click(self.clear_button)
-        self.click_options(self.persons_input, self.options_persons, client_name)
+    def input_search(self, search_data=None, clear=False):
+        if clear:
+            self.clear_element(self.search_input)
+            return
+        self.input_text(self.search_input, search_data)
     # ------------------------------------------------------------------------------------------------------------------
-    copy_save_button = (By.XPATH, '//button[@ng-click="copy()"]')
+    reload_button = (By.XPATH, '//button[@ng-click="reload()"]')
 
-    def click_copy_save_button(self):
-        self.click(self.copy_save_button)
+    def click_reload_button(self):
+        self.click(self.reload_button)
     # ------------------------------------------------------------------------------------------------------------------
+    filter_panel_button = (By.XPATH, '//b-grid-controller//button[@ng-click="toggleFilterPanel()"]')
+
+    def click_filter_panel_button(self):
+        self.click(self.filter_panel_button)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def click_option_in_filter_panel(self, option_header, option_name, state):
+        locator = (By.XPATH, f'//b-grid-filter-panel//span[contains(text(),"{option_header}")]//ancestor::div[@class="b-filter-item"]//div[@class="filter-body"]//span[contains(text(),"{option_name}")]/../input')
+        self.click_checkbox(locator, state)
+    # ------------------------------------------------------------------------------------------------------------------
+    filter_run_button = (By.XPATH, '//div[@class="b-grid-filter-panel"]//button[@ng-click="a.bGridFilter.run()"]')
+
+    def click_filter_run_button(self):
+        self.click(self.filter_run_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    show_all_button = (By.XPATH, '//div[@class="b-grid-filter-panel"]//button[@ng-click="a.bGridFilter.showAll()"]')
+
+    def click_show_all_button(self):
+        self.click(self.show_all_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    close_filter_panel_button = (By.XPATH, '//b-grid-filter-panel//button[contains(@ng-click,"a.grid.g.openFilterPanel")]')
+
+    def click_close_filter_panel(self):
+        self.click(self.close_filter_panel_button)
+
+    # b-grid-controller
+    # ==================================================================================================================

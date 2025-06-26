@@ -6,8 +6,7 @@ from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
-from tests.test_base.test_base import login_user
-from tests.conftest import driver, test_data
+from flows.auth_flow import login_user
 
 
 def test_add_order_for_action(driver, test_data):
@@ -97,7 +96,7 @@ def test_add_order_for_action(driver, test_data):
     # Orders View
     order_view = OrderView(driver)
     order_view.element_visible()
-    order_id = order_view.check_order_id()
+    order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
     base_page.logger.info(f"Order id: {order_id}")
     order_view.click_setting_button()
 
@@ -171,7 +170,7 @@ def test_edit_order_for_action(driver, test_data):
     # Orders View
     order_view = OrderView(driver)
     order_view.element_visible()
-    order_id = order_view.check_order_id()
+    order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
     base_page.logger.info(f"Order id: {order_id}")
     order_view.click_setting_button()
 
