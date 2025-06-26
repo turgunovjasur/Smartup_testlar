@@ -174,7 +174,7 @@ def test_copy_search_filter_in_order_list_demo(driver, test_data, save_data, loa
     save_data("order_id_2", get_values["ИД заказа"])
 
     assert get_values["Штат"] == robot_name,                   f"{get_values['Штат']} != {robot_name}"
-    assert get_values["Статус"] == data["Draft"],              f"{get_values['Статус']} != {data["Draft"]}"
+    assert get_values["Статус"] == data["Draft"],              f"{get_values['Статус']} != {data['Draft']}"
     assert get_values["Клиент"] == client_name_B,              f"{get_values['Клиент']} != {client_name_B}"
     assert get_values["Рабочая зона"] == room_name,            f"{get_values['Рабочая зона']} != {room_name}"
     assert get_values["Сумма заказа"] == total_amount,         f"{get_values['Сумма заказа']} != {total_amount}"
