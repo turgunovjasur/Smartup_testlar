@@ -33,90 +33,90 @@ from tests.test_order.test_order import *
 # All ------------------------------------------------------------------------------------------------------------------
 
 test_cases = [
-        {"name": "Add Legal Person",                         "func": test_add_legal_person},
-        {"name": "Filial Create",                            "func": test_filial_create},
-        {"name": "Room Add",                                 "func": test_room_add},
-        {"name": "Robot Add",                                "func": test_robot_add},
-        {"name": "Sub filial Add",                           "func": test_sub_filial_add},
-
-        {"name": "Natural Person Add",                       "func": test_natural_person_add},
-        {"name": "User Create",                              "func": test_user_create},
-        {"name": "Adding Permissions",                       "func": test_adding_permissions_to_user},
-        {"name": "Add User License",                         "func": test_add_user_license},
-        {"name": "User Change Password",                     "func": test_user_change_password},
-
-        {"name": "Price Type Add (UZB)",                     "func": test_price_type_add_UZB},
-        {"name": "Price Type Add (USA)",                     "func": test_price_type_add_USA},
-        {"name": "Payment Type Add",                         "func": test_payment_type_add},
-        {"name": "Sector Add",                               "func": test_sector_add},
-        {"name": "Add Product-1",                            "func": test_product_add_as_product_1},
-
-        {"name": "Check Price Tag",                          "func": test_check_price_tag},
-        {"name": "Currency Add",                             "func": test_currency_add},
-        {"name": "Margin Add",                               "func": test_margin_add},
-
-        {"name": "Natural Person Client Add-A",              "func": test_natural_person_client_add_A},
-        {"name": "Natural Person Client Add-B",              "func": test_natural_person_client_add_B},
-        {"name": "Natural Person Client Add-C",              "func": test_natural_person_client_add_C},
-
-        {"name": "Client Add-A",                             "func": test_client_add_A},
-        {"name": "Client Add-B",                             "func": test_client_add_B},
-        {"name": "Client Add-C",                             "func": test_client_add_C},
-
-        {"name": "Room Attachment",                          "func": test_room_attachment},
-        {"name": "Init Balance",                             "func": test_init_balance},
-
-        # Order with Consignment:
-        {"name": "Add Contract For Client UZB-A",            "func": test_add_contract_for_client_A_UZB},
-        {"name": "Setting Consignment",                      "func": test_setting_consignment},
-        {"name": "Add Order With Consignment-A",             "func": test_add_order_with_consignment},
-        {"name": "Check Report For Order List-A",            "func": test_check_report_for_order_list},
-        {"name": "Edit Order With Consignment-A",            "func": test_edit_order_with_consignment},
-        {"name": "Change Status From Draft To Archive-A",    "func": test_change_status_from_draft_to_archive},
-        {"name": "Check Report For Order History List-A",    "func": test_check_report_for_order_history_list},
-        {"name": "Cashin Add-A",                             "func": test_cashin_add_A},
-        {"name": "Offset Add-A",                             "func": test_offset_add_A},
-
-        # Order with Contract:
-        {"name": "Add Contract For Client UZB-B",            "func": test_add_contract_for_client_B_UZB},
-        {"name": "Add Order With Contract-B",                "func": test_add_order_with_contract},
-        {"name": "Change Status Draft And Archive-B",        "func": test_change_status_draft_and_archive},
-        {"name": "Offset Add-B",                             "func": test_offset_add_B},
-
-        # Order with Price Type USA:
-        {"name": "Add Contract For Client USA-C",            "func": test_add_contract_for_client_C_USA},
-        {"name": "Add Order With Price Type-C",              "func": test_add_order_with_price_type_USA},
-        # {"name": "Copy Search Filter In Order",              "func": test_copy_search_filter_in_order_list},
-        {"name": "Test Setting Prepayment On",               "func": test_setting_prepayment_on},
-        {"name": "Edit Order For Price Type USA-C",          "func": test_edit_order_for_price_type_USA},
-        {"name": "Test Setting Prepayment Off",              "func": test_setting_prepayment_off},
-
-        # Order with Sub Filial:
-        {"name": "Add Template For Order Invoice Report",    "func": test_add_template_for_order_invoice_report},
-        {"name": "Order Add For Sub Filial Select-C",        "func": test_order_add_for_sub_filial_select},
-        {"name": "Check Invoice Report For Order List-C",    "func": test_check_invoice_report_for_order_list},
-        {"name": "Change Status Draft And Cancelled-C",      "func": test_change_status_draft_and_cancelled},
-
-        # Order with Action:
-        {"name": "Add Action",                               "func": test_add_action},
-        {"name": "Add Order For Action-C",                   "func": test_add_order_for_action},
-        {"name": "Edit Order For Action-C",                  "func": test_edit_order_for_action},
-        {"name": "Change Status Draft And Delivered-C",      "func": test_change_status_draft_and_delivered},
-        {"name": "Order Return",                             "func": test_order_return},
-
-        # Purchase and Extra Cost:
-        {"name": "Add Legal Person By Supplier",               "func": test_add_legal_person_by_supplier},
-        {"name": "Add Supplier",                               "func": test_add_supplier},
-        {"name": "Add Product-2",                              "func": test_product_add_as_product_2},
-        {"name": "Add Purchase",                               "func": test_add_purchase},
-        {"name": "Add Extra Cost",                             "func": test_add_extra_cost},
-        {"name": "Add Purchase With Extra Cost Sum",           "func": test_add_purchase_with_extra_cost_sum},
-        {"name": "Add Purchase With Extra Cost Quantity",      "func": test_add_purchase_with_extra_cost_quantity},
-        {"name": "Add Purchase With Extra Cost Weight Brutto", "func": test_add_purchase_with_extra_cost_weight_brutto},
-
-        # Input with Purchase
-        {"name": "Add Input",                                  "func": test_add_input},
-        {"name": "Add Input With Extra Cost",                  "func": test_add_input_with_extra_cost},
+        # {"name": "Add Legal Person",                         "func": test_add_legal_person},
+        # {"name": "Filial Create",                            "func": test_filial_create},
+        # {"name": "Room Add",                                 "func": test_room_add},
+        # {"name": "Robot Add",                                "func": test_robot_add},
+        # {"name": "Sub filial Add",                           "func": test_sub_filial_add},
+        #
+        # {"name": "Natural Person Add",                       "func": test_natural_person_add},
+        # {"name": "User Create",                              "func": test_user_create},
+        # {"name": "Adding Permissions",                       "func": test_adding_permissions_to_user},
+        # {"name": "Add User License",                         "func": test_add_user_license},
+        # {"name": "User Change Password",                     "func": test_user_change_password},
+        #
+        # {"name": "Price Type Add (UZB)",                     "func": test_price_type_add_UZB},
+        # {"name": "Price Type Add (USA)",                     "func": test_price_type_add_USA},
+        # {"name": "Payment Type Add",                         "func": test_payment_type_add},
+        # {"name": "Sector Add",                               "func": test_sector_add},
+        # {"name": "Add Product-1",                            "func": test_product_add_as_product_1},
+        #
+        # {"name": "Check Price Tag",                          "func": test_check_price_tag},
+        # {"name": "Currency Add",                             "func": test_currency_add},
+        # {"name": "Margin Add",                               "func": test_margin_add},
+        #
+        # {"name": "Natural Person Client Add-A",              "func": test_natural_person_client_add_A},
+        # {"name": "Natural Person Client Add-B",              "func": test_natural_person_client_add_B},
+        # {"name": "Natural Person Client Add-C",              "func": test_natural_person_client_add_C},
+        #
+        # {"name": "Client Add-A",                             "func": test_client_add_A},
+        # {"name": "Client Add-B",                             "func": test_client_add_B},
+        # {"name": "Client Add-C",                             "func": test_client_add_C},
+        #
+        # {"name": "Room Attachment",                          "func": test_room_attachment},
+        # {"name": "Init Balance",                             "func": test_init_balance},
+        #
+        # # Order with Consignment:
+        # {"name": "Add Contract For Client UZB-A",            "func": test_add_contract_for_client_A_UZB},
+        # {"name": "Setting Consignment",                      "func": test_setting_consignment},
+        # {"name": "Add Order With Consignment-A",             "func": test_add_order_with_consignment},
+        # {"name": "Check Report For Order List-A",            "func": test_check_report_for_order_list},
+        # {"name": "Edit Order With Consignment-A",            "func": test_edit_order_with_consignment},
+        # {"name": "Change Status From Draft To Archive-A",    "func": test_change_status_from_draft_to_archive},
+        # {"name": "Check Report For Order History List-A",    "func": test_check_report_for_order_history_list},
+        # {"name": "Cashin Add-A",                             "func": test_cashin_add_A},
+        # {"name": "Offset Add-A",                             "func": test_offset_add_A},
+        #
+        # # Order with Contract:
+        # {"name": "Add Contract For Client UZB-B",            "func": test_add_contract_for_client_B_UZB},
+        # {"name": "Add Order With Contract-B",                "func": test_add_order_with_contract},
+        # {"name": "Change Status Draft And Archive-B",        "func": test_change_status_draft_and_archive},
+        # {"name": "Offset Add-B",                             "func": test_offset_add_B},
+        #
+        # # Order with Price Type USA:
+        # {"name": "Add Contract For Client USA-C",            "func": test_add_contract_for_client_C_USA},
+        # {"name": "Add Order With Price Type-C",              "func": test_add_order_with_price_type_USA},
+        # # {"name": "Copy Search Filter In Order",              "func": test_copy_search_filter_in_order_list},
+        # {"name": "Test Setting Prepayment On",               "func": test_setting_prepayment_on},
+        # {"name": "Edit Order For Price Type USA-C",          "func": test_edit_order_for_price_type_USA},
+        # {"name": "Test Setting Prepayment Off",              "func": test_setting_prepayment_off},
+        #
+        # # Order with Sub Filial:
+        # {"name": "Add Template For Order Invoice Report",    "func": test_add_template_for_order_invoice_report},
+        # {"name": "Order Add For Sub Filial Select-C",        "func": test_order_add_for_sub_filial_select},
+        # {"name": "Check Invoice Report For Order List-C",    "func": test_check_invoice_report_for_order_list},
+        # {"name": "Change Status Draft And Cancelled-C",      "func": test_change_status_draft_and_cancelled},
+        #
+        # # Order with Action:
+        # {"name": "Add Action",                               "func": test_add_action},
+        # {"name": "Add Order For Action-C",                   "func": test_add_order_for_action},
+        # {"name": "Edit Order For Action-C",                  "func": test_edit_order_for_action},
+        # {"name": "Change Status Draft And Delivered-C",      "func": test_change_status_draft_and_delivered},
+        # {"name": "Order Return",                             "func": test_order_return},
+        #
+        # # Purchase and Extra Cost:
+        # {"name": "Add Legal Person By Supplier",               "func": test_add_legal_person_by_supplier},
+        # {"name": "Add Supplier",                               "func": test_add_supplier},
+        # {"name": "Add Product-2",                              "func": test_product_add_as_product_2},
+        # {"name": "Add Purchase",                               "func": test_add_purchase},
+        # {"name": "Add Extra Cost",                             "func": test_add_extra_cost},
+        # {"name": "Add Purchase With Extra Cost Sum",           "func": test_add_purchase_with_extra_cost_sum},
+        # {"name": "Add Purchase With Extra Cost Quantity",      "func": test_add_purchase_with_extra_cost_quantity},
+        # {"name": "Add Purchase With Extra Cost Weight Brutto", "func": test_add_purchase_with_extra_cost_weight_brutto},
+        #
+        # # Input with Purchase
+        # {"name": "Add Input",                                  "func": test_add_input},
+        # {"name": "Add Input With Extra Cost",                  "func": test_add_input_with_extra_cost},
 
         # Report:
         {"name": "Check Report CisLink",                       "func": test_check_report_cis_link},
@@ -126,8 +126,8 @@ test_cases = [
         {"name": "Check Report Sales Work",                    "func": test_check_report_sales_work},
         {"name": "Check Report Spot 2d",                       "func": test_check_report_spot_2d},
 
-        {"name": "Add Warehouse",                              "func": test_add_warehouse},
-        {"name": "Add Internal Movement",                      "func": test_add_internal_movement},
+        # {"name": "Add Warehouse",                              "func": test_add_warehouse},
+        # {"name": "Add Internal Movement",                      "func": test_add_internal_movement},
 
         # # Order with Consignment:
         # {"name": "Add Contract For Client UZB-A", "func": test_add_contract_for_client_A_UZB},

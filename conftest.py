@@ -52,7 +52,7 @@ def test_data():
     """Test data"""
     base_data = {
         "email_company": "admin@head",
-        "password_company": "", # <--
+        "password_company": "greenwhite", # <--
         "name_company": "red test",
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",

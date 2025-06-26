@@ -4,70 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="10.06.2025">
-      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork_template_list.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/order/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/order/sales_report_constructor.py" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="26.06.2025">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/pytest.yml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/order_b_grid_controller.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/order_copy_modal.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flows/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flows/auth_flow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flows/grid_setting_flow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flows/order_flows/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_order/test_order_demo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Smartup_testlar.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Smartup_testlar.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_view/order_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_view/order_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/contract_add/contract_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mkf/contract_add/contract_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_add/filial_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/filial_add/filial_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_add/natural_person_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_add/natural_person_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/core/md/login_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/login_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/dashboard_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/intro/dashboard/dashboard_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/trade/pref/system_setting/system_setting.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/pref/system_setting/system_setting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/orders_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/orders_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qa-testing-documentation.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_base/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork_template_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_base/test_base.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_contract.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finance/test_contract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_currency.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finance/test_currency.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_input/test_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_input/test_input.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_movement/test_movement.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_movement/test_movement.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_offset/test_offset.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_offset/test_offset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_for_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_for_action.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_return.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_action.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_natural_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_natural_person.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/cislink/test_cislink.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/cislink/test_cislink.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_three/test_integration_three.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/integration_three/test_integration_three.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_two/test_integration_two.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/integration_two/test_integration_two.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/optimum/test_optimum.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/optimum/test_optimum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/rep_main_funksiya.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/rep_main_funksiya.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/saleswork/test_saleswork.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/saleswork/test_saleswork.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/spot/test_spot.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/spot/test_spot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_return/test_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_return/test_return.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/all_test_runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/test_supplier.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_warehouse/test_supplier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/test_warehouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_warehouse/test_warehouse.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -462,7 +406,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749549471041</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="26.06.2025">
+      <option name="closed" value="true" />
+      <created>1750933114946</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1750933114946</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -489,6 +441,7 @@
     <MESSAGE value="27.05.2025" />
     <MESSAGE value="04.06.2025" />
     <MESSAGE value="10.06.2025" />
-    <option name="LAST_COMMIT_MESSAGE" value="10.06.2025" />
+    <MESSAGE value="26.06.2025" />
+    <option name="LAST_COMMIT_MESSAGE" value="26.06.2025" />
   </component>
 </project>
