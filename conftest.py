@@ -17,7 +17,7 @@ def driver(request, test_data):
     service = ChromeService(driver_path)
 
     # Fixturega parametr berish (default=False)
-    headless = request.config.getoption("--headless", default=False)
+    headless = request.config.getoption("--headless", default=True)
 
     options = Options()
     if headless:
