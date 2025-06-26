@@ -118,13 +118,13 @@ test_cases = [
         # {"name": "Add Input",                                  "func": test_add_input},
         # {"name": "Add Input With Extra Cost",                  "func": test_add_input_with_extra_cost},
 
-        # Report:
-        {"name": "Check Report CisLink",                       "func": test_check_report_cis_link},
-        {"name": "Check Report Integration Three",             "func": test_check_report_integration_three},
-        {"name": "Check Report Integration Two",               "func": test_check_report_integration_two},
-        {"name": "Check Report Optimum",                       "func": test_check_report_optimum},
-        {"name": "Check Report Sales Work",                    "func": test_check_report_sales_work},
-        {"name": "Check Report Spot 2d",                       "func": test_check_report_spot_2d},
+        # # Report:
+        # {"name": "Check Report CisLink",                       "func": test_check_report_cis_link},
+        # {"name": "Check Report Integration Three",             "func": test_check_report_integration_three},
+        # {"name": "Check Report Integration Two",               "func": test_check_report_integration_two},
+        # {"name": "Check Report Optimum",                       "func": test_check_report_optimum},
+        # {"name": "Check Report Sales Work",                    "func": test_check_report_sales_work},
+        # {"name": "Check Report Spot 2d",                       "func": test_check_report_spot_2d},
 
         # {"name": "Add Warehouse",                              "func": test_add_warehouse},
         # {"name": "Add Internal Movement",                      "func": test_add_internal_movement},
