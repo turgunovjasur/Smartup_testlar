@@ -184,7 +184,8 @@ def test_all(driver, test_data, save_data, load_data, test_case):
                 "test_add_purchase_with_extra_cost_quantity",
                 "test_add_purchase_with_extra_cost_weight_brutto",
                 "test_add_input",
-                "test_add_input_with_extra_cost"
+                "test_add_input_with_extra_cost",
+                "test_sales_report_constructor_demo"
             }:
                 test_func(driver, test_data, save_data, load_data)
             else:
