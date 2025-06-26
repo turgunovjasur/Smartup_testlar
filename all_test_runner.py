@@ -1,34 +1,39 @@
 import allure
-from tests.test_cashin.test_cashin import test_cashin_add_A
-from tests.test_input.test_input import test_add_input, test_add_input_with_extra_cost
-from tests.test_movement.test_movement import test_add_internal_movement
-from tests.test_offset.test_offset import test_offset_add_A, test_offset_add_B
-from tests.test_order.test_order_demo import test_add_order_with_consignment_demo, \
-    test_edit_order_with_consignment_demo, test_copy_search_filter_in_order_list_demo, \
-    test_sales_report_constructor_demo
-from tests.test_rep.integration.cislink.test_cislink import test_check_report_cis_link
-from tests.test_rep.integration.integration_three.test_integration_three import test_check_report_integration_three
-from tests.test_rep.integration.integration_two.test_integration_two import test_check_report_integration_two
-from tests.test_rep.integration.optimum.test_optimum import test_check_report_optimum
-from tests.test_rep.integration.saleswork.test_saleswork import test_check_report_sales_work
-from tests.test_rep.integration.spot.test_spot import test_check_report_spot_2d
-from tests.test_reference.test_action import test_add_action
-from tests.test_finance.test_currency import test_currency_add
-from tests.test_order.test_order_return import test_order_return
-from tests.test_warehouse.test_supplier import test_add_supplier
-from tests.test_warehouse.test_warehouse import test_add_warehouse
-from tests.test_reference.test_product import *
-from tests.test_finance.test_contract import *
-from tests.test_purchase.test_purchase import *
-from tests.test_reference.test_client import *
-from tests.test_reference.test_legal_person import *
-from tests.test_reference.test_natural_person import *
-from tests.test_order.test_order_for_action import *
-from tests.test_order.test_order_edit import *
-from tests.test_order.test_order_change_status import *
-from tests.test_order.test_order_report import *
-from tests.test_order.test_life_cycle import *
-from tests.test_order.test_order import *
+import pytest
+
+from autotest.core.md.base_page import BasePage
+from tests.test_order.test_order_demo import test_sales_report_constructor_demo
+
+# from tests.test_cashin.test_cashin import test_cashin_add_A
+# from tests.test_input.test_input import test_add_input, test_add_input_with_extra_cost
+# from tests.test_movement.test_movement import test_add_internal_movement
+# from tests.test_offset.test_offset import test_offset_add_A, test_offset_add_B
+# from tests.test_order.test_order_demo import test_add_order_with_consignment_demo, \
+#     test_edit_order_with_consignment_demo, test_copy_search_filter_in_order_list_demo, \
+#     test_sales_report_constructor_demo
+# from tests.test_rep.integration.cislink.test_cislink import test_check_report_cis_link
+# from tests.test_rep.integration.integration_three.test_integration_three import test_check_report_integration_three
+# from tests.test_rep.integration.integration_two.test_integration_two import test_check_report_integration_two
+# from tests.test_rep.integration.optimum.test_optimum import test_check_report_optimum
+# from tests.test_rep.integration.saleswork.test_saleswork import test_check_report_sales_work
+# from tests.test_rep.integration.spot.test_spot import test_check_report_spot_2d
+# from tests.test_reference.test_action import test_add_action
+# from tests.test_finance.test_currency import test_currency_add
+# from tests.test_order.test_order_return import test_order_return
+# from tests.test_warehouse.test_supplier import test_add_supplier
+# from tests.test_warehouse.test_warehouse import test_add_warehouse
+# from tests.test_reference.test_product import *
+# from tests.test_finance.test_contract import *
+# from tests.test_purchase.test_purchase import *
+# from tests.test_reference.test_client import *
+# from tests.test_reference.test_legal_person import *
+# from tests.test_reference.test_natural_person import *
+# from tests.test_order.test_order_for_action import *
+# from tests.test_order.test_order_edit import *
+# from tests.test_order.test_order_change_status import *
+# from tests.test_order.test_order_report import *
+# from tests.test_order.test_life_cycle import *
+# from tests.test_order.test_order import *
 
 # All ------------------------------------------------------------------------------------------------------------------
 
