@@ -135,7 +135,7 @@ test_cases = [
         # {"name": "Add Order With Consignment-A Demo", "func": test_add_order_with_consignment_demo},
         # {"name": "Edit Order With Consignment-A Demo", "func": test_edit_order_with_consignment_demo},
         # {"name": "Copy Search Filter In Order List Demo", "func": test_copy_search_filter_in_order_list_demo},
-        # {"name": "Sales Report Constructor Demo", "func": test_sales_report_constructor_demo},
+        {"name": "Sales Report Constructor Demo", "func": test_sales_report_constructor_demo},
         # {"name": "Change Status From Draft To Archive-A", "func": test_change_status_from_draft_to_archive},
         # {"name": "Cashin Add-A", "func": test_cashin_add_A},
         # {"name": "Offset Add-A", "func": test_offset_add_A},
