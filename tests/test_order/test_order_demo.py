@@ -108,10 +108,10 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data):
     save_data("order_id_1", get_values["ИД заказа"])
 
     assert get_values["Штат"] == robot_name,                   f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == status_name,                f"{get_values["Статус"]} != {status_name}"
-    assert get_values["Клиент"] == client_name,                f"{get_values["Клиент"]} != {client_name}"
-    assert get_values["Рабочая зона"] == room_name,            f"{get_values["Рабочая зона"]} != {room_name}"
-    assert get_values["Сумма заказа"] == consignment_amount,   f"{get_values["Сумма заказа"]} != {consignment_amount}"
+    assert get_values["Статус"] == status_name,                f"{get_values["\'Статус\'"]} != {status_name}"
+    assert get_values["Клиент"] == client_name,                f"{get_values["\'Клиент\'"]} != {client_name}"
+    assert get_values["Рабочая зона"] == room_name,            f"{get_values["\'Рабочая зона\'"]} != {room_name}"
+    assert get_values["Сумма заказа"] == consignment_amount,   f"{get_values["\'Сумма заказа\'"]} != {consignment_amount}"
 
     order_list(driver)
 
@@ -173,11 +173,11 @@ def test_copy_search_filter_in_order_list_demo(driver, test_data, save_data, loa
 
     save_data("order_id_2", get_values["ИД заказа"])
 
-    assert get_values["Штат"] == robot_name,                   f"{get_values["Штат"]} != {robot_name}"
-    assert get_values["Статус"] == data["Draft"],              f"{get_values["Статус"]} != {data["Draft"]}"
-    assert get_values["Клиент"] == client_name_B,              f"{get_values["Клиент"]} != {client_name_B}"
-    assert get_values["Рабочая зона"] == room_name,            f"{get_values["Рабочая зона"]} != {room_name}"
-    assert get_values["Сумма заказа"] == total_amount,         f"{get_values["Сумма заказа"]} != {total_amount}"
+    assert get_values["Штат"] == robot_name,                   f"{get_values["\'Штат\'"]} != {robot_name}"
+    assert get_values["Статус"] == data["Draft"],              f"{get_values["\'Статус\'"]} != {data["Draft"]}"
+    assert get_values["Клиент"] == client_name_B,              f"{get_values["\'Клиент\'"]} != {client_name_B}"
+    assert get_values["Рабочая зона"] == room_name,            f"{get_values["\'Рабочая зона\'"]} != {room_name}"
+    assert get_values["Сумма заказа"] == total_amount,         f"{get_values["\'Сумма заказа\'"]} != {total_amount}"
 
     order_list(driver, reload=True)
 
@@ -219,7 +219,7 @@ def test_order_change_status_demo(driver, test_data, save_data, load_data):
     order_list(driver, find_row=order_id_2, change_status=status_name)
     order_list(driver, find_row=order_id_2, view=True)
     get_values = order_view(driver, input_name="Статус")
-    assert get_values["Статус"] == status_name, f"{get_values["Статус"]} != {status_name}"
+    assert get_values["Статус"] == status_name, f"{get_values["\'Статус\'"]} != {status_name}"
     order_list(driver, reload=True)
 
     # Status: New -> Processing
@@ -227,7 +227,7 @@ def test_order_change_status_demo(driver, test_data, save_data, load_data):
     order_list(driver, find_row=order_id_2, change_status=status_name)
     order_list(driver, find_row=order_id_2, view=True)
     get_values = order_view(driver, input_name="Статус")
-    assert get_values["Статус"] == status_name, f"{get_values["Статус"]} != {status_name}"
+    assert get_values["Статус"] == status_name, f"{get_values["\'Статус\'"]} != {status_name}"
     order_list(driver, reload=True)
 
     # Status: Processing -> Pending
@@ -235,7 +235,7 @@ def test_order_change_status_demo(driver, test_data, save_data, load_data):
     order_list(driver, find_row=order_id_2, change_status=status_name)
     order_list(driver, find_row=order_id_2, view=True)
     get_values = order_view(driver, input_name="Статус")
-    assert get_values["Статус"] == status_name, f"{get_values["Статус"]} != {status_name}"
+    assert get_values["Статус"] == status_name, f"{get_values["\'Статус\'"]} != {status_name}"
     order_list(driver, reload=True)
 
     # Status: Pending -> Shipped
@@ -243,7 +243,7 @@ def test_order_change_status_demo(driver, test_data, save_data, load_data):
     order_list(driver, find_row=order_id_2, change_status=status_name)
     order_list(driver, find_row=order_id_2, view=True)
     get_values = order_view(driver, input_name="Статус")
-    assert get_values["Статус"] == status_name, f"{get_values["Статус"]} != {status_name}"
+    assert get_values["Статус"] == status_name, f"{get_values["\'Статус\'"]} != {status_name}"
     order_list(driver, reload=True)
 
     # Status: Shipped -> Delivered
@@ -251,7 +251,7 @@ def test_order_change_status_demo(driver, test_data, save_data, load_data):
     order_list(driver, find_row=order_id_2, change_status=status_name)
     order_list(driver, find_row=order_id_2, view=True)
     get_values = order_view(driver, input_name="Статус")
-    assert get_values["Статус"] == status_name, f"{get_values["Статус"]} != {status_name}"
+    assert get_values["Статус"] == status_name, f"{get_values["\'Статус\'"]} != {status_name}"
     order_list(driver, reload=True)
 
 # ======================================================================================================================
