@@ -1,8 +1,11 @@
+import time
+import pytest
+from autotest.core.md.base_page import BasePage
 from autotest.trade.rep.mbi.tdeal.order.sales_report_constructor import SalesReportConstructor
+from flows.auth_flow import login_user
 from flows.grid_setting_flow import grid_setting
-from flows.order_flows.order_add_flow import *
-from flows.order_flows.order_list_flow import *
-from flows.auth_flow import *
+from flows.order_flows.order_add_flow import order_add_main, order_add_product, order_add_final, get_order_error_massage
+from flows.order_flows.order_list_flow import order_list, order_view, order_copy, order_search_input, order_filter_panel
 
 # ======================================================================================================================
 
@@ -49,6 +52,9 @@ def test_add_order_with_basic_fields(driver, test_data):
 
 # ======================================================================================================================
 
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(29)
 def test_add_order_with_consignment_demo(driver, test_data, save_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_add_order_with_consignment_demo")
@@ -117,6 +123,9 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data):
 
 # ======================================================================================================================
 
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(31)
 def test_edit_order_with_consignment_demo(driver, test_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_with_consignment_demo")
@@ -146,6 +155,9 @@ def test_edit_order_with_consignment_demo(driver, test_data, load_data):
 
 # ======================================================================================================================
 
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(32)
 def test_copy_search_filter_in_order_list_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_copy_search_filter_in_order_list_demo")
@@ -167,7 +179,6 @@ def test_copy_search_filter_in_order_list_demo(driver, test_data, save_data, loa
 
     order_list(driver, find_row=client_name_B, view=True)
 
-
     get_values = order_view(driver, input_name = {"ИД заказа": "text", "Сумма заказа": "numeric", "Статус": "text",
                                                   "Клиент": "text", "Рабочая зона": "text", "Штат": "text"})
 
@@ -185,11 +196,16 @@ def test_copy_search_filter_in_order_list_demo(driver, test_data, save_data, loa
     order_search_input(driver, search_data=order_id_2, clear=True)
 
     order_filter_panel(driver, open_panel=True, option_header="Клиент", option_name=client_name_A, state=False)
+    time.sleep(1)
     order_filter_panel(driver, option_header="Клиент", option_name=client_name_B)
+    time.sleep(1)
     order_filter_panel(driver, show_all=True, option_name=client_name_A, close_panel=True)
 
 # ======================================================================================================================
 
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(33)
 def test_sales_report_constructor_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_sales_report_constructor_demo")
@@ -204,15 +220,20 @@ def test_sales_report_constructor_demo(driver, test_data, save_data, load_data):
 
 # ======================================================================================================================
 
-def test_order_change_status_demo(driver, test_data, save_data, load_data):
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(34)
+def test_order_change_status_from_draft_to_cancelled_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_order_change_status_demo")
+    base_page.logger.info("▶️ Running: test_order_change_status_from_draft_to_cancelled_demo")
 
     data = test_data["data"]
 
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
+    order_id_1 = load_data("order_id_1")
     order_id_2 = load_data("order_id_2")
+    base_page.logger.info(f"order_id_1 = {order_id_1}, order_id_2 = {order_id_2}")
 
     # Status: Draft -> New
     status_name = data["New"]
@@ -254,10 +275,14 @@ def test_order_change_status_demo(driver, test_data, save_data, load_data):
     assert get_values["Статус"] == status_name, f"{get_values['Статус']} != {status_name}"
     order_list(driver, reload=True)
 
-# ======================================================================================================================
+    # Status: Delivered -> Cancelled
+    status_name = data["Cancelled"]
+    order_list(driver, find_row=order_id_2, change_status=status_name)
+    order_list(driver, reload=True)
 
-def test_order_demo_all(driver, test_data, save_data, load_data):
-    test_add_order_with_consignment_demo(driver, test_data, save_data)
-    test_edit_order_with_consignment_demo(driver, test_data, load_data)
-    test_copy_search_filter_in_order_list_demo(driver, test_data, save_data, load_data)
-    test_sales_report_constructor_demo(driver, test_data, save_data, load_data)
+    # Status: New -> Archive
+    status_name = data["Archive"]
+    order_list(driver, find_row=order_id_1, change_status=status_name)
+    order_list(driver, reload=True)
+
+# ======================================================================================================================

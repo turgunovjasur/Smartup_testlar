@@ -1,4 +1,7 @@
 import random
+
+import pytest
+
 from autotest.anor.mkr.expense_article_add.expense_article_add import ExpenseArticleAdd
 from autotest.anor.mkw.extra_cost_add.extra_cost_add import ExtraCostAdd
 from autotest.anor.mkw.input.input_add.input_add import InputAdd
@@ -7,7 +10,8 @@ from autotest.anor.mkw.input.input_view.input_view import InputView
 from autotest.core.md.base_page import BasePage
 from flows.auth_flow import login_user
 
-
+@pytest.mark.regression
+@pytest.mark.order(64)
 def test_add_input(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 
@@ -83,7 +87,8 @@ def test_add_input(driver, test_data, save_data, load_data):
     # InputList
     input_list.element_visible()
 
-
+@pytest.mark.regression
+@pytest.mark.order(65)
 def test_add_input_with_extra_cost(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 

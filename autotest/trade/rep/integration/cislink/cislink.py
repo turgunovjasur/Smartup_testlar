@@ -43,6 +43,12 @@ class CisLink(BasePage):
     def input_product_groups(self, product_group_name):
         self.click_options(self.product_groups_input, self.options_product_groups, product_group_name)
     # ------------------------------------------------------------------------------------------------------------------
+    filial_input = (By.XPATH, '//b-input[@name="filials"]//input')
+    options_filial = (By.XPATH, '//b-input[@name="filials"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def input_filial(self, filial_name):
+        self.click_options(self.filial_input, self.options_filial, filial_name)
+    # ------------------------------------------------------------------------------------------------------------------
     price_types_input = (By.XPATH, '//b-input[@name="price_types"]//input')
     options_price_types = (By.XPATH, '//b-input[@name="price_types"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 

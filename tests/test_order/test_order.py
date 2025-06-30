@@ -1,4 +1,7 @@
 import time
+
+import pytest
+
 from autotest.anor.mdeal.order.order_add.create_add_main import OrderAddMain
 from autotest.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
 from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
@@ -258,7 +261,8 @@ def order_add(driver, test_data,
     order_list.element_visible()
 
 # ======================================================================================================================
-
+@pytest.mark.regression
+@pytest.mark.order(29)
 def test_add_order_with_consignment(driver, test_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_add_order_with_consignment")
@@ -280,7 +284,9 @@ def test_add_order_with_consignment(driver, test_data):
               current_date_add_day=current_date_add_day)
 
 # ======================================================================================================================
-
+@pytest.mark.regression
+@pytest.mark.order_group_B
+@pytest.mark.order(39)
 def test_add_order_with_contract(driver, test_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_add_order_with_contract")
@@ -299,7 +305,9 @@ def test_add_order_with_contract(driver, test_data):
               error_massage=True)
 
 # ======================================================================================================================
-
+@pytest.mark.regression
+@pytest.mark.order_group_C
+@pytest.mark.order(43)
 def test_add_order_with_price_type_USA(driver, test_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_add_order_with_price_type_USA")
@@ -323,7 +331,8 @@ def test_add_order_with_price_type_USA(driver, test_data):
               attach_data=True)
 
 # ======================================================================================================================
-
+@pytest.mark.regression
+@pytest.mark.order(48)
 def test_order_add_for_sub_filial_select(driver, test_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_order_add_for_sub_filial_select")

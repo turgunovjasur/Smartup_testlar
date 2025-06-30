@@ -1,15 +1,17 @@
 import pytest
 from autotest.trade.rep.integration.cislink.cislink import CisLink
-from flows.auth_flow import login_user
+from flows.auth_flow import login_admin
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 
 
 @pytest.mark.integration_report
+@pytest.mark.order(1)
 def test_check_report_cis_link(driver, test_data):
     data = test_data["data"]
     price_types_name = data["price_type_name_UZB"]
+    filial_name = data["filial_name"]
 
-    login_user(driver, test_data, url='trade/rep/integration/cislink')
+    login_admin(driver, test_data, url='trade/rep/integration/cislink')
 
     # CisLink
     cis_link = CisLink(driver)
@@ -21,6 +23,7 @@ def test_check_report_cis_link(driver, test_data):
     cis_link.input_identification_code(identification_code_name='test')
     cis_link.input_person_groups(person_groups_name='Группа')
     cis_link.input_product_groups(product_group_name='Группа')
+    cis_link.input_filial(filial_name)
     cis_link.input_price_types(price_types_name)
     cis_link.click_save()
 

@@ -1,4 +1,7 @@
 import random
+
+import pytest
+
 from autotest.trade.tcs.cashin_add.cashin_add import CashinAdd
 from autotest.trade.tcs.cashin_list.cashin_list import CashinList
 from autotest.trade.tcs.cashin_view.cashin_view import CashinView
@@ -53,7 +56,9 @@ def cashin_add(driver, test_data, client_name=None, login=True, amount=None):
     cashin_list.find_row(cashin_number)
     cashin_list.click_post_button()
 
-
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(36)
 def test_cashin_add_A(driver, test_data):
     data = test_data["data"]
     client_name = f'{data["client_name"]}-A'

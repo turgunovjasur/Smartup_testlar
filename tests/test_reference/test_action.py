@@ -1,10 +1,13 @@
+import pytest
+
 from autotest.anor.mcg.action_add.action_add import ActionAdd
 from autotest.anor.mcg.action_list.action_list import ActionList
 from autotest.anor.mcg.action_view.action_view import ActionIdView
 from autotest.core.md.base_page import BasePage
 from flows.auth_flow import login_user
 
-
+@pytest.mark.regression
+@pytest.mark.order(51)
 def test_add_action(driver, test_data):
     # Log
     base_page = BasePage(driver)

@@ -1,4 +1,5 @@
 import random
+import pytest
 from autotest.anor.mr.person.legal_person_add.legal_person_add import LegalPersonAdd
 from autotest.anor.mr.person.legal_person_list.legal_person_list import LegalPersonList
 from autotest.anor.mr.person.legal_person_view.legal_person_view import LegalPersonView
@@ -42,6 +43,8 @@ def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
     assert person_name == text, f"{person_name} != {text}"
 
 
+@pytest.mark.regression
+@pytest.mark.order(1)
 def test_add_legal_person(driver, test_data):
     """Test adding legal person by filial"""
 
@@ -49,7 +52,8 @@ def test_add_legal_person(driver, test_data):
     legal_person = data['legal_person_name']
     legal_person_add(driver, test_data, person_name=legal_person)
 
-
+@pytest.mark.regression
+@pytest.mark.order(56)
 def test_add_legal_person_by_supplier(driver, test_data):
     """Test adding legal person by supplier"""
 

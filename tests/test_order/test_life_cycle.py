@@ -1,6 +1,8 @@
 import random
 import time
 
+import pytest
+
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
@@ -99,6 +101,8 @@ def test_company_create(driver, test_data):
     company_view.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(2)
 def test_filial_create(driver, test_data):
     """Test adding a filial"""
     # Test data
@@ -144,6 +148,8 @@ def test_filial_create(driver, test_data):
     filial_list.element_visible()
 
 
+@pytest.mark.regression
+@pytest.mark.order(3)
 def test_room_add(driver, test_data):
     """Test adding a room"""
     # Test data
@@ -178,6 +184,8 @@ def test_room_add(driver, test_data):
     room_view.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(4)
 def test_robot_add(driver, test_data):
     """Test adding a robot"""
     # Test data
@@ -216,6 +224,8 @@ def test_robot_add(driver, test_data):
     robot_view.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(5)
 def test_sub_filial_add(driver, test_data):
     """Test adding a sub-filial"""
     # Test data
@@ -245,6 +255,8 @@ def test_sub_filial_add(driver, test_data):
     sub_filial_list.find_row(sub_filial_name)
 
 
+@pytest.mark.regression
+@pytest.mark.order(7)
 def test_user_create(driver, test_data):
     """Test adding a user"""
     # Test data
@@ -306,6 +318,8 @@ def test_user_create(driver, test_data):
     user_view.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(8)
 def test_adding_permissions_to_user(driver, test_data):
     """Test adding permissions to a user"""
     # Test data
@@ -349,6 +363,8 @@ def test_adding_permissions_to_user(driver, test_data):
     role_view.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(10)
 def test_user_change_password(driver, test_data):
     """Test changing user password"""
     # Test data
@@ -447,6 +463,8 @@ def price_type_add(driver, test_data, price_type_name=None, currency_name=None, 
         price_type_list.find_row(price_type_name)
 
 
+@pytest.mark.regression
+@pytest.mark.order(11)
 def test_price_type_add_UZB(driver, test_data):
     """Test adding a UZB price type"""
 
@@ -454,6 +472,8 @@ def test_price_type_add_UZB(driver, test_data):
     price_type_add(driver, test_data, currency_name=currency_name, all_price=True)
 
 
+@pytest.mark.regression
+@pytest.mark.order(12)
 def test_price_type_add_USA(driver, test_data):
     """Test adding a USA price type"""
 
@@ -462,6 +482,8 @@ def test_price_type_add_USA(driver, test_data):
 
 # ------------------------------------------------------------------------------------------------------------------
 
+@pytest.mark.regression
+@pytest.mark.order(13)
 def test_payment_type_add(driver, test_data):
     """Test adding payment types"""
     # Login
@@ -479,6 +501,8 @@ def test_payment_type_add(driver, test_data):
     payment_type_list_attach.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(14)
 def test_sector_add(driver, test_data):
     """Test adding a sector"""
     # Test data
@@ -514,6 +538,8 @@ def test_sector_add(driver, test_data):
     sector_view.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(16)
 def test_check_price_tag(driver, test_data):
     """Test checking a price tag"""
     # Test data
@@ -538,6 +564,8 @@ def test_check_price_tag(driver, test_data):
     generate_and_verify_download(driver, file_name='PriceTag', file_type='xlsx')
 
 
+@pytest.mark.regression
+@pytest.mark.order(18)
 def test_margin_add(driver, test_data):
     """Test adding a margin"""
     base_page = BasePage(driver)
@@ -599,6 +627,8 @@ def test_margin_add(driver, test_data):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+@pytest.mark.regression
+@pytest.mark.order(25)
 def test_room_attachment(driver, test_data):
     """Test attaching different elements to a room."""
     # Test data
@@ -662,6 +692,8 @@ def test_room_attachment(driver, test_data):
     room_attachment.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(26)
 def test_init_balance(driver, test_data):
     """Test initializing inventory balance."""
     base_page = BasePage(driver)
@@ -769,7 +801,9 @@ def test_order_request(driver, test_data):
     order_request_list.element_visible()
     order_request_list.click_status_button()
 
-
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(28)
 def test_setting_consignment(driver, test_data, **kwargs):
     """Test enabling consignment settings."""
 
@@ -816,13 +850,17 @@ def setting_prepayment(driver, test_data, prepayment):
     system_setting.click_save_button()
     system_setting.element_visible_order()
 
-
+@pytest.mark.regression
+@pytest.mark.order_group_C
+@pytest.mark.order(44)
 def test_setting_prepayment_on(driver, test_data):
     """Prepayment setting on"""
 
     setting_prepayment(driver, test_data, prepayment=True)
 
-
+@pytest.mark.regression
+@pytest.mark.order_group_C
+@pytest.mark.order(46)
 def test_setting_prepayment_off(driver, test_data):
     """Prepayment setting off"""
 
@@ -831,8 +869,13 @@ def test_setting_prepayment_off(driver, test_data):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+@pytest.mark.regression
+@pytest.mark.order(9)
 def test_add_user_license(driver, test_data):
     """Test configuring add user license."""
+
+    if test_data["data"]["url"] != "https://smartup.online/login.html":
+        pytest.skip("⚠️ Faqat Online saytida ishlaydi")
 
     # Test data
     data = test_data["data"]

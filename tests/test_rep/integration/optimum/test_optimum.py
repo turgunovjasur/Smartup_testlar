@@ -5,6 +5,7 @@ from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_dow
 
 
 @pytest.mark.integration_report
+@pytest.mark.order(4)
 def test_check_report_optimum(driver, test_data):
     data = test_data["data"]
     product_group = "Группа"

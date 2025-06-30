@@ -1,3 +1,5 @@
+import pytest
+
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
@@ -64,7 +66,8 @@ def order_return(driver, test_data, client_name=None):
     order_list.click_change_status_button(data["Cancelled"])
     order_list.element_visible()
 
-
+@pytest.mark.regression
+@pytest.mark.order(55)
 def test_order_return(driver, test_data):
     data = test_data["data"]
     client_name = f"{data['client_name']}-C"

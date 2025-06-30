@@ -1,4 +1,7 @@
 import time
+
+import pytest
+
 from autotest.anor.mr.product.inventory_add.inventory_new import InventoryNew
 from autotest.anor.mr.product.inventory_list.inventory_list import InventoryList
 from autotest.anor.mr.product.product_set_price.product_set_price import ProductSetPrice
@@ -83,6 +86,8 @@ def product_add(driver, test_data, product_name, supplier=False, weight_netto=No
     product_set_price.click_save_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(15)
 def test_product_add_as_product_1(driver, test_data):
     """Test adding a product-1"""
 
@@ -94,7 +99,8 @@ def test_product_add_as_product_1(driver, test_data):
     litre = data["product_litre"]
     product_add(driver, test_data, product_name, weight_netto=netto, weight_brutto=brutto, litre=litre)
 
-
+@pytest.mark.regression
+@pytest.mark.order(58)
 def test_product_add_as_product_2(driver, test_data):
     """Test adding a product-2"""
 

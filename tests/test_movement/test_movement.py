@@ -1,4 +1,7 @@
 import random
+
+import pytest
+
 from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
 from autotest.anor.mkw.movement.movement_add.movement_add import MovementAdd
 from autotest.anor.mkw.movement.movement_list.movement_list import MovementList
@@ -7,6 +10,8 @@ from autotest.core.md.base_page import BasePage
 from flows.auth_flow import login_user
 
 
+@pytest.mark.regression
+@pytest.mark.order(67)
 def test_add_internal_movement(driver, test_data):
     """Test adding a internal movement"""
     base_page = BasePage(driver)

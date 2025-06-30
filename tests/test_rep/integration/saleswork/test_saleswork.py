@@ -1,22 +1,21 @@
 import random
-
 import pytest
-
 from autotest.trade.rep.integration.saleswork.saleswork import SalesWork
 from autotest.trade.rep.integration.saleswork.saleswork_template_add import SalesWorkTemplateAdd
 from autotest.trade.rep.integration.saleswork.saleswork_template_list import SalesWorkTemplateList
-from flows.auth_flow import login_user
+from flows.auth_flow import login_admin
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 
 
 @pytest.mark.integration_report
+@pytest.mark.order(5)
 def test_check_report_sales_work(driver, test_data):
     # test data
     random_number = random.randint(1, 9999)
     template_name = f'SalesWork template-{random_number}'
 
     # login
-    login_user(driver, test_data, url='trade/rep/integration/saleswork')
+    login_admin(driver, test_data, url='trade/rep/integration/saleswork')
 
     # SalesWork
     sales_work = SalesWork(driver)

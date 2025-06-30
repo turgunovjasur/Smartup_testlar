@@ -1,8 +1,12 @@
+import pytest
+
 from autotest.anor.mk.currency_list.currency_list import CurrencyList
 from autotest.anor.mk.currency_view.currency_view import CurrencyView
 from flows.auth_flow import login_user
 
 
+@pytest.mark.regression
+@pytest.mark.order(17)
 def test_currency_add(driver, test_data):
     """Test adding a currency exchange rate"""
     # Test data

@@ -1,3 +1,5 @@
+import pytest
+
 from autotest.anor.mrf.client_add.client_add import ClientAdd
 from autotest.anor.mrf.client_list.client_list import ClientList
 from autotest.anor.mrf.client_view.client_view import ClientView
@@ -37,6 +39,8 @@ def client_add(driver, test_data, client_name=None):
     client_view.click_close_button()
 
 
+@pytest.mark.regression
+@pytest.mark.order(22)
 def test_client_add_A(driver, test_data):
     """Test adding client A"""
 
@@ -45,6 +49,8 @@ def test_client_add_A(driver, test_data):
     client_add(driver, test_data, client_name=client_name)
 
 
+@pytest.mark.regression
+@pytest.mark.order(23)
 def test_client_add_B(driver, test_data):
     """Test adding client B"""
 
@@ -53,6 +59,8 @@ def test_client_add_B(driver, test_data):
     client_add(driver, test_data, client_name=client_name)
 
 
+@pytest.mark.regression
+@pytest.mark.order(24)
 def test_client_add_C(driver, test_data):
     """Test adding client C"""
 

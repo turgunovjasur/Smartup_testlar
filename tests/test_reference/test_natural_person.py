@@ -1,9 +1,12 @@
+import pytest
 from autotest.anor.mr.person.natural_person_add.natural_person_add import NaturalPersonAdd
 from autotest.anor.mr.person.natural_person_list.natural_person_list import NaturalPersonList
 from autotest.anor.mr.person.natural_person_view.natural_person_view import NaturalPersonView
 from flows.auth_flow import login_admin
 
 
+@pytest.mark.regression
+@pytest.mark.order(6)
 def test_natural_person_add(driver, test_data, person_name=None):
     """Test adding a natural person"""
 
@@ -38,6 +41,8 @@ def test_natural_person_add(driver, test_data, person_name=None):
     assert text == natural_person_name, f'Expected "{natural_person_name}", got "{text}"'
 
 
+@pytest.mark.regression
+@pytest.mark.order(19)
 def test_natural_person_client_add_A(driver, test_data):
     """Test adding natural person client A"""
 
@@ -46,6 +51,8 @@ def test_natural_person_client_add_A(driver, test_data):
     test_natural_person_add(driver, test_data, person_name=client_name)
 
 
+@pytest.mark.regression
+@pytest.mark.order(20)
 def test_natural_person_client_add_B(driver, test_data):
     """Test adding natural person client B"""
 
@@ -54,6 +61,8 @@ def test_natural_person_client_add_B(driver, test_data):
     test_natural_person_add(driver, test_data, person_name=client_name)
 
 
+@pytest.mark.regression
+@pytest.mark.order(21)
 def test_natural_person_client_add_C(driver, test_data):
     """Test adding natural person client C"""
 

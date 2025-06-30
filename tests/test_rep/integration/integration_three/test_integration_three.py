@@ -4,6 +4,7 @@ from flows.auth_flow import login_admin
 
 
 @pytest.mark.integration_report
+@pytest.mark.order(2)
 def test_check_report_integration_three(driver, test_data):
     login_admin(driver, test_data, url='trade/rep/integration/integration_three')
 

@@ -1,4 +1,7 @@
 import time
+
+import pytest
+
 from autotest.anor.mdeal.order.order_add.create_add_main import OrderAddMain
 from autotest.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
 from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
@@ -8,7 +11,8 @@ from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from flows.auth_flow import login_user
 from tests.test_cashin.test_cashin import test_cashin_add_C
 
-
+@pytest.mark.regression
+@pytest.mark.order(31)
 def test_edit_order_with_consignment(driver, test_data):
     # Test data
     base_page = BasePage(driver)
@@ -92,7 +96,9 @@ def test_edit_order_with_consignment(driver, test_data):
     order_view.click_close_button()
 
     # ------------------------------------------------------------------------------------------------------------------
-
+@pytest.mark.regression
+@pytest.mark.order_group_C
+@pytest.mark.order(45)
 def test_edit_order_for_price_type_USA(driver, test_data):
     # Test data
     base_page = BasePage(driver)

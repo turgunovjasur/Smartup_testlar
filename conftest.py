@@ -3,8 +3,10 @@ import os
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+from utils.env_reader import get_env
+from datetime import datetime
 
 
 driver_path = ChromeDriverManager().install()
@@ -17,7 +19,7 @@ def driver(request, test_data):
     service = ChromeService(driver_path)
 
     # Fixturega parametr berish (default=False)
-    headless = request.config.getoption("--headless", default=True)
+    headless = request.config.getoption("--headless", default=False)
 
     options = Options()
     if headless:
@@ -48,22 +50,25 @@ def driver(request, test_data):
 
 
 @pytest.fixture(scope="session")
-def test_data():
-    """Test data"""
+def test_data(save_data):
+    """Dinamik test ma'lumotlari"""
+
+    # Sana asosida cod qiymatini olish
+    cod = datetime.today().strftime("%d_%m_%Y_%H_%M")  # kun_oy_yil_soat_daqiqa
+    # cod = "30_06_2025_14_31"
+    save_data("cod", cod)
+
     base_data = {
-        "email_company": "admin@head",
-        "password_company": "greenwhite", # <--
+        "email_company": get_env("EMAIL_COMPANY"),
+        "password_company": get_env("PASSWORD_COMPANY"),
         "name_company": "red test",
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
 
-        "code_input": "autotest",
-        # "code_input": "red_test",
-        "cod": 32,
-        # "cod": 57,
-        "url": "https://smartup.online/login.html",
-        # "url": "https://app3.greenwhite.uz/xtrade/login.html",
+        "code_input": get_env("CODE_INPUT"),
+        "cod": cod,
+        "url": get_env("URL"),
     }
     filial_data = {
         "email": f"admin@{base_data['code_input']}",
@@ -74,7 +79,7 @@ def test_data():
     }
     user_data = {
         "email_user": f'{filial_data["login_user"]}@{base_data["code_input"]}',
-        "password_user": 123456789,
+        "password_user": get_env("PASSWORD_USER"),
     }
     product_data = {
         "legal_person_name": f"legal_person-{base_data['cod']}",

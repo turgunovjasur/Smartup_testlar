@@ -1,5 +1,8 @@
 import random
 import time
+
+import pytest
+
 from autotest.anor.mkr.expense_article_add.expense_article_add import ExpenseArticleAdd
 from autotest.anor.mkw.extra_cost_add.extra_cost_add import ExtraCostAdd
 from autotest.anor.mkw.extra_cost_list.extra_cost_list import ExtraCostList
@@ -90,14 +93,16 @@ def add_purchase(driver, test_data, save_data, save_purchase_number):
     # List
     purchase_list.element_visible()
 
-
+@pytest.mark.regression
+@pytest.mark.order(59)
 def test_add_purchase(driver, test_data, save_data):
     """Test adding purchase"""
 
     save_purchase_number = "purchase_number_1"
     add_purchase(driver, test_data, save_data, save_purchase_number)
 
-
+@pytest.mark.regression
+@pytest.mark.order(60)
 def test_add_extra_cost(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 
@@ -202,7 +207,8 @@ def test_add_extra_cost(driver, test_data, save_data, load_data):
     # List
     purchase_list.element_visible()
 
-
+@pytest.mark.regression
+@pytest.mark.order(61)
 def test_add_purchase_with_extra_cost_sum(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 
@@ -311,7 +317,8 @@ def test_add_purchase_with_extra_cost_sum(driver, test_data, save_data, load_dat
     # List
     purchase_list.element_visible()
 
-
+@pytest.mark.regression
+@pytest.mark.order(62)
 def test_add_purchase_with_extra_cost_quantity(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 
@@ -455,7 +462,8 @@ def test_add_purchase_with_extra_cost_quantity(driver, test_data, save_data, loa
     # List
     purchase_list.element_visible()
 
-
+@pytest.mark.regression
+@pytest.mark.order(63)
 def test_add_purchase_with_extra_cost_weight_brutto(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 

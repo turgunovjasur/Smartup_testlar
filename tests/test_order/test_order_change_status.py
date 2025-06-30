@@ -1,3 +1,5 @@
+import pytest
+
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
@@ -118,7 +120,8 @@ def order_change_status(driver, test_data, client_name=None,
         order_list.click_change_status_button(data["Cancelled"])
         order_list.element_visible()
 
-
+@pytest.mark.regression
+@pytest.mark.order(32)
 def test_change_status_from_draft_to_archive(driver, test_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Test run: test_change_status_from_draft_to_archive")
@@ -128,7 +131,9 @@ def test_change_status_from_draft_to_archive(driver, test_data):
                         draft=True, new=True, processing=True, pending=True,
                         shipped=True, delivered=True, archive=True, cancelled=False)
 
-
+@pytest.mark.regression
+@pytest.mark.order_group_B
+@pytest.mark.order(40)
 def test_change_status_draft_and_archive(driver, test_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Test run: test_change_status_draft_and_archive")
@@ -136,7 +141,8 @@ def test_change_status_draft_and_archive(driver, test_data):
     client_name = f"{data['client_name']}-B"
     order_change_status(driver, test_data, client_name=client_name, draft=True, archive=True, cancelled=False)
 
-
+@pytest.mark.regression
+@pytest.mark.order(50)
 def test_change_status_draft_and_cancelled(driver, test_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Test run: test_change_status_draft_and_cancelled")
@@ -144,7 +150,8 @@ def test_change_status_draft_and_cancelled(driver, test_data):
     client_name = f"{data['client_name']}-C"
     order_change_status(driver, test_data, client_name=client_name, draft=True, cancelled=True)
 
-
+@pytest.mark.regression
+@pytest.mark.order(54)
 def test_change_status_draft_and_delivered(driver, test_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Test run: test_change_status_draft_and_delivered")

@@ -1,3 +1,5 @@
+import pytest
+
 from autotest.anor.mkw.warehouse_add.warehouse_add import WarehouseAdd
 from autotest.anor.mkw.warehouse_list.warehouse_list import WarehouseList
 from autotest.anor.mkw.warehouse_type_add.warehouse_type_add import WarehouseTypeAdd
@@ -5,6 +7,8 @@ from autotest.anor.mkw.warehouse_view.warehouse_view import WarehouseView
 from flows.auth_flow import login_user
 
 
+@pytest.mark.regression
+@pytest.mark.order(66)
 def test_add_warehouse(driver, test_data):
     """Test adding a warehouse"""
     # Test data

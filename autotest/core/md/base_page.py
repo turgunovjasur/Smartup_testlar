@@ -33,7 +33,7 @@ class BasePage:
         self.driver = driver
         self.test_name = get_test_name()
         self.logger = configure_logging(self.test_name)
-        self.default_timeout = 30
+        self.default_timeout = 20
         self.default_page_load_timeout = 180
         self.actions = ActionChains(driver)
 

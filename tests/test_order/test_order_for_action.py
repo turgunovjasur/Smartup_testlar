@@ -1,4 +1,7 @@
 import time
+
+import pytest
+
 from autotest.anor.mdeal.order.order_add.create_add_main import OrderAddMain
 from autotest.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
 from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
@@ -8,7 +11,8 @@ from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from flows.auth_flow import login_user
 
-
+@pytest.mark.regression
+@pytest.mark.order(52)
 def test_add_order_for_action(driver, test_data):
     data = test_data["data"]
     room_name = data["room_name"]
@@ -112,7 +116,8 @@ def test_add_order_for_action(driver, test_data):
 
     order_view.click_close_button()
 
-
+@pytest.mark.regression
+@pytest.mark.order(53)
 def test_edit_order_for_action(driver, test_data):
     data = test_data["data"]
     product_price = data["product_price_USA"]

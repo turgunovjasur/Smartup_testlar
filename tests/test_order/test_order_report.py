@@ -12,7 +12,9 @@ from flows.auth_flow import login_user, login_admin
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 
-
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(30)
 def test_check_report_for_order_list(driver, test_data, timeout=60):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Run test: test_check_report_for_order_list")
@@ -105,7 +107,9 @@ def test_check_report_for_order_list(driver, test_data, timeout=60):
             base_page.logger.error(f"Test errors:\n{errors_joined}")
             pytest.fail(f"Test_errors:\n{errors_joined}")
 
-
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(35)
 def test_check_report_for_order_history_list(driver, test_data, timeout=60):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Run test: test_check_invoices_report_for_order_history_list")
@@ -199,6 +203,8 @@ def test_check_report_for_order_history_list(driver, test_data, timeout=60):
 
 
 # Invoice report
+@pytest.mark.regression
+@pytest.mark.order(47)
 def test_add_template_for_order_invoice_report(driver, test_data):
     # Test data
     data = test_data["data"]
@@ -234,7 +240,8 @@ def test_add_template_for_order_invoice_report(driver, test_data):
     template_role_list.click_close_button()
     template_list.element_visible()
 
-
+@pytest.mark.regression
+@pytest.mark.order(49)
 def test_check_invoice_report_for_order_list(driver, test_data):
     data = test_data["data"]
     client_name = f"{data['client_name']}-C"
