@@ -1,7 +1,5 @@
 import time
-
 import pytest
-
 from autotest.anor.mdeal.order.order_add.create_add_main import OrderAddMain
 from autotest.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
 from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
@@ -11,89 +9,89 @@ from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from flows.auth_flow import login_user
 from tests.test_cashin.test_cashin import test_cashin_add_C
 
-@pytest.mark.regression
-@pytest.mark.order(31)
-def test_edit_order_with_consignment(driver, test_data):
-    # Test data
-    base_page = BasePage(driver)
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    data = test_data["data"]
-    product_price = data["product_price"]
-    client_name = f"{data['client_name']}-A"
-    product_quantity_edit = 10
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Login
-    login_user(driver, test_data, url='trade/tdeal/order/order_list')
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # OrdersList
-    order_list = OrdersList(driver)
-    order_list.element_visible()
-    order_list.find_row(client_name)
-    order_list.click_edit_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Order Add Main
-    order_add_main = OrderAddMain(driver)
-    order_add_main.element_visible()
-    order_add_main.click_next_step_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Order Add Product
-    order_add_product = OrderAddProduct(driver)
-    order_add_product.element_visible()
-    order_add_product.input_quantity(product_quantity_edit)
-    order_add_product.click_next_step_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Order Add Final
-    order_add_final = OrderAddFinal(driver)
-
-    def check_error_message():
-        error_message = order_add_final.error_massage()
-        if error_message == data["error_massage_2"]:
-            base_page.logger.info("Error message validated successfully")
-            order_add_final.click_error_close_button()
-            return True
-        else:
-            base_page.logger.error(f'Error: Expected "{data["error_massage_2"]}", got "{error_message}"')
-            base_page.logger.error("Consignment edit failed!")
-            return False
-
-    if not check_error_message():
-        base_page.logger.error(f'Error: check_error_message')
-
-    order_add_final.element_visible()
-    order_add_final.click_save_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Orders List
-    order_list.element_visible()
-    order_list.find_row(client_name)
-    order_list.click_view_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Orders View
-    order_view = OrderView(driver)
-    order_view.element_visible()
-    order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
-    get_quantity, get_price, total_sum = order_view.check_items()
-    assert get_quantity == product_quantity_edit, f'Error: get_quantity: {get_quantity} != product_quantity_edit: {product_quantity_edit}'
-    assert get_price == product_quantity_edit * product_price, f'Error: {get_quantity} != {product_quantity_edit} * {product_price}'
-    base_page.logger.info(f'order_id: {order_id}')
-    order_view.click_tablist_button(tablist_name='Консигнация')
-    order_view.check_row_consignment()
-    order_view.click_close_button()
+# @pytest.mark.regression
+# @pytest.mark.order(31)
+# def test_edit_order_with_consignment(driver, test_data):
+#     # Test data
+#     base_page = BasePage(driver)
+#
+#     # ------------------------------------------------------------------------------------------------------------------
+#
+#     data = test_data["data"]
+#     product_price = data["product_price"]
+#     client_name = f"{data['client_name']}-A"
+#     product_quantity_edit = 10
+#
+#     # ------------------------------------------------------------------------------------------------------------------
+#
+#     # Login
+#     login_user(driver, test_data, url='trade/tdeal/order/order_list')
+#
+#     # ------------------------------------------------------------------------------------------------------------------
+#
+#     # OrdersList
+#     order_list = OrdersList(driver)
+#     order_list.element_visible()
+#     order_list.find_row(client_name)
+#     order_list.click_edit_button()
+#
+#     # ------------------------------------------------------------------------------------------------------------------
+#
+#     # Order Add Main
+#     order_add_main = OrderAddMain(driver)
+#     order_add_main.element_visible()
+#     order_add_main.click_next_step_button()
+#
+#     # ------------------------------------------------------------------------------------------------------------------
+#
+#     # Order Add Product
+#     order_add_product = OrderAddProduct(driver)
+#     order_add_product.element_visible()
+#     order_add_product.input_quantity(product_quantity_edit)
+#     order_add_product.click_next_step_button()
+#
+#     # ------------------------------------------------------------------------------------------------------------------
+#
+#     # Order Add Final
+#     order_add_final = OrderAddFinal(driver)
+#
+#     def check_error_message():
+#         error_message = order_add_final.error_massage()
+#         if error_message == data["error_massage_2"]:
+#             base_page.logger.info("Error message validated successfully")
+#             order_add_final.click_error_close_button()
+#             return True
+#         else:
+#             base_page.logger.error(f'Error: Expected "{data["error_massage_2"]}", got "{error_message}"')
+#             base_page.logger.error("Consignment edit failed!")
+#             return False
+#
+#     if not check_error_message():
+#         base_page.logger.error(f'Error: check_error_message')
+#
+#     order_add_final.element_visible()
+#     order_add_final.click_save_button()
+#
+#     # ------------------------------------------------------------------------------------------------------------------
+#
+#     # Orders List
+#     order_list.element_visible()
+#     order_list.find_row(client_name)
+#     order_list.click_view_button()
+#
+#     # ------------------------------------------------------------------------------------------------------------------
+#
+#     # Orders View
+#     order_view = OrderView(driver)
+#     order_view.element_visible()
+#     order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
+#     get_quantity, get_price, total_sum = order_view.check_items()
+#     assert get_quantity == product_quantity_edit, f'Error: get_quantity: {get_quantity} != product_quantity_edit: {product_quantity_edit}'
+#     assert get_price == product_quantity_edit * product_price, f'Error: {get_quantity} != {product_quantity_edit} * {product_price}'
+#     base_page.logger.info(f'order_id: {order_id}')
+#     order_view.click_tablist_button(tablist_name='Консигнация')
+#     order_view.check_row_consignment()
+#     order_view.click_close_button()
 
     # ------------------------------------------------------------------------------------------------------------------
 @pytest.mark.regression

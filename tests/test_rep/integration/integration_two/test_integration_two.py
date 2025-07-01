@@ -4,8 +4,9 @@ from flows.auth_flow import login_admin
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 
 
+@pytest.mark.regression
 @pytest.mark.integration_report
-@pytest.mark.order(3)
+@pytest.mark.order(70)
 def test_check_report_integration_two(driver, test_data):
     data = test_data["data"]
     price_type_name = data['price_type_name_UZB']

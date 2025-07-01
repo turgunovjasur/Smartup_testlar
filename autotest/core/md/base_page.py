@@ -1030,7 +1030,14 @@ class BasePage:
     # ==================================================================================================================
 
     def _find_and_click_option(self, element, options, options_locator):
-        """Element topish va bosish funksiyasi"""
+        """Element topish va bosish funksiyasi
+
+        Params:
+            element: kerakli element matni
+            options: elementlar ro'yxati
+            options_locator: umumiy locator (retry uchun)
+            any_option: True bo‘lsa, birinchi uchragan elementni bosadi
+        """
         element_str = str(element).strip()
 
         for option in options:

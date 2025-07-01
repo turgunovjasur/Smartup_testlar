@@ -1,11 +1,12 @@
 import pytest
-from autotest.trade.rep.integration.cislink.cislink import CisLink
 from flows.auth_flow import login_admin
+from autotest.trade.rep.integration.cislink.cislink import CisLink
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 
 
+@pytest.mark.regression
 @pytest.mark.integration_report
-@pytest.mark.order(1)
+@pytest.mark.order(68)
 def test_check_report_cis_link(driver, test_data):
     data = test_data["data"]
     price_types_name = data["price_type_name_UZB"]

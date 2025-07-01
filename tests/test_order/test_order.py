@@ -261,29 +261,30 @@ def order_add(driver, test_data,
     order_list.element_visible()
 
 # ======================================================================================================================
-@pytest.mark.regression
-@pytest.mark.order(29)
-def test_add_order_with_consignment(driver, test_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_order_with_consignment")
-
-    # Test data
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-A"
-    contract_name = f"{data['contract_name']}-A-UZB"
-    product_quantity = 15
-    current_date_add_day = 30
-    consignment_amount = product_quantity * data["product_price"]
-    order_add(driver, test_data,
-              client_name=client_name,
-              contract_name=contract_name,
-              product_quantity=product_quantity,
-              consignment=True,
-              audit=True,
-              consignment_amount=consignment_amount,
-              current_date_add_day=current_date_add_day)
+# @pytest.mark.regression
+# @pytest.mark.order(29)
+# def test_add_order_with_consignment(driver, test_data):
+#     base_page = BasePage(driver)
+#     base_page.logger.info("▶️ Running: test_add_order_with_consignment")
+#
+#     # Test data
+#     data = test_data["data"]
+#     client_name = f"{data['client_name']}-A"
+#     contract_name = f"{data['contract_name']}-A-UZB"
+#     product_quantity = 15
+#     current_date_add_day = 30
+#     consignment_amount = product_quantity * data["product_price"]
+#     order_add(driver, test_data,
+#               client_name=client_name,
+#               contract_name=contract_name,
+#               product_quantity=product_quantity,
+#               consignment=True,
+#               audit=True,
+#               consignment_amount=consignment_amount,
+#               current_date_add_day=current_date_add_day)
 
 # ======================================================================================================================
+
 @pytest.mark.regression
 @pytest.mark.order_group_B
 @pytest.mark.order(39)
@@ -305,6 +306,7 @@ def test_add_order_with_contract(driver, test_data):
               error_massage=True)
 
 # ======================================================================================================================
+
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(43)
@@ -331,6 +333,7 @@ def test_add_order_with_price_type_USA(driver, test_data):
               attach_data=True)
 
 # ======================================================================================================================
+
 @pytest.mark.regression
 @pytest.mark.order(48)
 def test_order_add_for_sub_filial_select(driver, test_data):

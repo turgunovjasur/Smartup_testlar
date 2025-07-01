@@ -7,8 +7,9 @@ from flows.auth_flow import login_admin
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
 
 
+@pytest.mark.regression
 @pytest.mark.integration_report
-@pytest.mark.order(5)
+@pytest.mark.order(72)
 def test_check_report_sales_work(driver, test_data):
     # test data
     random_number = random.randint(1, 9999)

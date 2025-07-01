@@ -3,8 +3,9 @@ from autotest.trade.rep.integration.integration_three.integration_three import I
 from flows.auth_flow import login_admin
 
 
+@pytest.mark.regression
 @pytest.mark.integration_report
-@pytest.mark.order(2)
+@pytest.mark.order(69)
 def test_check_report_integration_three(driver, test_data):
     login_admin(driver, test_data, url='trade/rep/integration/integration_three')
 
