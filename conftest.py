@@ -1,5 +1,7 @@
 import json
 import os
+import tempfile
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -22,8 +24,14 @@ def driver(request, test_data):
     headless = request.config.getoption("--headless", default=False)
 
     options = Options()
-    if headless:
-        options.add_argument("--headless=new")  # headless rejim yoqiladi
+
+    # Headless rejim faqatgina --headless berilganda YOKI GitHub Actionsda yoqiladi
+    if headless or os.getenv("GITHUB_ACTIONS") == "true":
+        options.add_argument("--headless=new")
+
+    # 💡 CI profil ziddiyatini bartaraf etish uchun vaqtinchalik user profile
+    user_data_dir = tempfile.mkdtemp()
+    options.add_argument(f"--user-data-dir={user_data_dir}")
 
     options.add_argument("--start-maximized")
     options.add_argument("--force-device-scale-factor=0.90")
