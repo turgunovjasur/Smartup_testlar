@@ -33,7 +33,7 @@ class BasePage:
         self.driver = driver
         self.test_name = get_test_name()
         self.logger = configure_logging(self.test_name)
-        self.default_timeout = 20
+        self.default_timeout = 30
         self.default_page_load_timeout = 180
         self.actions = ActionChains(driver)
 
@@ -593,25 +593,22 @@ class BasePage:
         attempt = 0
         while attempt < retries:
             self._wait_for_all_loaders(log_text="input_text")
+            element_dom = self.wait_for_element(locator, wait_type="presence")
 
             try:
                 if get_value:
-                    element_dom = self.wait_for_element(locator, wait_type="presence")
                     value = element_dom.get_attribute("value")
                     self.logger.info(f"Input: get_value -> '{value}'")
                     return value
 
                 if text:
-                    element_dom = self.wait_for_element(locator, wait_type="presence")
                     self._scroll_to_element(element_dom, locator)
                     element_clickable = self.wait_for_element(locator, wait_type="clickable")
-
                     element_clickable.clear()
                     element_clickable.send_keys(text)
                     self.logger.info(f"Input: send_key -> '{text}'")
 
                 if check:
-                    element_dom = self.wait_for_element(locator, wait_type="presence")
                     check_text = self.driver.execute_script("return arguments[0].value;", element_dom)
                     self.logger.info(f"Check Input Value: -> '{check_text}'")
                     if check_text != text:

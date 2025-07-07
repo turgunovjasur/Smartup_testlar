@@ -540,6 +540,7 @@ def test_sector_add(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order(16)
+@pytest.mark.no_ci
 def test_check_price_tag(driver, test_data):
     """Test checking a price tag"""
     # Test data
@@ -850,22 +851,21 @@ def setting_prepayment(driver, test_data, prepayment):
     system_setting.click_save_button()
     system_setting.element_visible_order()
 
+
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(44)
 def test_setting_prepayment_on(driver, test_data):
     """Prepayment setting on"""
-
     setting_prepayment(driver, test_data, prepayment=True)
+
 
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(46)
 def test_setting_prepayment_off(driver, test_data):
     """Prepayment setting off"""
-
     setting_prepayment(driver, test_data, prepayment=False)
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 

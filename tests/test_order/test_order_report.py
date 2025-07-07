@@ -7,10 +7,13 @@ from autotest.anor.mr.template_list.template_list import TemplateList
 from autotest.biruni.ker.setting_add.setting_add import SettingAdd
 from autotest.biruni.ker.template_role_list.template_role_list import TemplateRoleList
 from autotest.core.md.base_page import BasePage
+from autotest.trade.rep.mbi.tdeal.order.sales_report_constructor import SalesReportConstructor
 from autotest.trade.tdeal.order.order_history_list.order_history_list import OrdersHistoryList
 from flows.auth_flow import login_user, login_admin
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
+
+# ======================================================================================================================
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
@@ -107,6 +110,8 @@ def test_check_report_for_order_list(driver, test_data, timeout=60):
             base_page.logger.error(f"Test errors:\n{errors_joined}")
             pytest.fail(f"Test_errors:\n{errors_joined}")
 
+# ======================================================================================================================
+
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(35)
@@ -201,10 +206,12 @@ def test_check_report_for_order_history_list(driver, test_data, timeout=60):
             base_page.logger.error(f"Test errors:\n{errors_joined}")
             pytest.fail(f"Test_errors:\n{errors_joined}")
 
+# ======================================================================================================================
 
 # Invoice report
 @pytest.mark.regression
 @pytest.mark.order(47)
+@pytest.mark.no_ci
 def test_add_template_for_order_invoice_report(driver, test_data):
     # Test data
     data = test_data["data"]
@@ -240,8 +247,11 @@ def test_add_template_for_order_invoice_report(driver, test_data):
     template_role_list.click_close_button()
     template_list.element_visible()
 
+# ======================================================================================================================
+
 @pytest.mark.regression
 @pytest.mark.order(49)
+@pytest.mark.no_ci
 def test_check_invoice_report_for_order_list(driver, test_data):
     data = test_data["data"]
     client_name = f"{data['client_name']}-C"
@@ -255,3 +265,38 @@ def test_check_invoice_report_for_order_list(driver, test_data):
 
     order_list.click_invoice_reports_all_button(invoice_report_name)
     generate_and_verify_download(driver, file_name='invoice_report', file_type='xlsx')
+
+# ======================================================================================================================
+
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(33)
+def test_sales_report_constructor_demo(driver, test_data, save_data, load_data):
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️ Running: test_sales_report_constructor_demo")
+
+    login_user(driver, test_data, url='trade/rep/mbi/tdeal/order')
+
+    sales_report_constructor = SalesReportConstructor(driver)
+    sales_report_constructor.input_search_option(option_name="Заказ")
+
+    sales_report_constructor.click_source_and_target(option_name="Заказ", field_name="row")
+
+    sales_report_constructor.input_filter_fields(option_name="Статус", clear=True)
+
+    sales_report_constructor.click_view_button()
+
+    sales_report_constructor.switch_to_iframe()
+    order_ids = sales_report_constructor.get_order_id_list()
+
+    base_page.logger.info(f"order_ids: {order_ids}")
+
+    order_id_1 = load_data("order_id_1")
+    order_id_2 = load_data("order_id_2")
+
+    assert order_id_1 in order_ids, f"Error: {order_id_1} not found!"
+    assert order_id_2 in order_ids, f"Error: {order_id_2} not found!"
+
+    time.sleep(2)
+
+# ======================================================================================================================

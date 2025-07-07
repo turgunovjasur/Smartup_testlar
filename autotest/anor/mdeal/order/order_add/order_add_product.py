@@ -56,11 +56,12 @@ class OrderAddProduct(BasePage):
     def input_quantity(self, product_quantity):
         self.input_text(self.quantity_input, product_quantity)
     # ------------------------------------------------------------------------------------------------------------------
-    margin_value_input = (By.XPATH, '//div[@ng-model="item.margin_value"]//span[@ng-click="$select.activate()"]')
+    # margin_value_input = (By.XPATH, '//div[@ng-model="item.margin_value"]//span[@ng-click="$select.activate()"]')
+    margin_value_input = (By.XPATH, '//b-pg-grid//div[contains(@ng-model,".margin_value")]//span[@ng-click="$select.activate()"]')
 
     def click_percent_value_button(self, percent_value):
         self.click(self.margin_value_input)
-        percent_value_button = (By.XPATH, f'//div[@ng-model="item.margin_value"]//div[contains(@class,"ui-select-choices-row")]/span[contains(text(),"{percent_value}")]')
+        percent_value_button = (By.XPATH, f'//b-pg-grid//div[contains(@ng-model,".margin_value")]//div[contains(@class,"ui-select-choices-row")]/span[contains(text(),"{percent_value}")]')
         self.click(percent_value_button)
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
@@ -69,9 +70,9 @@ class OrderAddProduct(BasePage):
         self.click(self.next_step_button)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def click_nav_tablist_button(self, nav_tablist):
-        tablist = (By.XPATH, f'//ul[@id="anor279-ul-nav_tablist"]//li[contains(@class,"nav-item")][{nav_tablist}]/a')
-        self.click(tablist)
+    def click_nav_tablist_button(self, tablist_name):
+        locator = (By.XPATH, f'//ul[@id="anor279-ul-nav_tablist"]/li//*[contains(text(),"{tablist_name}")]')
+        self.click(locator)
     # ------------------------------------------------------------------------------------------------------------------
     action_checkbox_button = (By.XPATH, '//div[@id="actions"]//label[@class="switch"]')
 

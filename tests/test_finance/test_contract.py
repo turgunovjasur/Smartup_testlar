@@ -1,12 +1,10 @@
 import random
-
 import pytest
-
+from flows.auth_flow import login_user
+from autotest.core.md.base_page import BasePage
 from autotest.anor.mkf.contract_add.contract_add import ContractAdd
 from autotest.anor.mkf.contract_list.contract_list import ContractList
 from autotest.anor.mkf.contract_view.contract_view import ContractView
-from autotest.core.md.base_page import BasePage
-from flows.auth_flow import login_user
 
 
 def contract_add(driver, test_data, **kwargs):
@@ -56,6 +54,7 @@ def contract_add(driver, test_data, **kwargs):
     assert get_currency_name == currency_name, f"Error: {get_currency_name} != {currency_name}"
     contract_view.click_close_button()
 
+
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(27)
@@ -76,6 +75,7 @@ def test_add_contract_for_client_A_UZB(driver, test_data):
                  initial_amount=initial_amount,
                  is_main=False)
 
+
 @pytest.mark.regression
 @pytest.mark.order_group_B
 @pytest.mark.order(38)
@@ -95,6 +95,7 @@ def test_add_contract_for_client_B_UZB(driver, test_data):
                  contract_name=contract_name,
                  initial_amount=initial_amount,
                  is_main=False)
+
 
 @pytest.mark.regression
 @pytest.mark.order_group_C

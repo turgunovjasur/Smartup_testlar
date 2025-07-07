@@ -1,11 +1,17 @@
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
+from autotest.anor.mkw.product_file_list.product_file_list import ProductFileList
+from autotest.core.md.base_page import BasePage
 from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
+from autotest.trade.tdeal.order.order_attach_data.order_attach_data import OrderAttachData
 from autotest.trade.tdeal.order.order_list.order_copy_modal import OrderCopyModal
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
+from autotest.trade.tdeal.order.transactions.transactions import Transaction
+
 
 # ======================================================================================================================
 
 def order_list(driver, **kwargs):
+    base_page = BasePage(driver)
     order_list = OrdersList(driver)
     order_list.element_visible()
 
@@ -14,8 +20,12 @@ def order_list(driver, **kwargs):
     add = kwargs.get("add")
     view = kwargs.get("view")
     edit = kwargs.get("edit")
+    order_return = kwargs.get("order_return")
     copy = kwargs.get("copy")
     change_status = kwargs.get("change_status")
+    file = kwargs.get("file")
+    transaction = kwargs.get("transaction")
+    attach_data = kwargs.get("attach_data")
 
     if reload:
         order_list.click_reload_button()
@@ -27,11 +37,21 @@ def order_list(driver, **kwargs):
         order_list.click_view_button()
     if edit:
         order_list.click_edit_button()
+    if order_return:
+        order_list.click_return_button()
     if copy:
         order_list.click_copy_button()
     if change_status:
         order_list.click_change_status_button(change_status)
         order_list.element_visible()
+    if file:
+        order_list.click_view_dropdown(file_name='Файлы')
+    if transaction:
+        base_page.switch_window(direction="prepare")
+        order_list.click_view_dropdown(file_name="Проводки")
+        base_page.switch_window(direction="forward")
+    if attach_data:
+        order_list.click_edit_dropdown(file_name="Прикрепить")
 
 # ======================================================================================================================
 
@@ -41,6 +61,7 @@ def order_view(driver, **kwargs):
 
     input_name = kwargs.get("input_name")
     default_dtype = kwargs.get("data_type", "text")
+
     tablist_name = kwargs.get("tablist_name")
     consignment_day = kwargs.get("consignment_day")
     consignment_amount = kwargs.get("consignment_amount")
@@ -76,6 +97,28 @@ def order_view(driver, **kwargs):
     order_view.click_close_button()
 
     return input_values if input_values else None
+
+# ======================================================================================================================
+
+def order_file(driver):
+        product_file_list = ProductFileList(driver)
+        product_file_list.element_visible()
+        product_file_list.click_close_button()
+
+# ======================================================================================================================
+
+def order_transaction(driver):
+    base_page = BasePage(driver)
+    transaction = Transaction(driver)
+    transaction.check_transaction_body(timeout=20)
+    base_page.switch_window(direction="back")
+# ======================================================================================================================
+
+def order_attach_data(driver):
+    order_attach_data = OrderAttachData(driver)
+    order_attach_data.element_visible()
+    order_attach_data.click_delivery_date_checkbox(days=5)
+    order_attach_data.click_save_button()
 
 # ======================================================================================================================
 

@@ -1,13 +1,11 @@
 import time
-
 import pytest
-
-from autotest.anor.mdeal.order.offset.offset.offset import Offset
-from autotest.anor.mdeal.order.offset.offset_detail_list.offset_detail_list import OffsetDetailList
-from autotest.anor.mdeal.order.offset.offset_list.offset_list import OffsetList
 from autotest.core.md.base_page import BasePage
+from autotest.anor.mdeal.order.offset.offset.offset import Offset
 from autotest.trade.tcs.cashin_list.cashin_list import CashinList
 from autotest.trade.tcs.cashin_view.cashin_view import CashinView
+from autotest.anor.mdeal.order.offset.offset_list.offset_list import OffsetList
+from autotest.anor.mdeal.order.offset.offset_detail_list.offset_detail_list import OffsetDetailList
 from flows.auth_flow import login_user
 
 
@@ -80,6 +78,7 @@ def offset_add(driver, test_data, client_name=None, payment=False):
         base_page.logger.info(f'get_cashin_number: {get_cashin_number}')
         cashin_view.click_close_button()
 
+
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(37)
@@ -88,6 +87,7 @@ def test_offset_add_A(driver, test_data):
     client_name = f'{data["client_name"]}-A'
     offset_add(driver, test_data, client_name=client_name)
 
+
 @pytest.mark.regression
 @pytest.mark.order_group_B
 @pytest.mark.order(41)
@@ -95,9 +95,3 @@ def test_offset_add_B(driver, test_data):
     data = test_data["data"]
     client_name = f'{data["client_name"]}-B'
     offset_add(driver, test_data, client_name=client_name, payment=True)
-
-
-def test_offset_add_C(driver, test_data):
-    data = test_data["data"]
-    client_name = f'{data["client_name"]}-C'
-    offset_add(driver, test_data, client_name=client_name)

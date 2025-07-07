@@ -54,8 +54,8 @@ def test_data(save_data):
     """Dinamik test ma'lumotlari"""
 
     # Sana asosida cod qiymatini olish
-    cod = datetime.today().strftime("%d_%m_%Y_%H_%M")  # kun_oy_yil_soat_daqiqa
-    # cod = "30_06_2025_14_31"
+    cod = datetime.today().strftime("%d_%m_%H_%M")  # kun_oy_soat_daqiqa
+    # cod = "01_07_2025_10_56"
     save_data("cod", cod)
 
     base_data = {
@@ -132,10 +132,11 @@ def test_data(save_data):
         "Cancelled": "Отменен",
     }
     error_massage = {
-        "error_massage_1": "H02-ANOR279-015",
-        "error_massage_2": "H02-ANOR279-006",
+        "error_massage_1": "H02-ANOR279-015",  # error -> contract
+        "error_massage_2": "H02-ANOR279-006",  # error -> consignment
         "error_massage_3": "A02-16-120",
-        "error_massage_4": "H02-ANOR66-003",  # error -> sector
+        "error_massage_4": "H02-ANOR66-003",   # error -> sector
+        "error_massage_5": "A02-02-039",       # error -> data
     }
     return {
         "data": {

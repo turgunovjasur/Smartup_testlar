@@ -26,7 +26,7 @@ jobs:
 
     - name: Run pytest with Allure
       run: |
-        pytest -m integration_report
+        pytest -m "regression and not no_ci"
 
     - name: Upload Allure results
       uses: actions/upload-artifact@v4

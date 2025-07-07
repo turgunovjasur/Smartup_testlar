@@ -1,6 +1,7 @@
 import time
 from autotest.biruni.md.biruni.grid_setting.grid_setting import GridSetting
 
+# ----------------------------------------------------------------------------------------------------------------------
 
 def grid_setting(driver, option_name=None, search_type=None, save_as_default=False):
     """Test configuring grid settings."""
@@ -23,3 +24,4 @@ def grid_setting(driver, option_name=None, search_type=None, save_as_default=Fal
 
     grid_setting.click_save_button()
     time.sleep(0.5)
+# ----------------------------------------------------------------------------------------------------------------------

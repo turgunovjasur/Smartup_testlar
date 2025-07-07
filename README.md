@@ -10,5 +10,6 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
 pip install -r requirements.txt
 
-pytest all_test_runner.py::test_all -v --alluredir=allure-results
-allure serve allure-results
+pytest -m regression
+
+allure serve ./allure-results

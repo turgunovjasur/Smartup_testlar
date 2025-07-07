@@ -1,19 +1,18 @@
 import random
-
+import time
 import pytest
-
 from autotest.trade.tcs.cashin_add.cashin_add import CashinAdd
 from autotest.trade.tcs.cashin_list.cashin_list import CashinList
 from autotest.trade.tcs.cashin_view.cashin_view import CashinView
 from flows.auth_flow import login_user
 
 
-def cashin_add(driver, test_data, client_name=None, login=True, amount=None):
+def cashin_add(driver, test_data, client_name, login=True, amount=None):
     # Test data
     data = test_data["data"]
     payment_type_name = data["payment_type_name"]
     cashbox_name = data["cash_register_name"]
-    client_name = client_name or data["client_name"]
+    client_name = client_name
 
     # Login
     if login:
@@ -30,8 +29,11 @@ def cashin_add(driver, test_data, client_name=None, login=True, amount=None):
     cashin_number = random.randint(1, 999999)
     cashin_add.input_cashin_number(cashin_number)
     cashin_add.input_clients(client_name)
+    cashin_add.input_contracts(clear=True)
 
     input_amount = amount or cashin_add.get_amount()
+    if input_amount == 0:
+        time.sleep(2) is None and cashin_add.get_amount()
     cashin_add.input_amount(input_amount)
 
     cashin_add.input_payment_types(payment_type_name)
@@ -55,6 +57,8 @@ def cashin_add(driver, test_data, client_name=None, login=True, amount=None):
     cashin_list.element_visible()
     cashin_list.find_row(cashin_number)
     cashin_list.click_post_button()
+    time.sleep(2)
+
 
 @pytest.mark.regression
 @pytest.mark.order_group_A

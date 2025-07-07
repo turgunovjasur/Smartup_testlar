@@ -1,247 +1,185 @@
-import time
 import pytest
-from autotest.anor.mdeal.order.order_add.create_add_main import OrderAddMain
-from autotest.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
-from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
-from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.core.md.base_page import BasePage
-from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from flows.auth_flow import login_user
+from flows.error_message_flow import get_error_massage
+from flows.grid_setting_flow import grid_setting
+from flows.order_flows.order_add_flow import order_add_main, order_add_product, order_add_final
+from flows.order_flows.order_list_flow import order_list, order_view
 from tests.test_cashin.test_cashin import test_cashin_add_C
 
-# @pytest.mark.regression
-# @pytest.mark.order(31)
-# def test_edit_order_with_consignment(driver, test_data):
-#     # Test data
-#     base_page = BasePage(driver)
-#
-#     # ------------------------------------------------------------------------------------------------------------------
-#
-#     data = test_data["data"]
-#     product_price = data["product_price"]
-#     client_name = f"{data['client_name']}-A"
-#     product_quantity_edit = 10
-#
-#     # ------------------------------------------------------------------------------------------------------------------
-#
-#     # Login
-#     login_user(driver, test_data, url='trade/tdeal/order/order_list')
-#
-#     # ------------------------------------------------------------------------------------------------------------------
-#
-#     # OrdersList
-#     order_list = OrdersList(driver)
-#     order_list.element_visible()
-#     order_list.find_row(client_name)
-#     order_list.click_edit_button()
-#
-#     # ------------------------------------------------------------------------------------------------------------------
-#
-#     # Order Add Main
-#     order_add_main = OrderAddMain(driver)
-#     order_add_main.element_visible()
-#     order_add_main.click_next_step_button()
-#
-#     # ------------------------------------------------------------------------------------------------------------------
-#
-#     # Order Add Product
-#     order_add_product = OrderAddProduct(driver)
-#     order_add_product.element_visible()
-#     order_add_product.input_quantity(product_quantity_edit)
-#     order_add_product.click_next_step_button()
-#
-#     # ------------------------------------------------------------------------------------------------------------------
-#
-#     # Order Add Final
-#     order_add_final = OrderAddFinal(driver)
-#
-#     def check_error_message():
-#         error_message = order_add_final.error_massage()
-#         if error_message == data["error_massage_2"]:
-#             base_page.logger.info("Error message validated successfully")
-#             order_add_final.click_error_close_button()
-#             return True
-#         else:
-#             base_page.logger.error(f'Error: Expected "{data["error_massage_2"]}", got "{error_message}"')
-#             base_page.logger.error("Consignment edit failed!")
-#             return False
-#
-#     if not check_error_message():
-#         base_page.logger.error(f'Error: check_error_message')
-#
-#     order_add_final.element_visible()
-#     order_add_final.click_save_button()
-#
-#     # ------------------------------------------------------------------------------------------------------------------
-#
-#     # Orders List
-#     order_list.element_visible()
-#     order_list.find_row(client_name)
-#     order_list.click_view_button()
-#
-#     # ------------------------------------------------------------------------------------------------------------------
-#
-#     # Orders View
-#     order_view = OrderView(driver)
-#     order_view.element_visible()
-#     order_id = order_view.get_input_value_in_order_view(input_name="ИД заказа")
-#     get_quantity, get_price, total_sum = order_view.check_items()
-#     assert get_quantity == product_quantity_edit, f'Error: get_quantity: {get_quantity} != product_quantity_edit: {product_quantity_edit}'
-#     assert get_price == product_quantity_edit * product_price, f'Error: {get_quantity} != {product_quantity_edit} * {product_price}'
-#     base_page.logger.info(f'order_id: {order_id}')
-#     order_view.click_tablist_button(tablist_name='Консигнация')
-#     order_view.check_row_consignment()
-#     order_view.click_close_button()
+# ======================================================================================================================
 
-    # ------------------------------------------------------------------------------------------------------------------
+@pytest.mark.regression
+@pytest.mark.order_group_A
+@pytest.mark.order(31)
+def test_edit_order_with_consignment_demo(driver, test_data, load_data):
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️ Running: test_edit_order_with_consignment_demo")
+
+    data = test_data["data"]
+
+    login_user(driver, test_data, url='trade/tdeal/order/order_list')
+
+    grid_setting(driver, option_name="deal_id", search_type="ИД заказа")
+
+    order_id_1 = load_data("order_id_1")
+    order_list(driver, find_row=order_id_1, edit=True)
+
+    order_add_main(driver)
+
+    order_add_product(driver, product_quantity=10)
+
+    get_error_massage(driver, error_massage_name=data["error_massage_2"])
+
+    order_add_final(driver, status_name=data["Draft"])
+
+    order_list(driver, find_row=order_id_1, view=True)
+
+    order_view(driver, tablist_name="Консигнация", consignment_empty=True)
+
+    order_list(driver, change_status=data["New"])
+
+# ======================================================================================================================
+
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(45)
-def test_edit_order_for_price_type_USA(driver, test_data):
-    # Test data
+def test_edit_order_for_price_type_USA_demo(driver, test_data, load_data):
     base_page = BasePage(driver)
-
-    # ------------------------------------------------------------------------------------------------------------------
+    base_page.logger.info("▶️ Running: test_edit_order_for_price_type_USA_demo")
 
     data = test_data["data"]
-    client_name = f"{data['client_name']}-C"
     product_name = data["product_name"]
     warehouse_name = data["warehouse_name"]
     price_type_name = data["price_type_name_UZB"]
     product_quantity_edit = 10
+    cashin_amount = product_quantity_edit * data["product_price"]
+    prepayment_amount = cashin_amount / 2
 
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Login
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_id_4 = load_data("order_id_4")
+    order_list(driver, find_row=order_id_4, edit=True)
 
-    # OrdersList
-    order_list = OrdersList(driver)
-    order_list.element_visible()
-    order_list.find_row(client_name)
-    order_list.click_edit_button()
+    order_add_main(driver)
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_add_product(driver,
+                      clear_input=True,
+                      product_name=product_name,
+                      warehouse_name=warehouse_name,
+                      price_type_name=price_type_name,
+                      product_quantity=product_quantity_edit)
 
-    # Order Add Main
-    order_add_main = OrderAddMain(driver)
-    order_add_main.element_visible()
-    order_add_main.click_next_step_button()
+    order_add_final(driver, status_name=data["Delivered"])
 
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Order Add Product
-    order_add_product = OrderAddProduct(driver)
-    order_add_product.element_visible()
-    order_add_product.input_name_product(product_name, warehouse_name, price_type_name, clear_input=True)
-    order_add_product.input_quantity(product_quantity_edit)
-    order_add_product.click_next_step_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    # Order Add Final
-    order_add_final = OrderAddFinal(driver)
-    order_add_final.element_visible()
-    get_total_amount = order_add_final.check_total_amount()  # 0
-
-    order_add_final.input_status(status=6)
-    order_add_final.click_save_button()
-
-    error_massage = order_add_final.error_massage()
-    assert error_massage == data["error_massage_3"], f'Error: "error_massage_3" not visible!'
-    order_add_final.click_error_close_button()
-
-    # ------------------------------------------------------------------------------------------------------------------
+    get_error_massage(driver, error_massage_name=data["error_massage_3"])
 
     base_page.switch_window(direction="prepare")
     cut_url = base_page.cut_url()
     base_page.switch_window(direction="new", url=cut_url + 'trade/tcs/cashin_list')
-    test_cashin_add_C(driver, test_data, amount=int(get_total_amount))
+    test_cashin_add_C(driver, test_data, amount=cashin_amount)
     base_page.switch_window(direction="back")
     base_page.refresh_page()
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_add_main(driver)
 
-    order_add_main.click_next_step_button()
-    order_add_product.element_visible()
-    order_add_product.input_name_product(product_name, warehouse_name, price_type_name, clear_input=True)
-    order_add_product.input_quantity(product_quantity_edit)
-    order_add_product.click_next_step_button()
-    time.sleep(5)
+    order_add_product(driver,
+                      clear_input=True,
+                      product_name=product_name,
+                      warehouse_name=warehouse_name,
+                      price_type_name=price_type_name,
+                      product_quantity=product_quantity_edit)
 
-    get_booked_payment_allowed = order_add_final.get_booked_payment_allowed()  # 120_000
-    get_booked_payment_percentage = order_add_final.get_booked_payment_percentage()  # 50
+    order_add_final(driver, prepayment_amount=(prepayment_amount - 1), status_name=data["Processing"])
 
-    assert get_total_amount == get_booked_payment_allowed, f"get_total_amount: {get_total_amount} != get_booked_payment_allowed: {get_booked_payment_allowed}"
+    order_list(driver, find_row=order_id_4, change_status=data["Delivered"])
 
-    prepayment_amount = get_total_amount * get_booked_payment_percentage / 100  # 120_000 * 50 / 100
-    order_add_final.input_booked_payment_amount(prepayment_amount - 1)
+    get_error_massage(driver, error_massage_name=data["error_massage_3"])
 
-    order_add_final.input_status(status=3)
-    order_add_final.click_save_button()
+    order_list(driver, reload=True, find_row=order_id_4, edit=True)
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_add_main(driver)
 
-    # Orders List
-    order_list.element_visible()
-    order_list.find_row(client_name)
-    order_list.click_change_status_button(status_name='Доставлен')
+    order_add_product(driver)
 
-    error_massage = order_add_final.error_massage()
-    assert error_massage == data["error_massage_3"], f'Error: "{data["error_massage_3"]}" not visible!'
-    order_add_final.click_error_close_button()
-    order_list.click_edit_button()
+    order_add_final(driver, prepayment_amount=(prepayment_amount - 1), status_name=data["Pending"])
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_list(driver, reload=True, find_row=order_id_4, change_status=data["Shipped"])
 
-    # Order Add Main
-    order_add_main.element_visible()
-    order_add_main.click_next_step_button()
+    order_list(driver, reload=True, find_row=order_id_4, change_status=data["Delivered"])
 
-    # ------------------------------------------------------------------------------------------------------------------
+    get_error_massage(driver, error_massage_name=data["error_massage_3"])
 
-    # Order Add Product
-    order_add_product.element_visible()
-    order_add_product.click_next_step_button()
+    order_list(driver, reload=True, find_row=order_id_4, change_status=data["New"])
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_list(driver, reload=True, find_row=order_id_4, edit=True)
 
-    # Order Add Final
-    order_add_final.element_visible()
-    order_add_final.input_booked_payment_amount(prepayment_amount)  # 60_000
-    order_add_final.input_status(status=4)
-    order_add_final.click_save_button()
+    order_add_main(driver)
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_add_product(driver)
 
-    # Orders List
-    order_list.element_visible()
-    order_list.find_row(client_name)
-    order_list.click_change_status_button(status_name='Доставлен')
+    order_add_final(driver, prepayment_amount=prepayment_amount, status_name=data["New"])
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_list(driver, reload=True, find_row=order_id_4, change_status=data["Delivered"])
 
-    # Orders List
-    order_list.element_visible()
-    order_list.find_row(client_name)
-    order_list.click_view_button()
+    order_list(driver, find_row=order_id_4, view=True)
 
-    # ------------------------------------------------------------------------------------------------------------------
+    get_values = order_view(driver, input_name="Статус")
 
-    # OrderView
-    order_view = OrderView(driver)
-    order_view.element_visible()
-    text = order_view.get_input_value_in_order_view(input_name="Статус")
-    assert text == data["Delivered"], f'Error: text: {text} != Delivered: {data["Delivered"]}'
-    order_view.click_close_button()
+    assert get_values["Статус"] == data["Delivered"], f"{get_values['Статус']} != {data["Delivered"]}"
 
-    # ------------------------------------------------------------------------------------------------------------------
+    order_list(driver)
 
-    # Orders List
-    order_list.element_visible()
-    order_list.click_change_status_button(data["Archive"])
-    order_list.element_visible()
+# ======================================================================================================================
 
-    # ------------------------------------------------------------------------------------------------------------------
+@pytest.mark.regression
+@pytest.mark.order(53)
+def test_edit_order_for_action_demo(driver, test_data, load_data):
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️ Running: test_edit_order_for_action_demo")
+
+    data = test_data["data"]
+    robot_name = data["robot_name"]
+    room_name = data["room_name"]
+    sub_filial_name = data["sub_filial_name"]
+    product_price = data["product_price_USA"]
+    client_name = f"{data['client_name']}-C"
+    edit_product_quantity = 8
+
+    login_user(driver, test_data, url='trade/tdeal/order/order_list')
+
+    order_id_6 = load_data("order_id_6")
+    order_list(driver, find_row=order_id_6, edit=True)
+
+    order_add_main(driver)
+
+    order_add_product(driver, product_quantity=edit_product_quantity)
+
+
+    get_total_amount = order_add_final(driver, get_total_amount=True, status_name=data["New"])
+
+    total_amount = edit_product_quantity * product_price  # 8*12=96
+    assert get_total_amount["total_amount"] == total_amount
+
+    order_list(driver, find_row=order_id_6, view=True)
+
+    input_name = {
+        "Сумма заказа": "numeric",
+        "Статус": "text",
+        "Клиент": "text",
+        "Рабочая зона": "text",
+        "Штат": "text",
+        "Проект": "text"
+    }
+    get_values = order_view(driver, input_name=input_name)
+
+    assert get_values["Штат"] == robot_name,           f'{get_values["Штат"]} != {robot_name}'
+    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data["New"]}"
+    assert get_values["Клиент"] == client_name,        f"{get_values['Клиент']} != {client_name}"
+    assert get_values["Рабочая зона"] == room_name,    f"{get_values['Рабочая зона']} != {room_name}"
+    assert get_values["Проект"] == sub_filial_name,    f"{get_values['Проект']} != {sub_filial_name}"
+    assert get_values["Сумма заказа"] == total_amount, f"{get_values['Сумма заказа']} != {total_amount}"
+
+    order_list(driver)
+
+# ======================================================================================================================

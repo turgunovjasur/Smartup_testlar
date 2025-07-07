@@ -21,6 +21,15 @@ class CashinAdd(BasePage):
     def input_clients(self, client_name):
         self.click_options(self.clients_input, self.options_clients, client_name)
     # ------------------------------------------------------------------------------------------------------------------
+    contracts_input = (By.XPATH, '//b-input[@name="contracts"]//input')
+    options_contract = (By.XPATH, '//b-input[@name="contracts"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
+
+    def input_contracts(self, contract_name=None, clear=False):
+        if clear:
+            self.clear_element(self.contracts_input)
+            return
+        self.click_options(self.contracts_input, self.options_contract, contract_name)
+    # ------------------------------------------------------------------------------------------------------------------
     amount_get = (By.XPATH, '//label/t[normalize-space(text())="Баланс"]/ancestor::label/following-sibling::span[@class="form-view ng-binding"]')
 
     def get_amount(self):

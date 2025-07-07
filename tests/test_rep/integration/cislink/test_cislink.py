@@ -7,6 +7,7 @@ from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_dow
 @pytest.mark.regression
 @pytest.mark.integration_report
 @pytest.mark.order(68)
+@pytest.mark.no_ci
 def test_check_report_cis_link(driver, test_data):
     data = test_data["data"]
     price_types_name = data["price_type_name_UZB"]
