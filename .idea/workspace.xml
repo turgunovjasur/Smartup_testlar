@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="fstring lar tog'irlandi">
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="driver - user template qo'shildi">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/pytest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/pytest.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/env_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/env_reader.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -577,7 +579,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751874842800</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="driver - user template qo'shildi">
+      <option name="closed" value="true" />
+      <created>1751875460294</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1751875460294</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -592,7 +602,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="15.04.2025" />
     <MESSAGE value="21.04.2025" />
     <MESSAGE value="add report SalesWork" />
     <MESSAGE value="01.05.2025" />
@@ -617,6 +626,7 @@
     <MESSAGE value="no_ci marker qo'shildi" />
     <MESSAGE value="1) import pyautogui - funksiya ichida chaqirildi" />
     <MESSAGE value="fstring lar tog'irlandi" />
-    <option name="LAST_COMMIT_MESSAGE" value="fstring lar tog'irlandi" />
+    <MESSAGE value="driver - user template qo'shildi" />
+    <option name="LAST_COMMIT_MESSAGE" value="driver - user template qo'shildi" />
   </component>
 </project>
