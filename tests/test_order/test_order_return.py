@@ -20,7 +20,7 @@ def test_order_return(driver, test_data, load_data):
     # View
     get_values_after = order_view(driver, input_name=["Сумма заказа", "Статус", "Клиент"])
 
-    assert get_values_after["Статус"] == data["Delivered"], f"{get_values_after['Статус']} != {data["Delivered"]}"
+    assert get_values_after["Статус"] == data["Delivered"], f"{get_values_after['Статус']} != {data['Delivered']}"
 
     order_list(driver, reload=True, find_row=order_id_6, order_return=True)
 
@@ -28,7 +28,7 @@ def test_order_return(driver, test_data, load_data):
     return_order = ReturnOrder(driver)
     return_order.element_visible()
     get_client_name = return_order.check_client_name()
-    assert get_values_after["Клиент"] == get_client_name, f"{get_values_after["Клиент"]} != {get_client_name}"
+    assert get_values_after["Клиент"] == get_client_name, f"{get_values_after['Клиент']} != {get_client_name}"
 
     return_order.click_return_all_button()
     time.sleep(1)
@@ -41,7 +41,7 @@ def test_order_return(driver, test_data, load_data):
     get_values_before = order_view(driver, input_name=["Сумма заказа", "Статус", "Клиент"])
 
     assert get_values_after["Статус"] == get_values_before["Статус"], \
-        f"{get_values_after['Статус']} != {get_values_before["Статус"]}"
+        f"{get_values_after['Статус']} != {get_values_before['Статус']}"
 
     assert get_values_before["Сумма заказа"] == get_total_amount, \
         f"{get_values_before['Сумма заказа']} != {get_total_amount}"

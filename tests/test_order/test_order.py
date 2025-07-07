@@ -357,7 +357,7 @@ def test_add_order_for_action_demo(driver, test_data, save_data):
                                        get_total_amount=True,
                                        status_name=data["New"])
     total_amount = (product_quantity * product_price) - ((product_quantity * product_price) * (percent_value / 100))  # 120-(120*10%)
-    assert get_total_amount["total_amount"] == total_amount, f"Error: {get_total_amount["total_amount"]} != {total_amount}"
+    assert get_total_amount["total_amount"] == total_amount, f"Error: {get_total_amount['total_amount']} != {total_amount}"
 
     order_list(driver, find_row=client_name, view=True)
 

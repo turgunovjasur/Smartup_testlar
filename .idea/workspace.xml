@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="no_ci marker qo'shildi">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order.py" afterDir="false" />
-    </list>
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="1) import pyautogui - funksiya ichida chaqirildi" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -205,39 +201,27 @@
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mkw" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_order_return.test_order_return">
-    <configuration name="pytest for test_action.test_add_action" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.find_fstring_quote_issues">
+    <configuration name="find_fstring_quote_issues" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_reference" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utils" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_action.test_add_action&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_order_demo.test_change_status_draft_and_delivered_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_order_demo.test_change_status_draft_and_delivered_demo&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utils/find_fstring_quote_issues.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration name="pytest for test_order_edit.test_edit_order_for_action_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
@@ -326,20 +310,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.pytest for test_order_demo.test_change_status_draft_and_delivered_demo" />
+      <item itemvalue="Python.find_fstring_quote_issues" />
       <item itemvalue="Python tests.pytest for test_order_return.test_order_return" />
       <item itemvalue="Python tests.pytest for tests.test_order.test_order_list" />
-      <item itemvalue="Python tests.pytest for test_action.test_add_action" />
       <item itemvalue="Python tests.pytest for test_order.test_add_order_for_action_demo" />
       <item itemvalue="Python tests.pytest for test_order_edit.test_edit_order_for_action_demo" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.find_fstring_quote_issues" />
         <item itemvalue="Python tests.pytest for test_order_return.test_order_return" />
         <item itemvalue="Python tests.pytest for tests.test_order.test_order_list" />
         <item itemvalue="Python tests.pytest for test_order_edit.test_edit_order_for_action_demo" />
         <item itemvalue="Python tests.pytest for test_order.test_add_order_for_action_demo" />
-        <item itemvalue="Python tests.pytest for test_action.test_add_action" />
       </list>
     </recent_temporary>
   </component>
@@ -575,7 +558,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751873354834</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="1) import pyautogui - funksiya ichida chaqirildi">
+      <option name="closed" value="true" />
+      <created>1751874062430</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1751874062430</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -590,7 +581,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="09.04.2025" />
     <MESSAGE value="14.04.2025" />
     <MESSAGE value="15.04.2025" />
     <MESSAGE value="21.04.2025" />
@@ -615,6 +605,7 @@
     <MESSAGE value="integration_report, requirements" />
     <MESSAGE value="marker qoyildi va order berildi" />
     <MESSAGE value="no_ci marker qo'shildi" />
-    <option name="LAST_COMMIT_MESSAGE" value="no_ci marker qo'shildi" />
+    <MESSAGE value="1) import pyautogui - funksiya ichida chaqirildi" />
+    <option name="LAST_COMMIT_MESSAGE" value="1) import pyautogui - funksiya ichida chaqirildi" />
   </component>
 </project>

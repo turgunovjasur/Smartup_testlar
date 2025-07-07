@@ -126,7 +126,7 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, load_data):
 
     get_values = order_view(driver, input_name="Статус")
 
-    assert get_values["Статус"] == data["Delivered"], f"{get_values['Статус']} != {data["Delivered"]}"
+    assert get_values["Статус"] == data["Delivered"], f"{get_values['Статус']} != {data['Delivered']}"
 
     order_list(driver)
 
@@ -174,7 +174,7 @@ def test_edit_order_for_action_demo(driver, test_data, load_data):
     get_values = order_view(driver, input_name=input_name)
 
     assert get_values["Штат"] == robot_name,           f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data["New"]}"
+    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data['New']}"
     assert get_values["Клиент"] == client_name,        f"{get_values['Клиент']} != {client_name}"
     assert get_values["Рабочая зона"] == room_name,    f"{get_values['Рабочая зона']} != {room_name}"
     assert get_values["Проект"] == sub_filial_name,    f"{get_values['Проект']} != {sub_filial_name}"
