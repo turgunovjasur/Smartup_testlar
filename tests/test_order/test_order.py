@@ -293,7 +293,7 @@ def test_add_order_for_sub_filial_demo(driver, test_data, save_data):
     save_data("order_id_5", get_values["ИД заказа"])
 
     assert get_values["Штат"] == robot_name,           f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data["New"]}"
+    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data['New']}"
     assert get_values["Клиент"] == client_name,        f"{get_values['Клиент']} != {client_name}"
     assert get_values["Рабочая зона"] == room_name,    f"{get_values['Рабочая зона']} != {room_name}"
     assert get_values["Проект"] == sub_filial_name,    f"{get_values['Проект']} != {sub_filial_name}"
@@ -375,7 +375,7 @@ def test_add_order_for_action_demo(driver, test_data, save_data):
     save_data("order_id_6", get_values["ИД заказа"])
 
     assert get_values["Штат"] == robot_name,           f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data["New"]}"
+    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data['New']}"
     assert get_values["Клиент"] == client_name,        f"{get_values['Клиент']} != {client_name}"
     assert get_values["Рабочая зона"] == room_name,    f"{get_values['Рабочая зона']} != {room_name}"
     assert get_values["Проект"] == sub_filial_name,    f"{get_values['Проект']} != {sub_filial_name}"

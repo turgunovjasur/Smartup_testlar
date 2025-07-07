@@ -4,43 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="marker qoyildi va order berildi">
-      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/return_list/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/return_list/return_list.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/biruni/error_message/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/biruni/error_message/error_message.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flows/error_message_flow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_return_supplier/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_return_supplier/test_return_supplier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/pytest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/pytest.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="no_ci marker qo'shildi">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/all_test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/all_test_runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/order/sales_report_constructor.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/order/sales_report_constructor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashin_add/cashin_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/tcs/cashin_add/cashin_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_store.json" beforeDir="false" afterPath="$PROJECT_DIR$/data_store.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/grid_setting_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/grid_setting_flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_contract.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finance/test_contract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_offset/test_offset.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_offset/test_offset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_for_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_for_action.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_return.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -600,7 +567,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751347278300</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="no_ci marker qo'shildi">
+      <option name="closed" value="true" />
+      <created>1751873354834</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1751873354834</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -615,7 +590,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="13.03.2025" />
     <MESSAGE value="09.04.2025" />
     <MESSAGE value="14.04.2025" />
     <MESSAGE value="15.04.2025" />
@@ -640,6 +614,7 @@
     <MESSAGE value="integration_report" />
     <MESSAGE value="integration_report, requirements" />
     <MESSAGE value="marker qoyildi va order berildi" />
-    <option name="LAST_COMMIT_MESSAGE" value="marker qoyildi va order berildi" />
+    <MESSAGE value="no_ci marker qo'shildi" />
+    <option name="LAST_COMMIT_MESSAGE" value="no_ci marker qo'shildi" />
   </component>
 </project>

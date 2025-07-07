@@ -1,6 +1,5 @@
 import os
 import time
-import pyautogui
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -38,6 +37,8 @@ class SettingAdd(BasePage):
             return False
 
         time.sleep(2)
+        import pyautogui
+
         pyautogui.write(report_path)
         pyautogui.press('enter')
         self.logger.info("File successfully opened")
@@ -46,7 +47,10 @@ class SettingAdd(BasePage):
 
     def click_windows_download_file(self):
         file_name = 'test_invoice_report'
+
         time.sleep(2)
+        import pyautogui
+
         pyautogui.write(file_name, interval=0.2)
         time.sleep(2)
         pyautogui.press('enter')

@@ -1,7 +1,6 @@
 import os
 import random
 import time
-import pyautogui
 from autotest.core.md.base_page import BasePage
 import pyperclip
 
@@ -14,6 +13,8 @@ def wait_for_file_dialog_focus(test_text="check_test", timeout=10):
     elapsed = 0
     while elapsed < timeout:
         time.sleep(5)
+        import pyautogui
+
         pyautogui.hotkey('ctrl', 'a')
         time.sleep(0.1)
         pyautogui.press('delete')
@@ -52,6 +53,8 @@ def generate_and_verify_download(driver, file_name, file_type):
     wait_for_file_dialog_focus()
 
     time.sleep(1)
+    import pyautogui
+
     pyautogui.write(file_name, interval=0.2)
     base_page.logger.info(f"File name kiritildi: {file_name}")
 
