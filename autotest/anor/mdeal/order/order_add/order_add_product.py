@@ -21,16 +21,13 @@ class OrderAddProduct(BasePage):
     def input_name_product(self, product_name, warehouse_name, price_type_name, clear_input=False):
         if clear_input:
             self.clear_element(self.name_input)
+
         if self.click(self.name_input):
             element_list = self._wait_for_presence_all(self.name_options)
 
             for element in element_list:
                 element_text = element.text
                 parts = re.split(r'\s(?=[A-ZА-Я])', element_text, maxsplit=2)
-
-                # print("Parts of the element:")
-                # for i, part in enumerate(parts, start=1):
-                #     print(f"  Part {i}: {part.strip()}")
 
                 if (len(parts) == 3 and
                         parts[0].strip() == product_name and

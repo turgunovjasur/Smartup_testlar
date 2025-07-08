@@ -1,8 +1,6 @@
 import random
 import time
-
 import pytest
-
 from autotest.anor.mkr.expense_article_add.expense_article_add import ExpenseArticleAdd
 from autotest.anor.mkw.extra_cost_add.extra_cost_add import ExtraCostAdd
 from autotest.anor.mkw.extra_cost_list.extra_cost_list import ExtraCostList

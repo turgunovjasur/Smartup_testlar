@@ -2,9 +2,9 @@ name: Run Smartup Autotests
 
 on:
   push:
-    branches: [ main ]
-  schedule:
-    - cron: '0 21 * * *'  # Har kuni soat 02:00 Tashkent vaqti (UTC+5 = 21:00 UTC)
+#    branches: [ main ]
+#  schedule:
+#    - cron: '0 21 * * *'  # Har kuni soat 02:00 Tashkent vaqti (UTC+5 = 21:00 UTC)
 
 jobs:
   test:
@@ -26,7 +26,7 @@ jobs:
 
     - name: Run pytest with Allure
       run: |
-        pytest -m "regression and not no_ci"
+        pytest -m regression
 
     - name: Upload Allure results
       uses: actions/upload-artifact@v4

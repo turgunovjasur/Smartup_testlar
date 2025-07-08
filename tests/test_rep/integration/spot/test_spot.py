@@ -9,8 +9,6 @@ from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_dow
 
 @pytest.mark.regression
 @pytest.mark.integration_report
-@pytest.mark.order(73)
-@pytest.mark.no_ci
 def test_check_report_spot_2d(driver, test_data):
     product_group_name = 'Группа'
     random_nomer = random.randint(10000, 99999)

@@ -233,7 +233,6 @@ def test_add_order_for_price_type_USA_demo(driver, test_data, save_data):
 
 @pytest.mark.regression
 @pytest.mark.order(48)
-@pytest.mark.no_ci
 def test_add_order_for_sub_filial_demo(driver, test_data, save_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_add_order_for_sub_filial_demo")

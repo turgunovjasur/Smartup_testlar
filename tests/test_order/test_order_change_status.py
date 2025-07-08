@@ -102,7 +102,6 @@ def test_change_status_draft_and_archive_demo(driver, test_data, save_data, load
 
 @pytest.mark.regression
 @pytest.mark.order(50)
-@pytest.mark.no_ci
 def test_change_status_new_and_cancelled_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_change_status_new_and_cancelled_demo")

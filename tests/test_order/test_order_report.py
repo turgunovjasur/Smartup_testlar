@@ -211,7 +211,6 @@ def test_check_report_for_order_history_list(driver, test_data, timeout=60):
 # Invoice report
 @pytest.mark.regression
 @pytest.mark.order(47)
-@pytest.mark.no_ci
 def test_add_template_for_order_invoice_report(driver, test_data):
     # Test data
     data = test_data["data"]
@@ -251,7 +250,6 @@ def test_add_template_for_order_invoice_report(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order(49)
-@pytest.mark.no_ci
 def test_check_invoice_report_for_order_list(driver, test_data):
     data = test_data["data"]
     client_name = f"{data['client_name']}-C"

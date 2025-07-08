@@ -540,7 +540,6 @@ def test_sector_add(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order(16)
-@pytest.mark.no_ci
 def test_check_price_tag(driver, test_data):
     """Test checking a price tag"""
     # Test data

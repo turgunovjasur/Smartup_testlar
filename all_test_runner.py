@@ -18,6 +18,7 @@ from tests.test_rep.integration.integration_two.test_integration_two import test
 from tests.test_rep.integration.optimum.test_optimum import test_check_report_optimum
 from tests.test_rep.integration.saleswork.test_saleswork import test_check_report_sales_work
 from tests.test_rep.integration.spot.test_spot import test_check_report_spot_2d
+from tests.test_return_supplier.test_return_supplier import test_add_purchase_to_supplier, test_return_to_supplier
 from tests.test_warehouse.test_supplier import test_add_supplier
 from tests.test_warehouse.test_warehouse import test_add_warehouse
 from tests.test_order.test_order_list import test_copy_search_filter_in_order_list_demo
@@ -106,30 +107,30 @@ test_cases = [
         {"name": "(Group-A) Offset Add",                            "func": test_offset_add_A},
 
         # (Group-B) Order with Contract:
-        {"name": "(Group-B) Add Contract For Client UZB-B",     "func": test_add_contract_for_client_B_UZB},
-        {"name": "(Group-B) Add Order With Contract-B",         "func": test_add_order_with_contract_demo},
-        {"name": "(Group-B) Change Status Draft And Archive-B", "func": test_change_status_draft_and_archive_demo},
-        {"name": "(Group-B) Offset Add-B",                      "func": test_offset_add_B},
+        {"name": "(Group-B) Add Contract For Client UZB-B",         "func": test_add_contract_for_client_B_UZB},
+        {"name": "(Group-B) Add Order With Contract-B",             "func": test_add_order_with_contract_demo},
+        {"name": "(Group-B) Change Status Draft And Archive-B",     "func": test_change_status_draft_and_archive_demo},
+        {"name": "(Group-B) Offset Add-B",                          "func": test_offset_add_B},
 
         # (Group-C) Order with Price Type USA:
-        {"name": "(Group-C) Add Contract For Client USA-C",   "func": test_add_contract_for_client_C_USA},
-        {"name": "(Group-C) Add Order With Price Type-C",     "func": test_add_order_for_price_type_USA_demo},
-        {"name": "(Group-C) Test Setting Prepayment On",      "func": test_setting_prepayment_on},
-        {"name": "(Group-C) Edit Order For Price Type USA-C", "func": test_edit_order_for_price_type_USA_demo},
-        {"name": "(Group-C) Test Setting Prepayment Off",     "func": test_setting_prepayment_off},
+        {"name": "(Group-C) Add Contract For Client USA-C",    "func": test_add_contract_for_client_C_USA},
+        {"name": "(Group-C) Add Order With Price Type-C",      "func": test_add_order_for_price_type_USA_demo},
+        {"name": "(Group-C) Test Setting Prepayment On",       "func": test_setting_prepayment_on},
+        {"name": "(Group-C) Edit Order For Price Type USA-C",  "func": test_edit_order_for_price_type_USA_demo},
+        {"name": "(Group-C) Test Setting Prepayment Off",      "func": test_setting_prepayment_off},
 
         # Order with Sub Filial:
-        {"name": "Add Template For Order Invoice Report",    "func": test_add_template_for_order_invoice_report},
-        {"name": "Order Add For Sub Filial Select-C",        "func": test_add_order_for_sub_filial_demo},
-        {"name": "Check Invoice Report For Order List-C",    "func": test_check_invoice_report_for_order_list},
-        {"name": "Change Status Draft And Cancelled-C",      "func": test_change_status_new_and_cancelled_demo},
+        {"name": "Add Template For Order Invoice Report",      "func": test_add_template_for_order_invoice_report},
+        {"name": "Order Add For Sub Filial Select-C",          "func": test_add_order_for_sub_filial_demo},
+        {"name": "Check Invoice Report For Order List-C",      "func": test_check_invoice_report_for_order_list},
+        {"name": "Change Status Draft And Cancelled-C",        "func": test_change_status_new_and_cancelled_demo},
 
         # Order with Action:
-        {"name": "Add Action",                               "func": test_add_action},
-        {"name": "Add Order For Action-C",                   "func": test_add_order_for_action_demo},
-        {"name": "Edit Order For Action-C",                  "func": test_edit_order_for_action_demo},
-        {"name": "Change Status Draft And Delivered-C",      "func": test_change_status_draft_and_delivered_demo},
-        {"name": "Order Return",                             "func": test_order_return},
+        {"name": "Add Action",                                 "func": test_add_action},
+        {"name": "Add Order For Action-C",                     "func": test_add_order_for_action_demo},
+        {"name": "Edit Order For Action-C",                    "func": test_edit_order_for_action_demo},
+        {"name": "Change Status Draft And Delivered-C",        "func": test_change_status_draft_and_delivered_demo},
+        {"name": "Order Return",                               "func": test_order_return},
 
         # Purchase and Extra Cost:
         {"name": "Add Legal Person By Supplier",               "func": test_add_legal_person_by_supplier},
@@ -145,6 +146,11 @@ test_cases = [
         {"name": "Add Input",                                  "func": test_add_input},
         {"name": "Add Input With Extra Cost",                  "func": test_add_input_with_extra_cost},
 
+        # Return Supplier with Purchase
+        {"name": "Add Purchase To Supplier",                   "func": test_add_purchase_to_supplier},
+        {"name": "Add Return To Supplier",                     "func": test_return_to_supplier},
+
+        # Internal Movement
         {"name": "Add Warehouse",                              "func": test_add_warehouse},
         {"name": "Add Internal Movement",                      "func": test_add_internal_movement},
 
@@ -159,8 +165,6 @@ test_cases = [
 
 # pytest all_test_runner.py::test_all -v --alluredir=./allure-results
 # allure serve ./allure-results
-# allure generate allure-results --clean -o allure-report
-# allure open allure-report
 
 def test_all(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)

@@ -1,14 +1,12 @@
 import json
 import os
 import tempfile
-
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from utils.env_reader import get_env
-from datetime import datetime
 
 
 driver_path = ChromeDriverManager().install()

@@ -671,7 +671,7 @@ class BasePage:
 
     # ==================================================================================================================
 
-    def get_text(self, locator, retries=3, retry_delay=1):
+    def get_text(self, locator, retries=3, retry_delay=1, clean=False):
         """Elementning matnini olish."""
 
         page_name = self.__class__.__name__
@@ -685,8 +685,13 @@ class BasePage:
                 self._scroll_to_element(element_dom, locator)
                 element = self.wait_for_element(locator, wait_type="visibility")
 
-                self.logger.info(f"{page_name}: Element: text -> '{element.text}'")
-                return element.text if element else None
+                text = element.text if element else None
+
+                if text and clean:
+                    text = text.replace(" ", "").replace("\u00A0", "").strip()
+
+                self.logger.info(f"{page_name}: Element: text -> '{text}'")
+                return text
 
             except ElementStaleError:
                 self.logger.warning(f"Element yangilandi, qayta urinish ({attempt + 1})...")
