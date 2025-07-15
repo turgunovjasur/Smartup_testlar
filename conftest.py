@@ -55,7 +55,7 @@ def driver(request, test_data):
     driver.quit()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def test_data(save_data):
     """Dinamik test ma'lumotlari"""
 
@@ -161,36 +161,49 @@ def test_data(save_data):
 DATA_STORE_FILE = os.path.join(os.path.dirname(__file__), "data_store.json")
 
 
+# 🔸 Fayl manzilini aniqlovchi funksiya
+def get_data_file_path(request, per_test):
+    if per_test:
+        test_file = os.path.splitext(os.path.basename(request.fspath))[0]  # test_login.py -> test_login
+        test_name = request.node.name  # test funktsiya nomi
+        file_name = f"{test_file}__{test_name}.json"
+        return os.path.join(os.path.dirname(request.fspath), file_name)
+    else:
+        return DATA_STORE_FILE
+
+
 # 🔸 JSON ga ma'lumot yozuvchi fixture
-@pytest.fixture(scope="session")
-def save_data():
-    def _save(key, value):
+@pytest.fixture
+def save_data(request):
+    def _save(key, value, per_test=False):
+        file_path = get_data_file_path(request, per_test)
         data = {}
 
-        # Agar fayl mavjud bo‘lsa, mavjud ma'lumotlarni o‘qib olamiz
-        if os.path.exists(DATA_STORE_FILE):
-            with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
+        # Fayl mavjud bo‘lsa, mavjud ma’lumotlarni o‘qib olamiz
+        if os.path.exists(file_path):
+            with open(file_path, "r", encoding="utf-8") as f:
                 try:
                     data = json.load(f)
                 except json.JSONDecodeError:
                     data = {}
 
-        # Yangi qiymatni qo‘shamiz
+        # Yangi qiymatni yozamiz
         data[key] = value
 
-        # JSON faylga yozamiz
-        with open(DATA_STORE_FILE, "w", encoding="utf-8") as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
     return _save
 
 
 # 🔸 JSON dan ma'lumot o‘quvchi fixture
-@pytest.fixture(scope="session")
-def load_data():
-    def _load(key):
-        if os.path.exists(DATA_STORE_FILE):
-            with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
+@pytest.fixture
+def load_data(request):
+    def _load(key, per_test=False):
+        file_path = get_data_file_path(request, per_test)
+
+        if os.path.exists(file_path):
+            with open(file_path, "r", encoding="utf-8") as f:
                 try:
                     data = json.load(f)
                     return data.get(key)

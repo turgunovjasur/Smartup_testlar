@@ -12,6 +12,7 @@ from flows.auth_flow import login_user
 @pytest.mark.order(69)
 def test_add_internal_movement(driver, test_data):
     """Test adding a internal movement"""
+
     base_page = BasePage(driver)
 
     # Test data

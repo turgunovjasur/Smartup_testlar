@@ -27,14 +27,14 @@ class DashboardPage(BasePage):
     active_session_header = (By.XPATH, "//h3/t[contains(text(),'Активные сеансы')]")
 
     def element_visible_session(self):
-        self._wait_for_all_loaders(log_text='Dashboard Page')
+        self._wait_for_all_loaders()
         try:
-            self.wait_for_element(self.active_session_header, timeout=2, wait_type="visibility", error_message=False)
+            self.wait_for_element(self.active_session_header, timeout=0.5, wait_type="visibility", error_message=False)
             self.logger.info("Old sessiya available!")
             return True
 
         except ElementVisibilityError:
-            self.logger.info(f"Old sessiya not available! Waited for 2 seconds.")
+            self.logger.info(f"Old sessiya not available! Waited for 0.5 seconds.")
     # ------------------------------------------------------------------------------------------------------------------
     delete_session_button = (By.XPATH, "(//button[@class='btn btn-icon btn-danger'])[1]")
 

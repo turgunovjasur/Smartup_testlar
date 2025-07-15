@@ -56,6 +56,7 @@ from tests.test_reference.test_natural_person import (
     test_natural_person_add, test_natural_person_client_add_A,
     test_natural_person_client_add_B, test_natural_person_client_add_C
 )
+from tests.test_writeoff.test_writeoff import test_add_write_off, test_check_constructor_report_write_off
 
 # All ------------------------------------------------------------------------------------------------------------------
 
@@ -153,6 +154,10 @@ test_cases = [
         # Internal Movement
         {"name": "Add Warehouse",                              "func": test_add_warehouse},
         {"name": "Add Internal Movement",                      "func": test_add_internal_movement},
+
+        # Write Off
+        {"name": "Add Write Off",                              "func": test_add_write_off},
+        {"name": "Check Constructor Report Write Off",         "func": test_check_constructor_report_write_off},
 
         # Report:
         {"name": "Check Report CisLink",                       "func": test_check_report_cis_link},

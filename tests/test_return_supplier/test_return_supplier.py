@@ -1,5 +1,7 @@
 import random
 import pytest
+
+from autotest.core.md.base_page import BasePage
 from conftest import load_data
 from flows.auth_flow import login_user
 from tests.test_purchase.test_purchase import add_purchase
@@ -88,6 +90,18 @@ def test_return_to_supplier(driver, test_data, load_data):
     assert int(get_total_amount) == 10 * data["product_price"]
 
     return_view.click_close_button()
+
+    # List
+    return_list.element_visible()
+    return_list.find_row(return_number)
+
+    # Check transactions
+    base_page = BasePage(driver)
+    base_page.switch_window(direction="prepare")
+    return_list.click_transaction_button()
+    base_page.switch_window(direction="forward")
+    return_list.check_transaction_body(timeout=20)
+    base_page.switch_window(direction="back")
 
     # List
     return_list.element_visible()

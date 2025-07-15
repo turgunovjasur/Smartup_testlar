@@ -29,7 +29,7 @@ class IntegrationThree(BasePage):
     generate_button = (By.XPATH, '//button[contains(@ng-click,"run") and @class="btn btn-primary"]')
 
     def click_generate(self):
-        self._wait_for_all_loaders(log_text='click_generate')
+        self._wait_for_all_loaders()
         self.click(self.generate_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Generate

@@ -17,7 +17,7 @@ class Optimum(BasePage):
     generate_button = (By.XPATH, '//button[@ng-click="generate()"]')
 
     def click_generate(self):
-        self._wait_for_all_loaders(log_text='click_generate')
+        self._wait_for_all_loaders()
         self.click(self.generate_button)
     # ------------------------------------------------------------------------------------------------------------------
     is_all_filials = (By.XPATH, '//input[@ng-model="q.is_all_filials"]')

@@ -34,3 +34,8 @@ class BalanceList(BasePage):
     def check_balance(self):
         return self.get_numeric_value(self.count_number)
     # ------------------------------------------------------------------------------------------------------------------
+
+    def get_balance(self, warehouse_name, product_name):
+        locator = (By.XPATH, f'//b-grid[@name="table"]//div[contains(.,"{warehouse_name}") and @class="tbl-cell"]/../div[contains(.,"{product_name}")]/../div/div')
+        return self.get_numeric_value(locator)
+    # ------------------------------------------------------------------------------------------------------------------

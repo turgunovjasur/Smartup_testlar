@@ -34,7 +34,6 @@ jobs:
         name: allure-results
         path: allure-results
 
-    # 🔐 Enviroment variables from GitHub secrets:
     env:
       EMAIL_COMPANY: ${{ secrets.EMAIL_COMPANY }}
       PASSWORD_COMPANY: ${{ secrets.PASSWORD_COMPANY }}

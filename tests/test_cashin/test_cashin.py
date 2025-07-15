@@ -33,7 +33,8 @@ def cashin_add(driver, test_data, client_name, login=True, amount=None):
 
     input_amount = amount or cashin_add.get_amount()
     if input_amount == 0:
-        time.sleep(2) is None and cashin_add.get_amount()
+        time.sleep(2)
+        input_amount = cashin_add.get_amount()
     cashin_add.input_amount(input_amount)
 
     cashin_add.input_payment_types(payment_type_name)
