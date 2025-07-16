@@ -19,6 +19,7 @@ from tests.test_rep.integration.optimum.test_optimum import test_check_report_op
 from tests.test_rep.integration.saleswork.test_saleswork import test_check_report_sales_work
 from tests.test_rep.integration.spot.test_spot import test_check_report_spot_2d
 from tests.test_return_supplier.test_return_supplier import test_add_purchase_to_supplier, test_return_to_supplier
+from tests.test_stocktaking.test_stocktaking import test_add_stocktaking
 from tests.test_warehouse.test_supplier import test_add_supplier
 from tests.test_warehouse.test_warehouse import test_add_warehouse
 from tests.test_order.test_order_list import test_copy_search_filter_in_order_list_demo
@@ -158,6 +159,9 @@ test_cases = [
         # Write Off
         {"name": "Add Write Off",                              "func": test_add_write_off},
         {"name": "Check Constructor Report Write Off",         "func": test_check_constructor_report_write_off},
+
+        # Stocktaking
+        {"name": "Add Stocktaking",                            "func": test_add_stocktaking},
 
         # Report:
         {"name": "Check Report CisLink",                       "func": test_check_report_cis_link},

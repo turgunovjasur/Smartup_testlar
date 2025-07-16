@@ -112,6 +112,7 @@ def order_transaction(driver):
     transaction = Transaction(driver)
     transaction.check_transaction_body(timeout=20)
     base_page.switch_window(direction="back")
+
 # ======================================================================================================================
 
 def order_attach_data(driver):

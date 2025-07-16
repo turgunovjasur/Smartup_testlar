@@ -738,10 +738,11 @@ class BasePage:
                     return False
 
                 if clean:
+                    self.logger.info(f"Element: before clean text -> <str'{text}'>")
                     text = text.replace(" ", "").replace("\u00A0", "").strip()
-                    self.logger.info(f"Element: clean text -> '{text}'")
+                    self.logger.info(f"Element: after clean text -> <str'{text}'>")
 
-                self.logger.info(f"Element: return text -> '{text}'")
+                self.logger.info(f"Element: return text -> <str'{text}'>")
                 return text
 
             except (StaleElementReferenceException, ElementStaleError):
@@ -847,7 +848,7 @@ class BasePage:
 
                 new_window_id = None
                 for i in range(20):  # 0.5s * 20 = 10s
-                    time.sleep(0.5)
+                    time.sleep(1)
                     handles_now = self.driver.window_handles
                     new_ids = list(set(handles_now) - set(saved_handles))
                     self.logger.debug(f"Tekshiruv {i + 1}: handles = {handles_now}")
@@ -1021,6 +1022,13 @@ class BasePage:
 
             # 2-qadam: Dropdown ochish uchun inputga click qilish
             element_clickable = self.wait_for_element(input_locator, wait_type="clickable")
+
+            # SCROLL: Input elementni sahifada ko‘rinadigan qilamiz
+            try:
+                self._scroll_to_element(element_clickable, input_locator)
+            except Exception as e:
+                self.logger.warning(f"Scroll qilishda muammo bo‘ldi: {str(e)}")
+
             self._click(element_clickable, input_locator)
 
             # 3-qadam: Optionlar yuklanishini kutish

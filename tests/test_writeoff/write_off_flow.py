@@ -6,6 +6,7 @@ from autotest.anor.mkw.writeoff.writeoff_list import WriteOffList
 from autotest.anor.mkw.writeoff.writeoff_view import WriteOffView
 from autotest.core.md.base_page import BasePage
 
+# ======================================================================================================================
 
 def list_flow(driver, **kwargs):
     add = kwargs.get("add")
@@ -28,6 +29,7 @@ def list_flow(driver, **kwargs):
     if expense:
         write_off_list.click_expense_button()
 
+# ======================================================================================================================
 
 def add_flow(driver, **kwargs):
     write_off_number = kwargs.get("write_off_number")
@@ -49,6 +51,7 @@ def add_flow(driver, **kwargs):
     write_off_add.input_reasons(reason_name)
     return get_data_input_value
 
+# ======================================================================================================================
 
 def select_flow(driver, **kwargs):
     product_name = kwargs.get("product_name")
@@ -62,6 +65,7 @@ def select_flow(driver, **kwargs):
     write_off_add.click_move_one_button()
     write_off_add.click_close_button()
 
+# ======================================================================================================================
 
 def view_flow(driver, **kwargs):
     navbar_name = kwargs.get("navbar_name")
@@ -88,6 +92,7 @@ def view_flow(driver, **kwargs):
 
     write_off_view.click_close_button()
 
+# ======================================================================================================================
 
 def get_balance_flow(driver, **kwargs):
     warehouse_name = kwargs.get("warehouse_name")
@@ -107,6 +112,7 @@ def get_balance_flow(driver, **kwargs):
     base_page.switch_window(direction="back")
     return get_balance
 
+# ======================================================================================================================
 
 def check_transaction_flow(driver):
     base_page = BasePage(driver)
@@ -117,6 +123,7 @@ def check_transaction_flow(driver):
     write_off_list.check_transaction_body(timeout=20)
     base_page.switch_window(direction="back")
 
+# ======================================================================================================================
 
 def expense_flow(driver, **kwargs):
     write_off_number = kwargs.get("write_off_number")
@@ -156,3 +163,5 @@ def expense_flow(driver, **kwargs):
 
     time.sleep(2)
     write_off_expense.click_complete_button()
+
+# ======================================================================================================================
