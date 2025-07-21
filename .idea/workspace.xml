@@ -4,21 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="added: write off (15.07.2025)">
-      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_add.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_complete.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_list.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_select.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_stocktaking/stocktaking_flows.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_stocktaking/test_stocktaking.py" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="added: Stocktaking (16.07.2025)">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/pytest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/pytest.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/all_test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/all_test_runner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_store.json" beforeDir="false" afterPath="$PROJECT_DIR$/data_store.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_writeoff/write_off_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_writeoff/write_off_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +115,7 @@
     &quot;Python tests.pytest for test_optimum.test_check_report_optimum.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order.test_add_order_for_action_demo.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order.test_add_order_with_consignment.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_order.test_add_order_with_consignment_demo.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order.test_add_order_with_contract.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order.test_add_order_with_price_type_USA.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order.test_change_status_draft_and_cancelled.executor&quot;: &quot;Run&quot;,
@@ -159,6 +153,7 @@
     &quot;Python tests.pytest for test_order_edit.test_edit_order_for_price_type_USA.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order_edit.test_edit_order_for_price_type_USA_demo.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order_edit.test_edit_order_with_consignment.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_order_edit.test_edit_order_with_consignment_demo.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order_for_action.test_add_order_for_action.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order_for_action.test_edit_order_for_action.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report.executor&quot;: &quot;Run&quot;,
@@ -228,21 +223,38 @@
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mkw" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_stocktaking.test_add_stocktaking">
-    <configuration name="pytest for test_cislink.test_check_report_cis_link" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.pytest for test_order_edit.test_edit_order_with_consignment_demo">
+    <configuration name="pytest for test_order_edit.test_edit_order_with_consignment_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_rep/integration/cislink" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_cislink.test_check_report_cis_link&quot;" />
+      <option name="_new_target" value="&quot;test_order_edit.test_edit_order_with_consignment_demo&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_order.test_add_order_with_consignment_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="Smartup_testlar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_order.test_add_order_with_consignment_demo&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -297,37 +309,20 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_writeoff.test_write_off" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_writeoff" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_writeoff.test_write_off&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
+      <item itemvalue="Python tests.pytest for test_order.test_add_order_with_consignment_demo" />
+      <item itemvalue="Python tests.pytest for test_order_edit.test_edit_order_with_consignment_demo" />
       <item itemvalue="Python tests.pytest for test_stocktaking.test_add_stocktaking" />
       <item itemvalue="Python tests.pytest for test_writeoff.test_add_write_off" />
-      <item itemvalue="Python tests.pytest for test_cislink.test_check_report_cis_link" />
       <item itemvalue="Python tests.pytest for test_writeoff.test_check_constructor_report_write_off" />
-      <item itemvalue="Python tests.pytest for test_writeoff.test_write_off" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test_order_edit.test_edit_order_with_consignment_demo" />
+        <item itemvalue="Python tests.pytest for test_order.test_add_order_with_consignment_demo" />
         <item itemvalue="Python tests.pytest for test_stocktaking.test_add_stocktaking" />
         <item itemvalue="Python tests.pytest for test_writeoff.test_check_constructor_report_write_off" />
         <item itemvalue="Python tests.pytest for test_writeoff.test_add_write_off" />
-        <item itemvalue="Python tests.pytest for test_cislink.test_check_report_cis_link" />
-        <item itemvalue="Python tests.pytest for test_writeoff.test_write_off" />
       </list>
     </recent_temporary>
   </component>
@@ -611,7 +606,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752571641603</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="added: Stocktaking (16.07.2025)">
+      <option name="closed" value="true" />
+      <created>1752667839372</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1752667839372</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -626,7 +629,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update base_page and all tests(12.05.2025)" />
     <MESSAGE value="Update drver and all tests(16.05.2025)" />
     <MESSAGE value="27.05.2025" />
     <MESSAGE value="04.06.2025" />
@@ -651,6 +653,7 @@
     <MESSAGE value=".env - to'g'irlandi" />
     <MESSAGE value="added: test_add_purchase_to_supplier and test_return_to_supplier" />
     <MESSAGE value="added: write off (15.07.2025)" />
-    <option name="LAST_COMMIT_MESSAGE" value="added: write off (15.07.2025)" />
+    <MESSAGE value="added: Stocktaking (16.07.2025)" />
+    <option name="LAST_COMMIT_MESSAGE" value="added: Stocktaking (16.07.2025)" />
   </component>
 </project>

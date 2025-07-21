@@ -21,8 +21,7 @@ from selenium.common.exceptions import (
     StaleElementReferenceException,
     WebDriverException,
     NoSuchElementException,
-    JavascriptException
-)
+    JavascriptException)
 
 init(autoreset=True)
 
@@ -428,7 +427,7 @@ class BasePage:
         except Exception:
             return "UnknownPage → stack_error"
 
-        # ⚙️ Filtrlab tashlanadigan funksiyalar va modullar
+        # Filtrlab tashlanadigan funksiyalar va modullar
         ignored_names = {
             '<module>', 'pytest_pyfunc_call', 'runpy', '__call__',
             '_call_with_frames_removed', '_run_code', '_run_module_as_main',
@@ -436,14 +435,14 @@ class BasePage:
         }
         ignored_modules = {'pytest', 'importlib', 'runpy'}
 
-        # 🔹 Page class nomini aniqlaymiz
+        # Page class nomini aniqlaymiz
         try:
             frame_self = stack[1].frame.f_locals.get("self", None)
             page_name = frame_self.__class__.__name__ if frame_self else "UnknownPage"
         except Exception:
             page_name = "UnknownPage"
 
-        # 🔍 Stack ichidan funksiyalarni yig‘amiz
+        # Stack ichidan funksiyalarni yig‘amiz
         chain = []
         for frame in stack[1:]:  # stack[0] = _get_caller_chain o‘zi
             try:
@@ -464,6 +463,7 @@ class BasePage:
         function_chain = " → ".join(reversed(chain))
         return f"{page_name} → {function_chain if chain else 'no_function_trace'}"
 
+    # ==================================================================================================================
 
     def click(self, locator, retries=3, retry_delay=2, _click=True, _click_retry=True, _click_js=True):
         """Elementni bosish funksiyasi"""
@@ -1209,18 +1209,19 @@ class BasePage:
                            click=True, _click=True, _click_retry=True, checkbox=False):
         """Jadvaldagi qatorni topish va ustiga bosish funksiyasi."""
 
-        # caller_chain = self._get_caller_chain()
-        # self.logger.debug(f"{caller_chain}: Jadval qatori qidirilmoqda: {element_name}")
-
         timeout = timeout or self.default_timeout
 
         if not xpath_pattern:
-            xpath_pattern = ("//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]"
-                             "//div[contains(@class, 'tbl-cell') and normalize-space(text())='{}']")
+            xpath_pattern = (
+                "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]"
+                "//div[contains(@class, 'tbl-cell') and normalize-space(text())='{}'] | "
+                "//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]"
+                "//div[contains(@class, 'tbl-cell')]/a[normalize-space(text())='{}']/.."
+            )
 
-        row_locator = (By.XPATH, xpath_pattern.format(element_name))
+        row_locator = (By.XPATH, xpath_pattern.format(element_name, element_name))
         limit_change_button = (By.XPATH, '//button[@class="btn btn-default rounded-0 ng-binding"]')
-        limit_option = (By.XPATH, f'//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
+        limit_option = (By.XPATH, '//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
         checkbox_locator = (By.XPATH, f"//div[contains(@class, 'tbl-row') and .//div[text()='{element_name}']]//span")
         search_input = (By.XPATH, '//b-grid-controller//input[@type="search"]')
 

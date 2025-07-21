@@ -1,6 +1,7 @@
 import json
 import os
 import tempfile
+from datetime import datetime
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -54,14 +55,17 @@ def driver(request, test_data):
     yield driver
     driver.quit()
 
+@pytest.fixture(scope="session")
+def cod_generator():
+    """Test sessiyasi uchun yagona cod qiymati"""
+    return datetime.today().strftime("%d_%m_%H_%M")
 
 @pytest.fixture(scope="function")
-def test_data(save_data):
+def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
-    # Sana asosida cod qiymatini olish
-    cod = datetime.today().strftime("%d_%m_%H_%M")  # kun_oy_soat_daqiqa
-    # cod = "01_07_2025_10_56"
+    cod = cod_generator
+    # cod = "a8"
     save_data("cod", cod)
 
     base_data = {
@@ -157,11 +161,11 @@ def test_data(save_data):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-# 🔹 Umumiy JSON fayl manzili
+# Umumiy JSON fayl manzili
 DATA_STORE_FILE = os.path.join(os.path.dirname(__file__), "data_store.json")
 
 
-# 🔸 Fayl manzilini aniqlovchi funksiya
+# Fayl manzilini aniqlovchi funksiya
 def get_data_file_path(request, per_test):
     if per_test:
         test_file = os.path.splitext(os.path.basename(request.fspath))[0]  # test_login.py -> test_login
@@ -172,7 +176,7 @@ def get_data_file_path(request, per_test):
         return DATA_STORE_FILE
 
 
-# 🔸 JSON ga ma'lumot yozuvchi fixture
+# JSON ga ma'lumot yozuvchi fixture
 @pytest.fixture
 def save_data(request):
     def _save(key, value, per_test=False):
@@ -196,7 +200,7 @@ def save_data(request):
     return _save
 
 
-# 🔸 JSON dan ma'lumot o‘quvchi fixture
+# JSON dan ma'lumot o‘quvchi fixture
 @pytest.fixture
 def load_data(request):
     def _load(key, per_test=False):
