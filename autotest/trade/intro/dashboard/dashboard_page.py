@@ -19,7 +19,7 @@ class DashboardPage(BasePage):
 
     def find_filial(self, filial_name):
         self.click(self.filial_list_button)
-        self.find_row_and_click(element_name="filial_name",
+        self.find_row_and_click(element_name=filial_name,
                                 xpath_pattern=f"//div[contains(@class, 'menus')]/li[contains(@class, 'filial-list')]/a[contains(text(), '{filial_name}')]")
     # ------------------------------------------------------------------------------------------------------------------
     # visible_session

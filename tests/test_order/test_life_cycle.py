@@ -1,3 +1,4 @@
+import os
 import random
 import time
 
@@ -54,7 +55,7 @@ from autotest.trade.trf.room_add.room_add import RoomAdd
 from autotest.trade.trf.room_list.room_list import RoomList
 from autotest.trade.trf.room_view.room_view import RoomView
 from flows.auth_flow import login_admin, login_user, logout
-from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
+from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
 from utils.exception import ElementNotFoundError
 
 
@@ -560,8 +561,12 @@ def test_check_price_tag(driver, test_data):
     price_tag = PriceTag(driver)
     price_tag.element_visible()
     price_tag.input_product_name(product_name)
+
+    base_page = BasePage(driver)
+    clear_old_download(base_page, expected_name="Ценник", file_type="xlsx")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
     price_tag.click_run_button()
-    generate_and_verify_download(driver, file_name='PriceTag', file_type='xlsx')
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="Ценник", file_type="xlsx")
 
 
 @pytest.mark.regression

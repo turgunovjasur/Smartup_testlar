@@ -1,10 +1,12 @@
+from datetime import datetime
 import pytest
 from flows.auth_flow import login_user
 from autotest.core.md.base_page import BasePage
 from flows.error_message_flow import get_error_massage
 from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
+from flows.grid_setting_flow import grid_setting_in_form
 from flows.order_flows.order_add_flow import (
-    order_add_main, order_add_product, order_add_final, order_add_step, order_add_product_select)
+    main_flow, product_flow, final_flow, step_flow, product_select_flow, final_input_value_flow)
 from flows.order_flows.order_list_flow import order_list, order_view, order_file, order_transaction, order_attach_data
 
 # ======================================================================================================================
@@ -13,10 +15,7 @@ from flows.order_flows.order_list_flow import order_list, order_view, order_file
 @pytest.mark.order_group_A
 @pytest.mark.order(29)
 def test_add_order_with_consignment_demo(driver, test_data, save_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_order_with_consignment_demo")
-
-    # Test data
+    # --------------------------------------------------
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -29,28 +28,48 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data):
     consignment_day = 30
     consignment_amount = product_quantity * data["product_price"]
     status_name = data["Draft"]
+    # --------------------------------------------------
 
-    # Login
+    base_page = BasePage(driver)
+    base_page.logger.info("▶️ Running: test_add_order_with_consignment_demo")
+
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
     order_list(driver, add=True)
 
-    order_add_main(driver,
-                   room_name=room_name,
-                   robot_name=robot_name,
-                   client_name=client_name)
+    deal_time = datetime.today().strftime("%d.%m.%Y %H:%M")
+    result = main_flow(driver,
+                       get_deal_time=True,
+                       get_delivery_date=True,
+                       room_name=room_name,
+                       robot_name=robot_name,
+                       client_name=client_name)
 
-    order_add_product(driver,
-                      product_name=product_name,
-                      warehouse_name=warehouse_name,
-                      price_type_name=price_type_name,
-                      product_quantity=product_quantity)
+    assert result["natural_person"] == data["natural_person_name"], f"{result["natural_person"]} != {data["natural_person_name"]}"
+    assert result["deal_time"] == deal_time, f"{result["deal_time"]} != {deal_time}"
+    assert result["delivery_date"] in deal_time, f"{result["delivery_date"]} not in  {deal_time}"
 
-    order_add_final(driver,
-                    payment_type_name=payment_type_name,
-                    consignment_day=consignment_day,
-                    consignment_amount=consignment_amount,
-                    status_name=status_name)
+    product_flow(driver, order_grid_setting=True, next_step=False)
+    grid_setting_in_form(driver)
+    product_flow(driver,
+                 product_name=product_name,
+                 warehouse_name=warehouse_name,
+                 price_type_name=price_type_name,
+                 product_quantity=product_quantity)
+
+    final_flow(driver, order_grid_setting=True)
+    grid_setting_in_form(driver)
+    final_input_value_flow(driver,
+                           client_name=client_name,
+                           deal_time=deal_time,
+                           delivery_date=deal_time,
+                           room_name=room_name,
+                           robot_name=robot_name)
+    final_flow(driver,
+               payment_type_name=payment_type_name,
+               consignment_day=consignment_day,
+               consignment_amount=consignment_amount,
+               status_name=status_name)
 
     order_list(driver, find_row=client_name, view=True)
 
@@ -108,29 +127,27 @@ def test_add_order_with_contract_demo(driver, test_data, save_data):
 
     order_list(driver, add=True)
 
-    order_add_main(driver,
-                   room_name=room_name,
-                   robot_name=robot_name,
-                   client_name=client_name,
-                   contract_name=contract_name)
+    main_flow(driver,
+              room_name=room_name,
+              robot_name=robot_name,
+              client_name=client_name,
+              contract_name=contract_name)
 
-    order_add_product(driver,
-                      product_name=product_name,
-                      warehouse_name=warehouse_name,
-                      price_type_name=price_type_name,
-                      product_quantity=product_quantity)
+    product_flow(driver,
+                 product_name=product_name,
+                 warehouse_name=warehouse_name,
+                 price_type_name=price_type_name,
+                 product_quantity=product_quantity)
 
-    order_add_final(driver,
-                    payment_type_name=payment_type_name,
-                    status_name=status_name)
+    final_flow(driver, payment_type_name=payment_type_name, status_name=status_name)
 
     get_error_massage(driver, error_massage_name=data["error_massage_1"])
 
-    order_add_step(driver, prev_step=True)
+    step_flow(driver, prev_step=True)
 
-    order_add_product(driver, product_quantity=return_quantity)
+    product_flow(driver, product_quantity=return_quantity)
 
-    order_add_final(driver)
+    final_flow(driver)
 
     order_list(driver, find_row=client_name, view=True)
 
@@ -182,19 +199,19 @@ def test_add_order_for_price_type_USA_demo(driver, test_data, save_data):
 
     order_list(driver, add=True)
 
-    order_add_main(driver,
-                   room_name=room_name,
-                   robot_name=robot_name,
-                   client_name=client_name)
+    main_flow(driver,
+              room_name=room_name,
+              robot_name=robot_name,
+              client_name=client_name)
 
-    order_add_product(driver,
-                      product_name=product_name,
-                      warehouse_name=warehouse_name,
-                      price_type_name=price_type_name,
-                      product_quantity=product_quantity,
-                      margin=margin)
+    product_flow(driver,
+                 product_name=product_name,
+                 warehouse_name=warehouse_name,
+                 price_type_name=price_type_name,
+                 product_quantity=product_quantity,
+                 margin=margin)
 
-    order_add_final(driver, payment_type_name=payment_type_name, status_name=status_name)
+    final_flow(driver, payment_type_name=payment_type_name, status_name=status_name)
 
     order_list(driver, find_row=client_name, view=True)
 
@@ -259,22 +276,22 @@ def test_add_order_for_sub_filial_demo(driver, test_data, save_data):
 
     order_list(driver, add=True)
 
-    order_add_main(driver,
-                   room_name=room_name,
-                   robot_name=robot_name,
-                   client_name=client_name,
-                   sub_filial_name=sub_filial_name,
-                   contract_name=contract_name)
+    main_flow(driver,
+              room_name=room_name,
+              robot_name=robot_name,
+              client_name=client_name,
+              sub_filial_name=sub_filial_name,
+              contract_name=contract_name)
 
-    order_add_product_select(driver,
-                             warehouse_name=warehouse_name,
-                             price_type_name=price_type_name,
-                             product_quantity=product_quantity,
-                             margin=margin)
+    product_select_flow(driver,
+                        warehouse_name=warehouse_name,
+                        price_type_name=price_type_name,
+                        product_quantity=product_quantity,
+                        margin=margin)
 
-    order_add_step(driver, next_step=True)
+    step_flow(driver, next_step=True)
 
-    order_add_final(driver, payment_type_name=payment_type_name, status_name=data["New"])
+    final_flow(driver, payment_type_name=payment_type_name, status_name=data["New"])
 
     order_list(driver, find_row=client_name, view=True)
 
@@ -330,31 +347,31 @@ def test_add_order_for_action_demo(driver, test_data, save_data):
 
     order_list(driver, add=True)
 
-    order_add_main(driver,
-                   room_name=room_name,
-                   robot_name=robot_name,
-                   client_name=client_name,
-                   sub_filial_name=sub_filial_name,
-                   contract_name=contract_name)
+    main_flow(driver,
+              room_name=room_name,
+              robot_name=robot_name,
+              client_name=client_name,
+              sub_filial_name=sub_filial_name,
+              contract_name=contract_name)
 
-    order_add_product(driver,
-                      product_name=product_name,
-                      warehouse_name=warehouse_name,
-                      price_type_name=price_type_name,
-                      product_quantity=product_quantity,
-                      next_step=False)
+    product_flow(driver,
+                 product_name=product_name,
+                 warehouse_name=warehouse_name,
+                 price_type_name=price_type_name,
+                 product_quantity=product_quantity,
+                 next_step=False)
 
     order_add_tablist = OrderAddProduct(driver)
     order_add_tablist.click_nav_tablist_button(tablist_name="Акции")
     order_add_tablist.click_action_checkbox_button()
     order_add_tablist.click_nav_tablist_button(tablist_name="Товар")
 
-    order_add_step(driver, next_step=True)
+    step_flow(driver, next_step=True)
 
-    get_total_amount = order_add_final(driver,
-                                       payment_type_name=payment_type_name,
-                                       get_total_amount=True,
-                                       status_name=data["New"])
+    get_total_amount = final_flow(driver,
+                                  payment_type_name=payment_type_name,
+                                  get_total_amount=True,
+                                  status_name=data["New"])
     total_amount = (product_quantity * product_price) - ((product_quantity * product_price) * (percent_value / 100))  # 120-(120*10%)
     assert get_total_amount["total_amount"] == total_amount, f"Error: {get_total_amount['total_amount']} != {total_amount}"
 

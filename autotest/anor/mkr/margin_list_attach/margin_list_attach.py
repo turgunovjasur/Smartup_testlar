@@ -9,7 +9,6 @@ class MarginListAttach(BasePage):
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, '//button[@ng-click="add()"]')
 
     def click_add_button(self):
@@ -17,7 +16,7 @@ class MarginListAttach(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, margin_name):
-        self.find_row_and_click(element_name=margin_name, timeout=10)
+        self.find_row_and_click(element_name=margin_name)
     # ------------------------------------------------------------------------------------------------------------------
     delete_button = (By.XPATH, '//button[@ng-click="deleteOne(row)"]')
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')

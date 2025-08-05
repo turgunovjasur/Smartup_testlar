@@ -1,5 +1,3 @@
-import time
-
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 from datetime import datetime, timedelta
@@ -10,7 +8,12 @@ class OrderAddFinal(BasePage):
     header_text = (By.XPATH, "//div/h3/t[contains(text(), 'ТМЦ')]")
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header_text)
+        self.wait_for_element_visible(self.header_text)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def get_input_value(self, input_name):
+        locator = (By.XPATH, f'//form[@name="step2"]//t[contains(text(),"{input_name}")]/../../span')
+        return self.input_text(locator, get_value=True)
     # ------------------------------------------------------------------------------------------------------------------
     booked_payment_allowed_input = (By.XPATH, '//div[contains(@ng-show, "booked_payment_allowed")]//t[contains(text(),"Баланс клиента")]/ancestor::label/following-sibling::span')
 
@@ -48,10 +51,10 @@ class OrderAddFinal(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     status_input = (By.XPATH, "(//div[@id='anor279-ui_select-status']//span)[1]")
 
-    def input_status(self, status=1):
-        self.click(self.status_input)
-        status_options = (By.XPATH, f'//div[@id="anor279-ui_select-status"]//div[@role="option"][{status}]')
-        self.click(status_options)
+    # def input_status(self, status=1):
+    #     self.click(self.status_input)
+    #     status_options = (By.XPATH, f'//div[@id="anor279-ui_select-status"]//div[@role="option"][{status}]')
+    #     self.click(status_options)
 
     def input_status_2(self, status_name):
         self.click(self.status_input)
@@ -74,4 +77,11 @@ class OrderAddFinal(BasePage):
 
     def click_prev_step_button(self):
         self.click(self.prev_step_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    setting_button = (By.XPATH, '//b-pg-controller[@name="goods_items_view"]//div[@role="group"]/button')
+    setting_tbl_button = (By.XPATH, '//b-pg-controller[@name="goods_items_view"]//div[@role="group"]//a')
+
+    def click_setting_button(self):
+        self.click(self.setting_button)
+        self.click(self.setting_tbl_button)
     # ------------------------------------------------------------------------------------------------------------------

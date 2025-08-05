@@ -1,7 +1,9 @@
+import os
 import pytest
+from autotest.core.md.base_page import BasePage
 from autotest.trade.rep.integration.integration_two.integration_two import IntegrationTwo
 from flows.auth_flow import login_admin
-from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
+from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
 
 
 @pytest.mark.regression
@@ -18,7 +20,6 @@ def test_check_report_integration_two(driver, test_data):
     # IntegrationTwo
     integration_two = IntegrationTwo(driver)
     integration_two.element_visible()
-
     integration_two.click_show_setting()
 
     # Setting
@@ -32,38 +33,50 @@ def test_check_report_integration_two(driver, test_data):
     integration_two.click_show_owner_person_code()
     integration_two.click_send_all_deals()
     integration_two.click_save()
-
-    # IntegrationTwo
+    # ------------------------------------------------------------------------------------------------------------------
     integration_two.element_visible()
-    integration_two.click_generate()
-    generate_and_verify_download(driver, file_name='import_order', file_type='xml')
 
+    base_page = BasePage(driver)
+    clear_old_download(base_page, expected_name="import_order", file_type="xml")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
+    integration_two.click_generate()
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="import_order", file_type="xml")
+    # ------------------------------------------------------------------------------------------------------------------
     integration_two.check_error_modal()
     integration_two.element_visible()
     integration_two.click_exchange_mode(exchange_file=2)
     integration_two.input_date()
-    integration_two.click_generate()
-    generate_and_verify_download(driver, file_name='export_order', file_type='xml')
 
+    clear_old_download(base_page, expected_name="export_order", file_type="xml")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
+    integration_two.click_generate()
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="export_order", file_type="xml")
+    # ------------------------------------------------------------------------------------------------------------------
     integration_two.check_error_modal()
     integration_two.element_visible()
     integration_two.click_exchange_mode(exchange_file=3)
-    integration_two.click_generate()
-    generate_and_verify_download(driver, file_name='export_status', file_type='xml')
 
+    clear_old_download(base_page, expected_name="import_order_status", file_type="xml")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
+    integration_two.click_generate()
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="import_order_status", file_type="xml")
+    # ------------------------------------------------------------------------------------------------------------------
     # integration_two.check_error_modal()
     # assert integration_two.element_visible(), "IntegrationTwo not open after export_status!"
     # integration_two.click_exchange_mode(exchange_file=4)
     # integration_two.input_date()
     # integration_two.click_generate()
     # generate_and_verify_download(driver, file_name='export_balance', file_type='xml')
-
+    # ------------------------------------------------------------------------------------------------------------------
     integration_two.check_error_modal()
     integration_two.element_visible()
     integration_two.click_exchange_mode(exchange_file=5)
     integration_two.input_date()
-    integration_two.click_generate()
-    generate_and_verify_download(driver, file_name='import_input', file_type='xml')
 
+    clear_old_download(base_page, expected_name="export_input", file_type="xml")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
+    integration_two.click_generate()
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="export_input", file_type="xml")
     integration_two.check_error_modal()
     integration_two.element_visible()
+    # ------------------------------------------------------------------------------------------------------------------

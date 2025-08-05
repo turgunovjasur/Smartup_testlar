@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 
 
-class GridSetting(BasePage):
+class GridSettingInForm(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     header_save = (By.XPATH, '//button[@ng-click="save()"]')
 

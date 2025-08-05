@@ -1,12 +1,14 @@
 import json
 import os
+import pytest
 import tempfile
 from datetime import datetime
-import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+
+from tests.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
 from utils.env_reader import get_env
 
 
@@ -41,14 +43,30 @@ def driver(request, test_data):
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--incognito")
     options.add_argument("--disable-features=AutofillServerCommunication,PasswordManagerEnabled,PasswordCheck")
-    options.add_experimental_option("prefs", {
-        "credentials_enable_service": False,
-        "profile.password_manager_enabled": False
-    })
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
+    all_prefs = {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False,
+        "download.default_directory": DOWNLOAD_DIR,
+        "download.prompt_for_download": False,  # ❌ Save As dialog chiqmasin
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True
+    }
+    options.add_experimental_option("prefs", all_prefs)
+
     driver = webdriver.Chrome(service=service, options=options)
+
+    # 📌 Fayl yuklashni DevTools orqali ruxsat berish
+    driver.execute_cdp_cmd(
+        "Page.setDownloadBehavior",
+        {
+            "behavior": "allow",
+            "downloadPath": DOWNLOAD_DIR
+        }
+    )
+
     driver.set_page_load_timeout(120)
     driver.get(url)
 
@@ -64,8 +82,8 @@ def cod_generator():
 def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
-    cod = cod_generator
-    # cod = "a8"
+    # cod = cod_generator
+    cod = "b2"
     save_data("cod", cod)
 
     base_data = {
@@ -75,7 +93,6 @@ def test_data(save_data, cod_generator):
         "plan_account": "UZ COA",
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
-
         "code_input": get_env("CODE_INPUT"),
         "cod": cod,
         "url": get_env("URL"),

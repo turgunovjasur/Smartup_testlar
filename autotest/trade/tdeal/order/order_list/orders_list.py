@@ -71,8 +71,8 @@ class OrdersList(BasePage):
         self.click(self.return_button)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def find_row(self, client_name, _click=False, _click_retry=False):
-        self.find_row_and_click(element_name=client_name, _click=_click, _click_retry=_click_retry)
+    def find_row(self, client_name):
+        self.find_row_and_click(element_name=client_name)
     # ------------------------------------------------------------------------------------------------------------------
     change_status_one_button = (By.XPATH, "//button[@id='trade81-button-change_status_one']")
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")

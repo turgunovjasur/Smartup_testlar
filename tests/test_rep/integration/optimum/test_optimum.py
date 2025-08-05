@@ -1,7 +1,9 @@
+import os
 import pytest
+from autotest.core.md.base_page import BasePage
 from autotest.trade.rep.integration.optimum.optimum import Optimum
 from flows.auth_flow import login_admin
-from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
+from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
 
 
 @pytest.mark.regression
@@ -31,15 +33,24 @@ def test_check_report_optimum(driver, test_data):
     optimum.input_prefix_production_write_off(prefix_production_write_off=7)
     optimum.input_prefix_production_receipt(prefix_production_receipt=8)
     optimum.click_save()
-
+    # ------------------------------------------------------------------------------------------------------------------
     # Optimum
     optimum.element_visible()
-    optimum.click_generate()
-    generate_and_verify_download(driver, file_name='optimum', file_type='zip')
 
+    base_page = BasePage(driver)
+    clear_old_download(base_page, expected_name="optimum", file_type="zip")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
+    optimum.click_generate()
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="optimum", file_type="zip")
+    # ------------------------------------------------------------------------------------------------------------------
     # Optimum
     optimum.element_visible()
     optimum.click_all_filial_checkbox()
     optimum.input_filial(filial_name)
+
+    base_page = BasePage(driver)
+    clear_old_download(base_page, expected_name="optimum", file_type="zip")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
     optimum.click_generate()
-    generate_and_verify_download(driver, file_name='ooptimum', file_type='zip')
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="optimum", file_type="zip")
+    # ------------------------------------------------------------------------------------------------------------------

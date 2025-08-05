@@ -91,6 +91,7 @@ def add_purchase(driver, test_data, save_data, save_purchase_number):
     # List
     purchase_list.element_visible()
 
+
 @pytest.mark.regression
 @pytest.mark.order(59)
 def test_add_purchase(driver, test_data, save_data):
@@ -98,6 +99,7 @@ def test_add_purchase(driver, test_data, save_data):
 
     save_purchase_number = "purchase_number_1"
     add_purchase(driver, test_data, save_data, save_purchase_number)
+
 
 @pytest.mark.regression
 @pytest.mark.order(60)
@@ -204,6 +206,7 @@ def test_add_extra_cost(driver, test_data, save_data, load_data):
 
     # List
     purchase_list.element_visible()
+
 
 @pytest.mark.regression
 @pytest.mark.order(61)
@@ -314,6 +317,7 @@ def test_add_purchase_with_extra_cost_sum(driver, test_data, save_data, load_dat
 
     # List
     purchase_list.element_visible()
+
 
 @pytest.mark.regression
 @pytest.mark.order(62)
@@ -459,6 +463,7 @@ def test_add_purchase_with_extra_cost_quantity(driver, test_data, save_data, loa
 
     # List
     purchase_list.element_visible()
+
 
 @pytest.mark.regression
 @pytest.mark.order(63)

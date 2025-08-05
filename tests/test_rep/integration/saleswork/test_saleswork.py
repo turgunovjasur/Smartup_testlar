@@ -1,10 +1,12 @@
+import os
 import random
 import pytest
+from autotest.core.md.base_page import BasePage
 from autotest.trade.rep.integration.saleswork.saleswork import SalesWork
 from autotest.trade.rep.integration.saleswork.saleswork_template_add import SalesWorkTemplateAdd
 from autotest.trade.rep.integration.saleswork.saleswork_template_list import SalesWorkTemplateList
 from flows.auth_flow import login_admin
-from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
+from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
 
 
 @pytest.mark.regression
@@ -36,5 +38,8 @@ def test_check_report_sales_work(driver, test_data):
     get_templates = sales_work.input_templates()
     assert get_templates == template_name, f"Error: {get_templates} != {template_name}"
 
+    base_page = BasePage(driver)
+    clear_old_download(base_page, expected_name="sales_work", file_type="zip")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
     sales_work.click_generate()
-    generate_and_verify_download(driver, file_name='saleswork', file_type='zip')
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="sales_work", file_type="zip")

@@ -27,7 +27,7 @@ class RoomAttachment(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, element_name):
-        self.find_row_and_click(element_name)
+        self.find_row_and_click(element_name=element_name)
     # ------------------------------------------------------------------------------------------------------------------
     checkbox_all_payment_type = (By.XPATH, '(//b-grid[@name="table_payment_type"]//label)[1]')
 

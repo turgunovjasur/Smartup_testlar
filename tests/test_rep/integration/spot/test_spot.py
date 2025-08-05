@@ -1,10 +1,12 @@
+import os
 import random
 import pytest
+from autotest.core.md.base_page import BasePage
 from autotest.trade.rep.integration.spot.spot import Spot
 from autotest.trade.rep.integration.spot_template_add.spot_template_add import SpotTemplateAdd
 from autotest.trade.rep.integration.spot_template_list.spot_template_list import SpotTemplateList
 from flows.auth_flow import login_admin
-from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
+from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
 
 
 @pytest.mark.regression
@@ -47,5 +49,9 @@ def test_check_report_spot_2d(driver, test_data):
     spot.click_preferences_clear()
 
     spot.element_visible()
+
+    base_page = BasePage(driver)
+    clear_old_download(base_page, expected_name="Spot2D", file_type="zip")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
     spot.click_run()
-    generate_and_verify_download(driver, file_name='Spot2D', file_type='zip')
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="Spot2D", file_type="zip")

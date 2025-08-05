@@ -1,5 +1,7 @@
 import time
 from autotest.biruni.md.biruni.grid_setting.grid_setting import GridSetting
+from autotest.biruni.md.biruni.grid_setting.grid_setting_in_form import GridSettingInForm
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -23,5 +25,14 @@ def grid_setting(driver, option_name=None, search_type=None, save_as_default=Fal
         return
 
     grid_setting.click_save_button()
+    time.sleep(0.5)
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def grid_setting_in_form(driver):
+    """Test configuring grid settings in forms."""
+    grid_page = GridSettingInForm(driver)
+    grid_page.element_visible()
+    grid_page.click_save_default_button()
     time.sleep(0.5)
 # ----------------------------------------------------------------------------------------------------------------------

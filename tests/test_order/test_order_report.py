@@ -1,4 +1,6 @@
 import time
+
+import pyautogui
 import pytest
 import requests
 from selenium.common import TimeoutException
@@ -11,7 +13,8 @@ from autotest.trade.rep.mbi.tdeal.order.sales_report_constructor import SalesRep
 from autotest.trade.tdeal.order.order_history_list.order_history_list import OrdersHistoryList
 from flows.auth_flow import login_user, login_admin
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
-from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download
+from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
+
 
 # ======================================================================================================================
 
@@ -207,6 +210,28 @@ def test_check_report_for_order_history_list(driver, test_data, timeout=60):
             pytest.fail(f"Test_errors:\n{errors_joined}")
 
 # ======================================================================================================================
+import os
+
+def get_data_file_path(filename, folder, subfolder):
+    """
+    Test fayli joylashgan katalogdan nisbiy yo‘l orqali faylning to‘liq pathini qaytaradi.
+    Funksiya har doim test bilan bir joyda bo'lsin!
+    """
+    current_file_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Smartup_testlar/data ni qidirish
+    while True:
+        potential_path = os.path.join(current_file_dir, folder, subfolder, filename)
+        if os.path.isfile(potential_path):
+            return potential_path
+
+        # Bir katalog yuqoriga chiqamiz
+        parent_dir = os.path.dirname(current_file_dir)
+        if parent_dir == current_file_dir:
+            break  # Root katalogga chiqib ketdi
+        current_file_dir = parent_dir
+
+    raise FileNotFoundError(f"{folder}/{subfolder}/{filename} topilmadi.")
 
 # Invoice report
 @pytest.mark.regression
@@ -217,7 +242,9 @@ def test_add_template_for_order_invoice_report(driver, test_data):
     template_name = data["template_name"]
     role_name = data["role_name"]
     form_name = 'Накладная (заказ)'
-    report_path = r"C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\data"
+    filename = "test_invoice_report.xlsx"
+    folder = "Smartup_testlar"
+    subfolder = "data"
 
     login_admin(driver, test_data, url='anor/mr/template_list')
 
@@ -230,8 +257,13 @@ def test_add_template_for_order_invoice_report(driver, test_data):
     setting_add.input_form_name(form_name)
     setting_add.input_template_name(template_name)
     setting_add.click_template_input()
-    setting_add.click_windows_file(report_path)
-    setting_add.click_windows_download_file()
+
+    report_path = get_data_file_path(filename, folder, subfolder)
+    pyautogui.write(os.path.dirname(report_path), interval=0.1)
+    pyautogui.press('enter')
+    pyautogui.write("test_invoice_report", interval=0.1)
+    pyautogui.press('enter')
+
     setting_add.click_save_button()
 
     template_list.element_visible()
@@ -261,8 +293,11 @@ def test_check_invoice_report_for_order_list(driver, test_data):
     order_list.element_visible()
     order_list.find_row(client_name)
 
+    base_page = BasePage(driver)
+    clear_old_download(base_page, expected_name="Test_invoice_report", file_type="xlsx")
+    before_files = set(os.listdir(DOWNLOAD_DIR))
     order_list.click_invoice_reports_all_button(invoice_report_name)
-    generate_and_verify_download(driver, file_name='invoice_report', file_type='xlsx')
+    generate_and_verify_download(base_page, before_files=before_files, expected_name="Test_invoice_report", file_type="xlsx")
 
 # ======================================================================================================================
 

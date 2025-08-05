@@ -11,7 +11,7 @@ class OrderAddProduct(BasePage):
         return self.wait_for_element_visible(self.header_text)
     # ------------------------------------------------------------------------------------------------------------------
     setting_button = (By.XPATH, '//b-pg-controller[@name="goods_items"]//div[@role="group"]/button')
-    setting_tbl_button = (By.XPATH, '//b-pg-controller[@name="goods_items"]//div[@role="group"]/div[@x-placement="bottom-end"]/a')
+    setting_tbl_button = (By.XPATH, '//b-pg-controller[@name="goods_items"]//div[@role="group"]//a')
 
     def click_setting_button(self):
         self.click(self.setting_button)

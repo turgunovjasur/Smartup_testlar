@@ -3,7 +3,7 @@ from autotest.core.md.base_page import BasePage
 from flows.auth_flow import login_user
 from flows.error_message_flow import get_error_massage
 from flows.grid_setting_flow import grid_setting
-from flows.order_flows.order_add_flow import order_add_main, order_add_product, order_add_final
+from flows.order_flows.order_add_flow import main_flow, product_flow, final_flow
 from flows.order_flows.order_list_flow import order_list, order_view
 from tests.test_cashin.test_cashin import test_cashin_add_C
 
@@ -12,7 +12,7 @@ from tests.test_cashin.test_cashin import test_cashin_add_C
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(31)
-def test_edit_order_with_consignment_demo(driver, test_data, load_data):
+def test_edit_order_with_consignment_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_with_consignment_demo")
 
@@ -25,13 +25,13 @@ def test_edit_order_with_consignment_demo(driver, test_data, load_data):
     order_id_1 = load_data("order_id_1")
     order_list(driver, find_row=order_id_1, edit=True)
 
-    order_add_main(driver)
+    main_flow(driver)
 
-    order_add_product(driver, product_quantity=10)
+    product_flow(driver, product_quantity=10)
 
     get_error_massage(driver, error_massage_name=data["error_massage_2"])
 
-    order_add_final(driver, status_name=data["Draft"])
+    final_flow(driver, status_name=data["Draft"])
 
     order_list(driver, find_row=order_id_1, view=True)
 
@@ -44,7 +44,7 @@ def test_edit_order_with_consignment_demo(driver, test_data, load_data):
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(45)
-def test_edit_order_for_price_type_USA_demo(driver, test_data, load_data):
+def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_for_price_type_USA_demo")
 
@@ -61,16 +61,12 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, load_data):
     order_id_4 = load_data("order_id_4")
     order_list(driver, find_row=order_id_4, edit=True)
 
-    order_add_main(driver)
+    main_flow(driver)
 
-    order_add_product(driver,
-                      clear_input=True,
-                      product_name=product_name,
-                      warehouse_name=warehouse_name,
-                      price_type_name=price_type_name,
-                      product_quantity=product_quantity_edit)
+    product_flow(driver, clear_input=True, product_name=product_name, warehouse_name=warehouse_name,
+                 price_type_name=price_type_name, product_quantity=product_quantity_edit)
 
-    order_add_final(driver, status_name=data["Delivered"])
+    final_flow(driver, status_name=data["Delivered"])
 
     get_error_massage(driver, error_massage_name=data["error_massage_3"])
 
@@ -81,16 +77,12 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, load_data):
     base_page.switch_window(direction="back")
     base_page.refresh_page()
 
-    order_add_main(driver)
+    main_flow(driver)
 
-    order_add_product(driver,
-                      clear_input=True,
-                      product_name=product_name,
-                      warehouse_name=warehouse_name,
-                      price_type_name=price_type_name,
-                      product_quantity=product_quantity_edit)
+    product_flow(driver, clear_input=True, product_name=product_name, warehouse_name=warehouse_name,
+                 price_type_name=price_type_name, product_quantity=product_quantity_edit)
 
-    order_add_final(driver, prepayment_amount=(prepayment_amount - 1), status_name=data["Processing"])
+    final_flow(driver, prepayment_amount=(prepayment_amount - 1), status_name=data["Processing"])
 
     order_list(driver, find_row=order_id_4, change_status=data["Delivered"])
 
@@ -98,11 +90,11 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, load_data):
 
     order_list(driver, reload=True, find_row=order_id_4, edit=True)
 
-    order_add_main(driver)
+    main_flow(driver)
 
-    order_add_product(driver)
+    product_flow(driver)
 
-    order_add_final(driver, prepayment_amount=(prepayment_amount - 1), status_name=data["Pending"])
+    final_flow(driver, prepayment_amount=(prepayment_amount - 1), status_name=data["Pending"])
 
     order_list(driver, reload=True, find_row=order_id_4, change_status=data["Shipped"])
 
@@ -114,11 +106,11 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, load_data):
 
     order_list(driver, reload=True, find_row=order_id_4, edit=True)
 
-    order_add_main(driver)
+    main_flow(driver)
 
-    order_add_product(driver)
+    product_flow(driver)
 
-    order_add_final(driver, prepayment_amount=prepayment_amount, status_name=data["New"])
+    final_flow(driver, prepayment_amount=prepayment_amount, status_name=data["New"])
 
     order_list(driver, reload=True, find_row=order_id_4, change_status=data["Delivered"])
 
@@ -134,7 +126,7 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, load_data):
 
 @pytest.mark.regression
 @pytest.mark.order(53)
-def test_edit_order_for_action_demo(driver, test_data, load_data):
+def test_edit_order_for_action_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_for_action_demo")
 
@@ -151,12 +143,12 @@ def test_edit_order_for_action_demo(driver, test_data, load_data):
     order_id_6 = load_data("order_id_6")
     order_list(driver, find_row=order_id_6, edit=True)
 
-    order_add_main(driver)
+    main_flow(driver)
 
-    order_add_product(driver, product_quantity=edit_product_quantity)
+    product_flow(driver, product_quantity=edit_product_quantity)
 
 
-    get_total_amount = order_add_final(driver, get_total_amount=True, status_name=data["New"])
+    get_total_amount = final_flow(driver, get_total_amount=True, status_name=data["New"])
 
     total_amount = edit_product_quantity * product_price  # 8*12=96
     assert get_total_amount["total_amount"] == total_amount

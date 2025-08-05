@@ -1,7 +1,6 @@
 from autotest.anor.mdeal.order.order_view.order_view import OrderView
 from autotest.anor.mkw.product_file_list.product_file_list import ProductFileList
 from autotest.core.md.base_page import BasePage
-from autotest.core.md.biruni.grid_setting.grid_setting import GridSetting
 from autotest.trade.tdeal.order.order_attach_data.order_attach_data import OrderAttachData
 from autotest.trade.tdeal.order.order_list.order_copy_modal import OrderCopyModal
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
@@ -12,8 +11,8 @@ from autotest.trade.tdeal.order.transactions.transactions import Transaction
 
 def order_list(driver, **kwargs):
     base_page = BasePage(driver)
-    order_list = OrdersList(driver)
-    order_list.element_visible()
+    _list = OrdersList(driver)
+    _list.element_visible()
 
     reload = kwargs.get("reload")
     find_row = kwargs.get("find_row")
@@ -28,30 +27,30 @@ def order_list(driver, **kwargs):
     attach_data = kwargs.get("attach_data")
 
     if reload:
-        order_list.click_reload_button()
+        _list.click_reload_button()
     if find_row:
-        order_list.find_row(find_row)
+        _list.find_row(find_row)
     if add:
-        order_list.click_add_button()
+        _list.click_add_button()
     if view:
-        order_list.click_view_button()
+        _list.click_view_button()
     if edit:
-        order_list.click_edit_button()
+        _list.click_edit_button()
     if order_return:
-        order_list.click_return_button()
+        _list.click_return_button()
     if copy:
-        order_list.click_copy_button()
+        _list.click_copy_button()
     if change_status:
-        order_list.click_change_status_button(change_status)
-        order_list.element_visible()
+        _list.click_change_status_button(change_status)
+        _list.element_visible()
     if file:
-        order_list.click_view_dropdown(file_name='Файлы')
+        _list.click_view_dropdown(file_name='Файлы')
     if transaction:
         base_page.switch_window(direction="prepare")
-        order_list.click_view_dropdown(file_name="Проводки")
+        _list.click_view_dropdown(file_name="Проводки")
         base_page.switch_window(direction="forward")
     if attach_data:
-        order_list.click_edit_dropdown(file_name="Прикрепить")
+        _list.click_edit_dropdown(file_name="Прикрепить")
 
 # ======================================================================================================================
 
@@ -120,13 +119,6 @@ def order_attach_data(driver):
     order_attach_data.element_visible()
     order_attach_data.click_delivery_date_checkbox(days=5)
     order_attach_data.click_save_button()
-
-# ======================================================================================================================
-
-def order_grid_setting(driver):
-    grid_setting = GridSetting(driver)
-    grid_setting.element_visible()
-    grid_setting.click_save_default_button()
 
 # ======================================================================================================================
 
