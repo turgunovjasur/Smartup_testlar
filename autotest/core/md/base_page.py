@@ -3,10 +3,8 @@ import operator
 import os
 import re
 import time
-
 import allure
 from datetime import datetime
-
 from selenium.webdriver import Keys
 from colorama import init
 from selenium.webdriver.common.by import By
@@ -14,7 +12,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from utils.logger import get_test_name, configure_logging
-
 from utils.exception import *
 from selenium.common.exceptions import (
     TimeoutException,
@@ -969,16 +966,14 @@ class BasePage:
     # ==================================================================================================================
 
     def refresh_page(self):
-        """Joriy sahifani yangilash."""
+        """Sahifani yangilash."""
 
-        caller_chain = self._get_caller_chain()
-        self.logger.debug(f"{caller_chain}")
+        self.logger.debug(f"{self._get_caller_chain()}")
 
         try:
             self.driver.refresh()
-            if self._wait_for_all_loaders():
-                self.logger.info("Sahifa muvaffaqiyatli yangilandi")
-                return True
+            self._wait_for_all_loaders()
+            self.logger.info("Sahifa muvaffaqiyatli yangilandi")
 
         except LoaderTimeoutError:
             self.logger.error("Sahifa yangilangandan so'ng to'liq yuklanmadi")
@@ -1232,7 +1227,7 @@ class BasePage:
                         continue
 
                     if search_used:
-                        self.logger.warning(f"Qidiruvga berilmoqda...")
+                        self.logger.info(f"Qidiruvga berilmoqda...")
                         element = self.wait_for_element(search_input, wait_type="clickable")
                         element.send_keys(element_name)
                         element.send_keys(Keys.RETURN)
@@ -1248,7 +1243,8 @@ class BasePage:
                 time.sleep(0.5)
 
                 if click:
-                    if self._click(element=elements[0]) or self._click(element=elements[0], _click_js=True):
+                    if (self._click(element=elements[0], locator=row_locator) or
+                            self._click(element=elements[0], locator=row_locator, _click_js=True)):
                         return True
 
                 if checkbox:

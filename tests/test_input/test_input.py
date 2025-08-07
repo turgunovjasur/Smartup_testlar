@@ -144,7 +144,7 @@ def test_add_input_with_extra_cost(driver, test_data, save_data, load_data):
 
     note_text = random.randint(10000, 99999)
     extra_cost_add.input_note(note_text)
-    extra_cost_add.click_price_checkbox(method="V")
+    extra_cost_add.click_affects_the_price_checkbox(method="V")
     extra_cost_add.click_save_button(post=True)
 
     input_add.element_visible()

@@ -59,7 +59,7 @@ class ExtraCostAdd(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     price_checkbox = (By.XPATH, '//input[@type="checkbox" and @ng-model="d.affects_the_price"]/following-sibling::span')
 
-    def click_price_checkbox(self, method=None):
+    def click_affects_the_price_checkbox(self, method=None):
         """method must be one of ('A', 'Q', 'W', 'V', 'M') or None"""
         self.click(self.price_checkbox)
         if method in ('A', 'Q', 'W', 'V', 'M'):

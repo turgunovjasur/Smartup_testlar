@@ -3,6 +3,7 @@ import allure
 import pytest
 from autotest.core.md.base_page import BasePage
 from tests.test_cashin.test_cashin import test_cashin_add_A
+from tests.test_purchase.test_extra_cost import test_add_extra_cost
 from tests.test_reference.test_action import test_add_action
 from tests.test_finance.test_currency import test_currency_add
 from tests.test_order.test_order_return import test_order_return
@@ -50,7 +51,7 @@ from tests.test_order.test_order_report import (
     test_sales_report_constructor_demo
 )
 from tests.test_purchase.test_purchase import (
-    test_add_purchase, test_add_extra_cost, test_add_purchase_with_extra_cost_sum,
+    test_add_purchase, test_add_purchase_with_extra_cost_sum,
     test_add_purchase_with_extra_cost_quantity, test_add_purchase_with_extra_cost_weight_brutto
 )
 from tests.test_reference.test_natural_person import (

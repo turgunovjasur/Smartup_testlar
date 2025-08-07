@@ -1,7 +1,6 @@
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
-
-from utils.exception import ElementNotClickableError, ElementInteractionError
+from utils.exception import ElementNotFoundError
 
 
 class ExtraCostList(BasePage):
@@ -9,7 +8,7 @@ class ExtraCostList(BasePage):
     header = (By.XPATH, '//button[@ng-click="add()"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, '//button[@ng-click="add()"]')
 
@@ -38,7 +37,7 @@ class ExtraCostList(BasePage):
         try:
             self.find_row_and_click(element_name=note_text)
             return True
-        except (ElementNotClickableError, ElementInteractionError) as e:
-            self.logger.warning(f"'note_text' row not found! Error: {e}")
+        except ElementNotFoundError as e:
+            self.logger.warning(f"'note_text' column not found! Error: {e}")
             return False
     # ------------------------------------------------------------------------------------------------------------------

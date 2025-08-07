@@ -17,7 +17,7 @@ class PurchaseAdd(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     checkbox_input = (By.XPATH, '//div[@id="anor289-input-checkbox-extracostenabled"]//span')
 
-    def click_checkbox(self):
+    def click_extra_cost_checkbox(self):
         self.click(self.checkbox_input)
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, '//button[@id="anor289-button-nextstep"]')

@@ -4,46 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="added: Stocktaking (16.07.2025)">
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="08.08.2025 - BasePage">
+      <change afterPath="$PROJECT_DIR$/tests/test_purchase/flow_extra_cost.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_purchase/flow_purchase.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_purchase/test_extra_cost.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/all_test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/all_test_runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/create_add_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/create_add_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_edit/order_edit_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_edit/order_edit_final.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/margin_list_attach/margin_list_attach.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mkr/margin_list_attach/margin_list_attach.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_add/legal_person_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_add/legal_person_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_view/legal_person_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_view/legal_person_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/room_attachment/room_attachment.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mrf/room_attachment/room_attachment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_user_list/license_user_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/kl/license_user_list/license_user_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_add/extra_cost_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_add/extra_cost_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_list/extra_cost_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_list/extra_cost_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/purchase_add/purchase_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mkw/purchase_add/purchase_add.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/core/md/biruni/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/md/biruni/grid_setting/grid_setting_in_form.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/core/md/biruni/grid_setting/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/legal_person_flows.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/core/md/biruni/grid_setting/grid_setting.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/dashboard_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/intro/dashboard/dashboard_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/orders_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/orders_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_store.json" beforeDir="false" afterPath="$PROJECT_DIR$/data_store.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/grid_setting_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/grid_setting_flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_input/test_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_input/test_input.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/cislink/test_cislink.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/cislink/test_cislink.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_two/test_integration_two.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/integration_two/test_integration_two.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/optimum/test_optimum.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/optimum/test_optimum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/rep_main_funksiya.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/rep_main_funksiya.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/saleswork/test_saleswork.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/saleswork/test_saleswork.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/spot/test_spot.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_rep/integration/spot/test_spot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/find_fstring_quote_issues.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/find_koordinata.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,8 +43,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;git@github.com:turgunovjasur/Smartup_testlar.git&quot;,
-    &quot;accountId&quot;: &quot;8d23a3ea-5e4f-46a3-9e28-80b2977ae250&quot;
+    &quot;url&quot;: &quot;https://github.com/turgunovjasur/Smartup_testlar.git&quot;,
+    &quot;accountId&quot;: &quot;b9dfd3df-33bc-41b1-a2e1-62145280d66f&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -108,6 +82,7 @@
     &quot;Python tests.pytest for test_contract.test_add_contract_for_client_A_UZB.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_contract.test_add_contract_for_client_B_UZB.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_contract.test_add_contract_for_client_C_USA.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_extra_cost.test_add_extra_cost.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_input.test_add_input.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_input.test_add_input_with_extra_cost.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_integration_three.test_check_report_integration_three.executor&quot;: &quot;Run&quot;,
@@ -258,106 +233,106 @@
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mkw" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_life_cycle.test_check_price_tag">
-    <configuration name="pytest for test_cislink.test_check_report_cis_link" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto">
+    <configuration name="pytest for test_extra_cost.test_add_extra_cost" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_rep/integration/cislink" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_purchase" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_cislink.test_check_report_cis_link&quot;" />
+      <option name="_new_target" value="&quot;test_extra_cost.test_add_extra_cost&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_integration_two.test_check_report_integration_two" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_purchase.test_add_purchase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_rep/integration/integration_two" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_purchase" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_integration_two.test_check_report_integration_two&quot;" />
+      <option name="_new_target" value="&quot;test_purchase.test_add_purchase&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_life_cycle.test_check_price_tag" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_purchase.test_add_purchase_with_extra_cost_quantity" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_purchase" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_life_cycle.test_check_price_tag&quot;" />
+      <option name="_new_target" value="&quot;test_purchase.test_add_purchase_with_extra_cost_quantity&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_optimum.test_check_report_optimum" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_purchase.test_add_purchase_with_extra_cost_sum" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_rep/integration/optimum" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_purchase" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_optimum.test_check_report_optimum&quot;" />
+      <option name="_new_target" value="&quot;test_purchase.test_add_purchase_with_extra_cost_sum&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_order_report.test_check_invoice_report_for_order_list" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_purchase" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_order_report.test_check_invoice_report_for_order_list&quot;" />
+      <option name="_new_target" value="&quot;test_purchase.test_add_purchase_with_extra_cost_weight_brutto&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.pytest for test_life_cycle.test_check_price_tag" />
-      <item itemvalue="Python tests.pytest for test_order_report.test_check_invoice_report_for_order_list" />
-      <item itemvalue="Python tests.pytest for test_cislink.test_check_report_cis_link" />
-      <item itemvalue="Python tests.pytest for test_integration_two.test_check_report_integration_two" />
-      <item itemvalue="Python tests.pytest for test_optimum.test_check_report_optimum" />
+      <item itemvalue="Python tests.pytest for test_extra_cost.test_add_extra_cost" />
+      <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase" />
+      <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_quantity" />
+      <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_sum" />
+      <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_life_cycle.test_check_price_tag" />
-        <item itemvalue="Python tests.pytest for test_order_report.test_check_invoice_report_for_order_list" />
-        <item itemvalue="Python tests.pytest for test_cislink.test_check_report_cis_link" />
-        <item itemvalue="Python tests.pytest for test_integration_two.test_check_report_integration_two" />
-        <item itemvalue="Python tests.pytest for test_optimum.test_check_report_optimum" />
+        <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto" />
+        <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_quantity" />
+        <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_sum" />
+        <item itemvalue="Python tests.pytest for test_extra_cost.test_add_extra_cost" />
+        <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase" />
       </list>
     </recent_temporary>
   </component>
@@ -649,7 +624,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752667839372</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="08.08.2025 - BasePage">
+      <option name="closed" value="true" />
+      <created>1754377874363</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1754377874363</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -664,7 +647,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update drver and all tests(16.05.2025)" />
     <MESSAGE value="27.05.2025" />
     <MESSAGE value="04.06.2025" />
     <MESSAGE value="10.06.2025" />
@@ -689,6 +671,7 @@
     <MESSAGE value="added: test_add_purchase_to_supplier and test_return_to_supplier" />
     <MESSAGE value="added: write off (15.07.2025)" />
     <MESSAGE value="added: Stocktaking (16.07.2025)" />
-    <option name="LAST_COMMIT_MESSAGE" value="added: Stocktaking (16.07.2025)" />
+    <MESSAGE value="08.08.2025 - BasePage" />
+    <option name="LAST_COMMIT_MESSAGE" value="08.08.2025 - BasePage" />
   </component>
 </project>
