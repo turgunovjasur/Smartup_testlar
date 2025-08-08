@@ -1,20 +1,16 @@
 import random
 import pytest
-from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
 from autotest.anor.mkw.movement.movement_add.movement_add import MovementAdd
 from autotest.anor.mkw.movement.movement_list.movement_list import MovementList
 from autotest.anor.mkw.movement.movement_view.movement_view import MovementView
-from autotest.core.md.base_page import BasePage
 from flows.auth_flow import login_user
+from flows.balance_flow import flow_get_balance
 
 
 @pytest.mark.regression
 @pytest.mark.order(69)
 def test_add_internal_movement(driver, test_data):
     """Test adding a internal movement"""
-
-    base_page = BasePage(driver)
-
     # Test data
     data = test_data["data"]
     from_warehouses = data["warehouse_name"]
@@ -70,16 +66,9 @@ def test_add_internal_movement(driver, test_data):
     movement_list.element_visible()
 
     # BalanceList
-    base_page.switch_window(direction="prepare")
-    cut_url = base_page.cut_url()
-    base_page.switch_window(direction="new", url=cut_url + 'anor/mkw/balance/balance_list')
+    get_balance = flow_get_balance(driver,
+                               product_name=product_name,
+                               warehouse_name=to_warehouses,
+                               detail=True)
 
-    balance_list = BalanceList(driver)
-    balance_list.element_visible()
-    balance_list.click_reload_button()
-    balance_list.find_row(to_warehouses)
-    balance_list.click_detail_button()
-    balance_list.click_reload_button()
-
-    get_balance = balance_list.check_balance_quantity()
     assert get_balance == product_quantity, f"Error: {get_balance} != {product_quantity}"

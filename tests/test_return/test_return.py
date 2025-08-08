@@ -1,9 +1,9 @@
 from autotest.anor.mdeal.return_.return_add.return_add import ReturnAdd
 from autotest.anor.mdeal.return_.return_list.return_list import ReturnList
 from autotest.anor.mdeal.return_.return_view.return_view import ReturnView
-from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
 from autotest.core.md.base_page import BasePage
 from flows.auth_flow import login_user
+from flows.balance_flow import flow_get_balance
 
 
 def test_return(driver, test_data):
@@ -146,20 +146,14 @@ def test_return_id(driver, test_data):
     return_list.element_visible()
 
     # Open Balance List
-    base_page.switch_window(direction="prepare")
-    cut_url = base_page.cut_url()
-    base_page.switch_window(direction="new", url=cut_url + 'anor/mkw/balance/balance_list')
+    get_balance = flow_get_balance(driver,
+                               product_name=product_name,
+                               warehouse_name=warehouse_name,
+                               detail=True)
 
-    balance_list = BalanceList(driver)
-    balance_list.element_visible()
-    balance_list.click_reload_button()
-    balance_list.find_row(product_name)
-    balance_list.click_detail_button()
-    balance_list.click_reload_button()
-    balance = balance_list.check_balance_quantity()
-    assert balance == product_quantity, f"Error: Balance: '{balance}' != product_quantity: '{product_quantity}'"
 
-    base_page.switch_window(direction="back")
+    assert get_balance == product_quantity, f"Error: get_balance: '{get_balance}' != product_quantity: '{product_quantity}'"
+
     base_page.refresh_page()
 
     return_list.find_row(client_name)

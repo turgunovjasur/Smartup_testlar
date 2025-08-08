@@ -1,15 +1,12 @@
 import os
 import random
 import time
-
 import pytest
-
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
 from autotest.anor.mdeal.order.order_add.order_request_view.order_request_view import OrderRequestView
 from autotest.anor.mdeal.order.order_request_list.order_request_list import OrderRequestList
-
 from autotest.anor.mkr.margin_add.margin_add import MarginAdd
 from autotest.anor.mkr.margin_list.margin_list import MarginList
 from autotest.anor.mkr.margin_list_attach.margin_list_attach import MarginListAttach
@@ -20,7 +17,6 @@ from autotest.anor.mkr.price_type_add.price_type_add import PriceTypeAdd
 from autotest.anor.mkr.price_type_list.price_type_list import PriceTypeList
 from autotest.anor.mkr.price_type_list_attach.price_type_list_attch import PriceTypeListAttach
 from autotest.anor.mkr.price_type_view.price_type_id import PriceTypeIdView
-from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
 from autotest.anor.mkw.init_balance.init_inventory_balance_add.init_inventory_balance_add import InitInventoryBalanceAdd
 from autotest.anor.mkw.init_balance.init_inventory_balance_list.init_inventory_balance_list import InitInventoryBalanceList
 from autotest.anor.mr.filial_add.filial_add import FilialAdd
@@ -55,6 +51,7 @@ from autotest.trade.trf.room_add.room_add import RoomAdd
 from autotest.trade.trf.room_list.room_list import RoomList
 from autotest.trade.trf.room_view.room_view import RoomView
 from flows.auth_flow import login_admin, login_user, logout
+from flows.balance_flow import flow_get_balance
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
 from utils.exception import ElementNotFoundError
 
@@ -706,6 +703,7 @@ def test_init_balance(driver, test_data):
     # Test data
     data = test_data["data"]
     product_name = data['product_name']
+    warehouse_name = data["warehouse_name"]
     product_quantity = data['product_quantity']
     product_price = data['product_price']
 
@@ -735,19 +733,12 @@ def test_init_balance(driver, test_data):
     init_balance_list.click_post_one_button()
 
     # Open Balance List
-    base_page.switch_window(direction="prepare")
-    cut_url = base_page.cut_url()
-    base_page.switch_window(direction="new", url=cut_url + 'anor/mkw/balance/balance_list')
+    get_balance = flow_get_balance(driver,
+                               product_name=product_name,
+                               warehouse_name=warehouse_name,
+                               detail=True)
 
-    balance_list = BalanceList(driver)
-    balance_list.element_visible()
-    balance_list.click_reload_button()
-    balance_list.find_row(product_name)
-    balance_list.click_detail_button()
-    balance_list.click_reload_button()
-
-    balance = balance_list.check_balance_quantity()
-    assert balance == product_quantity, f"Error: Balance: '{balance}' != product_quantity: '{product_quantity}'"
+    assert get_balance == product_quantity, f"Error: get_balance: '{get_balance}' != product_quantity: '{product_quantity}'"
 
 
 def test_order_request(driver, test_data):
@@ -882,6 +873,7 @@ def test_add_user_license(driver, test_data):
         pytest.skip("⚠️ Faqat Online saytida ishlaydi")
 
     # Test data
+    base_page = BasePage(driver)
     data = test_data["data"]
     natural_person_name = data['natural_person_name']
 
@@ -900,15 +892,26 @@ def test_add_user_license(driver, test_data):
     # License User List
     license_user_list = LicenseUserList(driver)
     license_user_list.element_visible()
-    license_user_list.click_all_checkbox()
 
-    license_user_list.element_visible()
+    if license_user_list.get_row_no_data():
+        base_page.logger.warning(f"No data in table")
+        license_user_list.click_detach_button()
+
+        license_user_list.attach_button_visible()
+        license_user_list.find_row(natural_person_name)
+        license_user_list.click_attach_button()
+        license_user_list.click_close_button()
+        license_list.licence_visible()
+        return
+
+    license_user_list.click_all_checkbox()
     license_user_list.click_detach_button()
 
     license_user_list.attach_button_visible()
     license_user_list.find_row(natural_person_name)
     license_user_list.click_attach_button()
-    license_user_list.attach_button_visible()
+    license_user_list.click_close_button()
+    license_list.licence_visible()
 
 # ----------------------------------------------------------------------------------------------------------------------
 

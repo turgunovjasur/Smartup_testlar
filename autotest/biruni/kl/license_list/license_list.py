@@ -7,8 +7,7 @@ class LicenseList(BasePage):
     header = (By.XPATH, '(//div[@class="card-header"]//div[@class="card-title"]//t[contains(text(),"Баланс")])[1]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
-
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     navbar_button = (By.XPATH, "//div[contains(@class,'navi-item')]/a[@ng-click=\"changeSection('licenses')\"]")
 
@@ -18,7 +17,7 @@ class LicenseList(BasePage):
     header_licence = (By.XPATH, '//div[@class="card-title"]//t[contains(text(),"Лицензии и документы")]')
 
     def licence_visible(self):
-        return self.wait_for_element_visible(self.header_licence)
+        self.wait_for_element_visible(self.header_licence)
     # ------------------------------------------------------------------------------------------------------------------
     tbl_row = (By.XPATH, '(//b-grid[@name="table_license"]//div[@class="tbl-row"])[1]')
 

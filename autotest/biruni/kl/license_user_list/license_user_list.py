@@ -1,5 +1,6 @@
 from autotest.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
+from utils.exception import ElementVisibilityError
 
 
 class LicenseUserList(BasePage):
@@ -19,6 +20,15 @@ class LicenseUserList(BasePage):
         self.click(self.detach_checked_button)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------
+    row_no_data = (By.XPATH, '//b-grid[@name="table"]//div[@class="tbl-body"]/div[contains(@class,"no-data")]')
+
+    def get_row_no_data(self):
+        try:
+            self.wait_for_element(self.row_no_data, wait_type="visibility", timeout=5)
+            return True
+        except ElementVisibilityError:
+            return False
+    # ------------------------------------------------------------------------------------------------------------------
     detach_button = (By.XPATH, '//button[@ng-class="q.classDetach"]')
 
     def click_detach_button(self):
@@ -31,15 +41,25 @@ class LicenseUserList(BasePage):
     def attach_button_visible(self):
         self.wait_for_element_visible(self.header_attach_button)
     # ------------------------------------------------------------------------------------------------------------------
-    change_limit_button = (By.XPATH, '(//button[@class="btn btn-default rounded-0 ng-binding"])[2]')
-    limit_option = (By.XPATH, '//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
 
     def find_row(self, natural_person_name):
-        self.find_row_and_click(element_name=natural_person_name)
+        row_locator = f"(//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{natural_person_name}')])[last()]"
+        limit_locator = f'(//button[@class="btn btn-default rounded-0 ng-binding"])[last()]'
+        limit_option_locator = f'(//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4])[last()]'
+
+        self.find_row_and_click(element_name=natural_person_name,
+                                xpath_pattern=row_locator,
+                                limit_pattern=limit_locator,
+                                limit_option_pattern=limit_option_locator)
     # ------------------------------------------------------------------------------------------------------------------
     attach_button = (By.XPATH, '//button[@ng-click="attach(row)"]')
 
     def click_attach_button(self):
         self.click(self.attach_button)
         self.click(self.yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    close_button = (By.XPATH, '//button[@ng-click="page.close()"]')
+
+    def click_close_button(self):
+        self.click(self.close_button)
     # ------------------------------------------------------------------------------------------------------------------

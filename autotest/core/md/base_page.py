@@ -1191,14 +1191,21 @@ class BasePage:
 
     # ==================================================================================================================
 
-    def find_row_and_click(self, element_name, timeout=5, xpath_pattern=None, use_limit=True, use_search=True,
-                           click=True, checkbox=False):
+    def find_row_and_click(self, element_name, timeout=5, **kwargs):
 
         """Jadvaldagi qatorni topish va ustiga bosish funksiyasi."""
 
+        xpath_pattern = kwargs.get("xpath_pattern")
+        limit_pattern = kwargs.get("limit_pattern")
+        limit_option_pattern = kwargs.get("limit_option_pattern")
+        use_limit = kwargs.get("use_limit", True)
+        use_search = kwargs.get("use_search", True)
+        click = kwargs.get("click", True)
+        checkbox = kwargs.get("checkbox", False)
+
         row_locator = (By.XPATH, xpath_pattern or f"//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{element_name}')]")
-        limit_change_button = (By.XPATH, '//button[@class="btn btn-default rounded-0 ng-binding"]')
-        limit_option = (By.XPATH, '//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
+        limit_change_button = (By.XPATH, limit_pattern or '//button[@class="btn btn-default rounded-0 ng-binding"]')
+        limit_option = (By.XPATH, limit_option_pattern or '//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
         checkbox_locator = (By.XPATH, f"//div[contains(@class, 'tbl-row') and .//div[text()='{element_name}']]//span")
         search_input = (By.XPATH, '//b-grid-controller//input[@type="search"]')
 

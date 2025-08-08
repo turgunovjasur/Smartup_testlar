@@ -7,16 +7,6 @@ from autotest.anor.mdeal.order.order_add.order_select.order_select import OrderS
 # ======================================================================================================================
 
 def main_flow(driver, **kwargs):
-    # --------------------------------------------------
-    # get_deal_time = kwargs.get("get_deal_time")
-    # get_delivery_date = kwargs.get("get_delivery_date")
-    # room_name = kwargs.get("room_name")
-    # robot_name = kwargs.get("robot_name")
-    # client_name = kwargs.get("client_name")
-    # sub_filial_name = kwargs.get("sub_filial_name")
-    # contract_name = kwargs.get("contract_name")
-    # --------------------------------------------------
-
     main_page = OrderAddMain(driver)
     main_page.element_visible()
 
@@ -110,16 +100,6 @@ def product_select_flow(driver, **kwargs):
 # ======================================================================================================================
 
 def final_flow(driver, **kwargs):
-    # --------------------------------------------------
-    # order_grid_setting = kwargs.get("order_grid_setting")
-    # payment_type_name = kwargs.get("payment_type_name")
-    # prepayment_amount = kwargs.get("prepayment_amount")
-    # consignment_day = kwargs.get("consignment_day")
-    # consignment_amount = kwargs.get("consignment_amount")
-    # status_name = kwargs.get("status_name")
-    # get_total_amount = kwargs.get("get_total_amount")
-    # --------------------------------------------------
-
     final_page = OrderAddFinal(driver)
     final_page.element_visible()
 
@@ -153,7 +133,6 @@ def final_flow(driver, **kwargs):
 # ======================================================================================================================
 
 def final_input_value_flow(driver, **kwargs):
-
     final_page = OrderAddFinal(driver)
     final_page.element_visible()
 
@@ -188,11 +167,6 @@ def final_input_value_flow(driver, **kwargs):
 # ======================================================================================================================
 
 def step_flow(driver, **kwargs):
-    # --------------------------------------------------
-    # next_step = kwargs.get("next_step", False)
-    # prev_step = kwargs.get("prev_step", False)
-    # --------------------------------------------------
-
     product_page = OrderAddProduct(driver)
     product_page.element_visible()
 

@@ -4,13 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added flow extra cost 07.08.2025">
-      <change afterPath="$PROJECT_DIR$/tests/test_input/flow_input.py" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added flow input 07.08.2025">
+      <change afterPath="$PROJECT_DIR$/autotest/anor/mkw/balance/balance_list/balance_detail.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flows/balance_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/balance/balance_list/balance_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mkw/balance/balance_list/balance_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_list/license_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/kl/license_list/license_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_user_list/license_user_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/kl/license_user_list/license_user_list.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_store.json" beforeDir="false" afterPath="$PROJECT_DIR$/data_store.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_input/test_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_input/test_input.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_movement/test_movement.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_movement/test_movement.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_return/test_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_return/test_return.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,6 +97,7 @@
     &quot;Python tests.pytest for test_life_cycle.test_check_price_tag.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_life_cycle.test_company_create.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_life_cycle.test_filial_create.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_life_cycle.test_init_balance.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_life_cycle.test_legal_person_add.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_life_cycle.test_margin_add.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_life_cycle.test_natural_person_add.executor&quot;: &quot;Run&quot;,
@@ -226,7 +234,7 @@
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mkw" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_input.test_add_input_with_extra_cost">
+  <component name="RunManager" selected="Python tests.pytest for test_life_cycle.test_add_user_license">
     <configuration name="pytest for test_input.test_add_input" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
@@ -261,6 +269,40 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest for test_life_cycle.test_add_user_license" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="Smartup_testlar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_life_cycle.test_add_user_license&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_life_cycle.test_init_balance" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="Smartup_testlar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_life_cycle.test_init_balance&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="pytest for test_purchase.test_add_purchase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
@@ -278,54 +320,20 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_purchase.test_add_purchase_with_extra_cost_quantity" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_purchase" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_purchase.test_add_purchase_with_extra_cost_quantity&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_purchase" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_purchase.test_add_purchase_with_extra_cost_weight_brutto&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
+      <item itemvalue="Python tests.pytest for test_life_cycle.test_add_user_license" />
       <item itemvalue="Python tests.pytest for test_input.test_add_input" />
       <item itemvalue="Python tests.pytest for test_input.test_add_input_with_extra_cost" />
+      <item itemvalue="Python tests.pytest for test_life_cycle.test_init_balance" />
       <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase" />
-      <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_quantity" />
-      <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test_life_cycle.test_add_user_license" />
+        <item itemvalue="Python tests.pytest for test_life_cycle.test_init_balance" />
         <item itemvalue="Python tests.pytest for test_input.test_add_input_with_extra_cost" />
         <item itemvalue="Python tests.pytest for test_input.test_add_input" />
         <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase" />
-        <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_weight_brutto" />
-        <item itemvalue="Python tests.pytest for test_purchase.test_add_purchase_with_extra_cost_quantity" />
       </list>
     </recent_temporary>
   </component>
@@ -633,7 +641,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754549379728</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Added flow input 07.08.2025">
+      <option name="closed" value="true" />
+      <created>1754562005804</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1754562005804</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -648,7 +664,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="04.06.2025" />
     <MESSAGE value="10.06.2025" />
     <MESSAGE value="26.06.2025" />
     <MESSAGE value="26.06.2025 -&gt; 2" />
@@ -673,6 +688,7 @@
     <MESSAGE value="added: Stocktaking (16.07.2025)" />
     <MESSAGE value="08.08.2025 - BasePage" />
     <MESSAGE value="Added flow extra cost 07.08.2025" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added flow extra cost 07.08.2025" />
+    <MESSAGE value="Added flow input 07.08.2025" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added flow input 07.08.2025" />
   </component>
 </project>
