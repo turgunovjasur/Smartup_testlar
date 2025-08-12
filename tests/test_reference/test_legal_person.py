@@ -4,7 +4,7 @@ from flows.auth_flow import login_user, login_admin
 from tests.test_reference.legal_person_flows import add_flow, view_flow, list_flow
 
 
-def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
+def legal_person_add(driver, test_data, soft_assertions, person_name=None, admin_or_user=True):
     """Test adding a legal person"""
 
     i = random.randint(1000, 9999)
@@ -33,33 +33,49 @@ def legal_person_add(driver, test_data, person_name=None, admin_or_user=True):
     list_flow(driver, add=True)
 
     add_flow(driver,
-             state=True, person_name=person_name, short_name=short_name, main_phone=main_phone,
-             telegram=telegram, email=email, address=address, post_address=post_address,
-             tin=tin, cea=cea, vat_code=vat_code, lat_lng=lat_lng, address_guide=address_guide,
-             code=code, web=web, barcode=barcode, zip_code=zip_code)
+             state=True,
+             person_name=person_name,
+             short_name=short_name,
+             main_phone=main_phone,
+             telegram=telegram,
+             email=email,
+             address=address,
+             post_address=post_address,
+             tin=tin,
+             cea=cea,
+             vat_code=vat_code,
+             lat_lng=lat_lng,
+             address_guide=address_guide,
+             code=code,
+             web=web,
+             barcode=barcode,
+             zip_code=zip_code)
 
     list_flow(driver, find_row=code, view=True)
 
-    view_flow(driver,
-              person_name=person_name, short_name=short_name,
-              code=code, barcode=barcode, email=email)
+    view_flow(driver, soft_assertions,
+              person_name=person_name,
+              short_name=short_name,
+              code=code,
+              barcode=barcode,
+              email=email)
 
 
 @pytest.mark.regression
 @pytest.mark.order(1)
-def test_add_legal_person(driver, test_data):
+def test_add_legal_person(driver, test_data, soft_assertions):
     """Test adding legal person by filial"""
 
     data = test_data["data"]
     legal_person = data['legal_person_name']
-    legal_person_add(driver, test_data, person_name=legal_person)
+    legal_person_add(driver, test_data, soft_assertions, person_name=legal_person)
 
 
 @pytest.mark.regression
 @pytest.mark.order(56)
-def test_add_legal_person_by_supplier(driver, test_data):
+def test_add_legal_person_by_supplier(driver, test_data, soft_assertions):
     """Test adding legal person by supplier"""
 
     data = test_data["data"]
     supplier_name = data['supplier_name']
-    legal_person_add(driver, test_data, person_name=supplier_name, admin_or_user=False)
+    legal_person_add(driver, test_data, soft_assertions, person_name=supplier_name, admin_or_user=False)

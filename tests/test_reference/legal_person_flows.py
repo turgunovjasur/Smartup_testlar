@@ -2,7 +2,6 @@ from autotest.anor.mr.person.legal_person_add.legal_person_add import LegalPerso
 from autotest.anor.mr.person.legal_person_list.legal_person_list import LegalPersonList
 from autotest.anor.mr.person.legal_person_view.legal_person_view import LegalPersonView
 
-
 # ======================================================================================================================
 
 def safe_input(method, value):
@@ -52,7 +51,7 @@ def list_flow(driver, **kwargs):
 
 # ======================================================================================================================
 
-def view_flow(driver, **kwargs):
+def view_flow(driver, soft_assertions, **kwargs):
     person_name = kwargs.get("person_name")
     short_name = kwargs.get("short_name")
     code = kwargs.get("code")
@@ -63,37 +62,38 @@ def view_flow(driver, **kwargs):
     view.element_visible()
 
     get_person_name = view.get_person_name()
-    assert person_name == get_person_name, f"{person_name} != {get_person_name}"
+    soft_assertions.assert_equals(get_person_name, person_name)
 
     # View-form
     view.click_navbar(navbar_name="Основная информация")
 
     get_name = view.get_input_value(input_name="Название")
-    assert get_name == person_name, f"{get_name} != {person_name}"
+    soft_assertions.assert_equals(get_name, person_name)
 
     get_short_name = view.get_input_value(input_name="Альтернативное название")
-    assert get_short_name == short_name, f"{get_short_name} != {short_name}"
+    soft_assertions.assert_equals(get_short_name, short_name)
 
     get_code = view.get_input_value(input_name="Код")
-    assert get_code == code, f"{get_code} != {code}"
+    soft_assertions.assert_equals(get_code, code)
 
     get_barcode = view.get_input_value(input_name="Штрих-код")
-    assert get_barcode == barcode, f"{get_barcode} != {barcode}"
+    soft_assertions.assert_equals(get_barcode, barcode)
 
     # View-card
     get_email = view.get_card_value(card_name="Email")
-    assert get_email == email, f"{get_email} != {email}"
+    soft_assertions.assert_equals(get_email, email)
 
     get_name = view.get_card_value(card_name="Название")
-    assert get_name == person_name, f"{get_name} != {person_name}"
+    soft_assertions.assert_equals(get_name, person_name)
 
     get_short_name = view.get_card_value(card_name="Альтернативное название")
-    assert get_short_name == short_name, f"{get_short_name} != {short_name}"
+    soft_assertions.assert_equals(get_short_name, short_name)
 
     get_code = view.get_card_value(card_name="Код")
-    assert get_code == code, f"{get_code} != {code}"
+    soft_assertions.assert_equals(get_code, code)
 
     get_barcode = view.get_card_value(card_name="Штрих-код")
-    assert get_barcode == barcode, f"{get_barcode} != {barcode}"
+    soft_assertions.assert_equals(get_barcode, barcode)
+    soft_assertions.assert_all()
 
 # ======================================================================================================================

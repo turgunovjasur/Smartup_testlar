@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.options import Options
 
 from tests.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
 from utils.env_reader import get_env
+from utils.assertions import Assertions, SoftAssertions
 
 
 driver_path = ChromeDriverManager().install()
@@ -233,5 +234,17 @@ def load_data(request):
         return None
 
     return _load
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+@pytest.fixture
+def assertions(driver):
+    """Assertion klassi uchun fixture"""
+    return Assertions(driver)
+
+@pytest.fixture
+def soft_assertions():
+    """Soft assertion klassi uchun fixture"""
+    return SoftAssertions()
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -11,6 +11,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+
+from utils.assertions import Assertions
 from utils.logger import get_test_name, configure_logging
 from utils.exception import *
 from selenium.common.exceptions import (
@@ -29,9 +31,10 @@ class BasePage:
         self.driver = driver
         self.test_name = get_test_name()
         self.logger = configure_logging(self.test_name)
-        self.default_timeout = 30
+        self.default_timeout = 20
         self.default_page_load_timeout = 180
         self.actions = ActionChains(driver)
+        self.assertions = Assertions(driver)
 
     # ==================================================================================================================
 
