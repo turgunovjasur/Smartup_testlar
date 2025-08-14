@@ -8,7 +8,7 @@ class OrderAddProduct(BasePage):
     header_text = (By.XPATH, "//div/h3/t[contains(text(), 'ТМЦ')]")
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header_text)
+        self.wait_for_element_visible(self.header_text)
     # ------------------------------------------------------------------------------------------------------------------
     setting_button = (By.XPATH, '//b-pg-controller[@name="goods_items"]//div[@role="group"]/button')
     setting_tbl_button = (By.XPATH, '//b-pg-controller[@name="goods_items"]//div[@role="group"]//a')
@@ -75,6 +75,11 @@ class OrderAddProduct(BasePage):
 
     def click_action_checkbox_button(self):
         self.click(self.action_checkbox_button)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def get_action_name(self, action_name):
+        action_name_locator = (By.XPATH, f'//div[@id="actions"]//div[@class="row"]//h4[contains(text(),"{action_name}")]')
+        return self.get_text(action_name_locator)
     # ------------------------------------------------------------------------------------------------------------------
     select_button = (By.XPATH, '(//button[@id="anor279-button-select"])[1]')
 

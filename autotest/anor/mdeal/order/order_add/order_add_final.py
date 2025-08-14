@@ -85,3 +85,16 @@ class OrderAddFinal(BasePage):
         self.click(self.setting_button)
         self.click(self.setting_tbl_button)
     # ------------------------------------------------------------------------------------------------------------------
+    # modal_content = (By.XPATH, '//div[@id="biruniConfirm"]//div[@class="modal-body"]/h4')
+    #
+    # def get_modal_content(self):
+    #     return self.get_text(self.modal_content)
+    # ------------------------------------------------------------------------------------------------------------------
+    margin_value_input = (By.XPATH, '//div[@ng-model="d.margin_value"]//span[@ng-click="$select.activate()"]')
+
+    def input_margin_value(self, margin):
+        self.click(self.margin_value_input)
+
+        option = (By.XPATH, f'//div[@ng-model="d.margin_value"]//div[@role="option"]/span[contains(text(),"{margin}")]')
+        self.click(option)
+    # ------------------------------------------------------------------------------------------------------------------

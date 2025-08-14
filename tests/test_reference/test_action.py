@@ -1,57 +1,75 @@
 import pytest
-
-from autotest.anor.mcg.action_add.action_add import ActionAdd
-from autotest.anor.mcg.action_list.action_list import ActionList
-from autotest.anor.mcg.action_view.action_view import ActionIdView
-from autotest.core.md.base_page import BasePage
 from flows.auth_flow import login_user
+from tests.test_reference.flow_action import list_flow, add_flow, view_flow
+
+# ======================================================================================================================
 
 @pytest.mark.regression
 @pytest.mark.order(51)
-def test_add_action(driver, test_data):
-    # Log
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_action")
-
-    # Test data
+def test_add_action_cash_money(driver, test_data, assertions):
     data = test_data["data"]
-    action_name = 'Test_action'
+    action_name = 'Test_action_cash_money'
     room_name = data["room_name"]
     warehouse_name = data["warehouse_name"]
+    payment_type_name = data["payment_type_name"]
     product_name = data["product_name"]
     product_quantity = 10
     bonus_product_name = data["product_name"]
+    kind_name = "Скидка"
     bonus_product_quantity = 10
 
     login_user(driver, test_data, url='anor/mcg/action_list')
+    list_flow(driver, add=True)
+    add_flow(driver,
+             action_name=action_name,
+             room_name=room_name,
+             warehouse_name=warehouse_name,
+             payment_type_name=payment_type_name,
+             required_state=True,
+             next_step=True)
+    add_flow(driver,
+             product_name=product_name,
+             product_quantity=product_quantity,
+             bonus_product_name=bonus_product_name,
+             bonus_product_quantity=bonus_product_quantity,
+             kind_name=kind_name)
+    list_flow(driver, find_row=action_name, view=True)
+    view_flow(driver, assertions, action_name=action_name)
+    list_flow(driver)
 
-    # Contract List
-    action_list = ActionList(driver)
-    action_list.element_visible()
-    action_list.click_add_button()
+# ======================================================================================================================
+@pytest.mark.regression
+@pytest.mark.order(51)
+@pytest.mark.order(after="test_add_action_cash_money")
+def test_add_action_terminal(driver, test_data, assertions):
+    data = test_data["data"]
+    action_name = 'Test_action_terminal'
+    room_name = data["room_name"]
+    warehouse_name = data["warehouse_name"]
+    payment_type_name = "Терминал"
+    product_name = data["product_name"]
+    product_quantity = 10
+    bonus_product_name = data["product_name"]
+    kind_name = "Скидка"
+    bonus_product_quantity = 20
 
-    # Contract List
-    action_add = ActionAdd(driver)
-    action_add.element_visible()
-    action_add.input_name(action_name)
-    action_add.input_room(room_name)
-    action_add.input_bonus_warehouse(warehouse_name)
-    action_add.click_step_button()
+    login_user(driver, test_data, url='anor/mcg/action_list')
+    list_flow(driver, add=True)
+    add_flow(driver,
+             action_name=action_name,
+             room_name=room_name,
+             warehouse_name=warehouse_name,
+             payment_type_name=payment_type_name,
+             required_state=True,
+             next_step=True)
+    add_flow(driver,
+             product_name=product_name,
+             product_quantity=product_quantity,
+             bonus_product_name=bonus_product_name,
+             bonus_product_quantity=bonus_product_quantity,
+             kind_name=kind_name)
+    list_flow(driver, find_row=action_name, view=True)
+    view_flow(driver, assertions, action_name=action_name)
+    list_flow(driver)
 
-    action_add.input_product_name(product_name)
-    action_add.input_product_quantity(product_quantity)
-    action_add.input_bonus_product(bonus_product_name)
-    action_add.input_bonus_product_quantity(bonus_product_quantity)
-    action_add.input_bonus_kind()
-    action_add.click_save_button()
-
-    action_list.element_visible()
-    action_list.find_row(action_name)
-    action_list.click_view_button()
-
-    # Contract List
-    action_view = ActionIdView(driver)
-    action_view.element_visible()
-    get_action_name = action_view.get_elements()
-    assert get_action_name == action_name, f"Error: {get_action_name} != {action_name}"
-    action_view.click_close_button()
+# ======================================================================================================================

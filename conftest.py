@@ -84,7 +84,8 @@ def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
     # cod = cod_generator
-    cod = "red-1"
+    # cod = "red-1"
+    cod = "b3"
     save_data("cod", cod)
 
     base_data = {

@@ -4,12 +4,12 @@ import pytest
 from autotest.core.md.base_page import BasePage
 from tests.test_cashin.test_cashin import test_cashin_add_A
 from tests.test_purchase.test_extra_cost import test_add_extra_cost
-from tests.test_reference.test_action import test_add_action
 from tests.test_finance.test_currency import test_currency_add
 from tests.test_order.test_order_return import test_order_return
 from tests.test_input.test_input import test_add_input, test_add_input_with_extra_cost
 from tests.test_movement.test_movement import test_add_internal_movement
 from tests.test_offset.test_offset import test_offset_add_A, test_offset_add_B
+from tests.test_reference.test_action import test_add_action_cash_money, test_add_action_terminal
 from tests.test_reference.test_client import test_client_add_A, test_client_add_B, test_client_add_C
 from tests.test_reference.test_legal_person import test_add_legal_person, test_add_legal_person_by_supplier
 from tests.test_reference.test_product import test_product_add_as_product_1, test_product_add_as_product_2
@@ -129,7 +129,8 @@ test_cases = [
         {"name": "Change Status Draft And Cancelled-C",        "func": test_change_status_new_and_cancelled_demo},
 
         # Order with Action:
-        {"name": "Add Action",                                 "func": test_add_action},
+        {"name": "Add Action Cash Money",                      "func": test_add_action_cash_money},
+        {"name": "Add Action Terminal",                        "func": test_add_action_terminal},
         {"name": "Add Order For Action-C",                     "func": test_add_order_for_action_demo},
         {"name": "Edit Order For Action-C",                    "func": test_edit_order_for_action_demo},
         {"name": "Change Status Draft And Delivered-C",        "func": test_change_status_draft_and_delivered_demo},

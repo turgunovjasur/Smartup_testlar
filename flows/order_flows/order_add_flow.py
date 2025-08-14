@@ -112,6 +112,9 @@ def final_flow(driver, **kwargs):
     if kwargs.get("payment_type_name"):
         final_page.input_payment_type(kwargs.get("payment_type_name"))
 
+    if kwargs.get("total_margin"):
+        final_page.input_margin_value(kwargs.get("total_margin"))
+
     if kwargs.get("get_total_amount"):
         result["total_amount"] = final_page.check_total_amount()
 
@@ -176,5 +179,10 @@ def step_flow(driver, **kwargs):
     if kwargs.get("prev_step", False):
         product_page = OrderAddFinal(driver)
         product_page.click_prev_step_button()
+
+    if kwargs.get("save", False):
+        final_page = OrderAddFinal(driver)
+        final_page.click_save_button()
+        time.sleep(2)
 
 # ======================================================================================================================

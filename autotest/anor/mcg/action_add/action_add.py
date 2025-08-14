@@ -9,8 +9,7 @@ class ActionAdd(BasePage):
     header = (By.XPATH, "(//h3/t[contains(text(), Главное)])[1]")
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
-    # ------------------------------------------------------------------------------------------------------------------
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     name_input = (By.XPATH, "id('anor718-input-text-name')/input")
 
@@ -34,11 +33,31 @@ class ActionAdd(BasePage):
     def input_bonus_warehouse(self, warehouse_name):
         self.click_options(self.bonus_warehouse_input, self.bonus_warehouse_options, warehouse_name)
     # ------------------------------------------------------------------------------------------------------------------
+    price_type_input = (By.XPATH, '//b-input[@name="price_types"]//input')
+    price_type_options = (By.XPATH, '//b-input[@name="price_types"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def input_price_type(self, price_type_name):
+        self.click_options(self.price_type_input, self.price_type_options, price_type_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    payment_type_input = (By.XPATH, '//b-input[@name="payment_types"]//input')
+    payment_type_options = (By.XPATH, '//b-input[@name="payment_types"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def input_payment_type(self, payment_type_name):
+        self.click_options(self.payment_type_input, self.payment_type_options, payment_type_name)
+    # ------------------------------------------------------------------------------------------------------------------
     warehouses_input = (By.XPATH, '//div[@id="anor718-input-b_input-warehouses"]//input')
     warehouses_options = (By.XPATH, '//div[@id="anor718-input-b_input-warehouses"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def input_warehouses(self, warehouse_name):
         self.click_options(self.warehouses_input, self.warehouses_options, warehouse_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    required_input = (By.XPATH, '//div[@ng-model="d.forced"]//span[@ng-click="$select.activate()"]')
+
+    def input_required(self, required_state="Да"):
+        self.click(self.required_input)
+
+        locator = (By.XPATH, f'//div[@ng-model="d.forced"]//div[@role="option"]/span[contains(text(),"{required_state}")]')
+        self.click(locator)
     # ------------------------------------------------------------------------------------------------------------------
     tip_action_input = (By.XPATH, '//div[@ng-model="d.calc_kind"]/div/span')
     tip_options = {
@@ -62,12 +81,6 @@ class ActionAdd(BasePage):
         self.click(self.next_step_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Page 2
-    # ------------------------------------------------------------------------------------------------------------------
-    type_condition_input = (By.XPATH, "(id('anor718-ui_select-rule_kind')//span[1])[1]")
-    type_condition_elem = (By.XPATH, "id('ui-select-choices-row-9-1')")
-
-    def input_type_condition(self):
-        self.input_text_elem(self.type_condition_input, self.type_condition_elem)
     # ------------------------------------------------------------------------------------------------------------------
     product_input = (By.XPATH, '//b-input[@id="rule_products"]//input')
     options_product = (By.XPATH, '//b-input[@id="rule_products"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div[1]')
@@ -93,11 +106,12 @@ class ActionAdd(BasePage):
         self.input_text(self.bonus_product_quantity_input, bonus_product_quantity)
     # ------------------------------------------------------------------------------------------------------------------
     bonus_kind_input = (By.XPATH, '//form[@name="step1"]//div[@ng-model="bonus.bonus_kind"]//span[@ng-click="$select.activate()"]')
-    bonus_kind = (By.XPATH, '//form[@name="step1"]//div[@ng-model="bonus.bonus_kind"]//ul//span[contains(text(), "Скидка")]')
 
-    def input_bonus_kind(self):
+    def input_bonus_kind(self, kind_name):
         self.click(self.bonus_kind_input)
-        self.click(self.bonus_kind)
+
+        locator = (By.XPATH, f'//form[@name="step1"]//div[@ng-model="bonus.bonus_kind"]//ul//span[contains(text(), "{kind_name}")]')
+        self.click(locator)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, "id('anor718-button-next_step')")
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")

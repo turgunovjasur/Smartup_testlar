@@ -1,10 +1,11 @@
 from datetime import datetime
 import pytest
+from conftest import soft_assertions
 from flows.auth_flow import login_user
-from autotest.core.md.base_page import BasePage
 from flows.error_message_flow import get_error_massage
 from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
 from flows.grid_setting_flow import grid_setting_in_form
+from flows.modal_content_flow import get_modal_content_flow
 from flows.order_flows.order_add_flow import (
     main_flow, product_flow, final_flow, step_flow, product_select_flow, final_input_value_flow)
 from flows.order_flows.order_list_flow import order_list, order_view, order_file, order_transaction, order_attach_data
@@ -14,8 +15,7 @@ from flows.order_flows.order_list_flow import order_list, order_view, order_file
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(29)
-def test_add_order_with_consignment_demo(driver, test_data, save_data):
-    # --------------------------------------------------
+def test_add_order_with_consignment_demo(driver, test_data, save_data, soft_assertions, assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -28,10 +28,6 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data):
     consignment_day = 30
     consignment_amount = product_quantity * data["product_price"]
     status_name = data["Draft"]
-    # --------------------------------------------------
-
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_order_with_consignment_demo")
 
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
@@ -45,9 +41,9 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data):
                        robot_name=robot_name,
                        client_name=client_name)
 
-    assert result["natural_person"] == data["natural_person_name"], f"{result["natural_person"]} != {data["natural_person_name"]}"
-    assert result["deal_time"] == deal_time, f"{result["deal_time"]} != {deal_time}"
-    assert result["delivery_date"] in deal_time, f"{result["delivery_date"]} not in  {deal_time}"
+    assertions.assert_equals(result["natural_person"], data["natural_person_name"])
+    assertions.assert_equals(result["deal_time"], deal_time)
+    assertions.assert_contains(deal_time, result["delivery_date"])
 
     product_flow(driver, order_grid_setting=True, next_step=False)
     grid_setting_in_form(driver)
@@ -89,11 +85,12 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data):
 
     save_data("order_id_1", get_values["ИД заказа"])
 
-    assert get_values["Штат"] == robot_name,                   f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == status_name,                f"{get_values['Статус']} != {status_name}"
-    assert get_values["Клиент"] == client_name,                f"{get_values['Клиент']} != {client_name}"
-    assert get_values["Рабочая зона"] == room_name,            f"{get_values['Рабочая зона']} != {room_name}"
-    assert get_values["Сумма заказа"] == consignment_amount,   f"{get_values['Сумма заказа']} != {consignment_amount}"
+    soft_assertions.assert_equals(get_values["Штат"], robot_name)
+    soft_assertions.assert_equals(get_values["Статус"], status_name)
+    soft_assertions.assert_equals(get_values["Клиент"], client_name)
+    soft_assertions.assert_equals(get_values["Рабочая зона"], room_name)
+    soft_assertions.assert_equals(get_values["Сумма заказа"], consignment_amount)
+    soft_assertions.assert_all()
 
     order_list(driver)
 
@@ -102,27 +99,20 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data):
 @pytest.mark.regression
 @pytest.mark.order_group_B
 @pytest.mark.order(39)
-def test_add_order_with_contract_demo(driver, test_data, save_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_order_with_contract_demo")
-
-    # Test data
+def test_add_order_with_contract_demo(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
     client_name = f"{data['client_name']}-B"
     contract_name = f"{data['contract_name']}-B-UZB"
-
     product_name = data["product_name"]
     warehouse_name = data["warehouse_name"]
     price_type_name = data["price_type_name_UZB"]
     product_quantity = 101
     return_quantity = 15
-
     payment_type_name = data["payment_type_name"]
     status_name = data["Draft"]
 
-    # Login
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
     order_list(driver, add=True)
@@ -163,10 +153,11 @@ def test_add_order_with_contract_demo(driver, test_data, save_data):
 
     save_data("order_id_3", get_values["ИД заказа"])
 
-    assert get_values["Штат"] == robot_name,                   f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == status_name,                f"{get_values['Статус']} != {status_name}"
-    assert get_values["Клиент"] == client_name,                f"{get_values['Клиент']} != {client_name}"
-    assert get_values["Рабочая зона"] == room_name,            f"{get_values['Рабочая зона']} != {room_name}"
+    soft_assertions.assert_equals(get_values["Штат"], robot_name)
+    soft_assertions.assert_equals(get_values["Статус"], status_name)
+    soft_assertions.assert_equals(get_values["Клиент"], client_name)
+    soft_assertions.assert_equals(get_values["Рабочая зона"], room_name)
+    soft_assertions.assert_all()
 
     order_list(driver)
 
@@ -175,11 +166,7 @@ def test_add_order_with_contract_demo(driver, test_data, save_data):
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(43)
-def test_add_order_for_price_type_USA_demo(driver, test_data, save_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_order_for_price_type_USA_demo")
-
-    # Test data
+def test_add_order_for_price_type_USA_demo(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -194,7 +181,6 @@ def test_add_order_for_price_type_USA_demo(driver, test_data, save_data):
     payment_type_name = data["payment_type_name"]
     status_name = data["New"]
 
-    # Login
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
     order_list(driver, add=True)
@@ -227,15 +213,14 @@ def test_add_order_for_price_type_USA_demo(driver, test_data, save_data):
 
     save_data("order_id_4", get_values["ИД заказа"])
 
-    assert get_values["Штат"] == robot_name,                   f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == status_name,                f"{get_values['Статус']} != {status_name}"
-    assert get_values["Клиент"] == client_name,                f"{get_values['Клиент']} != {client_name}"
-    assert get_values["Рабочая зона"] == room_name,            f"{get_values['Рабочая зона']} != {room_name}"
+    soft_assertions.assert_equals(get_values["Штат"], robot_name)
+    soft_assertions.assert_equals(get_values["Статус"], status_name)
+    soft_assertions.assert_equals(get_values["Клиент"], client_name)
+    soft_assertions.assert_equals(get_values["Рабочая зона"], room_name)
+    soft_assertions.assert_all()
 
     order_list(driver, reload=True, find_row=client_name, file=True)
-
     order_file(driver)
-
     order_list(driver, reload=True, find_row=client_name, transaction=True)
 
     order_transaction(driver)
@@ -250,11 +235,7 @@ def test_add_order_for_price_type_USA_demo(driver, test_data, save_data):
 
 @pytest.mark.regression
 @pytest.mark.order(48)
-def test_add_order_for_sub_filial_demo(driver, test_data, save_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_order_for_sub_filial_demo")
-
-    # Test data
+def test_add_order_for_sub_filial_demo(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -271,7 +252,6 @@ def test_add_order_for_sub_filial_demo(driver, test_data, save_data):
     payment_type_name = data["payment_type_name"]
     total_amount = (product_quantity * product_price_USA) - ((product_quantity * product_price_USA) * (margin / 100))
 
-    # Login
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
     order_list(driver, add=True)
@@ -308,12 +288,13 @@ def test_add_order_for_sub_filial_demo(driver, test_data, save_data):
 
     save_data("order_id_5", get_values["ИД заказа"])
 
-    assert get_values["Штат"] == robot_name,           f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data['New']}"
-    assert get_values["Клиент"] == client_name,        f"{get_values['Клиент']} != {client_name}"
-    assert get_values["Рабочая зона"] == room_name,    f"{get_values['Рабочая зона']} != {room_name}"
-    assert get_values["Проект"] == sub_filial_name,    f"{get_values['Проект']} != {sub_filial_name}"
-    assert get_values["Сумма заказа"] == total_amount, f"{get_values['Сумма заказа']} != {total_amount}"
+    soft_assertions.assert_equals(get_values["Штат"], robot_name)
+    soft_assertions.assert_equals(get_values["Статус"], data["New"])
+    soft_assertions.assert_equals(get_values["Клиент"], client_name)
+    soft_assertions.assert_equals(get_values["Рабочая зона"], room_name)
+    soft_assertions.assert_equals(get_values["Проект"], sub_filial_name)
+    soft_assertions.assert_equals(get_values["Сумма заказа"], total_amount)
+    soft_assertions.assert_all()
 
     order_list(driver)
 
@@ -321,11 +302,7 @@ def test_add_order_for_sub_filial_demo(driver, test_data, save_data):
 
 @pytest.mark.regression
 @pytest.mark.order(52)
-def test_add_order_for_action_demo(driver, test_data, save_data):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_add_order_for_action_demo")
-
-    # Test data
+def test_add_order_for_action_demo(driver, test_data, save_data, assertions, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -338,42 +315,62 @@ def test_add_order_for_action_demo(driver, test_data, save_data):
     price_type_name = data["price_type_name_USA"]
     product_price = data["product_price_USA"]
     product_quantity = 10
-    percent_value = 10
+    margin = data["percent_value"]
+    margin_cash_money = 10
+    margin_terminal = 20
 
-    payment_type_name = data["payment_type_name"]
-
-    # Login
     login_user(driver, test_data, url='trade/tdeal/order/order_list')
 
     order_list(driver, add=True)
-
     main_flow(driver,
               room_name=room_name,
               robot_name=robot_name,
               client_name=client_name,
               sub_filial_name=sub_filial_name,
               contract_name=contract_name)
-
     product_flow(driver,
                  product_name=product_name,
                  warehouse_name=warehouse_name,
                  price_type_name=price_type_name,
                  product_quantity=product_quantity,
                  next_step=False)
-
     order_add_tablist = OrderAddProduct(driver)
     order_add_tablist.click_nav_tablist_button(tablist_name="Акции")
-    order_add_tablist.click_action_checkbox_button()
+    # ------------------------------------------------------------------------------------------------------------------
+    action_name = "Test_action_cash_money"
+    get_action_name = order_add_tablist.get_action_name(action_name)
+    get_action_first_text = get_action_name.split("\n")[0]
+    soft_assertions.assert_equals(get_action_first_text, action_name)
+
+    action_name = "Test_action_terminal"
+    get_action_name = order_add_tablist.get_action_name(action_name)
+    get_action_first_text = get_action_name.split("\n")[0]
+    soft_assertions.assert_equals(get_action_first_text, action_name)
+
+    soft_assertions.assert_all()
+    # ------------------------------------------------------------------------------------------------------------------
     order_add_tablist.click_nav_tablist_button(tablist_name="Товар")
+    product_flow(driver, margin=margin)
 
-    step_flow(driver, next_step=True)
+    result = final_flow(driver, get_total_amount=True, save=False)  # 114
+    total_amount_no_margin = product_quantity * product_price  # 120
+    total_amount = total_amount_no_margin - (total_amount_no_margin * margin / 100)  # 114
+    assertions.assert_equals(result["total_amount"], total_amount)
 
-    get_total_amount = final_flow(driver,
-                                  payment_type_name=payment_type_name,
-                                  get_total_amount=True,
-                                  status_name=data["New"])
-    total_amount = (product_quantity * product_price) - ((product_quantity * product_price) * (percent_value / 100))  # 120-(120*10%)
-    assert get_total_amount["total_amount"] == total_amount, f"Error: {get_total_amount['total_amount']} != {total_amount}"
+    payment_type_name = "Наличные деньги"
+    result = final_flow(driver, payment_type_name=payment_type_name, get_total_amount=True, save=False)  # 108
+    total_amount = total_amount_no_margin - (total_amount_no_margin * margin_cash_money / 100)  # 108
+    assertions.assert_equals(result["total_amount"], total_amount)
+
+    payment_type_name = "Терминал"
+    final_flow(driver, payment_type_name=payment_type_name, save=False)
+    get_modal_content_flow(driver, button_state=True)
+
+    result = final_flow(driver, get_total_amount=True, save=False)  # 108
+    total_amount = total_amount_no_margin - (total_amount_no_margin * margin_terminal / 100)  # 96
+    assertions.assert_equals(result["total_amount"], total_amount)
+
+    step_flow(driver, save=True)
 
     order_list(driver, find_row=client_name, view=True)
 
@@ -390,12 +387,13 @@ def test_add_order_for_action_demo(driver, test_data, save_data):
 
     save_data("order_id_6", get_values["ИД заказа"])
 
-    assert get_values["Штат"] == robot_name,           f'{get_values["Штат"]} != {robot_name}'
-    assert get_values["Статус"] == data["New"],        f"{get_values['Статус']} != {data['New']}"
-    assert get_values["Клиент"] == client_name,        f"{get_values['Клиент']} != {client_name}"
-    assert get_values["Рабочая зона"] == room_name,    f"{get_values['Рабочая зона']} != {room_name}"
-    assert get_values["Проект"] == sub_filial_name,    f"{get_values['Проект']} != {sub_filial_name}"
-    assert get_values["Сумма заказа"] == total_amount, f"{get_values['Сумма заказа']} != {total_amount}"
+    soft_assertions.assert_equals(get_values["Штат"], robot_name)
+    soft_assertions.assert_equals(get_values["Статус"], data["New"])
+    soft_assertions.assert_equals(get_values["Клиент"], client_name)
+    soft_assertions.assert_equals(get_values["Рабочая зона"], room_name)
+    soft_assertions.assert_equals(get_values["Проект"], sub_filial_name)
+    soft_assertions.assert_equals(get_values["Сумма заказа"], total_amount)
+    soft_assertions.assert_all()
 
     order_list(driver)
 
