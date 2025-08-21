@@ -36,8 +36,6 @@ from autotest.anor.mrf.subfilial_add.subfilial_add import SubFilialAdd
 from autotest.anor.mrf.subfilial_list.subfilial_list import SubFilialList
 from autotest.anor.mrf.van_add.van_add import VanAdd
 from autotest.anor.mrf.van_list.van_list import VanList
-from autotest.biruni.kl.license_list.license_list import LicenseList
-from autotest.biruni.kl.license_user_list.license_user_list import LicenseUserList
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.change_password.change_password import ChangePassword
 from autotest.core.md.company_add.company_add import CompanyAdd
@@ -861,57 +859,6 @@ def test_setting_prepayment_on(driver, test_data):
 def test_setting_prepayment_off(driver, test_data):
     """Prepayment setting off"""
     setting_prepayment(driver, test_data, prepayment=False)
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-@pytest.mark.regression
-@pytest.mark.order(9)
-def test_add_user_license(driver, test_data):
-    """Test configuring add user license."""
-
-    if test_data["data"]["url"] != "https://smartup.online/login.html":
-        pytest.skip("⚠️ Faqat Online saytida ishlaydi")
-
-    # Test data
-    base_page = BasePage(driver)
-    data = test_data["data"]
-    natural_person_name = data['natural_person_name']
-
-    # Login
-    login_admin(driver, test_data, url='biruni/kl/license_list')
-
-    # License List
-    license_list = LicenseList(driver)
-    license_list.element_visible()
-    license_list.click_navbar_button()
-
-    license_list.licence_visible()
-    license_list.click_tbl_row_button()
-    license_list.click_bind_user_button()
-
-    # License User List
-    license_user_list = LicenseUserList(driver)
-    license_user_list.element_visible()
-
-    if license_user_list.get_row_no_data():
-        base_page.logger.warning(f"No data in table")
-        license_user_list.click_detach_button()
-
-        license_user_list.attach_button_visible()
-        license_user_list.find_row(natural_person_name)
-        license_user_list.click_attach_button()
-        license_user_list.click_close_button()
-        license_list.licence_visible()
-        return
-
-    license_user_list.click_all_checkbox()
-    license_user_list.click_detach_button()
-
-    license_user_list.attach_button_visible()
-    license_user_list.find_row(natural_person_name)
-    license_user_list.click_attach_button()
-    license_user_list.click_close_button()
-    license_list.licence_visible()
 
 # ----------------------------------------------------------------------------------------------------------------------
 

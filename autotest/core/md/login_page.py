@@ -46,3 +46,19 @@ class LoginPage(BasePage):
         self.click(self.yes_button)
         self.logger.info("Login Out: closed successfully")
     # ------------------------------------------------------------------------------------------------------------------
+    # unauthenticated_session_details
+    # ------------------------------------------------------------------------------------------------------------------
+    retry_button = (By.XPATH, '//button[@id="retry"]')
+
+    def element_visible_retry_button(self):
+        self.wait_for_element_visible(self.retry_button)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def click_retry_button(self):
+        self.click(self.retry_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    back_button = (By.XPATH, '//button[@id="retry"]/following-sibling::a[@id="back"]')
+
+    def click_back_button(self):
+        self.click(self.back_button)
+    # ------------------------------------------------------------------------------------------------------------------

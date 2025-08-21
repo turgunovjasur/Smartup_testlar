@@ -3,6 +3,7 @@ import allure
 import pytest
 from autotest.core.md.base_page import BasePage
 from tests.test_cashin.test_cashin import test_cashin_add_A
+from tests.test_license.test_license import test_add_user_license
 from tests.test_purchase.test_extra_cost import test_add_extra_cost
 from tests.test_finance.test_currency import test_currency_add
 from tests.test_order.test_order_return import test_order_return
@@ -40,7 +41,7 @@ from tests.test_finance.test_contract import (
 )
 from tests.test_order.test_life_cycle import (
     test_filial_create, test_room_add, test_robot_add, test_sub_filial_add, test_user_create,
-    test_adding_permissions_to_user, test_add_user_license, test_user_change_password, test_price_type_add_UZB,
+    test_adding_permissions_to_user, test_user_change_password, test_price_type_add_UZB,
     test_price_type_add_USA, test_payment_type_add, test_sector_add, test_check_price_tag, test_margin_add,
     test_room_attachment, test_init_balance, test_setting_consignment,
     test_setting_prepayment_on, test_setting_prepayment_off

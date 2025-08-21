@@ -5,18 +5,23 @@ from utils.exception import ElementVisibilityError
 
 class LicenseUserList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
+    # attach user
+    # ------------------------------------------------------------------------------------------------------------------
     header = (By.XPATH, '//button[@ng-class="q.classAttach"]')
 
     def element_visible(self):
         self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     all_checkbox = (By.XPATH, '//b-grid[@name="table"]//div[@class="tbl-header"]//input/following-sibling::span')
-    detach_checked_button = (By.XPATH, '//button[@ng-click="detachChecked()"]')
-    yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
     def click_all_checkbox(self):
         element = self.wait_for_element(self.all_checkbox, wait_type="presence")
         self._click(element, self.all_checkbox, _click_js=True)
+    # ------------------------------------------------------------------------------------------------------------------
+    detach_checked_button = (By.XPATH, '//button[@ng-click="detachChecked()"]')
+    yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
+
+    def click_detach_checked_button(self):
         self.click(self.detach_checked_button)
         self.click(self.yes_button)
     # ------------------------------------------------------------------------------------------------------------------
@@ -25,6 +30,7 @@ class LicenseUserList(BasePage):
     def get_row_no_data(self):
         try:
             self.wait_for_element(self.row_no_data, wait_type="visibility", timeout=5)
+            self.logger.warning(f"No data in table")
             return True
         except ElementVisibilityError:
             return False
@@ -35,11 +41,6 @@ class LicenseUserList(BasePage):
         self.click(self.detach_button)
     # ------------------------------------------------------------------------------------------------------------------
     # Available users:
-    # ------------------------------------------------------------------------------------------------------------------
-    header_attach_button = (By.XPATH, '//button[@ng-class="q.classAttach"]')
-
-    def attach_button_visible(self):
-        self.wait_for_element_visible(self.header_attach_button)
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, natural_person_name):

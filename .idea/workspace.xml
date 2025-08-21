@@ -4,22 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added: Assertion (12.08.2025)">
-      <change afterPath="$PROJECT_DIR$/autotest/biruni/modal_content/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autotest/biruni/modal_content/modal_content.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flows/modal_content_flow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_reference/flow_action.py" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added: Action for Payment Type (14.08.2025)">
+      <change afterPath="$PROJECT_DIR$/tests/test_license/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_license/flow_license.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_license/test_license.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/assertions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/log_helpers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/ui_loaders.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/all_test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/all_test_runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_add/action_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mcg/action_add/action_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/room_attachment/room_attachment.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mrf/room_attachment/room_attachment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_list/license_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/kl/license_list/license_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_user_list/license_user_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/kl/license_user_list/license_user_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/login_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/login_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tr/role_edit/role_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/tr/role_edit/role_edit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tr/role_list/role_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/trade/tr/role_list/role_list.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_store.json" beforeDir="false" afterPath="$PROJECT_DIR$/data_store.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/auth_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/auth_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_report.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_reference/test_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_action.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/exception.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/exception.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +104,9 @@
     "Python tests.pytest for test_legal_person.test_add_legal_person.executor": "Run",
     "Python tests.pytest for test_legal_person.test_add_legal_person_by_supplier.executor": "Run",
     "Python tests.pytest for test_legal_person.test_add_supplier.executor": "Run",
+    "Python tests.pytest for test_license.test_add_purchase_license.executor": "Run",
+    "Python tests.pytest for test_license.test_add_user_license.executor": "Run",
+    "Python tests.pytest for test_license.test_check_user_license.executor": "Run",
     "Python tests.pytest for test_life_cycle.test_add_supplier.executor": "Run",
     "Python tests.pytest for test_life_cycle.test_add_user_license.executor": "Run",
     "Python tests.pytest for test_life_cycle.test_add_van.executor": "Run",
@@ -225,7 +238,7 @@
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/jasur.turgunov/Desktop/ish/Smartup_testlar",
     "run.code.analysis.last.selected.profile": "aDefault",
-    "settings.editor.selected.configurable": "Errors"
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Console Colors"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -233,113 +246,113 @@
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Smartup_testlar\data" />
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\flows\order_flows" />
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar" />
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\tests\test_warehouse" />
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mrf" />
-      <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\autotest\anor\mkw" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_stocktaking.test_add_stocktaking">
-    <configuration name="pytest for test_movement.test_add_internal_movement" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.pytest for test_life_cycle.test_adding_permissions_to_user">
+    <configuration name="pytest for test_license.test_add_purchase_license" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_movement" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_license" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_movement.test_add_internal_movement&quot;" />
+      <option name="_new_target" value="&quot;test_license.test_add_purchase_license&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_stocktaking.test_add_stocktaking" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_life_cycle.test_adding_permissions_to_user" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_stocktaking" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_stocktaking.test_add_stocktaking&quot;" />
+      <option name="_new_target" value="&quot;test_life_cycle.test_adding_permissions_to_user&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_warehouse.test_add_warehouse" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_life_cycle.test_user_change_password" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_warehouse" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_warehouse.test_add_warehouse&quot;" />
+      <option name="_new_target" value="&quot;test_life_cycle.test_user_change_password&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_writeoff.test_add_write_off" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_order_report.test_add_template_for_order_invoice_report" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_writeoff" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_writeoff.test_add_write_off&quot;" />
+      <option name="_new_target" value="&quot;test_order_report.test_add_template_for_order_invoice_report&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_writeoff.test_check_constructor_report_write_off" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_order.test_add_order_with_consignment_demo" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_writeoff" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_writeoff.test_check_constructor_report_write_off&quot;" />
+      <option name="_new_target" value="&quot;test_order.test_add_order_with_consignment_demo&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.pytest for test_movement.test_add_internal_movement" />
-      <item itemvalue="Python tests.pytest for test_stocktaking.test_add_stocktaking" />
-      <item itemvalue="Python tests.pytest for test_warehouse.test_add_warehouse" />
-      <item itemvalue="Python tests.pytest for test_writeoff.test_add_write_off" />
-      <item itemvalue="Python tests.pytest for test_writeoff.test_check_constructor_report_write_off" />
+      <item itemvalue="Python tests.pytest for test_license.test_add_purchase_license" />
+      <item itemvalue="Python tests.pytest for test_order.test_add_order_with_consignment_demo" />
+      <item itemvalue="Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report" />
+      <item itemvalue="Python tests.pytest for test_life_cycle.test_adding_permissions_to_user" />
+      <item itemvalue="Python tests.pytest for test_life_cycle.test_user_change_password" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_stocktaking.test_add_stocktaking" />
-        <item itemvalue="Python tests.pytest for test_writeoff.test_check_constructor_report_write_off" />
-        <item itemvalue="Python tests.pytest for test_writeoff.test_add_write_off" />
-        <item itemvalue="Python tests.pytest for test_movement.test_add_internal_movement" />
-        <item itemvalue="Python tests.pytest for test_warehouse.test_add_warehouse" />
+        <item itemvalue="Python tests.pytest for test_life_cycle.test_adding_permissions_to_user" />
+        <item itemvalue="Python tests.pytest for test_license.test_add_purchase_license" />
+        <item itemvalue="Python tests.pytest for test_order.test_add_order_with_consignment_demo" />
+        <item itemvalue="Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report" />
+        <item itemvalue="Python tests.pytest for test_life_cycle.test_user_change_password" />
       </list>
     </recent_temporary>
   </component>
@@ -671,8 +684,19 @@
       <option name="project" value="LOCAL" />
       <updated>1755002124289</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Added: Action for Payment Type (14.08.2025)">
+      <option name="closed" value="true" />
+      <created>1755175576998</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1755175576998</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -686,7 +710,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="26.06.2025 -&gt; 2" />
     <MESSAGE value="&quot;Fix syntax error in f-string (Штат key)&quot;" />
     <MESSAGE value="Fix syntax error in f-string" />
     <MESSAGE value="&quot;--headless&quot;, default=True" />
@@ -711,6 +734,7 @@
     <MESSAGE value="Added flow input 07.08.2025" />
     <MESSAGE value="Added balance_flow 08.08.2025" />
     <MESSAGE value="Added: Assertion (12.08.2025)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added: Assertion (12.08.2025)" />
+    <MESSAGE value="Added: Action for Payment Type (14.08.2025)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added: Action for Payment Type (14.08.2025)" />
   </component>
 </project>

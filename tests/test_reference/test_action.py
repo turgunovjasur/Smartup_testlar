@@ -38,9 +38,9 @@ def test_add_action_cash_money(driver, test_data, assertions):
     list_flow(driver)
 
 # ======================================================================================================================
+
 @pytest.mark.regression
 @pytest.mark.order(51)
-@pytest.mark.order(after="test_add_action_cash_money")
 def test_add_action_terminal(driver, test_data, assertions):
     data = test_data["data"]
     action_name = 'Test_action_terminal'

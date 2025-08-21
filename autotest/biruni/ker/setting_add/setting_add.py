@@ -25,7 +25,7 @@ class SettingAdd(BasePage):
 
     def click_template_input(self):
         self.click(self.template_input)
-        time.sleep(1)
+        time.sleep(2)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
 

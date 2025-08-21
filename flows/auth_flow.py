@@ -24,8 +24,8 @@ def dashboard(driver, dashboard_check, change_password_check, filial_name, url):
     base_page = BasePage(driver)
     dashboard_page = DashboardPage(driver)
 
-    if dashboard_page.element_visible_session():
-        dashboard_page.click_button_delete_session()
+    # if dashboard_page.element_visible_session():
+    #     dashboard_page.click_button_delete_session()
 
     if dashboard_check:
         dashboard_page.element_visible_dashboard()

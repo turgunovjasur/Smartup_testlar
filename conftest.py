@@ -8,9 +8,10 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 
+from autotest.core.md.base_page import BasePage
 from tests.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
+from utils.assertions import SoftAssertions
 from utils.env_reader import get_env
-from utils.assertions import Assertions, SoftAssertions
 
 
 driver_path = ChromeDriverManager().install()
@@ -85,7 +86,7 @@ def test_data(save_data, cod_generator):
 
     # cod = cod_generator
     # cod = "red-1"
-    cod = "b3"
+    cod = "c1"
     save_data("cod", cod)
 
     base_data = {
@@ -239,9 +240,13 @@ def load_data(request):
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.fixture
-def assertions(driver):
+def base_page(driver):
+    return BasePage(driver)
+
+@pytest.fixture
+def assertions(base_page):
     """Assertion klassi uchun fixture"""
-    return Assertions(driver)
+    return base_page.assertions
 
 @pytest.fixture
 def soft_assertions():

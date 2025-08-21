@@ -21,7 +21,7 @@ class RoleEdit(BasePage):
 
     def checkbox_quantity(self):
         checkboxes = self._wait_for_presence_all(self.checkboxes)
-        print(f"Checkboxlar soni: {len(checkboxes)}")
+        self.logger.info(f"Checkboxlar soni: {len(checkboxes)}")
     # ------------------------------------------------------------------------------------------------------------------
 
     def click_checkboxes(self):

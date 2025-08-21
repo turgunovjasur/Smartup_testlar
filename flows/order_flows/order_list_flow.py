@@ -55,8 +55,8 @@ def order_list(driver, **kwargs):
 # ======================================================================================================================
 
 def order_view(driver, **kwargs):
-    order_view = OrderView(driver)
-    order_view.element_visible()
+    view = OrderView(driver)
+    view.element_visible()
 
     input_name = kwargs.get("input_name")
     default_dtype = kwargs.get("data_type", "text")
@@ -80,20 +80,20 @@ def order_view(driver, **kwargs):
         # dict bo‘lsa: {"ИД заказа": "numeric", "Клиент": "text"} → qoldiramiz
 
         for name, dtype in input_name.items():
-            input_values[name] = order_view.get_input_value_in_order_view(name, dtype)
+            input_values[name] = view.get_input_value_in_order_view(name, dtype)
 
     if tablist_name:
-        order_view.click_tablist_button(tablist_name)
+        view.click_tablist_button(tablist_name)
 
         if consignment_day and consignment_amount:
-            get_consignment_amount = order_view.check_consignments(consignment_day)
+            get_consignment_amount = view.check_consignments(consignment_day)
             get_consignment_amount = int(get_consignment_amount.replace(" ", ""))
             assert get_consignment_amount == consignment_amount, f'Error: {get_consignment_amount} != {consignment_amount}'
 
         if consignment_empty:
-            order_view.check_row_consignment()
+            view.check_row_consignment()
 
-    order_view.click_close_button()
+    view.click_close_button()
 
     return input_values if input_values else None
 
@@ -115,10 +115,10 @@ def order_transaction(driver):
 # ======================================================================================================================
 
 def order_attach_data(driver):
-    order_attach_data = OrderAttachData(driver)
-    order_attach_data.element_visible()
-    order_attach_data.click_delivery_date_checkbox(days=5)
-    order_attach_data.click_save_button()
+    attach_data = OrderAttachData(driver)
+    attach_data.element_visible()
+    attach_data.click_delivery_date_checkbox(days=5)
+    attach_data.click_save_button()
 
 # ======================================================================================================================
 
@@ -131,25 +131,25 @@ def order_copy(driver, copy_client_name):
 # ======================================================================================================================
 
 def order_search_input(driver, **kwargs):
-    order_list = OrdersList(driver)
-    order_list.element_visible()
+    l_list = OrdersList(driver)
+    l_list.element_visible()
 
     search_data = kwargs.get("search_data")
     clear = kwargs.get("clear", False)
 
-    order_list.input_search(search_data)
-    order_list.find_row(search_data)
+    l_list.input_search(search_data)
+    l_list.find_row(search_data)
 
     if clear:
-        order_list.input_search(clear=True)
-        order_list.click_reload_button()
+        l_list.input_search(clear=True)
+        l_list.click_reload_button()
         return
 
 # ======================================================================================================================
 
 def order_filter_panel(driver, **kwargs):
-    order_list = OrdersList(driver)
-    order_list.element_visible()
+    l_list = OrdersList(driver)
+    l_list.element_visible()
 
     open_panel = kwargs.get("open_panel", False)
     show_all = kwargs.get("show_all", False)
@@ -159,21 +159,21 @@ def order_filter_panel(driver, **kwargs):
     close_panel = kwargs.get("close_panel", False)
 
     if open_panel:
-        order_list.click_filter_panel_button()
+        l_list.click_filter_panel_button()
 
     if option_header and option_name:
-        order_list.click_option_in_filter_panel(option_header, option_name, state)
-        order_list.click_filter_run_button()
-        order_list.element_visible()
-        order_list.find_row(option_name)
+        l_list.click_option_in_filter_panel(option_header, option_name, state)
+        l_list.click_filter_run_button()
+        l_list.element_visible()
+        l_list.find_row(option_name)
 
     if not state:
-        order_list.click_option_in_filter_panel(option_header, option_name, state)
+        l_list.click_option_in_filter_panel(option_header, option_name, state)
 
     if show_all:
-        order_list.click_show_all_button()
-        order_list.find_row(option_name)
+        l_list.click_show_all_button()
+        l_list.find_row(option_name)
 
     if close_panel:
-        order_list.click_close_filter_panel()
+        l_list.click_close_filter_panel()
 # ======================================================================================================================
