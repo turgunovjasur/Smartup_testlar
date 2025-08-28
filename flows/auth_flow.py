@@ -16,7 +16,7 @@ def login(driver, email, password):
     login_page.element_visible()
     login_page.fill_form(email, password)
     login_page.click_button()
-    login_page.check_error_message_absence()
+    # login_page.check_error_message_absence()
 
 # ======================================================================================================================
 

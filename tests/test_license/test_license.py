@@ -1,14 +1,16 @@
 from datetime import date
-from calendar import monthrange
 import pytest
+from autotest.biruni.kl.license_list.license_list import LicenseList
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.login_page import LoginPage
 from flows.auth_flow import login_admin, login
-from tests.test_license.flow_license import balance_flow, document_flow, attach_user_flow, purchase_flow
-
+from tests.test_license.flow_license import balance_flow, document_flow, attach_user_flow, purchase_flow, \
+    get_modal_content_flow
 
 # ======================================================================================================================
 
+@pytest.mark.regression
+@pytest.mark.order(9)
 def test_check_user_license(driver, test_data):
     data = test_data["data"]
 
@@ -51,15 +53,32 @@ def test_add_user_license(driver, test_data, login_system=True):
 
 # ======================================================================================================================
 
-def test_add_purchase_license(driver, test_data):
+@pytest.mark.regression
+@pytest.mark.order(9)
+def test_add_purchase_license(driver, test_data, assertions):
     login_admin(driver, test_data, url='biruni/kl/license_list')
 
     balance_flow(driver, navbar_name="Покупка")
 
     today = date.today()
-    begin_date = date(today.year, today.month, 1).strftime("%d.%m.%Y")
-    end_date = date(today.year, today.month, monthrange(today.year, today.month)[1]).strftime("%d.%m.%Y")
+    begin_date = today.strftime("%d%m%Y")  # 22.08.2025
 
-    purchase_flow(driver, payer_name="TEST GWS FIZIK", begin_date=begin_date, end_date=end_date)
+    purchase_flow(driver,
+                  payer_name="TEST GWS FIZIK",
+                  contract_name="Договор № bn от 01.01.2025",
+                  begin_date=begin_date,
+                  license_count=1)
+
+    _list = LicenseList(driver)
+    get_purchase_balance = _list.get_purchase_balance()
+    get_purchase_total_amount = _list.get_purchase_total_amount()
+    after_purchase_balance = get_purchase_balance - get_purchase_total_amount
+
+    get_modal_content_flow(driver)
+
+    get_payer_balance_new = balance_flow(driver, navbar_name="Баланс", payer_name="TEST GWS FIZIK")
+    assertions.assert_equals(actual=get_payer_balance_new,
+                             expected=after_purchase_balance,
+                             message="License: Payer balance -> after purchase")
 
 # ======================================================================================================================

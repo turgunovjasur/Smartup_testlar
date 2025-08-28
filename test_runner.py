@@ -1,7 +1,5 @@
-import inspect
-import allure
 import pytest
-from autotest.core.md.base_page import BasePage
+
 from tests.test_cashin.test_cashin import test_cashin_add_A
 from tests.test_license.test_license import test_add_user_license
 from tests.test_purchase.test_extra_cost import test_add_extra_cost
@@ -175,47 +173,58 @@ test_cases = [
         {"name": "Check Report Spot 2d",                       "func": test_check_report_spot_2d},
 ]
 
-# pytest all_test_runner.py::test_all -v --alluredir=./allure-results
-# allure serve ./allure-results
+def pytest_generate_tests(metafunc):
+    if "test_case" in metafunc.fixturenames:
+        metafunc.parametrize("test_case", test_cases, ids=[tc["name"] for tc in test_cases])
 
-def test_all(driver, test_data, save_data, load_data):
-    base_page = BasePage(driver)
+@pytest.fixture(scope="function")
+def test_case():
+    pass
 
-    for test_case in test_cases:
-        test_name = test_case["name"]
-        test_func = test_case["func"]
+def test_run_from_runner(test_case):
+    test_case["func"]()
 
-        with allure.step(test_name):
-            allure.dynamic.title(test_name)
-            base_page.logger.debug(f"{'=' * 10} {test_name} {'=' * 10}")
-            base_page.logger.info(f"▶️ Test started: {test_name}")
-
-            try:
-                func_args = inspect.signature(test_func).parameters
-
-                if len(func_args) == 2:
-                    test_func(driver, test_data)
-                elif len(func_args) == 3:
-                    test_func(driver, test_data, save_data)
-                elif len(func_args) == 4:
-                    test_func(driver, test_data, save_data, load_data)
-                else:
-                    raise ValueError(f"❌ Qo'llab-quvvatlanmagan argumentlar soni: {len(func_args)}")
-
-                base_page.logger.info(f"✅ Test passed: {test_name}")
-
-            except AssertionError as ae:
-                error_msg = f"Assertion failed: {test_name} -> {str(ae)}"
-                base_page.logger.error(error_msg)
-                base_page.logger.info(f"❌ Test failed: {test_name}")
-                allure.attach(body=error_msg, name=f"❌ {test_name}", attachment_type=allure.attachment_type.TEXT)
-                pytest.fail(error_msg, pytrace=True)  # bu testni to‘xtatadi
-                break  # qolgan testlarni ishlatmaymiz
-
-            except Exception as e:
-                error_msg = f"Exception: {test_name} -> {str(e)}"
-                base_page.logger.error(error_msg)
-                base_page.logger.info(f"❌ Test failed: {test_name}")
-                allure.attach(body=error_msg, name=f"❌ {test_name}", attachment_type=allure.attachment_type.TEXT)
-                pytest.fail(error_msg, pytrace=True)
-                break
+# # pytest test_runner.py::test_all -v --alluredir=./allure-results
+# # allure serve ./allure-results
+#
+# def test_all(driver, test_data, save_data, load_data):
+#     base_page = BasePage(driver)
+#
+#     for test_case in test_cases:
+#         test_name = test_case["name"]
+#         test_func = test_case["func"]
+#
+#         with allure.step(test_name):
+#             allure.dynamic.title(test_name)
+#             base_page.logger.debug(f"{'=' * 10} {test_name} {'=' * 10}")
+#             base_page.logger.info(f"▶️ Test started: {test_name}")
+#
+#             try:
+#                 func_args = inspect.signature(test_func).parameters
+#
+#                 if len(func_args) == 2:
+#                     test_func(driver, test_data)
+#                 elif len(func_args) == 3:
+#                     test_func(driver, test_data, save_data)
+#                 elif len(func_args) == 4:
+#                     test_func(driver, test_data, save_data, load_data)
+#                 else:
+#                     raise ValueError(f"❌ Qo'llab-quvvatlanmagan argumentlar soni: {len(func_args)}")
+#
+#                 base_page.logger.info(f"✅ Test passed: {test_name}")
+#
+#             except AssertionError as ae:
+#                 error_msg = f"Assertion failed: {test_name} -> {str(ae)}"
+#                 base_page.logger.error(error_msg)
+#                 base_page.logger.info(f"❌ Test failed: {test_name}")
+#                 allure.attach(body=error_msg, name=f"❌ {test_name}", attachment_type=allure.attachment_type.TEXT)
+#                 pytest.fail(error_msg, pytrace=True)  # bu testni to‘xtatadi
+#                 break  # qolgan testlarni ishlatmaymiz
+#
+#             except Exception as e:
+#                 error_msg = f"Exception: {test_name} -> {str(e)}"
+#                 base_page.logger.error(error_msg)
+#                 base_page.logger.info(f"❌ Test failed: {test_name}")
+#                 allure.attach(body=error_msg, name=f"❌ {test_name}", attachment_type=allure.attachment_type.TEXT)
+#                 pytest.fail(error_msg, pytrace=True)
+#                 break

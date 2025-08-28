@@ -82,8 +82,14 @@ class BasePage:
 
     # ==================================================================================================================
 
-    def _wait_for_all_loaders(self):
-        return self._loaders.wait_for_all_loaders()
+    def _wait_for_all_loaders(self, page_load_timeout=None, block_ui_absence_window=None):
+        """
+        Loader kutish funksiyasi — agar timeoutlar berilsa, vaqtincha ularni qo‘llaydi.
+        """
+        return self._loaders.wait_for_all_loaders(
+            page_load_timeout=page_load_timeout,
+            block_ui_absence_window=block_ui_absence_window
+        )
 
     # ==================================================================================================================
 
@@ -186,7 +192,7 @@ class BasePage:
             element = WebDriverWait(
                 self.driver, timeout,
                 poll_frequency=0.3,
-                ignored_exceptions=(StaleElementReferenceException,)).until(wait_types[wait_type](locator))
+                ignored_exceptions=(StaleElementReferenceException, NoSuchElementException)).until(wait_types[wait_type](locator))
             return element
 
         except TimeoutException as e:
@@ -194,7 +200,7 @@ class BasePage:
             if error_message:
                 self.logger.warning(f"{page_name}: {message}: {locator}")
             if screenshot:
-                self.take_screenshot(f"{page_name}_{screenshot}")
+                self.take_screenshot(f"{page_name}_{wait_type}_timeout")
 
             if wait_type == "visibility":
                 raise ElementVisibilityError(message, locator, e)
@@ -256,68 +262,21 @@ class BasePage:
 
     # ==================================================================================================================
 
-    # def _get_caller_chain(self, depth=5):
-    #     import inspect
-    #
-    #     try:
-    #         stack = inspect.stack()
-    #     except Exception:
-    #         return "UnknownPage → stack_error"
-    #
-    #     # Filtrlab tashlanadigan funksiyalar va modullar
-    #     ignored_names = {
-    #         '<module>', 'pytest_pyfunc_call', 'runpy', '__call__',
-    #         '_call_with_frames_removed', '_run_code', '_run_module_as_main',
-    #         'async_run', 'run', 'inner', '_multicall', '_hookexec'
-    #     }
-    #     ignored_modules = {'pytest', 'importlib', 'runpy'}
-    #
-    #     # Page class nomini aniqlaymiz
-    #     try:
-    #         frame_self = stack[1].frame.f_locals.get("self", None)
-    #         page_name = getattr(frame_self, "__class__", type("UnknownPageObj", (), {})).__name__
-    #     except Exception:
-    #         page_name = "UnknownPage"
-    #
-    #     # Stack ichidan funksiyalarni yig‘amiz
-    #     chain = []
-    #     for frame in stack[1:]:  # stack[0] = _get_caller_chain o‘zi
-    #         try:
-    #             func = frame.function
-    #             module = frame.frame.f_globals.get('__name__', '')
-    #
-    #             if func.startswith("test_"):
-    #                 continue
-    #             if func in ignored_names or any(m in module for m in ignored_modules):
-    #                 continue
-    #
-    #             chain.append(func)
-    #             if len(chain) >= depth:
-    #                 break
-    #         except Exception:
-    #             continue  # muammo bo‘lsa, bu frame’ni tashlab ketamiz
-    #
-    #     function_chain = " → ".join(reversed(chain))
-    #     return f"{page_name} → {function_chain if chain else 'no_function_trace'}"
-
-    # ==================================================================================================================
-
     def click(self, locator):
         """Elementni bosish (aqlli retrylar bilan)."""
+
         self.logger.debug(f"{self._get_caller_chain()}: {locator}")
+        self._wait_for_all_loaders()
 
         for attempt in range(3):
             try:
-                self._wait_for_all_loaders()
-
-                # 1) To‘g‘ridan-to‘g‘ri clickable
                 element = self.wait_for_element(locator, wait_type="clickable")
                 self._scroll_to_element(element, locator)
                 if self._click(element, locator):
                     return True
 
                 # 2) Qayta clickable (kuchsiz kechikish)
-                time.sleep(0.3)
+                time.sleep(0.5)
                 element = self.wait_for_element(locator, wait_type="clickable")
                 if self._click(element, locator, retry=True):
                     return True
@@ -330,7 +289,7 @@ class BasePage:
 
             except (ElementStaleError, ScrollError, JavaScriptError) as e:
                 self.logger.warning(f"Qayta urinish ({attempt + 1}/3): {e} -> {locator}")
-                time.sleep(0.3)
+                time.sleep(1)
 
             except Exception as e:
                 # Bu bosqichda kutilmagan xatoni kontekst bilan ko‘taramiz
@@ -449,10 +408,10 @@ class BasePage:
         """Element topib, matn kiritish funksiyasi"""
 
         self.logger.debug(f"{self._get_caller_chain()}: {locator}")
+        self._wait_for_all_loaders()
 
         for attempt in range(3):
             try:
-                self._wait_for_all_loaders()
                 element_dom = self.wait_for_element(locator, wait_type="presence")
                 self._scroll_to_element(element_dom, locator)
 
@@ -552,8 +511,8 @@ class BasePage:
                 text = element.text
 
                 if text == '':
-                    self.logger.warning(f"Element ko‘rindi, lekin bo‘sh holatda: {locator}")
-                    return ""  # avval False edi
+                    self.logger.warning(f"Element ko‘rindi, lekin bo‘sh holatda (None): {locator}")
+                    return None
 
                 if clean:
                     self.logger.info(f"Element: before clean text -> <str'{text}'>")
@@ -565,7 +524,6 @@ class BasePage:
 
             except (StaleElementReferenceException, ElementStaleError):
                 self.logger.warning(f"Element yangilandi, qayta urinish ({attempt + 1})...")
-                attempt += 1
                 time.sleep(1)
 
             except Exception as e:
@@ -573,8 +531,8 @@ class BasePage:
                 raise
 
         # funksiya oxiri:
-        self.logger.error("Barcha urinishlarda ham text olinmadi.")
-        return ""
+        self.logger.error("Barcha urinishlarda ham text olinmadi (None).")
+        return None
 
     # ==================================================================================================================
 
@@ -585,7 +543,7 @@ class BasePage:
 
         text = self.get_text(locator)
 
-        if not text:
+        if text is None:
             self.logger.error(f"Element topilmadi yoki text yo‘q -> '{text}'")
             raise ElementNotFoundError(locator=locator)
 
@@ -617,92 +575,138 @@ class BasePage:
     # ==================================================================================================================
 
     def cut_url(self):
-        current_url = self.driver.current_url
+        self.logger.debug(f"{self._get_caller_chain()}")
 
-        try:
-            base_path = current_url.split('#')[0]  # https://smartup.online
-            after_hash = current_url.split('#')[1]  # /!6lybkj03t/anor/mdeal/return/return_list
+        self._wait_for_all_loaders()
 
-            # '/!' dan keyingi birinchi '/' gacha bo'lgan ID ni olish
-            user_id = after_hash.split('/!')[1].split('/')[0]  # 6lybkj03t
+        for attempt in range(3):
+            try:
+                current_url = self.driver.current_url
+                self.logger.info(f"current_url: {current_url}/")
 
-            return f"{base_path}#/!{user_id}/"
+                base_path = current_url.split('#')[0]  # https://smartup.online
+                after_hash = current_url.split('#')[1]  # /!6lybkj03t/anor/mdeal/return/return_list
 
-        except Exception as e:
-            self.logger.error(f"cut_url URL ni kesishda xatolik: {str(e)}", exc_info=True)
-            raise
+                # '/!' dan keyingi birinchi '/' gacha bo'lgan ID ni olish
+                user_id = after_hash.split('/!')[1].split('/')[0]  # 6lybkj03t
+                self.logger.info(f"{base_path}#/!{user_id}/")
+
+                return f"{base_path}#/!{user_id}/"
+
+            except Exception as e:
+                self.logger.error(f"[{attempt + 1}/3] cut_url bajarishda xatolik: {str(e)}", exc_info=True)
+                time.sleep(1)
+
+        message = f"server_name va user_id ni kesib bo'lmadi (3/3 urinishdan keyin)"
+        self.logger.warning(message)
+        self.take_screenshot(f"{__class__.__name__.lower()}_cut_url_error")
+        raise ElementInteractionError(message)
 
     # ==================================================================================================================
 
-    def switch_window(self, direction, url=None):
+    def switch_window(self, direction, url=None, new_window_timeout=None, loader_timeout=None):
         """
-        Brauzer oynalar (tabs/windows) o‘rtasida o'tishni amalga oshiradi.
+        Brauzer oynalar (tabs/windows) o‘rtasida o'tish.
+        new_window_timeout: yangi handle paydo bo‘lishini kutish limiti (s)
+        loader_timeout: oynaga o'tgandan keyin UILoaders uchun page_load_timeout (s)
+        """
 
-        Parameters:
-            direction (str):
-                - "prepare" -> hozirgi oynalar ro‘yxatini eslab qoladi
-                - "back"    -> avvalgi oynaga o‘tadi (joriy oynani yopadi)
-                - "forward" -> yangi oyna ochilganini aniqlaydi va unga o‘tadi
-                - "new"     -> yangi tab ochadi va URL'ga o'tadi
-        """
         try:
-            # time.sleep(2)
-            self._wait_for_all_loaders()
             current_window_id = self.driver.current_window_handle
             self.logger.debug(f"Joriy oyna ID: {current_window_id}")
+
+            # Defaultlar: yangi oyna kutishi va loader kutishlari
+            new_window_timeout = float(new_window_timeout or max(getattr(self, "page_load_timeout", 10), 15))
+            loader_timeout = float(loader_timeout or getattr(self, "page_load_timeout", 10))
 
             if direction == "prepare":
                 self._saved_handles = self.driver.window_handles.copy()
                 self.logger.debug(f"Oynalar ro'yxati saqlandi: {self._saved_handles}")
-                return
-
-            elif direction == "back":
-                handles = self.driver.window_handles
-                self.driver.close()
-                self.driver.switch_to.window(handles[-2])
-                target_window_id = handles[-2]
-                self.logger.info(f"Avvalgi oynaga o'tilmoqda: {current_window_id} -> {target_window_id}")
+                return True
 
             elif direction == "forward":
-                saved_handles = getattr(self, '_saved_handles', [])
+                # ❗ MUHIM: eski oynada loader kutmaymiz, avval yangi handle’ni kutamiz
+                saved_handles = getattr(self, "_saved_handles", self.driver.window_handles.copy())
                 self.logger.debug("Yangi oynaning ochilishini kutish boshlandi...")
 
+                end = time.time() + new_window_timeout
                 new_window_id = None
-                for i in range(20):  # 0.5s * 20 = 10s
-                    time.sleep(1)
+                while time.time() < end:
                     handles_now = self.driver.window_handles
-                    new_ids = list(set(handles_now) - set(saved_handles))
-                    self.logger.debug(f"Tekshiruv {i + 1}: handles = {handles_now}")
+                    new_ids = [h for h in handles_now if h not in saved_handles]
                     if new_ids:
                         new_window_id = new_ids[0]
                         self.logger.info(f"⏺ Yangi oyna topildi: {new_window_id}")
                         break
+                    time.sleep(0.2)
 
                 if not new_window_id:
-                    self.logger.warning("Yangi oyna topilmadi, oxirgi oynaga o‘tilmoqda.")
+                    self.logger.warning("Yangi oyna aniqlanmadi, oxirgi handle tanlanadi.")
                     new_window_id = self.driver.window_handles[-1]
 
                 self.driver.switch_to.window(new_window_id)
                 self.logger.info(f"Yangi oynaga o'tilmoqda: {current_window_id} -> {new_window_id}")
 
+                # Endi yangi oynada sizning loader kutishingiz
+                self._wait_for_all_loaders()
+                self.logger.info(f"direction='{direction}' bo‘yicha oynaga muvaffaqiyatli o‘tildi")
+                return True
+
+            elif direction == "back":
+                # Joriy oynani yopamiz va saved_handles/remaining asosida avvalgiga qaytamiz
+                saved_handles = getattr(self, "_saved_handles", None)
+                self.driver.close()
+                remaining = self.driver.window_handles
+                if not remaining:
+                    raise Exception("Qolgan oyna topilmadi (remaining handles bo‘sh).")
+
+                target_window_id = None
+                if saved_handles:
+                    for h in reversed(saved_handles):
+                        if h in remaining:
+                            target_window_id = h
+                            break
+                if not target_window_id:
+                    target_window_id = remaining[-1]
+
+                self.driver.switch_to.window(target_window_id)
+                self.logger.info(f"Avvalgi oynaga o'tilmoqda: {current_window_id} -> {target_window_id}")
+
+                # Qaytilgan oynada sizning loader kutishingiz
+                self._wait_for_all_loaders()
+                self.logger.info(f"direction='{direction}' bo‘yicha oynaga muvaffaqiyatli o‘tildi")
+                return True
+
             elif direction == "new" and url:
                 handles_before = self.driver.window_handles.copy()
-                self.driver.execute_script("window.open('');")
-                time.sleep(1)
-                new_handles = self.driver.window_handles
-                new_ids = list(set(new_handles) - set(handles_before))
-                target_window_id = new_ids[0] if new_ids else new_handles[-1]
+                self.driver.execute_script("window.open('about:blank','_blank');")
+
+                # Yangi handle’ni kutish (sizdagi polling uslubida)
+                end = time.time() + new_window_timeout
+                target_window_id = None
+                while time.time() < end:
+                    new_handles = self.driver.window_handles
+                    new_ids = [h for h in new_handles if h not in handles_before]
+                    if new_ids:
+                        target_window_id = new_ids[0]
+                        break
+                    time.sleep(0.2)
+
+                if not target_window_id:
+                    target_window_id = self.driver.window_handles[-1]
+
                 self.driver.switch_to.window(target_window_id)
                 self.driver.get(url)
-                self.logger.info(f"url bo'yicha yangi oyna ochildi: {current_window_id} -> {target_window_id} | URL: {url}")
+                self.logger.info(
+                    f"url bo'yicha yangi oyna ochildi: {current_window_id} -> {target_window_id} | URL: {url}")
+
+                # Yangi oynada sizning loader kutishingiz
+                self._wait_for_all_loaders()
+                self.logger.info(f"direction='{direction}' bo‘yicha oynaga muvaffaqiyatli o‘tildi")
+                return True
 
             else:
                 raise Exception(f"Noto‘g‘ri direction: {direction}")
-
-            time.sleep(2)
-            if self._wait_for_all_loaders():
-                self.logger.info(f"direction='{direction}' bo‘yicha oynaga muvaffaqiyatli o‘tildi")
-                return True
 
         except LoaderTimeoutError:
             self.logger.error(f"{direction} oynaga o‘tish uchun vaqt tugadi")
@@ -713,6 +717,86 @@ class BasePage:
             self.logger.error(f"{direction} oynaga o‘tishda xato: {str(e)}")
             self.take_screenshot(f"switch_{direction}_error")
             raise
+
+    # def switch_window(self, direction, url=None):
+    #     """
+    #     Brauzer oynalar (tabs/windows) o‘rtasida o'tishni amalga oshiradi.
+    #
+    #     Parameters:
+    #         direction (str):
+    #             - "prepare" -> hozirgi oynalar ro‘yxatini eslab qoladi
+    #             - "back"    -> avvalgi oynaga o‘tadi (joriy oynani yopadi)
+    #             - "forward" -> yangi oyna ochilganini aniqlaydi va unga o‘tadi
+    #             - "new"     -> yangi tab ochadi va URL'ga o'tadi
+    #     """
+    #     try:
+    #         # time.sleep(2)
+    #         self._wait_for_all_loaders()
+    #         current_window_id = self.driver.current_window_handle
+    #         self.logger.debug(f"Joriy oyna ID: {current_window_id}")
+    #
+    #         if direction == "prepare":
+    #             self._saved_handles = self.driver.window_handles.copy()
+    #             self.logger.debug(f"Oynalar ro'yxati saqlandi: {self._saved_handles}")
+    #             return True
+    #
+    #         elif direction == "back":
+    #             handles = self.driver.window_handles
+    #             self.driver.close()
+    #             self.driver.switch_to.window(handles[-2])
+    #             target_window_id = handles[-2]
+    #             self.logger.info(f"Avvalgi oynaga o'tilmoqda: {current_window_id} -> {target_window_id}")
+    #
+    #         elif direction == "forward":
+    #             saved_handles = getattr(self, '_saved_handles', [])
+    #             self.logger.debug("Yangi oynaning ochilishini kutish boshlandi...")
+    #
+    #             new_window_id = None
+    #             for i in range(20):  # 0.5s * 20 = 10s
+    #                 time.sleep(1)
+    #                 handles_now = self.driver.window_handles
+    #                 new_ids = list(set(handles_now) - set(saved_handles))
+    #                 self.logger.debug(f"Tekshiruv {i + 1}: handles = {handles_now}")
+    #                 if new_ids:
+    #                     new_window_id = new_ids[0]
+    #                     self.logger.info(f"⏺ Yangi oyna topildi: {new_window_id}")
+    #                     break
+    #
+    #             if not new_window_id:
+    #                 self.logger.warning("Yangi oyna topilmadi, oxirgi oynaga o‘tilmoqda.")
+    #                 new_window_id = self.driver.window_handles[-1]
+    #
+    #             self.driver.switch_to.window(new_window_id)
+    #             self.logger.info(f"Yangi oynaga o'tilmoqda: {current_window_id} -> {new_window_id}")
+    #
+    #         elif direction == "new" and url:
+    #             handles_before = self.driver.window_handles.copy()
+    #             self.driver.execute_script("window.open('');")
+    #             time.sleep(1)
+    #             new_handles = self.driver.window_handles
+    #             new_ids = list(set(new_handles) - set(handles_before))
+    #             target_window_id = new_ids[0] if new_ids else new_handles[-1]
+    #             self.driver.switch_to.window(target_window_id)
+    #             self.driver.get(url)
+    #             self.logger.info(f"url bo'yicha yangi oyna ochildi: {current_window_id} -> {target_window_id} | URL: {url}")
+    #
+    #         else:
+    #             raise Exception(f"Noto‘g‘ri direction: {direction}")
+    #
+    #         time.sleep(2)
+    #         if self._wait_for_all_loaders():
+    #             self.logger.info(f"direction='{direction}' bo‘yicha oynaga muvaffaqiyatli o‘tildi")
+    #             return True
+    #
+    #     except LoaderTimeoutError:
+    #         self.logger.error(f"{direction} oynaga o‘tish uchun vaqt tugadi")
+    #         self.take_screenshot(f"switch_{direction}_timeout_error")
+    #         raise
+    #
+    #     except Exception as e:
+    #         self.logger.error(f"{direction} oynaga o‘tishda xato: {str(e)}")
+    #         self.take_screenshot(f"switch_{direction}_error")
+    #         raise
 
     # ==================================================================================================================
 

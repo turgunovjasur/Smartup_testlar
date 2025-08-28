@@ -7,12 +7,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-
 from autotest.core.md.base_page import BasePage
 from tests.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
 from utils.assertions import SoftAssertions
 from utils.env_reader import get_env
-
 
 driver_path = ChromeDriverManager().install()
 
@@ -86,7 +84,7 @@ def test_data(save_data, cod_generator):
 
     # cod = cod_generator
     # cod = "red-1"
-    cod = "c1"
+    cod = "c5"
     save_data("cod", cod)
 
     base_data = {
@@ -184,7 +182,6 @@ def test_data(save_data, cod_generator):
 # Umumiy JSON fayl manzili
 DATA_STORE_FILE = os.path.join(os.path.dirname(__file__), "data_store.json")
 
-
 # Fayl manzilini aniqlovchi funksiya
 def get_data_file_path(request, per_test):
     if per_test:
@@ -194,7 +191,6 @@ def get_data_file_path(request, per_test):
         return os.path.join(os.path.dirname(request.fspath), file_name)
     else:
         return DATA_STORE_FILE
-
 
 # JSON ga ma'lumot yozuvchi fixture
 @pytest.fixture
@@ -218,7 +214,6 @@ def save_data(request):
             json.dump(data, f, indent=4, ensure_ascii=False)
 
     return _save
-
 
 # JSON dan ma'lumot o‘quvchi fixture
 @pytest.fixture

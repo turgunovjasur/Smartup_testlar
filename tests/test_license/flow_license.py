@@ -11,6 +11,11 @@ def balance_flow(driver, **kwargs):
     if navbar_name:
         _list.click_navbar_button(navbar_name)
 
+    payer_name = kwargs.get("payer_name")
+    if payer_name:
+        return _list.get_payer_balance(payer_name)
+    return None
+
 # ======================================================================================================================
 
 def document_flow(driver, **kwargs):
@@ -44,6 +49,20 @@ def purchase_flow(driver, **kwargs):
     end_date = kwargs.get("end_date")
     if end_date:
         _list.input_end_date(end_date)
+
+    license_count = kwargs.get("license_count")
+    if license_count:
+        _list.input_license_count(license_count)
+
+
+# ======================================================================================================================
+
+def get_modal_content_flow(driver):
+    _list = LicenseList(driver)
+    _list.click_buy_button()
+    _list.get_modal_content()
+    _list.click_purchase_check()
+    _list.click_save_purchase_button()
 
 # ======================================================================================================================
 

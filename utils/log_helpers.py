@@ -3,7 +3,6 @@ import inspect
 import sys
 import threading
 import time
-import os
 
 
 # Pytest va tizim freymlarini tashlash uchun filtrlar
@@ -49,9 +48,9 @@ def _ensure_tracer_installed():
                         exc_type = arg[0].__name__ if isinstance(arg, tuple) and arg and hasattr(arg[0], "__name__") else "Exception"
                     except Exception:
                         exc_type = "Exception"
-                    info['logger'].debug(f"========== end: {method} - {label} (exc:{exc_type}, {dt:.2f}s) ==========")
+                    info['logger'].debug(f"🔼==================== end: {method} - {label} (exc:{exc_type}, {dt:.2f}s) ====================🔼")
                 else:
-                    info['logger'].debug(f"========== end: {method} - {label} ({dt:.2f}s) ==========")
+                    info['logger'].debug(f"🔼==================== end: {method} - {label} ({dt:.2f}s) ====================🔼")
 
         return _tracer
 
@@ -169,4 +168,4 @@ def log_start_end_for_current_method(logger, label=None, use_invoker=False):
         "label": final_label,
         "t0": time.time(),
     }
-    logger.debug(f"========== start: {method} - {final_label} ==========")
+    logger.debug(f"🔽==================== start: {method} - {final_label} ====================🔽")

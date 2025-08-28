@@ -149,15 +149,22 @@ class Assertions:
 
     def assert_element_visible(self, locator, message=""):
         """Element ko'rinishini tekshirish"""
-
         try:
-            self.page._wait_for_all_loaders()
-            element = self.page.wait_for_element(locator, wait_type="visibility")
+            element = self.page.wait_for_element(locator, wait_type="visibility", error_message=False)
             is_visible = element.is_displayed()
-            error_msg = f"{message}: Element is not visible" if message else "Element is not visible"
+
+            error_msg = f"❌ {message}: Element is not visible" if message else "❌ Element is not visible"
+            if not is_visible:
+                self.page.logger.error(error_msg)
+            else:
+                self.page.logger.info(f"✅ {message}: Element is visible" if message else "✅ Element is visible")
+
             assert is_visible, error_msg
+
         except Exception as e:
-            error_msg = f"{message}: Element not found or not visible - {str(e)}" if message else f"Element not found or not visible - {str(e)}"
+            error_msg = f"❌ {message}: Element not found or not visible - {str(e)}" \
+                if message else f"❌ Element not found or not visible - {str(e)}"
+            self.page.logger.error(error_msg)
             assert False, error_msg
 
     # ==================================================================================================================
@@ -166,7 +173,7 @@ class Assertions:
         """Element ko'rinmasligini tekshirish"""
 
         try:
-            element = self.page.wait_for_element(locator, wait_type="visibility")
+            element = self.page.wait_for_element(locator, wait_type="visibility", error_message=False)
             is_visible = element.is_displayed()
             error_msg = f"{message}: Element is visible but should not be" if message else "Element is visible but should not be"
             assert not is_visible, error_msg
@@ -180,7 +187,7 @@ class Assertions:
         """Element matni tengligini tekshirish"""
 
         try:
-            element = self.page.wait_for_element(locator, wait_type="visibility")
+            element = self.page.wait_for_element(locator, wait_type="visibility", error_message=False)
             actual_text = element.text.strip()
             error_msg = f"{message}: Expected text '{expected_text}', but got '{actual_text}'" if message else f"Expected text '{expected_text}', but got '{actual_text}'"
             assert actual_text == expected_text, error_msg
@@ -194,7 +201,7 @@ class Assertions:
         """Element matni ichida boshqa matn borligini tekshirish"""
 
         try:
-            element = self.page.wait_for_element(locator, wait_type="visibility")
+            element = self.page.wait_for_element(locator, wait_type="visibility", error_message=False)
             actual_text = element.text.strip()
             error_msg = f"{message}: Text '{expected_text}' not found in '{actual_text}'" if message else f"Text '{expected_text}' not found in '{actual_text}'"
             assert expected_text in actual_text, error_msg

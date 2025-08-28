@@ -2,11 +2,11 @@ import time
 from selenium.common.exceptions import JavascriptException
 from utils.exception import LoaderTimeoutError, JavaScriptError
 
-# ==================================================================================================================
+# ======================================================================================================================
 
 class UILoaders:
-    _POLL = 0.12
-    _ASYNC_STABLE = 0.50
+    _POLL = 0.1
+    _ASYNC_STABLE = 0.5
     _NET_IDLE_CAP = 10.0
 
     def __init__(self, driver, logger,
@@ -22,6 +22,7 @@ class UILoaders:
         self.overlay_selectors = list(overlay_selectors or [
             "div.block-ui-overlay",
             "div.block-ui-message-container",
+            ".cs-backdrop.open"
         ])
         self.spinner_selectors = list(spinner_selectors or [
             "div.block-ui-message-container img[src*='loading']",
