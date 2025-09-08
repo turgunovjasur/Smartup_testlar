@@ -16,6 +16,13 @@ class LoginPage(BasePage):
         self.input_text(self.email_input, email)
         self.input_text(self.password_input, password)
     # ------------------------------------------------------------------------------------------------------------------
+    session_password_input = (By.XPATH, '//input[@ng-model="a.session.si.rePassword"]')
+    re_login_button = (By.XPATH, '//button[@ng-click="a.relogin()"]')
+
+    def re_login_form(self, password):
+        self.input_text(self.session_password_input, password)
+        self.click(self.re_login_button)
+    # ------------------------------------------------------------------------------------------------------------------
     signup_button = (By.XPATH, '//button[@id="sign_in"]')
 
     def click_button(self):

@@ -12,6 +12,6 @@ def get_error_massage(driver, error_massage_name):
         return True
     else:
         base_page.logger.error(f'Error: Expected "{error_massage_name}", got "{error_message}"')
-        base_page.take_screenshot(f"order_error_massage_{error_message.lower()}")
+        base_page.take_screenshot(f"order_error_massage")
         raise AssertionError(f"Expected error message: '{error_massage_name}', got: '{error_message}'")
 # ----------------------------------------------------------------------------------------------------------------------

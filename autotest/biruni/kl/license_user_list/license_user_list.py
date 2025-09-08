@@ -30,9 +30,10 @@ class LicenseUserList(BasePage):
     def get_row_no_data(self):
         try:
             self.wait_for_element(self.row_no_data, wait_type="visibility", timeout=5)
-            self.logger.warning(f"No data in table")
+            self.logger.info(f"No data in table")
             return True
         except ElementVisibilityError:
+            self.logger.info(f"Yes data in table")
             return False
     # ------------------------------------------------------------------------------------------------------------------
     detach_button = (By.XPATH, '//button[@ng-class="q.classDetach"]')

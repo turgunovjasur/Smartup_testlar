@@ -14,7 +14,7 @@ from utils.env_reader import get_env
 
 driver_path = ChromeDriverManager().install()
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def driver(request, test_data):
     data = test_data["data"]
     url = data["url"]
@@ -30,7 +30,7 @@ def driver(request, test_data):
     if headless or os.getenv("GITHUB_ACTIONS") == "true":
         options.add_argument("--headless=new")
 
-    # 💡 CI profil ziddiyatini bartaraf etish uchun vaqtinchalik user profile
+    # ✅ Vaqtinchalik profil yaratamiz
     user_data_dir = tempfile.mkdtemp()
     options.add_argument(f"--user-data-dir={user_data_dir}")
 
@@ -44,7 +44,7 @@ def driver(request, test_data):
     options.add_argument("--incognito")
     options.add_argument("--disable-features=AutofillServerCommunication,PasswordManagerEnabled,PasswordCheck")
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
+    # options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
     all_prefs = {
         "credentials_enable_service": False,
@@ -68,10 +68,18 @@ def driver(request, test_data):
     )
 
     driver.set_page_load_timeout(120)
+    print(f"[driver] session_id={driver.session_id}")  # + diagnostika uchun
     driver.get(url)
 
     yield driver
     driver.quit()
+
+    # Vaqtinchalik profil katalogi o‘chiriladi
+    import shutil
+    try:
+        shutil.rmtree(user_data_dir)
+    except Exception as e:
+        print(f"[Warning] Profilni o‘chirishda xatolik: {user_data_dir} ({e})")
 
 @pytest.fixture(scope="session")
 def cod_generator():
@@ -83,8 +91,8 @@ def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
     # cod = cod_generator
-    # cod = "red-1"
-    cod = "c5"
+    cod = "07_09_21_53"
+    # cod = "m3"
     save_data("cod", cod)
 
     base_data = {
