@@ -1,3 +1,7 @@
+import os
+import tempfile
+import time
+from PIL import Image, ImageDraw, ImageFont
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
 from utils.exception import ElementVisibilityError
@@ -8,7 +12,7 @@ class InventoryNew(BasePage):
     inventory_new_header = (By.XPATH, "//button[@id='anor66-button-save' and contains(text(), 'Сохранить')]")
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.inventory_new_header)
+        self.wait_for_element_visible(self.inventory_new_header)
     # ------------------------------------------------------------------------------------------------------------------
     name_input = (By.XPATH, '//div[@id= "anor66-input-text-name"]/input')
 
@@ -53,11 +57,6 @@ class InventoryNew(BasePage):
     def input_litre(self, litre):
         self.input_text(self.litre_input, litre)
     # ------------------------------------------------------------------------------------------------------------------
-    # product_order_input = (By.XPATH, "//div[@id='anor66-input-text-order_no']/input")
-    #
-    # def input_order(self, product_order):
-    #     self.input_text(self.product_order_input, product_order)
-    # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, "//button[@id='anor66-button-save']")
 
     def click_save_button(self):
@@ -85,4 +84,43 @@ class InventoryNew(BasePage):
     def input_sectors(self, sector_name):
         self.click(self.clear_button)
         self.click_options(self.sectors_input, self.sectors_elem, sector_name)
+    # ------------------------------------------------------------------------------------------------------------------
+    # upload_photo
+    # ------------------------------------------------------------------------------------------------------------------
+    upload_photo_button = (By.XPATH, '//div[@class="card-body"]//a[@on-select="uploadPhoto($file)"]')
+    upload_photo_input = (By.XPATH, '//input[@type="file"]')
+    save_foto_button = (By.XPATH, '//button[@ng-click="o.saveCrop()"]')
+
+    def input_upload_photo(self):
+        self.click(self.upload_photo_button)
+        file_input = self.wait_for_element(self.upload_photo_input, wait_type="presence")
+        file_input.send_keys(self.generate_test_image())
+        self.click(self.save_foto_button)
+        time.sleep(1)
+
+    def generate_test_image(self, filename="product_autotest.png", size=(800, 600), text="AutoTest"):
+        """Test uchun PNG rasm yaratadi (oq fon, qora markazdagi matn bilan)."""
+        width, height = size
+        image = Image.new('RGB', size, color='white')
+        draw = ImageDraw.Draw(image)
+
+        try:
+            font = ImageFont.truetype("arial.ttf", 48)
+        except IOError:
+            font = ImageFont.load_default()
+
+        bbox = draw.textbbox((0, 0), text, font=font)
+        text_width = bbox[2] - bbox[0]
+        text_height = bbox[3] - bbox[1]
+
+        text_position = ((width - text_width) / 2, (height - text_height) / 2)
+        draw.text(text_position, text, fill='black', font=font)
+
+        # Rasmni vaqtinchalik faylga saqlaymiz
+        temp_dir = tempfile.gettempdir()
+        image_path = os.path.join(temp_dir, filename)
+        image.save(image_path)
+
+        self.logger.info(f"✅ Test rasmi yaratildi: {image_path}")
+        return image_path
     # ------------------------------------------------------------------------------------------------------------------

@@ -78,17 +78,26 @@ class BasePage:
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         test_name = self.test_name if self.test_name != "unknown_test" else "default"
+
         if filename:
+            # ❗ Noto‘g‘ri belgilarni olib tashlaymiz (Windows file name restrictions)
+            filename = re.sub(r'[<>:"/\\|?*]', '_', filename)
             filename = f"{test_name}_{timestamp}_{filename}"
         else:
             filename = f"{test_name}_{timestamp}"
+
         screenshot_dir = "screenshot_dir"
         if not os.path.exists(screenshot_dir):
             os.makedirs(screenshot_dir)
+
         screenshot_path = os.path.join(screenshot_dir, f"{filename}.png")
         self.driver.save_screenshot(screenshot_path)
         self.logger.info(f"Screenshot saved at {screenshot_path}")
-        allure.attach.file(screenshot_path, name="Error Screenshot", attachment_type=allure.attachment_type.PNG)
+
+        try:
+            allure.attach.file(screenshot_path, name="Error Screenshot", attachment_type=allure.attachment_type.PNG)
+        except Exception as e:
+            self.logger.warning(f"Allure ga screenshot ulashda xatolik: {e}")
 
     # ==================================================================================================================
 
@@ -350,24 +359,27 @@ class BasePage:
                     return True
 
             except (ElementStaleError, ScrollError, JavaScriptError) as e:
-                self.logger.warning(f"Qayta urinish ({attempt + 1}/3): {e} -> {locator}.")
+                self.logger.warning(f"Qayta urinish ({attempt + 1}/3): {type(e).__name__}: {e} | {locator}")
                 time.sleep(1)
 
             except Exception as e:
-                self._raise(ElementInteractionError,
-                            message="Elementni bosishda kutilmagan xato.",
-                            locator=locator,
-                            original=e,
-                            step=f"click:attempt{attempt + 1}",
-                            screenshot=True,
-                            log=True)
-
-        self._raise(ElementNotClickableError,
-                    message="Element barcha usullar bilan bosilmadi.",
+                self._raise(
+                    ElementInteractionError,
+                    message="Elementni bosishda kutilmagan xato.",
                     locator=locator,
-                    step="click:final",
+                    original=e,
+                    step=f"click:attempt{attempt + 1}",
                     screenshot=True,
                     log=True)
+
+        self._raise(
+            ElementNotClickableError,
+            message="Element barcha usullar bilan bosilmadi.",
+            locator=locator,
+            step="click:final",
+            screenshot=True,
+            log=True
+        )
 
     # ==================================================================================================================
 
@@ -410,55 +422,118 @@ class BasePage:
     # ==================================================================================================================
 
     def _wait_for_presence_all(self, locator, timeout=None, visible_only=False):
-        """Elementlar ro'yxatini kutish funksiyasi."""
+        """
+        Locator bo‘yicha sahifadagi barcha elementlarni kutadi.
+
+        Returns:
+            list[WebElement] yoki None
+
+        Raise:
+            ElementNotFoundError — agar DOMda element topilmasa (timeout)
+            ElementStaleError — agar DOM o‘zgarsa (stale bo‘lsa)
+            ElementInteractionError — boshqa xatoliklar uchun
+        """
 
         self.logger.debug(f"{self._get_caller_chain()}: {locator}")
-
         timeout = timeout or self.default_timeout
 
         try:
             elements = WebDriverWait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
+
             if visible_only:
                 elements = [el for el in elements if el.is_displayed()]
+                if not elements:
+                    self.logger.warning(f"Elementlar ro'yxati bo‘sh: {locator}")
+                    return []
+
             return elements
 
         except StaleElementReferenceException as e:
-            message = "Elementlar ro'yhati DOM da yangilandi."
-            self.logger.warning(f"{message}: {locator}")
-            raise ElementStaleError(message, locator, e)
+            self._raise(ElementStaleError,
+                        message="Elementlar ro'yxati DOM da yangilandi.",
+                        locator=locator,
+                        original=e,
+                        step="_wait_for_presence_all",
+                        log=True)
 
         except TimeoutException as e:
-            message = "Elementlar ro'yhati topilmadi."
-            self.logger.warning(f"{message}: {locator}")
-            raise ElementNotFoundError(message, locator, e)
+            self._raise(ElementNotFoundError,
+                        message="Elementlar ro'yxati topilmadi (timeout).",
+                        locator=locator,
+                        original=e,
+                        step="_wait_for_presence_all",
+                        screenshot=True)
 
         except Exception as e:
-            message = "Elementlarni ro'yhatini qidirishda kutilmagan xato."
-            self.logger.error(f"{message}: {str(e)}")
-            raise
+            self._raise(ElementInteractionError,
+                        message="Elementlarni ro'yhatini qidirishda kutilmagan xato.",
+                        locator=locator,
+                        original=e,
+                        step="_wait_for_presence_all",
+                        screenshot=True,
+                        log=True)
 
     # ==================================================================================================================
 
     def _wait_for_invisibility_of_element(self, element, timeout=None, error_message=None):
-        """Element ni ko'rinmas bo'lishini kutish."""
+        """Berilgan elementning interfeysdan ko‘rinmas bo‘lishini kutadi.
+
+        Returns:
+            bool:
+                - True: element interfeysdan yo‘qolgan bo‘lsa
+                - False: agar kutishdan keyin ham yo‘qolmasa
+
+        Raises:
+            ElementVisibilityError: kutilmagan xato yoki timeout holatida
+            """
 
         self.logger.debug(f"{self._get_caller_chain()}")
 
         timeout = timeout or self.default_timeout
         try:
             return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element(element))
+
         except TimeoutException as e:
-            if error_message:
-                self.logger.error(f"Element interfeys dan yo'qolmadi: {e}")
-            return False
+            message = error_message or "Element interfeysdan yo‘qolmadi (timeout)."
+            self._raise(
+                ElementVisibilityError,
+                message=message,
+                locator=None,
+                original=e,
+                step="_wait_for_invisibility_of_element",
+                log=True,
+                screenshot=True
+            )
+
+        except Exception as e:
+            self._raise(
+                ElementInteractionError,
+                message="Element ko‘rinmas bo‘lishini kutishda kutilmagan xato.",
+                locator=None,
+                original=e,
+                step="_wait_for_invisibility_of_element",
+                log=True,
+                screenshot=True
+            )
 
     # ==================================================================================================================
 
     def _wait_for_invisibility_of_locator(self, locator, timeout=None, raise_error=True):
-        """Locator ko'rinmas bo'lishini kutish funksiyasi."""
+        """
+        Berilgan locator asosida element interfeysdan ko‘rinmas bo‘lishini kutadi.
+
+        Returns:
+            bool:
+                - True: agar element interfeysdan yo‘qolsa
+                - False: agar `raise_error=False` bo‘lsa va timeout yuz bersa
+
+        Raises:
+            ElementVisibilityError — element interfeysdan yo‘qolmasa (`timeout`)
+            ElementStaleError — DOM yangilansa
+            ElementInteractionError — boshqa har qanday xatolik
+        """
 
         self.logger.debug(f"{self._get_caller_chain()}: {locator}")
-
         timeout = timeout or self.default_timeout
 
         try:
@@ -466,22 +541,40 @@ class BasePage:
             return True
 
         except StaleElementReferenceException as e:
-            message = "Element DOM da yangilandi."
-            self.logger.warning(f"{message}: {locator}")
-            raise ElementStaleError(message, locator, e)
+            self._raise(
+                ElementStaleError,
+                message="Element DOM da yangilandi.",
+                locator=locator,
+                original=e,
+                step="_wait_for_invisibility_of_locator",
+                log=True
+            )
 
         except TimeoutException as e:
-            message = "Element ko'rinmas bo'lmadi."
+            message = "Element ko‘rinmas bo‘lmadi (timeout)."
             self.logger.warning(f"{message}: {locator}")
             if raise_error:
-                raise ElementVisibilityError(message, locator, e)
-            else:
-                return False
+                self._raise(
+                    ElementVisibilityError,
+                    message=message,
+                    locator=locator,
+                    original=e,
+                    step="_wait_for_invisibility_of_locator",
+                    log=True,
+                    screenshot=True
+                )
+            return False
 
         except Exception as e:
-            message = "Element kutishda kutilmagan xato."
-            self.logger.warning(f"{message}: {locator}: {str(e)}")
-            raise ElementInteractionError(message, locator, e)
+            self._raise(
+                ElementInteractionError,
+                message="Elementni ko‘rinmas holatini kutishda kutilmagan xato.",
+                locator=locator,
+                original=e,
+                step="_wait_for_invisibility_of_locator",
+                log=True,
+                screenshot=True
+            )
 
     # ==================================================================================================================
 
@@ -542,7 +635,7 @@ class BasePage:
     # ==================================================================================================================
 
     def clear_element(self, locator):
-        """ Elementni tozalash."""
+        """Elementni tozalash."""
 
         self.logger.debug(f"{self._get_caller_chain()}: {locator}")
         self._wait_for_all_loaders()
@@ -596,11 +689,9 @@ class BasePage:
         """Elementning matnini olish."""
 
         self.logger.debug(f"{self._get_caller_chain()}: {locator}")
-        # self._wait_for_all_loaders()
 
         for attempt in range(3):
             try:
-                # element_dom = self.wait_for_element(locator, wait_type="presence")
                 el = self.wait_for_element(locator, wait_type="visibility")
                 self._scroll_to_element(el, locator)
 
@@ -675,8 +766,22 @@ class BasePage:
     # ==================================================================================================================
 
     def cut_url(self):
+        """
+        Brauzer sahifasidagi `current_url` dan server nomi va user_id ni ajratib qaytaradi.
+
+        Misol: https://smartup.online/#!/6lybkj03t/... → https://smartup.online/#!/6lybkj03t/
+
+        Returns:
+            str: Qisqa URL → base_path + user_id (masalan: https://smartup.online/#!/6lybkj03t/)
+
+        Raises:
+            ElementInteractionError: Agar URL noto‘g‘ri bo‘lsa yoki kesib bo‘lmasa
+        """
+
         self.logger.debug(f"{self._get_caller_chain()}")
         self._wait_for_all_loaders()
+
+        last_error = None
 
         for attempt in range(6):
             try:
@@ -688,26 +793,65 @@ class BasePage:
 
                 # '/!' dan keyingi birinchi '/' gacha bo'lgan ID ni olish
                 user_id = after_hash.split('/!')[1].split('/')[0]  # 6lybkj03t
-                self.logger.info(f"{base_path}#/!{user_id}/")
+                short_url = f"{base_path}#/!{user_id}/"
 
-                return f"{base_path}#/!{user_id}/"
+                self.logger.info(f"Kesilgan short_url: {short_url}")
+                return short_url
 
             except Exception as e:
-                self.logger.error(f"[{attempt + 1}/3] cut_url bajarishda xatolik: {str(e)}", exc_info=True)
+                self.logger.warning(f"[{attempt + 1}/6] cut_url bajarishda xatolik: {str(e)}")
                 time.sleep(1)
 
-        message = f"server_name va user_id ni kesib bo'lmadi (3/3 urinishdan keyin)"
-        self.logger.warning(message)
-        self.take_screenshot(f"{__class__.__name__.lower()}_cut_url_error")
-        raise ElementInteractionError(message)
+        # 6 urinishdan keyin ham bo‘lmasa
+        message = f"server_name va user_id ni kesib bo‘lmadi (6 urinishdan keyin)"
+        self._raise(
+            ElementInteractionError,
+            message=message,
+            step="cut_url",
+            original=last_error,
+            log=True,
+            screenshot=True
+        )
 
     # ==================================================================================================================
 
     def switch_window(self, direction, url=None, new_window_timeout=None, loader_timeout=None):
         """
         Brauzer oynalar (tabs/windows) o‘rtasida o'tish.
-        new_window_timeout: yangi handle paydo bo‘lishini kutish limiti (s)
-        loader_timeout: oynaga o'tgandan keyin UILoaders uchun page_load_timeout (s)
+
+        Parametrlar:
+        -----------
+        direction : str
+            Quyidagi qiymatlarni oladi:
+            - "prepare" : Hozirgi oynalar ro‘yxatini saqlab qo‘yadi. Keyin "forward"/"back" uchun kerak bo‘ladi.
+            - "forward" : Yangi ochilgan oynaga o'tadi. "prepare" orqali saqlangan eski oynalar bilan solishtirib, yangi ID ni aniqlaydi.
+            - "back"    : Hozirgi oynani yopadi va oldingi (saqlangan) oynaga qaytadi.
+            - "new"     : Berilgan URL uchun yangi tab/oyna ochadi va o‘sha URL ni yuklaydi.
+
+        url : str (faqat "new" uchun)
+            Yangi ochiladigan oynada ochilishi kerak bo‘lgan URL.
+
+        new_window_timeout : int | float (optional)
+            Yangi oyna handle chiqishini kutish limiti (sekundda). Default: `max(page_load_timeout, 15)`.
+
+        loader_timeout : int | float (optional)
+            Yangi oynaga o‘tgach loaderlar kutilishi uchun timeout. Default: `page_load_timeout`.
+
+        Return:
+        -------
+        bool
+            Har bir holatda muvaffaqiyatli bajarilsa `True` qaytaradi.
+
+        Exceptions:
+        -----------
+        - LoaderTimeoutError: Oyna yuklanishi loader vaqtida tugamasa.
+        - ElementInteractionError: Noto‘g‘ri direction, yoki handle topilmasa, yoki boshqa xatolik bo‘lsa.
+
+        Qo‘shimcha:
+        ----------
+        - Avval `prepare` chaqirish orqali mavjud oynalarni saqlash kerak.
+        - `forward`/`back` ishlashi uchun `prepare` orqali saqlangan handle ro‘yxati kerak bo‘ladi.
+        - Har bir yo‘l (direction) yakunida `self._wait_for_all_loaders()` chaqiriladi.
         """
 
         try:
@@ -805,97 +949,25 @@ class BasePage:
                 return True
 
             else:
-                raise Exception(f"Noto‘g‘ri direction: {direction}")
+                self._raise(ElementInteractionError,
+                        message=f"Noto‘g‘ri direction: {direction}",
+                        step="switch_window:invalid_direction",
+                        log=True)
 
         except LoaderTimeoutError:
-            self.logger.error(f"{direction} oynaga o‘tish uchun vaqt tugadi")
-            self.take_screenshot(f"switch_{direction}_timeout_error")
-            raise
+            self._raise(LoaderTimeoutError,
+                        message=f"{direction} oynaga o‘tish uchun vaqt tugadi",
+                        step="switch_window:loader_timeout",
+                        screenshot=True,
+                        log=True)
 
         except Exception as e:
-            self.logger.error(f"{direction} oynaga o‘tishda xato: {str(e)}")
-            self.take_screenshot(f"switch_{direction}_error")
-            raise
-
-    # def switch_window(self, direction, url=None):
-    #     """
-    #     Brauzer oynalar (tabs/windows) o‘rtasida o'tishni amalga oshiradi.
-    #
-    #     Parameters:
-    #         direction (str):
-    #             - "prepare" -> hozirgi oynalar ro‘yxatini eslab qoladi
-    #             - "back"    -> avvalgi oynaga o‘tadi (joriy oynani yopadi)
-    #             - "forward" -> yangi oyna ochilganini aniqlaydi va unga o‘tadi
-    #             - "new"     -> yangi tab ochadi va URL'ga o'tadi
-    #     """
-    #     try:
-    #         # time.sleep(2)
-    #         self._wait_for_all_loaders()
-    #         current_window_id = self.driver.current_window_handle
-    #         self.logger.debug(f"Joriy oyna ID: {current_window_id}")
-    #
-    #         if direction == "prepare":
-    #             self._saved_handles = self.driver.window_handles.copy()
-    #             self.logger.debug(f"Oynalar ro'yxati saqlandi: {self._saved_handles}")
-    #             return True
-    #
-    #         elif direction == "back":
-    #             handles = self.driver.window_handles
-    #             self.driver.close()
-    #             self.driver.switch_to.window(handles[-2])
-    #             target_window_id = handles[-2]
-    #             self.logger.info(f"Avvalgi oynaga o'tilmoqda: {current_window_id} -> {target_window_id}")
-    #
-    #         elif direction == "forward":
-    #             saved_handles = getattr(self, '_saved_handles', [])
-    #             self.logger.debug("Yangi oynaning ochilishini kutish boshlandi...")
-    #
-    #             new_window_id = None
-    #             for i in range(20):  # 0.5s * 20 = 10s
-    #                 time.sleep(1)
-    #                 handles_now = self.driver.window_handles
-    #                 new_ids = list(set(handles_now) - set(saved_handles))
-    #                 self.logger.debug(f"Tekshiruv {i + 1}: handles = {handles_now}")
-    #                 if new_ids:
-    #                     new_window_id = new_ids[0]
-    #                     self.logger.info(f"⏺ Yangi oyna topildi: {new_window_id}")
-    #                     break
-    #
-    #             if not new_window_id:
-    #                 self.logger.warning("Yangi oyna topilmadi, oxirgi oynaga o‘tilmoqda.")
-    #                 new_window_id = self.driver.window_handles[-1]
-    #
-    #             self.driver.switch_to.window(new_window_id)
-    #             self.logger.info(f"Yangi oynaga o'tilmoqda: {current_window_id} -> {new_window_id}")
-    #
-    #         elif direction == "new" and url:
-    #             handles_before = self.driver.window_handles.copy()
-    #             self.driver.execute_script("window.open('');")
-    #             time.sleep(1)
-    #             new_handles = self.driver.window_handles
-    #             new_ids = list(set(new_handles) - set(handles_before))
-    #             target_window_id = new_ids[0] if new_ids else new_handles[-1]
-    #             self.driver.switch_to.window(target_window_id)
-    #             self.driver.get(url)
-    #             self.logger.info(f"url bo'yicha yangi oyna ochildi: {current_window_id} -> {target_window_id} | URL: {url}")
-    #
-    #         else:
-    #             raise Exception(f"Noto‘g‘ri direction: {direction}")
-    #
-    #         time.sleep(2)
-    #         if self._wait_for_all_loaders():
-    #             self.logger.info(f"direction='{direction}' bo‘yicha oynaga muvaffaqiyatli o‘tildi")
-    #             return True
-    #
-    #     except LoaderTimeoutError:
-    #         self.logger.error(f"{direction} oynaga o‘tish uchun vaqt tugadi")
-    #         self.take_screenshot(f"switch_{direction}_timeout_error")
-    #         raise
-    #
-    #     except Exception as e:
-    #         self.logger.error(f"{direction} oynaga o‘tishda xato: {str(e)}")
-    #         self.take_screenshot(f"switch_{direction}_error")
-    #         raise
+            self._raise(ElementInteractionError,
+                        message=f"{direction} oynaga o‘tishda xato",
+                        original=e,
+                        step="switch_window:error",
+                        screenshot=True,
+                        log=True)
 
     # ==================================================================================================================
 
@@ -974,7 +1046,7 @@ class BasePage:
     # ==================================================================================================================
 
     def refresh_page(self):
-        """Sahifani yangilash."""
+        """Sahifani yangilash va UI loader'larning tugashini kutish."""
 
         self.logger.debug(f"{self._get_caller_chain()}")
 
@@ -984,14 +1056,25 @@ class BasePage:
             self.logger.info("Sahifa muvaffaqiyatli yangilandi")
 
         except LoaderTimeoutError:
-            self.logger.error("Sahifa yangilangandan so'ng to'liq yuklanmadi")
-            self.take_screenshot("refresh_window_timeout_error")
-            raise
+            message = "Sahifa yangilangandan so'ng to'liq yuklanmadi (loader timeout)"
+            self._raise(
+                LoaderTimeoutError,
+                message=message,
+                step="refresh_page",
+                screenshot=True,
+                log=True
+            )
 
         except Exception as e:
-            self.logger.error(f"Sahifani yangilashda xato: {str(e)}")
-            self.take_screenshot("refresh_page_error")
-            raise
+            message = "Sahifani yangilashda kutilmagan xato"
+            self._raise(
+                ElementInteractionError,
+                message=message,
+                original=e,
+                step="refresh_page",
+                screenshot=True,
+                log=True
+            )
 
     # ==================================================================================================================
 
@@ -1021,9 +1104,8 @@ class BasePage:
                 return True
 
             # Input elementini topish va ochish
-            web_element = self.wait_for_element(input_locator, wait_type="presence")
-            self._scroll_to_element(element=web_element, locator=input_locator, scroll_center=True)
             web_element = self.wait_for_element(input_locator, wait_type="clickable")
+            self._scroll_to_element(element=web_element, locator=input_locator, scroll_center=True)
             self._click(web_element, input_locator) or self._click(web_element, input_locator, _click_js=True)
 
             # Optionlarni kutish
@@ -1031,14 +1113,12 @@ class BasePage:
                 self.logger.info("Option larni kutish boshlandi...")
                 options = self._wait_for_presence_all(options_locator, visible_only=True)
             except ElementNotFoundError:
-                self.logger.warning("Option lar DOM da mavjud emas!")
                 if self._is_choose_dropdown_option(input_locator, element_text):
                     return True
                 raise  # DOMda yo‘q va tanlanmagan
 
             # Bo‘sh ro‘yxat holati
             if not options:
-                self.logger.warning("Optionlar ro‘yxati bo‘sh (visible_only=True)")
                 if self._is_choose_dropdown_option(input_locator, element_text):
                     return True
 
@@ -1066,22 +1146,36 @@ class BasePage:
                     break
 
             # Topilmasa xatolik
-            message = f"'{element_text}' option scroll dan so‘ng ham topilmadi"
-            self.logger.warning(message)
-            raise ElementNotFoundError(message, options_locator)
+            self._raise(
+                ElementNotFoundError,
+                message=f"'{element_text}' option scroll dan so‘ng ham topilmadi",
+                locator=options_locator,
+                step="click_options:option_not_found",
+                screenshot=screenshot,
+                log=True
+            )
 
         except ElementNotFoundError as e:
-            message = f"ElementNotFoundError - {str(e)}"
-            self.logger.error(message)
-            if screenshot:
-                self.take_screenshot(f"{__class__.__name__.lower()}_click_options_not_found_error")
-            raise
+            self._raise(
+                ElementNotFoundError,
+                message=f"Option tanlashda ElementNotFoundError",
+                locator=options_locator,
+                original=e,
+                step="click_options:element_not_found",
+                screenshot=screenshot,
+                log=True
+            )
 
         except Exception as e:
-            message = f"Kutilmagan xatolik - {str(e)}"
-            self.logger.error(message)
-            self.take_screenshot(f"{__class__.__name__.lower()}_click_options_error")
-            raise
+            self._raise(
+                ElementInteractionError,
+                message=f"Dropdown opsiyalarni tanlashda kutilmagan xatolik",
+                locator=input_locator,
+                original=e,
+                step="click_options:general",
+                screenshot=True,
+                log=True
+            )
 
     # ==================================================================================================================
 
@@ -1189,10 +1283,12 @@ class BasePage:
             raise ElementNotFoundError(message, locator=(By.XPATH, " | ".join(possible_container_selectors)))
 
         except Exception as e:
-            message = f"Konteyner qidirishda kutilmagan xato"
-            self.logger.error(f"{message}: {str(e)}")
-            self.take_screenshot(f"{__class__.__name__.lower()}_dropdown_error")
-            raise
+            self._raise(ElementInteractionError,
+                        message="Konteyner qidirishda kutilmagan xato",
+                        original=e,
+                        step="_find_visible_container",
+                        screenshot=True,
+                        log=True)
 
     # ==================================================================================================================
 

@@ -7,7 +7,7 @@ class InventoryList(BasePage):
     inventory_list_header = (By.XPATH, "//button[@id='anor50-button-text-add']")
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.inventory_list_header)
+        self.wait_for_element_visible(self.inventory_list_header)
     # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, "//button[@id='anor50-button-text-add']")
 
@@ -81,7 +81,7 @@ class InventoryList(BasePage):
         self.click(self.show_all_button)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def find_and_click_checkbox(self, product_name):
+    def find_row(self, product_name):
         self.find_row_and_click(element_name=product_name)
     # ------------------------------------------------------------------------------------------------------------------
     navbar_button = (By.XPATH, "//ul[contains(@class,'breadcrumb')]/li[5]/a")

@@ -91,8 +91,7 @@ def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
     # cod = cod_generator
-    cod = "07_09_21_53"
-    # cod = "m3"
+    cod = "08_09_23_18"
     save_data("cod", cod)
 
     base_data = {

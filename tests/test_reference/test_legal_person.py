@@ -67,7 +67,8 @@ def test_add_legal_person(driver, test_data, soft_assertions):
     """Test adding legal person by filial"""
 
     data = test_data["data"]
-    legal_person = data['legal_person_name']
+    # legal_person = data['legal_person_name']
+    legal_person = 'test_12345'
     legal_person_add(driver, test_data, soft_assertions, person_name=legal_person)
 
 
