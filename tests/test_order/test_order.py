@@ -2,10 +2,10 @@ from datetime import datetime
 import pytest
 from conftest import soft_assertions
 from flows.auth_flow import login_user
-from flows.error_message_flow import get_error_massage
+from flows.modal_content_flow import get_error_massage_flow
 from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
 from flows.grid_setting_flow import grid_setting_in_form
-from flows.modal_content_flow import get_modal_content_flow
+from flows.modal_content_flow import get_biruni_confirm_flow
 from flows.order_flows.order_add_flow import (
     main_flow, product_flow, final_flow, step_flow, product_select_flow, final_input_value_flow)
 from flows.order_flows.order_list_flow import order_list, order_view, order_file, order_transaction, order_attach_data
@@ -131,7 +131,7 @@ def test_add_order_with_contract_demo(driver, test_data, save_data, soft_asserti
 
     final_flow(driver, payment_type_name=payment_type_name, status_name=status_name)
 
-    get_error_massage(driver, error_massage_name=data["error_massage_1"])
+    get_error_massage_flow(driver, error_massage_name=data["error_massage_1"])
 
     step_flow(driver, prev_step=True)
 
@@ -364,7 +364,7 @@ def test_add_order_for_action_demo(driver, test_data, save_data, assertions, sof
 
     payment_type_name = "Терминал"
     final_flow(driver, payment_type_name=payment_type_name, save=False)
-    get_modal_content_flow(driver, button_state=True)
+    get_biruni_confirm_flow(driver, button_state=True)
 
     result = final_flow(driver, get_total_amount=True, save=False)  # 108
     total_amount = total_amount_no_margin - (total_amount_no_margin * margin_terminal / 100)  # 96

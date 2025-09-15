@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import pytest
 import tempfile
 from datetime import datetime
@@ -12,25 +13,27 @@ from tests.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
 from utils.assertions import SoftAssertions
 from utils.env_reader import get_env
 
+# ----------------------------------------------------------------------------------------------------------------------
+
 driver_path = ChromeDriverManager().install()
 
-@pytest.fixture(scope="function")
-def driver(request, test_data):
+def _build_driver(request, test_data):
+    """
+    driver yaratishning yagona joyi.
+    driver fixture ham, driver_factory ham shu funksiyani chaqiradi.
+    """
     data = test_data["data"]
     url = data["url"]
 
     service = ChromeService(driver_path)
 
-    # Fixturega parametr berish (default=False)
     headless = request.config.getoption("--headless", default=False)
-
     options = Options()
 
-    # Headless rejim faqatgina --headless berilganda YOKI GitHub Actionsda yoqiladi
+    # ❗ Sizdagi sozlamalarni aynan saqlaymiz
     if headless or os.getenv("GITHUB_ACTIONS") == "true":
         options.add_argument("--headless=new")
 
-    # ✅ Vaqtinchalik profil yaratamiz
     user_data_dir = tempfile.mkdtemp()
     options.add_argument(f"--user-data-dir={user_data_dir}")
 
@@ -44,42 +47,67 @@ def driver(request, test_data):
     options.add_argument("--incognito")
     options.add_argument("--disable-features=AutofillServerCommunication,PasswordManagerEnabled,PasswordCheck")
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    # options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
     all_prefs = {
         "credentials_enable_service": False,
         "profile.password_manager_enabled": False,
         "download.default_directory": DOWNLOAD_DIR,
-        "download.prompt_for_download": False,  # ❌ Save As dialog chiqmasin
+        "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "safebrowsing.enabled": True
     }
     options.add_experimental_option("prefs", all_prefs)
 
-    driver = webdriver.Chrome(service=service, options=options)
+    drv = webdriver.Chrome(service=service, options=options)
 
-    # 📌 Fayl yuklashni DevTools orqali ruxsat berish
-    driver.execute_cdp_cmd(
-        "Page.setDownloadBehavior",
-        {
-            "behavior": "allow",
-            "downloadPath": DOWNLOAD_DIR
-        }
-    )
-
-    driver.set_page_load_timeout(120)
-    print(f"[driver] session_id={driver.session_id}")  # + diagnostika uchun
-    driver.get(url)
-
-    yield driver
-    driver.quit()
-
-    # Vaqtinchalik profil katalogi o‘chiriladi
-    import shutil
+    # 📌 Fayl yuklashga ruxsat (CDP) — sizdagi kabi
     try:
-        shutil.rmtree(user_data_dir)
-    except Exception as e:
-        print(f"[Warning] Profilni o‘chirishda xatolik: {user_data_dir} ({e})")
+        drv.execute_cdp_cmd(
+            "Page.setDownloadBehavior",
+            {"behavior": "allow", "downloadPath": DOWNLOAD_DIR}
+        )
+    except Exception:
+        pass
+
+    drv.set_page_load_timeout(120)
+    print(f"[driver] session_id={drv.session_id}")
+    drv.get(url)
+
+    # 🔻 tozalash (finalizer): retry ichida biz qo‘lda .quit() qilamiz,
+    # lekin finalizer ham xavfsiz (ikkinchi marta quit qilsa ham xato bermaydi)
+    def _finalize(d=drv, profile=user_data_dir):
+        try:
+            d.quit()
+        except Exception:
+            pass
+        try:
+            shutil.rmtree(profile)
+        except Exception as e:
+            print(f"[Warning] Profilni o‘chirishda xatolik: {profile} ({e})")
+
+    request.addfinalizer(_finalize)
+    return drv
+
+@pytest.fixture(scope="function")
+def driver_factory(request, test_data):
+    """
+    Retry uchun yangi driver beradigan "factory".
+    """
+    def _create():
+        return _build_driver(request, test_data)
+    return _create
+
+@pytest.fixture(scope="function")
+def driver(driver_factory):
+    """
+    1-urinish uchun odatdagi driver fixture.
+    Kodni takrorlamaymiz — ichida _build_driver chaqiriladi.
+    """
+    drv = driver_factory()
+    # Teardown’ni alohida yozish shart emas — finalizer ichida tozalanadi.
+    yield drv
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.fixture(scope="session")
 def cod_generator():
@@ -90,8 +118,8 @@ def cod_generator():
 def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
-    # cod = cod_generator
-    cod = "08_09_23_18"
+    cod = cod_generator
+    # cod = "h1"
     save_data("cod", cod)
 
     base_data = {
@@ -254,5 +282,31 @@ def assertions(base_page):
 def soft_assertions():
     """Soft assertion klassi uchun fixture"""
     return SoftAssertions()
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+from utils.test_state import start_new_session
+from utils.test_state import load_states
+
+def pytest_sessionstart(session):
+    """Har pytest sessiyasi boshlanishida yangi blok ochiladi"""
+    start_new_session()
+    print("[INFO] Yangi test sessiyasi boshlandi va test_state.json ga yozila boshlandi.")
+
+def pytest_sessionfinish(session, exitstatus):
+    """Sessiya tugaganda umumiy natijani logga chiqaradi"""
+    data = load_states()
+    if not data:
+        return
+
+    last_session = sorted(data.keys())[-1]
+    stats = data[last_session].get("stats", {})
+
+    total = stats.get("total", 0)
+    passed = stats.get("passed", 0)
+    failed = stats.get("failed", 0)
+    skipped = stats.get("skipped", 0)
+
+    print(f"\n[SUMMARY] {total} tests: {passed} passed, {failed} failed, {skipped} skipped\n")
 
 # ----------------------------------------------------------------------------------------------------------------------

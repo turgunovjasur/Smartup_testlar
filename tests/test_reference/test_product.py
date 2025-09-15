@@ -1,10 +1,9 @@
-import time
-
 import pytest
-from autotest.anor.mr.product.inventory_add.inventory_new import InventoryNew
-from flows.auth_flow import login_user
-from tests.test_reference.flow_product import list_flow, add_flow, view_flow, set_price_flow, add_foto_flow
 
+from autotest.core.md.base_page import BasePage
+from flows.auth_flow import login_user
+from flows.modal_content_flow import get_biruni_alert_flow
+from tests.test_reference.flow_product import list_flow, add_flow, view_flow, set_price_flow, add_foto_flow
 
 # ======================================================================================================================
 
@@ -12,6 +11,7 @@ from tests.test_reference.flow_product import list_flow, add_flow, view_flow, se
 @pytest.mark.order(15)
 def test_product_add_as_product_1(driver, test_data):
     """Test adding a product-1"""
+    base_page = BasePage(driver)
 
     data = test_data["data"]
     product_name = data["product_name"]
@@ -19,6 +19,13 @@ def test_product_add_as_product_1(driver, test_data):
     login_user(driver, test_data, url='anor/mr/product/inventory_list')
 
     list_flow(driver, add=True)
+
+    try:
+        add_foto_flow(driver, add_foto=True)
+    except Exception as e:
+        base_page.logger.warning(f"Foto error: {str(e)}")
+        base_page.take_screenshot(f"Foto error")
+        add_foto_flow(driver, close_modal=True)
 
     add_flow(driver,
              product_name=product_name,
@@ -81,7 +88,7 @@ def test_product_add_as_product_2(driver, test_data):
 
 # ======================================================================================================================
 
-def test_product_add_as_product_3(driver, test_data):
+def test_product_add_with_foto(driver, test_data):
     """Test adding a product-3"""
 
     data = test_data["data"]

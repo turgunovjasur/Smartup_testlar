@@ -1,4 +1,6 @@
 import inspect
+import time
+
 import allure
 import pytest
 from tests.test_cashin.test_cashin import test_cashin_add_A
@@ -112,6 +114,7 @@ from tests.test_writeoff.test_writeoff import (
     test_add_write_off,
     test_check_constructor_report_write_off,
 )
+from utils.test_state import save_state, can_continue, CONFIG
 
 # All ------------------------------------------------------------------------------------------------------------------
 
@@ -224,14 +227,15 @@ test_cases = [
     {"name": "Check Report Spot 2d",                       "func": test_check_report_spot_2d},
 ]
 
+# ======================================================================================================================
+# 3) TEST FUNKSIYASIGA KERAKLI PARAMETRLARNI TAYYORLASH
 def _get_fixture_kwargs(func, request):
     """
     Har bir test funksiyasining parametrlarini to'playdi:
       1) Agar parametr fixture bo'lsa -> fixture'dan oladi
-      2) Bo'lmasa test_data['data'] ichidan nomi bilan oladi
-      3) Agar topilmasa va parametr DEFAULT qiymatga ega bo'lsa -> uzatmaymiz (funksiya o'zi defaultni oladi)
-      4) Agar parametr *args / **kwargs bo'lsa -> uzatmaymiz (Python o'zi boshqaradi)
-      5) Aks holda -> xato
+      2) Bo'lmasa test_data['data'] ichidan oladi
+      3) Agar topilmasa va default qiymat bo'lsa -> uzatmaymiz
+      4) Aks holda -> xato
     """
     sig = inspect.signature(func)
     kwargs = {}
@@ -240,66 +244,189 @@ def _get_fixture_kwargs(func, request):
     test_data_flat = test_data.get("data", {}) if isinstance(test_data, dict) else {}
 
     for param_name, param in sig.parameters.items():
-        # *args / **kwargs -> hech narsa uzatmaymiz
+        # *args / **kwargs bo‘lsa uzatmaymiz
         if param.kind in (inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD):
             continue
 
-        # 1) Fixture sifatida berishga urinamiz
+        # 1) Fixture sifatida olishga urinib ko‘ramiz
         try:
             kwargs[param_name] = request.getfixturevalue(param_name)
             continue
         except pytest.FixtureLookupError:
             pass
 
-        # 2) test_data['data'] ichidan olishga urinib ko'ramiz
+        # 2) test_data ichidan olish
         if param_name in test_data_flat:
             kwargs[param_name] = test_data_flat[param_name]
             continue
 
-        # 3) Default qiymat bo'lsa, uzatmaymiz
+        # 3) Default qiymat bo‘lsa uzatmaymiz
         if param.default is not inspect._empty:
             continue
 
-        # 5) Topilmasa xato
-        raise Exception(
-            f"❌ Parametr '{param_name}' uchun fixture ham, test_data['data'] ichida ham topilmadi!"
-        )
+        # 4) Topilmasa xato
+        raise Exception(f"❌ Parametr '{param_name}' topilmadi.")
 
     return kwargs
 
 
-def _inherit_marks(func):
-    """
-    Original testdagi markerlarni (masalan, regression) olib, parametrga beramiz.
-    'order' markerini olib tashlaymiz — ro‘yxat tartibiga aralashmasin.
-    """
-    fmarks = getattr(func, "pytestmark", [])
-    if not isinstance(fmarks, (list, tuple)):
-        fmarks = [fmarks]
-    return [m for m in fmarks if getattr(m, "name", None) != "order"]
-
+# ======================================================================
+# 4) PYTEST PARAMETRIZATSIYA
+@pytest.fixture
+def runner_case(request):
+    return request.param
 
 def pytest_generate_tests(metafunc):
-    if "test_case" in metafunc.fixturenames:
-        params = []
-        for tc in test_cases:
-            marks = _inherit_marks(tc["func"])
-            params.append(pytest.param(tc, id=tc["name"], marks=marks))
-        metafunc.parametrize("test_case", params)
+    if "runner_case" in metafunc.fixturenames:
+        params = [pytest.param(case, id=case["name"]) for case in test_cases]
+        metafunc.parametrize("runner_case", params)
 
 
-@pytest.fixture(scope="function")
-def test_case():
-    # Parametrizatsiya bu fixture'ga qiymat beradi; bu yerda hech narsa qilmaymiz.
-    pass
+# ======================================================================
+# 5) ASOSIY RUNNER + RETRY (FACTORY BILAN)
+def test_run_with_state(runner_case, request, driver_factory):
+    func = runner_case["func"]
+    allure.dynamic.title(runner_case["name"])
 
+    if not can_continue():
+        save_state(func.__name__, "skipped")
+        allure.attach("Skipped because fail limit exceeded",
+                      name="Skip Reason",
+                      attachment_type=allure.attachment_type.TEXT)
+        pytest.skip("❌ Fail limitdan oshdi. Keyingi testlar to‘xtatildi.")
 
-def test_run_from_runner(request, test_case):
-    """
-    Har bir element = alohida test.
-    Allure uchun sarlavha: ro‘yxatdagi 'name'.
-    """
-    allure.dynamic.title(test_case["name"])
-    func = test_case["func"]
+    # Sizdagi helper orqali birinchi urinish uchun kwargs to'planadi (driver shu yerda fixture'dan keladi)
     kwargs = _get_fixture_kwargs(func, request)
-    func(**kwargs)
+    retry_count = CONFIG.get("retry_count", 0)
+
+    for attempt in range(1, retry_count + 2):  # retry_count=1 -> 2 urinish
+        try:
+            with allure.step(f"Attempt {attempt}"):
+                func(**kwargs)
+                save_state(func.__name__, "passed", attempt=attempt)
+                allure.attach(f"PASSED on attempt {attempt}",
+                              name="Result",
+                              attachment_type=allure.attachment_type.TEXT)
+                return
+
+        except Exception as e:
+            # Urinish natijasini JSON + Allure ga yozamiz
+            save_state(func.__name__, "failed", attempt=attempt, error=str(e))
+            allure.attach(str(e),
+                          name=f"Error on attempt {attempt}",
+                          attachment_type=allure.attachment_type.TEXT)
+
+            # 🧹 Eski driverni tozalaymiz (va kwargs'dan olib tashlaymiz!)
+            old = kwargs.pop("driver", None)
+            if old:
+                try:
+                    old.quit()
+                    with allure.step(f"Attempt {attempt} - Driver closed"):
+                        allure.attach("Driver quit successfully",
+                                      name="Driver Cleanup",
+                                      attachment_type=allure.attachment_type.TEXT)
+                except Exception as qerr:
+                    with allure.step(f"Attempt {attempt} - Driver close failed"):
+                        allure.attach(str(qerr),
+                                      name="Driver Quit Error",
+                                      attachment_type=allure.attachment_type.TEXT)
+
+            if attempt <= retry_count:
+                # 🔁 MUHIM: fixture emas, FACTORY orqali YANGI driver ochamiz
+                new_driver = driver_factory()
+                kwargs["driver"] = new_driver
+
+                with allure.step(f"Attempt {attempt} - New Driver Created"):
+                    allure.attach(f"New driver session_id: {getattr(new_driver, 'session_id', 'n/a')}",
+                                  name="Driver Re-init",
+                                  attachment_type=allure.attachment_type.TEXT)
+
+                # Yangi Chrome protsessi to'liq tayyor bo'lsin
+                time.sleep(1)
+                continue
+
+            # Retry tugagan — yakuniy fail
+            allure.attach(str(e), name="Final Failure",
+                          attachment_type=allure.attachment_type.TEXT)
+            raise
+
+
+# def _get_fixture_kwargs(func, request):
+#     """
+#     Har bir test funksiyasining parametrlarini to'playdi:
+#       1) Agar parametr fixture bo'lsa -> fixture'dan oladi
+#       2) Bo'lmasa test_data['data'] ichidan nomi bilan oladi
+#       3) Agar topilmasa va parametr DEFAULT qiymatga ega bo'lsa -> uzatmaymiz (funksiya o'zi defaultni oladi)
+#       4) Agar parametr *args / **kwargs bo'lsa -> uzatmaymiz (Python o'zi boshqaradi)
+#       5) Aks holda -> xato
+#     """
+#     sig = inspect.signature(func)
+#     kwargs = {}
+#
+#     test_data = request.getfixturevalue("test_data")
+#     test_data_flat = test_data.get("data", {}) if isinstance(test_data, dict) else {}
+#
+#     for param_name, param in sig.parameters.items():
+#         # *args / **kwargs -> hech narsa uzatmaymiz
+#         if param.kind in (inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD):
+#             continue
+#
+#         # 1) Fixture sifatida berishga urinamiz
+#         try:
+#             kwargs[param_name] = request.getfixturevalue(param_name)
+#             continue
+#         except pytest.FixtureLookupError:
+#             pass
+#
+#         # 2) test_data['data'] ichidan olishga urinib ko'ramiz
+#         if param_name in test_data_flat:
+#             kwargs[param_name] = test_data_flat[param_name]
+#             continue
+#
+#         # 3) Default qiymat bo'lsa, uzatmaymiz
+#         if param.default is not inspect._empty:
+#             continue
+#
+#         # 5) Topilmasa xato
+#         raise Exception(
+#             f"❌ Parametr '{param_name}' uchun fixture ham, test_data['data'] ichida ham topilmadi!"
+#         )
+#
+#     return kwargs
+#
+#
+# def _inherit_marks(func):
+#     """
+#     Original testdagi markerlarni (masalan, regression) olib, parametrga beramiz.
+#     'order' markerini olib tashlaymiz — ro‘yxat tartibiga aralashmasin.
+#     """
+#     fmarks = getattr(func, "pytestmark", [])
+#     if not isinstance(fmarks, (list, tuple)):
+#         fmarks = [fmarks]
+#     return [m for m in fmarks if getattr(m, "name", None) != "order"]
+#
+#
+# def pytest_generate_tests(metafunc):
+#     if "test_case" in metafunc.fixturenames:
+#         params = []
+#         for tc in test_cases:
+#             marks = _inherit_marks(tc["func"])
+#             params.append(pytest.param(tc, id=tc["name"], marks=marks))
+#         metafunc.parametrize("test_case", params)
+#
+#
+# @pytest.fixture(scope="function")
+# def test_case():
+#     # Parametrizatsiya bu fixture'ga qiymat beradi; bu yerda hech narsa qilmaymiz.
+#     pass
+#
+#
+# def test_run_from_runner(request, test_case):
+#     """
+#     Har bir element = alohida test.
+#     Allure uchun sarlavha: ro‘yxatdagi 'name'.
+#     """
+#     allure.dynamic.title(test_case["name"])
+#     func = test_case["func"]
+#     kwargs = _get_fixture_kwargs(func, request)
+#     func(**kwargs)

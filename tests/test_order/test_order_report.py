@@ -1,5 +1,4 @@
 import time
-
 import pyautogui
 import pytest
 import requests
@@ -14,7 +13,6 @@ from autotest.trade.tdeal.order.order_history_list.order_history_list import Ord
 from flows.auth_flow import login_user, login_admin
 from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
 from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
-
 
 # ======================================================================================================================
 

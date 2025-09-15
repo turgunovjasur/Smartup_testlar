@@ -4,7 +4,6 @@ import time
 from PIL import Image, ImageDraw, ImageFont
 from selenium.webdriver.common.by import By
 from autotest.core.md.base_page import BasePage
-from utils.exception import ElementVisibilityError
 
 
 class InventoryNew(BasePage):
@@ -62,21 +61,6 @@ class InventoryNew(BasePage):
     def click_save_button(self):
         self.click(self.save_button)
     # ------------------------------------------------------------------------------------------------------------------
-    error_massage_xpath = (By.XPATH, '//div[@id="biruniAlertExtended"]//div[@class="modal-content"]//div[@class="modal-title"]//div[@class="ng-binding"]')
-
-    def error_massage(self):
-        """Error xabarini tekshirish va olish"""
-
-        try:
-            self.wait_for_element(self.error_massage_xpath, timeout=5, wait_type="visibility", error_message=False)
-        except ElementVisibilityError:
-            return False
-
-        full_text = self.get_text(self.error_massage_xpath)
-        if full_text:
-            error_code = full_text.split('—')[0].strip() if "—" in full_text else full_text.strip()
-            return error_code
-    # ------------------------------------------------------------------------------------------------------------------
     clear_button = (By.XPATH, '//b-input[@name="sectors"]//span[@class="clear-button"]')
     sectors_input = (By.XPATH, '//b-input[@name="sectors"]//input')
     sectors_elem = (By.XPATH, '//b-input[@name="sectors"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
@@ -97,7 +81,7 @@ class InventoryNew(BasePage):
         file_input.send_keys(self.generate_test_image())
         self.click(self.save_foto_button)
         time.sleep(1)
-
+    # ------------------------------------------------------------------------------------------------------------------
     def generate_test_image(self, filename="product_autotest.png", size=(800, 600), text="AutoTest"):
         """Test uchun PNG rasm yaratadi (oq fon, qora markazdagi matn bilan)."""
         width, height = size
@@ -123,4 +107,9 @@ class InventoryNew(BasePage):
 
         self.logger.info(f"✅ Test rasmi yaratildi: {image_path}")
         return image_path
+    # ------------------------------------------------------------------------------------------------------------------
+    close_modal_button = (By.XPATH, '//button[@ng-click="o.closeModal()"]')
+
+    def click_close_modal_button(self):
+        self.click(self.close_modal_button)
     # ------------------------------------------------------------------------------------------------------------------

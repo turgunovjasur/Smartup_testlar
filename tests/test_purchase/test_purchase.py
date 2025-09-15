@@ -22,7 +22,7 @@ def add_purchase(driver, test_data, save_data, save_purchase_number):
     add_flow(driver, supplier_name=supplier_name)
     add_flow(driver, product_name=product_name, product_quantity=product_quantity, product_price=product_price)
 
-    purchase_number = random.randint(1000000, 9999999)
+    purchase_number = random.randint(1000000, 99999999)
     save_data(save_purchase_number, purchase_number)
     add_flow(driver, purchase_number=purchase_number, save=True)
 
@@ -79,7 +79,7 @@ def test_add_purchase_with_extra_cost_sum(driver, test_data, save_data, load_dat
     add_flow(driver, input_extra_cost=True, next_step=False)
 
     # Add Extra Cost
-    note_text = random.randint(1000000, 9999999)
+    note_text = random.randint(1000000, 99999999)
     extra_cost_add_flow(driver,
                         expense_article_name=expense_article_name,
                         corr_template_name=corr_template_name,
@@ -153,7 +153,7 @@ def test_add_purchase_with_extra_cost_quantity(driver, test_data, save_data, loa
     add_flow(driver, input_extra_cost=True, next_step=False)
 
     # Add Extra Cost
-    note_text = random.randint(1000000, 9999999)
+    note_text = random.randint(1000000, 99999999)
     extra_cost_add_flow(driver,
                         expense_article_name=expense_article_name,
                         corr_template_name=corr_template_name,
@@ -166,7 +166,7 @@ def test_add_purchase_with_extra_cost_quantity(driver, test_data, save_data, loa
     add_flow(driver, calc_extra_cost=True)
 
     # Add: 4
-    purchase_number = random.randint(1000000, 9999999)
+    purchase_number = random.randint(1000000, 99999999)
     save_data("purchase_number_3", purchase_number)
     add_flow(driver, purchase_number=purchase_number, save=True)
 
@@ -263,7 +263,7 @@ def test_add_purchase_with_extra_cost_weight_brutto(driver, test_data, save_data
     add_flow(driver, input_extra_cost=True, next_step=False)
 
     # Add Extra Cost
-    note_text = random.randint(1000000, 9999999)
+    note_text = random.randint(1000000, 99999999)
     extra_cost_add_flow(driver,
                         expense_article_name=expense_article_name,
                         corr_template_name=corr_template_name,
@@ -276,7 +276,7 @@ def test_add_purchase_with_extra_cost_weight_brutto(driver, test_data, save_data
     add_flow(driver, calc_extra_cost=True)
 
     # Add: 4
-    purchase_number = random.randint(1000000, 9999999)
+    purchase_number = random.randint(1000000, 99999999)
     save_data("purchase_number_4", purchase_number)
     add_flow(driver, purchase_number=purchase_number, save=True)
 

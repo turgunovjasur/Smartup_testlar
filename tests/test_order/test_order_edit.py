@@ -1,7 +1,7 @@
 import pytest
 from autotest.core.md.base_page import BasePage
 from flows.auth_flow import login_user
-from flows.error_message_flow import get_error_massage
+from flows.modal_content_flow import get_error_massage_flow
 from flows.grid_setting_flow import grid_setting
 from flows.order_flows.order_add_flow import main_flow, product_flow, final_flow
 from flows.order_flows.order_list_flow import order_list, order_view
@@ -29,7 +29,7 @@ def test_edit_order_with_consignment_demo(driver, test_data, save_data, load_dat
 
     product_flow(driver, product_quantity=10)
 
-    get_error_massage(driver, error_massage_name=data["error_massage_2"])
+    get_error_massage_flow(driver, error_massage_name=data["error_massage_2"])
 
     final_flow(driver, status_name=data["Draft"])
 
@@ -68,7 +68,7 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_d
 
     final_flow(driver, status_name=data["Delivered"])
 
-    get_error_massage(driver, error_massage_name=data["error_massage_3"])
+    get_error_massage_flow(driver, error_massage_name=data["error_massage_3"])
 
     base_page.switch_window(direction="prepare")
     cut_url = base_page.cut_url()
@@ -86,7 +86,7 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_d
 
     order_list(driver, find_row=order_id_4, change_status=data["Delivered"])
 
-    get_error_massage(driver, error_massage_name=data["error_massage_3"])
+    get_error_massage_flow(driver, error_massage_name=data["error_massage_3"])
 
     order_list(driver, reload=True, find_row=order_id_4, edit=True)
 
@@ -100,7 +100,7 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_d
 
     order_list(driver, reload=True, find_row=order_id_4, change_status=data["Delivered"])
 
-    get_error_massage(driver, error_massage_name=data["error_massage_3"])
+    get_error_massage_flow(driver, error_massage_name=data["error_massage_3"])
 
     order_list(driver, reload=True, find_row=order_id_4, change_status=data["New"])
 

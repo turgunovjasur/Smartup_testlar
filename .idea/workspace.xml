@@ -4,16 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added: raise mexanizim and block UI (08.09.2025)">
-      <change afterPath="$PROJECT_DIR$/tests/test_reference/flow_product.py" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added: screen_recorder (10.09.2025)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_add/inventory_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_add/inventory_new.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_list/inventory_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_list/inventory_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/error_message/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/test_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/error_message/error_message.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/modal_content/modal_content.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/biruni/modal_content/modal_content.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_store.json" beforeDir="false" afterPath="$PROJECT_DIR$/data_store.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_store.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/error_message_flow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/modal_content_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/modal_content_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_runner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_license/test_license.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_license/test_license.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/flow_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/flow_product.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_reference/test_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_product.py" afterDir="false" />
     </list>
@@ -242,7 +251,7 @@
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report">
+  <component name="RunManager" selected="Python tests.pytest for test_product.test_product_add_as_product_1">
     <configuration name="pytest for test_legal_person.test_add_legal_person" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
@@ -337,11 +346,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report" />
+        <item itemvalue="Python tests.pytest for test_product.test_product_add_as_product_1" />
         <item itemvalue="Python tests.pytest for test_legal_person.test_add_legal_person" />
+        <item itemvalue="Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report" />
         <item itemvalue="Python tests.pytest for test_product.test_product_add_as_product_3" />
         <item itemvalue="Python tests.pytest for test_product.test_product_add_as_product_2" />
-        <item itemvalue="Python tests.pytest for test_product.test_product_add_as_product_1" />
       </list>
     </recent_temporary>
   </component>
@@ -721,7 +730,23 @@
       <option name="project" value="LOCAL" />
       <updated>1757329744282</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Added: base_page (10.09.2025)">
+      <option name="closed" value="true" />
+      <created>1757446974032</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1757446974032</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Added: screen_recorder (10.09.2025)">
+      <option name="closed" value="true" />
+      <created>1757485810947</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1757485810947</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -739,8 +764,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="'Only run test_sales_report_constructor_demo'" />
-    <MESSAGE value="&quot;Remove failing GUI-dependent tests from imports&quot;" />
     <MESSAGE value="save, load" />
     <MESSAGE value="integration_report" />
     <MESSAGE value="integration_report, requirements" />
@@ -764,7 +787,9 @@
     <MESSAGE value="Added: USERPROFILE (21.08.2025)" />
     <MESSAGE value="Added: license (28.08.2025)" />
     <MESSAGE value="Added: raise mexanizim and block UI (08.09.2025)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added: raise mexanizim and block UI (08.09.2025)" />
+    <MESSAGE value="Added: base_page (10.09.2025)" />
+    <MESSAGE value="Added: screen_recorder (10.09.2025)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added: screen_recorder (10.09.2025)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

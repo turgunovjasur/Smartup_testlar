@@ -1,10 +1,8 @@
 import time
-
 from autotest.anor.mr.product.inventory_add.inventory_new import InventoryNew
 from autotest.anor.mr.product.inventory_list.inventory_list import InventoryList
 from autotest.anor.mr.product.inventory_view.product_id import ProductId as ProductView
 from autotest.anor.mr.product.product_set_price.product_set_price import ProductSetPrice
-from autotest.core.md.base_page import BasePage
 
 # ======================================================================================================================
 
@@ -14,6 +12,9 @@ def add_foto_flow(driver, **kwargs):
 
     if kwargs.get("add_foto"):
         inventory_add.input_upload_photo()
+
+    if kwargs.get("close_modal"):
+        inventory_add.click_close_modal_button()
 
 # ======================================================================================================================
 
@@ -72,15 +73,8 @@ def add_flow(driver, **kwargs):
         inventory_add.input_litre(litre)
 
     if kwargs.get("save", True):
-        time.sleep(1)
+        time.sleep(0.5)
         inventory_add.click_save_button()
-        base_page = BasePage(driver)
-
-        # Checking error message
-        if inventory_add.error_massage():
-            base_page.refresh_page()
-        else:
-            base_page.logger.info("✅ Xatolik yoq! -> Product saqlandi.")
 
 # ======================================================================================================================
 

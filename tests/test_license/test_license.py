@@ -4,7 +4,7 @@ from autotest.biruni.kl.license_list.license_list import LicenseList
 from autotest.core.md.base_page import BasePage
 from autotest.core.md.login_page import LoginPage
 from flows.auth_flow import login_admin, login
-from flows.error_message_flow import get_error_massage
+from flows.modal_content_flow import get_error_massage_flow
 from tests.test_license.flow_license import balance_flow, document_flow, attach_user_flow, purchase_flow, \
     get_modal_content_flow
 
@@ -79,7 +79,7 @@ def test_add_purchase_license(driver, test_data, assertions):
 
     get_modal_content_flow(driver)
     try:
-        get_error_massage(driver, error_massage_name="U08-04-003")
+        get_error_massage_flow(driver, error_massage_name="U08-04-003")
 
         first_day = date.today().replace(day=1).strftime("%d%m%Y")
 
