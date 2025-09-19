@@ -281,7 +281,6 @@ def pytest_generate_tests(metafunc):
         params = [pytest.param(case, id=case["name"]) for case in test_cases]
         metafunc.parametrize("runner_case", params)
 
-
 # ======================================================================
 # 5) ASOSIY RUNNER + RETRY (FACTORY BILAN)
 def test_run_with_state(runner_case, request, driver_factory):
@@ -349,7 +348,6 @@ def test_run_with_state(runner_case, request, driver_factory):
             allure.attach(str(e), name="Final Failure",
                           attachment_type=allure.attachment_type.TEXT)
             raise
-
 
 # def _get_fixture_kwargs(func, request):
 #     """

@@ -23,8 +23,12 @@ class InputList(BasePage):
     def click_view_button(self):
         self.click(self.view_button)
     # ------------------------------------------------------------------------------------------------------------------
-    change_status_button = (By.XPATH, '(//button[@id="anor113-button-edit"]/following-sibling::div/button)[1]')
-    completed_button = (By.XPATH, '//button[@id="anor113-button-edit"]/following-sibling::div//a[@ng-click="completedOne(row)"]')
+    # change_status_button = (By.XPATH, '(//button[@id="anor113-button-edit"]/following-sibling::div/button)[1]')
+    change_status_button = (By.XPATH, '//div[@class="tbl-row open"]//div[@class="tbl-cell"]//div[@class="dropdown"]')
+
+    # completed_button = (By.XPATH, '//button[@id="anor113-button-edit"]/following-sibling::div//a[@ng-click="completedOne(row)"]')
+    completed_button = (By.XPATH, f'//div[@id="dropdown" and @class="dropdown show"]//button[contains(@onclick,"Завершено")]')
+
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
     def click_change_status_button(self):

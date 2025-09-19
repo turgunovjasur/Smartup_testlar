@@ -74,12 +74,14 @@ class OrdersList(BasePage):
     def find_row(self, client_name):
         self.find_row_and_click(element_name=client_name)
     # ------------------------------------------------------------------------------------------------------------------
-    change_status_one_button = (By.XPATH, "//button[@id='trade81-button-change_status_one']")
+    # change_status_one_button = (By.XPATH, "//button[@id='trade81-button-change_status_one']")
+    change_status_one_button = (By.XPATH, '//div[@class="tbl-row open"]//div[@class="tbl-cell"]//div[@class="dropdown"]')
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_change_status_button(self, status_name):
         self.click(self.change_status_one_button)
-        status_button = (By.XPATH, f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
+        # status_button = (By.XPATH, f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
+        status_button = (By.XPATH, f'//div[@id="dropdown" and @class="dropdown show"]//button[contains(@onclick,"{status_name}")]')
         self.click(status_button)
         self.click(self.yes_button)
 

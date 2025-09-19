@@ -35,8 +35,12 @@ class PurchaseList(BasePage):
     def find_row(self, purchase_number):
         self.find_row_and_click(element_name=purchase_number)
     # ------------------------------------------------------------------------------------------------------------------
-    status_one_button = (By.XPATH, "//button[@id='anor288-button-changestatus']")
-    status_draft_button = (By.XPATH, "//div[@id='statusDropDown']//div[@class='card-body p-0']/a[1]")
+    # status_one_button = (By.XPATH, "//button[@id='anor288-button-changestatus']")
+    status_one_button = (By.XPATH, '//div[@class="tbl-row open"]//div[@class="tbl-cell"]//div[@class="dropdown"]')
+
+    # status_draft_button = (By.XPATH, "//div[@id='statusDropDown']//div[@class='card-body p-0']/a[1]")
+    status_draft_button = (By.XPATH, f'//div[@id="dropdown" and @class="dropdown show"]//button[contains(@onclick,"Черновик")]')
+
     status_yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_status_one_button(self):
