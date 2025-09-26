@@ -7,7 +7,7 @@ from flows.order_flows.order_list_flow import order_list, order_view
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(34)
+@pytest.mark.order(300)
 def test_order_change_status_from_draft_to_cancelled_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_order_change_status_from_draft_to_cancelled_demo")
@@ -74,7 +74,7 @@ def test_order_change_status_from_draft_to_cancelled_demo(driver, test_data, sav
 
 @pytest.mark.regression
 @pytest.mark.order_group_B
-@pytest.mark.order(40)
+@pytest.mark.order(370)
 def test_change_status_draft_and_archive_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_change_status_draft_and_archive_demo")
@@ -101,7 +101,7 @@ def test_change_status_draft_and_archive_demo(driver, test_data, save_data, load
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(50)
+@pytest.mark.order(470)
 def test_change_status_new_and_cancelled_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_change_status_new_and_cancelled_demo")
@@ -128,7 +128,7 @@ def test_change_status_new_and_cancelled_demo(driver, test_data, save_data, load
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(54)
+@pytest.mark.order(510)
 def test_change_status_draft_and_delivered_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_change_status_draft_and_delivered_demo")

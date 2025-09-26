@@ -4,12 +4,12 @@ from selenium.webdriver.common.by import By
 
 class TemplateList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = (By.XPATH, '//button[@ng-click="fi.add()"]')
+    header = (By.XPATH, '//button[@ng-click="add()"]')
 
     def element_visible(self):
         return self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    add_button = (By.XPATH, '//button[@ng-click="fi.add()"]')
+    add_button = (By.XPATH, '//button[@ng-click="add()"]')
 
     def click_add_button(self):
         self.click(self.add_button)

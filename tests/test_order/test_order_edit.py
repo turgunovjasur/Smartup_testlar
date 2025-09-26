@@ -11,7 +11,7 @@ from tests.test_cashin.test_cashin import test_cashin_add_C
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(31)
+@pytest.mark.order(270)
 def test_edit_order_with_consignment_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_with_consignment_demo")
@@ -43,7 +43,7 @@ def test_edit_order_with_consignment_demo(driver, test_data, save_data, load_dat
 
 @pytest.mark.regression
 @pytest.mark.order_group_C
-@pytest.mark.order(45)
+@pytest.mark.order(420)
 def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_for_price_type_USA_demo")
@@ -125,7 +125,7 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_d
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(53)
+@pytest.mark.order(500)
 def test_edit_order_for_action_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_for_action_demo")

@@ -57,7 +57,7 @@ def contract_add(driver, test_data, **kwargs):
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(27)
+@pytest.mark.order(230)
 def test_add_contract_for_client_A_UZB(driver, test_data):
     """Test adding a contract for Client A in UZB currency."""
 
@@ -78,7 +78,7 @@ def test_add_contract_for_client_A_UZB(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order_group_B
-@pytest.mark.order(38)
+@pytest.mark.order(350)
 def test_add_contract_for_client_B_UZB(driver, test_data):
     """Test adding a contract for Client B in UZB currency with a higher initial amount."""
 
@@ -99,7 +99,7 @@ def test_add_contract_for_client_B_UZB(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order_group_C
-@pytest.mark.order(42)
+@pytest.mark.order(390)
 def test_add_contract_for_client_C_USA(driver, test_data):
     """Test adding a contract for Client C in USA currency."""
 

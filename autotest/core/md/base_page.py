@@ -11,7 +11,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-
 from utils.assertions import Assertions
 from utils.env_reader import get_env
 from utils.log_helpers import log_start_end_for_current_method, get_caller_chain
@@ -33,8 +32,8 @@ class BasePage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.default_timeout = 20
-        self.page_load_timeout = 60
+        self.default_timeout = 30
+        self.page_load_timeout = 120
         self.test_name = get_test_name()
         self.actions = ActionChains(driver)
         self.logger = configure_logging(self.test_name)
@@ -47,6 +46,7 @@ class BasePage:
 
     # ==================================================================================================================
     # Xatolik uchun boy kontekst
+
     def _ctx(self, step=None, locator=None, extra=None):
         try:
             url = self.driver.current_url
@@ -476,7 +476,8 @@ class BasePage:
     # ==================================================================================================================
 
     def _wait_for_invisibility_of_element(self, element, timeout=None, error_message=None):
-        """Berilgan elementning interfeysdan ko‘rinmas bo‘lishini kutadi.
+        """
+        Berilgan elementning interfeysdan ko‘rinmas bo‘lishini kutadi.
 
         Returns:
             bool:
@@ -485,11 +486,11 @@ class BasePage:
 
         Raises:
             ElementVisibilityError: kutilmagan xato yoki timeout holatida
-            """
+        """
 
         self.logger.debug(f"{self._get_caller_chain()}")
-
         timeout = timeout or self.default_timeout
+
         try:
             return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element(element))
 

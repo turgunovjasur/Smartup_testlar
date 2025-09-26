@@ -5,7 +5,7 @@ from tests.test_reference.flow_action import list_flow, add_flow, view_flow
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(51)
+@pytest.mark.order(480)
 def test_add_action_cash_money(driver, test_data, assertions):
     data = test_data["data"]
     action_name = 'Test_action_cash_money'
@@ -40,7 +40,7 @@ def test_add_action_cash_money(driver, test_data, assertions):
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(51)
+@pytest.mark.order(481)
 def test_add_action_terminal(driver, test_data, assertions):
     data = test_data["data"]
     action_name = 'Test_action_terminal'

@@ -10,12 +10,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from autotest.core.md.base_page import BasePage
 from tests.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
+from utils.flow_runner import FlowRunner
 from utils.assertions import SoftAssertions
 from utils.env_reader import get_env
 
 # ----------------------------------------------------------------------------------------------------------------------
-
-driver_path = ChromeDriverManager().install()
 
 def _build_driver(request, test_data):
     """
@@ -25,6 +24,7 @@ def _build_driver(request, test_data):
     data = test_data["data"]
     url = data["url"]
 
+    driver_path = ChromeDriverManager().install()
     service = ChromeService(driver_path)
 
     headless = request.config.getoption("--headless", default=False)
@@ -119,7 +119,7 @@ def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
     cod = cod_generator
-    # cod = "h1"
+    # cod = "Qase-2"
     save_data("cod", cod)
 
     base_data = {
@@ -218,20 +218,20 @@ def test_data(save_data, cod_generator):
 DATA_STORE_FILE = os.path.join(os.path.dirname(__file__), "data_store.json")
 
 # Fayl manzilini aniqlovchi funksiya
-def get_data_file_path(request, per_test):
-    if per_test:
-        test_file = os.path.splitext(os.path.basename(request.fspath))[0]  # test_login.py -> test_login
-        test_name = request.node.name  # test funktsiya nomi
-        file_name = f"{test_file}__{test_name}.json"
-        return os.path.join(os.path.dirname(request.fspath), file_name)
-    else:
-        return DATA_STORE_FILE
+def get_data_file_path(request, file_name=None):
+    base_dir = os.path.dirname(request.fspath)
+
+    if file_name:  # ✅ alohida nom berilgan bo‘lsa, test fayli yonida saqlanadi
+        return os.path.join(base_dir, file_name)
+
+    # default: umumiy data_store.json
+    return DATA_STORE_FILE
 
 # JSON ga ma'lumot yozuvchi fixture
 @pytest.fixture
 def save_data(request):
-    def _save(key, value, per_test=False):
-        file_path = get_data_file_path(request, per_test)
+    def _save(key, value, file_name=None):
+        file_path = get_data_file_path(request, file_name=file_name)
         data = {}
 
         # Fayl mavjud bo‘lsa, mavjud ma’lumotlarni o‘qib olamiz
@@ -253,8 +253,8 @@ def save_data(request):
 # JSON dan ma'lumot o‘quvchi fixture
 @pytest.fixture
 def load_data(request):
-    def _load(key, per_test=False):
-        file_path = get_data_file_path(request, per_test)
+    def _load(key, file_name=None):
+        file_path = get_data_file_path(request, file_name=file_name)
 
         if os.path.exists(file_path):
             with open(file_path, "r", encoding="utf-8") as f:
@@ -279,34 +279,20 @@ def assertions(base_page):
     return base_page.assertions
 
 @pytest.fixture
-def soft_assertions():
+def soft_assertions(base_page):
     """Soft assertion klassi uchun fixture"""
-    return SoftAssertions()
+    return SoftAssertions(page=base_page)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-from utils.test_state import start_new_session
-from utils.test_state import load_states
-
-def pytest_sessionstart(session):
-    """Har pytest sessiyasi boshlanishida yangi blok ochiladi"""
-    start_new_session()
-    print("[INFO] Yangi test sessiyasi boshlandi va test_state.json ga yozila boshlandi.")
-
-def pytest_sessionfinish(session, exitstatus):
-    """Sessiya tugaganda umumiy natijani logga chiqaradi"""
-    data = load_states()
-    if not data:
-        return
-
-    last_session = sorted(data.keys())[-1]
-    stats = data[last_session].get("stats", {})
-
-    total = stats.get("total", 0)
-    passed = stats.get("passed", 0)
-    failed = stats.get("failed", 0)
-    skipped = stats.get("skipped", 0)
-
-    print(f"\n[SUMMARY] {total} tests: {passed} passed, {failed} failed, {skipped} skipped\n")
-
+@pytest.fixture
+def flow_runner(request):
+    """
+    FlowRunner fixture:
+    - pytest-rerunfailures 'execution_count' orqali attempt ni oladi
+    - test nomini request.node.name dan oladi
+    """
+    attempt = getattr(request.node, "execution_count", 1)
+    test_name = request.node.name
+    return FlowRunner(test_name, attempt=attempt)
 # ----------------------------------------------------------------------------------------------------------------------

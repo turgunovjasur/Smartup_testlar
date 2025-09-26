@@ -40,7 +40,7 @@ def client_add(driver, test_data, client_name=None):
 
 
 @pytest.mark.regression
-@pytest.mark.order(22)
+@pytest.mark.order(200)
 def test_client_add_A(driver, test_data):
     """Test adding client A"""
 
@@ -50,7 +50,7 @@ def test_client_add_A(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(23)
+@pytest.mark.order(201)
 def test_client_add_B(driver, test_data):
     """Test adding client B"""
 
@@ -60,7 +60,7 @@ def test_client_add_B(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(24)
+@pytest.mark.order(202)
 def test_client_add_C(driver, test_data):
     """Test adding client C"""
 

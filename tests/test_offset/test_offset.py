@@ -81,7 +81,7 @@ def offset_add(driver, test_data, client_name=None, payment=False):
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(37)
+@pytest.mark.order(340)
 def test_offset_add_A(driver, test_data):
     data = test_data["data"]
     client_name = f'{data["client_name"]}-A'
@@ -90,7 +90,7 @@ def test_offset_add_A(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order_group_B
-@pytest.mark.order(41)
+@pytest.mark.order(380)
 def test_offset_add_B(driver, test_data):
     data = test_data["data"]
     client_name = f'{data["client_name"]}-B'

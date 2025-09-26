@@ -8,7 +8,7 @@ from flows.order_flows.order_list_flow import order_list, order_view, order_copy
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(32)
+@pytest.mark.order(280)
 def test_copy_search_filter_in_order_list_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_copy_search_filter_in_order_list_demo")

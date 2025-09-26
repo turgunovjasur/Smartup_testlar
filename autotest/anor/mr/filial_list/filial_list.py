@@ -7,8 +7,7 @@ class FilialList(BasePage):
     header = By.XPATH, '//button[@ng-click="fi.add()"]'
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
-    # ------------------------------------------------------------------------------------------------------------------
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
     add_button = By.XPATH, '//button[@ng-click="fi.add()"]'
 

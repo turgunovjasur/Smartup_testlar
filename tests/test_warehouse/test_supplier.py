@@ -7,7 +7,7 @@ from autotest.anor.mkw.supplier_view.supplier_view import SupplierView
 from flows.auth_flow import login_user
 
 @pytest.mark.regression
-@pytest.mark.order(57)
+@pytest.mark.order(540)
 def test_add_supplier(driver, test_data):
     """Test adding supplier"""
 

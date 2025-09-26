@@ -8,7 +8,7 @@ from tests.test_reference.flow_product import list_flow, add_flow, view_flow, se
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(15)
+@pytest.mark.order(150)
 def test_product_add_as_product_1(driver, test_data):
     """Test adding a product-1"""
     base_page = BasePage(driver)
@@ -52,7 +52,7 @@ def test_product_add_as_product_1(driver, test_data):
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(58)
+@pytest.mark.order(550)
 def test_product_add_as_product_2(driver, test_data):
     """Test adding a product-2"""
 

@@ -8,7 +8,7 @@ from flows.balance_flow import flow_get_balance
 
 
 @pytest.mark.regression
-@pytest.mark.order(69)
+@pytest.mark.order(640)
 def test_add_internal_movement(driver, test_data):
     """Test adding a internal movement"""
     # Test data

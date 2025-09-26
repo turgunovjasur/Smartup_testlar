@@ -6,7 +6,7 @@ from flows.auth_flow import login_admin
 
 
 @pytest.mark.regression
-@pytest.mark.order(6)
+@pytest.mark.order(60)
 def test_natural_person_add(driver, test_data, person_name=None):
     """Test adding a natural person"""
 
@@ -42,7 +42,7 @@ def test_natural_person_add(driver, test_data, person_name=None):
 
 
 @pytest.mark.regression
-@pytest.mark.order(19)
+@pytest.mark.order(190)
 def test_natural_person_client_add_A(driver, test_data):
     """Test adding natural person client A"""
 
@@ -52,7 +52,7 @@ def test_natural_person_client_add_A(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(20)
+@pytest.mark.order(191)
 def test_natural_person_client_add_B(driver, test_data):
     """Test adding natural person client B"""
 
@@ -62,7 +62,7 @@ def test_natural_person_client_add_B(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(21)
+@pytest.mark.order(192)
 def test_natural_person_client_add_C(driver, test_data):
     """Test adding natural person client C"""
 

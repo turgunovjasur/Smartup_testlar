@@ -44,7 +44,7 @@ def add_purchase(driver, test_data, save_data, save_purchase_number):
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(59)
+@pytest.mark.order(560)
 def test_add_purchase(driver, test_data, save_data):
     """Test adding purchase"""
 
@@ -54,7 +54,7 @@ def test_add_purchase(driver, test_data, save_data):
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(61)
+@pytest.mark.order(580)
 def test_add_purchase_with_extra_cost_sum(driver, test_data, save_data, load_data):
     data = test_data["data"]
     supplier_name = data["supplier_name"]
@@ -113,7 +113,7 @@ def test_add_purchase_with_extra_cost_sum(driver, test_data, save_data, load_dat
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(62)
+@pytest.mark.order(581)
 def test_add_purchase_with_extra_cost_quantity(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 
@@ -220,7 +220,7 @@ def test_add_purchase_with_extra_cost_quantity(driver, test_data, save_data, loa
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(63)
+@pytest.mark.order(582)
 def test_add_purchase_with_extra_cost_weight_brutto(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 

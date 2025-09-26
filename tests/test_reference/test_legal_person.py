@@ -1,13 +1,15 @@
 import random
 import pytest
+from qase.pytest import qase
 from flows.auth_flow import login_user, login_admin
 from tests.test_reference.legal_person_flows import add_flow, view_flow, list_flow
 
+# ----------------------------------------------------------------------------------------------------------------------
 
-def legal_person_add(driver, test_data, soft_assertions, person_name=None, admin_or_user=True):
+def legal_person_add(driver, test_data, flow_runner, soft_assertions, person_name=None, admin_or_user=True):
     """Test adding a legal person"""
 
-    i = random.randint(1000, 9999)
+    i = random.randint(10000, 99999)
     main_phone = f"+99890000{i}"
     telegram = f"@telegram_{i}"
     email = f"email_{i}@gmail.uz"
@@ -60,22 +62,71 @@ def legal_person_add(driver, test_data, soft_assertions, person_name=None, admin
               barcode=barcode,
               email=email)
 
+    return code
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+@qase.id(164)
+@qase.title("Add Legal Person")
+@pytest.mark.dependency(name="t1")
 @pytest.mark.regression
-@pytest.mark.order(1)
-def test_add_legal_person(driver, test_data, soft_assertions):
-    """Test adding legal person by filial"""
+@pytest.mark.order(10)
+def test_add_legal_person(driver, test_data, flow_runner, soft_assertions, save_data):
+    """
+        Legal Person qo‘shish va tekshirish.
+
+        Preconditions:
+            - Admin sifatida login bo‘lishi kerak
+            - Legal Person list sahifasi ochiq bo‘lishi kerak
+
+        Checklist:
+        1. Admin login qilinadi
+        2. Legal Person list sahifasi ochilgani tekshiriladi
+        3. Add tugmasi bosiladi
+        4. Add formasi ochilgani tekshiriladi
+        5. Maydonlar to‘ldiriladi
+        6. Save tugmasi bosiladi va Yes tasdiqlanadi
+        7. Ro‘yxatda Code orqali qidiriladi
+        8. Yozuv topiladi
+        9. View tugmasi bosiladi
+        10. Qiymatlar tekshiriladi
+    """
 
     data = test_data["data"]
     legal_person = data['legal_person_name']
-    legal_person_add(driver, test_data, soft_assertions, person_name=legal_person)
+    code = legal_person_add(driver, test_data, flow_runner, soft_assertions, person_name=legal_person)
+    save_data("legal_person_cod", code)
 
+# ----------------------------------------------------------------------------------------------------------------------
 
+@qase.id(165)
+@qase.title("Add Legal Person by Supplier")
 @pytest.mark.regression
-@pytest.mark.order(56)
-def test_add_legal_person_by_supplier(driver, test_data, soft_assertions):
-    """Test adding legal person by supplier"""
+@pytest.mark.order(530)
+def test_add_legal_person_by_supplier(driver, test_data, flow_runner, soft_assertions, save_data):
+    """
+        Supplier orqali sifatida Legal Person qo‘shish va tekshirish.
+
+        Preconditions:
+            - Admin sifatida login bo‘lishi kerak
+            - Legal Person list sahifasi ochiq bo‘lishi kerak
+
+        Checklist:
+        1. Admin login qilinadi
+        2. Legal Person list sahifasi ochilgani tekshiriladi
+        3. Add tugmasi bosiladi
+        4. Add formasi ochilgani tekshiriladi
+        5. Forma maydonlari supplier ma’lumotlari bilan to‘ldiriladi
+        6. Save tugmasi bosiladi va Yes tasdiqlanadi
+        7. Ro‘yxatda Code orqali qidiriladi
+        8. Yangi yozuv ro‘yxatdan topiladi
+        9. View tugmasi bosiladi
+        10. Kiritilgan qiymatlar supplier ma’lumotlariga mosligi tekshiriladi
+    """
 
     data = test_data["data"]
     supplier_name = data['supplier_name']
-    legal_person_add(driver, test_data, soft_assertions, person_name=supplier_name, admin_or_user=False)
+    code = legal_person_add(driver, test_data, flow_runner, soft_assertions, person_name=supplier_name, admin_or_user=False)
+    save_data("supplier_cod", code)
+
+# ----------------------------------------------------------------------------------------------------------------------

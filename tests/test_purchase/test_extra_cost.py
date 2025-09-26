@@ -8,7 +8,7 @@ from tests.test_purchase.flow_purchase import list_flow as p_list_flow, check_tr
 
 
 @pytest.mark.regression
-@pytest.mark.order(60)
+@pytest.mark.order(570)
 def test_add_extra_cost(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
 

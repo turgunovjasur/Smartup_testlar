@@ -18,7 +18,7 @@ from tests.test_rep.integration.rep_main_funksiya import generate_and_verify_dow
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(30)
+@pytest.mark.order(260)
 def test_check_report_for_order_list(driver, test_data, timeout=60):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Run test: test_check_report_for_order_list")
@@ -115,7 +115,7 @@ def test_check_report_for_order_list(driver, test_data, timeout=60):
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(35)
+@pytest.mark.order(310)
 def test_check_report_for_order_history_list(driver, test_data, timeout=60):
     base_page = BasePage(driver)
     base_page.logger.info("▶️Run test: test_check_invoices_report_for_order_history_list")
@@ -233,7 +233,7 @@ def get_data_file_path(filename, folder, subfolder):
 
 # Invoice report
 @pytest.mark.regression
-@pytest.mark.order(47)
+@pytest.mark.order(440)
 def test_add_template_for_order_invoice_report(driver, test_data):
     # Test data
     data = test_data["data"]
@@ -279,7 +279,7 @@ def test_add_template_for_order_invoice_report(driver, test_data):
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(49)
+@pytest.mark.order(460)
 def test_check_invoice_report_for_order_list(driver, test_data):
     data = test_data["data"]
     client_name = f"{data['client_name']}-C"
@@ -301,7 +301,7 @@ def test_check_invoice_report_for_order_list(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(33)
+@pytest.mark.order(290)
 def test_sales_report_constructor_demo(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_sales_report_constructor_demo")

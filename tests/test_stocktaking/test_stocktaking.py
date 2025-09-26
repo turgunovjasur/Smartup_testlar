@@ -7,7 +7,7 @@ from tests.test_stocktaking.stocktaking_flows import list_flow, add_flow, select
 
 
 @pytest.mark.regression
-@pytest.mark.order(72)
+@pytest.mark.order(670)
 def test_add_stocktaking(driver, test_data, load_data, save_data):
     """Test adding a stocktaking"""
 

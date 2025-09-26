@@ -6,7 +6,7 @@ from flows.auth_flow import login_user
 
 
 @pytest.mark.regression
-@pytest.mark.order(17)
+@pytest.mark.order(170)
 def test_currency_add(driver, test_data):
     """Test adding a currency exchange rate"""
     # Test data

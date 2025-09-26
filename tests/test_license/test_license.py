@@ -11,7 +11,7 @@ from tests.test_license.flow_license import balance_flow, document_flow, attach_
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(9)
+@pytest.mark.order(90)
 def test_add_user_license(driver, test_data):
     data = test_data["data"]
 
@@ -36,28 +36,8 @@ def test_add_user_license(driver, test_data):
 
 # ======================================================================================================================
 
-# def test_add_user_license(driver, test_data, login_system=True):
-#     """Test configuring add user license."""
-#
-#     if test_data["data"]["url"] != "https://smartup.online/login.html":
-#         pytest.skip("⚠️ Faqat Online saytida ishlaydi")
-#
-#     data = test_data["data"]
-#     natural_person_name = data['natural_person_name']
-#
-#     if login_system:
-#         login_admin(driver, test_data, url='biruni/kl/license_list')
-#
-#     balance_flow(driver, navbar_name="Лицензии и документы")
-#
-#     document_flow(driver, element_name="ERP users", data="13.12.2024")
-#
-#     attach_user_flow(driver, find_row=natural_person_name)
-
-# ======================================================================================================================
-
 @pytest.mark.regression
-@pytest.mark.order(9)
+@pytest.mark.order(91)
 def test_add_purchase_license(driver, test_data, assertions):
     login_admin(driver, test_data, url='biruni/kl/license_list')
 

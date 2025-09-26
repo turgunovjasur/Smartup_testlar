@@ -7,7 +7,7 @@ from flows.auth_flow import login_user
 
 
 @pytest.mark.regression
-@pytest.mark.order(68)
+@pytest.mark.order(630)
 def test_add_warehouse(driver, test_data):
     """Test adding a warehouse"""
     # Test data

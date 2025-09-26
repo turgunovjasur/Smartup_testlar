@@ -8,7 +8,7 @@ from tests.test_writeoff.write_off_flow import list_flow, add_flow, select_flow,
 
 
 @pytest.mark.regression
-@pytest.mark.order(70)
+@pytest.mark.order(650)
 def test_add_write_off(driver, test_data, load_data, save_data):
     """Test adding a write-off"""
 
@@ -72,7 +72,7 @@ def test_add_write_off(driver, test_data, load_data, save_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(71)
+@pytest.mark.order(660)
 def test_check_constructor_report_write_off(driver, test_data, save_data, load_data):
     """Test checking a constructor report by write-off"""
 

@@ -11,7 +11,7 @@ from autotest.anor.mkw.return_supplier.return_view.return_view import ReturnView
 
 
 @pytest.mark.regression
-@pytest.mark.order(66)
+@pytest.mark.order(610)
 def test_add_purchase_to_supplier(driver, test_data, save_data):
     """Test adding purchase_to_supplier"""
 
@@ -20,7 +20,7 @@ def test_add_purchase_to_supplier(driver, test_data, save_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(67)
+@pytest.mark.order(620)
 def test_return_to_supplier(driver, test_data, load_data):
     data = test_data["data"]
 

@@ -7,7 +7,7 @@ from tests.test_purchase.flow_extra_cost import add_flow as extra_cost_add_flow
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(64)
+@pytest.mark.order(590)
 def test_add_input(driver, test_data, save_data, load_data):
     data = test_data["data"]
     warehouse_name = data["warehouse_name"]
@@ -48,7 +48,7 @@ def test_add_input(driver, test_data, save_data, load_data):
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(65)
+@pytest.mark.order(600)
 def test_add_input_with_extra_cost(driver, test_data, save_data, load_data):
     data = test_data["data"]
     warehouse_name = data["warehouse_name"]

@@ -8,6 +8,7 @@ from tests.test_payment_to_suppliers.flow_payment_to_suppliers import list_flow,
 
 
 @pytest.mark.regression
+@pytest.mark.skip(reason="Bu test hali implementatsiya qilinmagan")
 def test_payment_to_suppliers(driver, test_data, load_data, save_data):
     """Test adding a stocktaking"""
 

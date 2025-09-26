@@ -63,7 +63,7 @@ def cashin_add(driver, test_data, client_name, login=True, amount=None):
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(36)
+@pytest.mark.order(320)
 def test_cashin_add_A(driver, test_data):
     data = test_data["data"]
     client_name = f'{data["client_name"]}-A'

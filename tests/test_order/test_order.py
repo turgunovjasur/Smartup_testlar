@@ -14,7 +14,7 @@ from flows.order_flows.order_list_flow import order_list, order_view, order_file
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(29)
+@pytest.mark.order(250)
 def test_add_order_with_consignment_demo(driver, test_data, save_data, soft_assertions, assertions):
     data = test_data["data"]
     room_name = data["room_name"]
@@ -98,7 +98,7 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data, soft_asse
 
 @pytest.mark.regression
 @pytest.mark.order_group_B
-@pytest.mark.order(39)
+@pytest.mark.order(360)
 def test_add_order_with_contract_demo(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
@@ -165,7 +165,7 @@ def test_add_order_with_contract_demo(driver, test_data, save_data, soft_asserti
 
 @pytest.mark.regression
 @pytest.mark.order_group_C
-@pytest.mark.order(43)
+@pytest.mark.order(400)
 def test_add_order_for_price_type_USA_demo(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
@@ -234,7 +234,7 @@ def test_add_order_for_price_type_USA_demo(driver, test_data, save_data, soft_as
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(48)
+@pytest.mark.order(450)
 def test_add_order_for_sub_filial_demo(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
@@ -301,7 +301,7 @@ def test_add_order_for_sub_filial_demo(driver, test_data, save_data, soft_assert
 # ======================================================================================================================
 
 @pytest.mark.regression
-@pytest.mark.order(52)
+@pytest.mark.order(490)
 def test_add_order_for_action_demo(driver, test_data, save_data, assertions, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]

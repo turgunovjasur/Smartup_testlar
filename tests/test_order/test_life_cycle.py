@@ -2,6 +2,8 @@ import os
 import random
 import time
 import pytest
+from qase.pytest import qase
+
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from autotest.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
@@ -97,10 +99,36 @@ def test_company_create(driver, test_data):
     company_view.click_close_button()
 
 
+@qase.id(168)
+@qase.title("Filial Create")
 @pytest.mark.regression
-@pytest.mark.order(2)
+@pytest.mark.order(20)
 def test_filial_create(driver, test_data):
-    """Test adding a filial"""
+    """
+        Filial qo‘shish va tekshirish.
+
+        Preconditions:
+            - Admin sifatida login bo‘lishi kerak
+            - Filial list sahifasi ochiq bo‘lishi kerak
+            - Legal Person va Base Currency oldindan mavjud bo‘lishi kerak
+
+        Checklist:
+        1. Admin login qilinadi va `anor/mr/filial_list` sahifasiga o‘tiladi
+        2. Filial list sahifasi ochilgani tekshiriladi
+        3. "Add" tugmasi bosiladi
+        4. Filial qo‘shish formasi ochilgani tekshiriladi
+        5. Filial nomi kiritiladi
+        6. Base Currency tanlanadi
+        7. Legal Person tanlanadi
+        8. "Save" tugmasi bosiladi va tasdiqlash ("Yes") amalga oshiriladi
+        9. Ro‘yxatda yangi qo‘shilgan filial qidiriladi
+        10. "View" tugmasi bosiladi
+        11. Filial view sahifasida kiritilgan nom to‘g‘riligini tekshirish
+        12. Navbar bo‘limida project checkbox’lar belgilab chiqiladi
+        13. "Save" tugmasi bosilib saqlash amalga oshiriladi
+        14. "Close" tugmasi bosiladi
+        15. Yana Filial list sahifasi ochilgani tekshiriladi
+    """
     # Test data
     data = test_data["data"]
     filial_name = data["filial_name"]
@@ -145,7 +173,7 @@ def test_filial_create(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(3)
+@pytest.mark.order(30)
 def test_room_add(driver, test_data):
     """Test adding a room"""
     # Test data
@@ -181,7 +209,7 @@ def test_room_add(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(4)
+@pytest.mark.order(40)
 def test_robot_add(driver, test_data):
     """Test adding a robot"""
     # Test data
@@ -221,7 +249,7 @@ def test_robot_add(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(5)
+@pytest.mark.order(50)
 def test_sub_filial_add(driver, test_data):
     """Test adding a sub-filial"""
     # Test data
@@ -252,7 +280,7 @@ def test_sub_filial_add(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(7)
+@pytest.mark.order(70)
 def test_user_create(driver, test_data):
     """Test adding a user"""
     # Test data
@@ -315,7 +343,7 @@ def test_user_create(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(8)
+@pytest.mark.order(80)
 def test_adding_permissions_to_user(driver, test_data):
     """Test adding permissions to a user"""
     # Test data
@@ -360,7 +388,7 @@ def test_adding_permissions_to_user(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(10)
+@pytest.mark.order(100)
 def test_user_change_password(driver, test_data):
     """Test changing user password"""
     # Test data
@@ -460,7 +488,7 @@ def price_type_add(driver, test_data, price_type_name=None, currency_name=None, 
 
 
 @pytest.mark.regression
-@pytest.mark.order(11)
+@pytest.mark.order(110)
 def test_price_type_add_UZB(driver, test_data):
     """Test adding a UZB price type"""
 
@@ -469,7 +497,7 @@ def test_price_type_add_UZB(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(12)
+@pytest.mark.order(120)
 def test_price_type_add_USA(driver, test_data):
     """Test adding a USA price type"""
 
@@ -479,7 +507,7 @@ def test_price_type_add_USA(driver, test_data):
 # ------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.regression
-@pytest.mark.order(13)
+@pytest.mark.order(130)
 def test_payment_type_add(driver, test_data):
     """Test adding payment types"""
     # Login
@@ -498,7 +526,7 @@ def test_payment_type_add(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(14)
+@pytest.mark.order(140)
 def test_sector_add(driver, test_data):
     """Test adding a sector"""
     # Test data
@@ -535,7 +563,7 @@ def test_sector_add(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(16)
+@pytest.mark.order(160)
 def test_check_price_tag(driver, test_data):
     """Test checking a price tag"""
     # Test data
@@ -565,7 +593,7 @@ def test_check_price_tag(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(18)
+@pytest.mark.order(180)
 def test_margin_add(driver, test_data):
     """Test adding a margin"""
     base_page = BasePage(driver)
@@ -628,7 +656,7 @@ def test_margin_add(driver, test_data):
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.regression
-@pytest.mark.order(25)
+@pytest.mark.order(210)
 def test_room_attachment(driver, test_data):
     """Test attaching different elements to a room."""
     # Test data
@@ -693,7 +721,7 @@ def test_room_attachment(driver, test_data):
 
 
 @pytest.mark.regression
-@pytest.mark.order(26)
+@pytest.mark.order(220)
 def test_init_balance(driver, test_data):
     """Test initializing inventory balance."""
     base_page = BasePage(driver)
@@ -797,7 +825,7 @@ def test_order_request(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
-@pytest.mark.order(28)
+@pytest.mark.order(240)
 def test_setting_consignment(driver, test_data, **kwargs):
     """Test enabling consignment settings."""
 
@@ -847,7 +875,7 @@ def setting_prepayment(driver, test_data, prepayment):
 
 @pytest.mark.regression
 @pytest.mark.order_group_C
-@pytest.mark.order(44)
+@pytest.mark.order(410)
 def test_setting_prepayment_on(driver, test_data):
     """Prepayment setting on"""
     setting_prepayment(driver, test_data, prepayment=True)
@@ -855,7 +883,7 @@ def test_setting_prepayment_on(driver, test_data):
 
 @pytest.mark.regression
 @pytest.mark.order_group_C
-@pytest.mark.order(46)
+@pytest.mark.order(430)
 def test_setting_prepayment_off(driver, test_data):
     """Prepayment setting off"""
     setting_prepayment(driver, test_data, prepayment=False)

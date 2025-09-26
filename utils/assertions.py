@@ -173,7 +173,7 @@ class Assertions:
         """Element ko'rinmasligini tekshirish"""
 
         try:
-            element = self.page.wait_for_element(locator, wait_type="visibility", error_message=False)
+            element = self.page.wait_for_element(locator, timeout=5, wait_type="presence", error_message=False)
             is_visible = element.is_displayed()
             error_msg = f"{message}: Element is visible but should not be" if message else "Element is visible but should not be"
             assert not is_visible, error_msg
@@ -187,8 +187,7 @@ class Assertions:
         """Element matni tengligini tekshirish"""
 
         try:
-            element = self.page.wait_for_element(locator, wait_type="visibility", error_message=False)
-            actual_text = element.text.strip()
+            actual_text = self.page.get_text(locator)
             error_msg = f"{message}: Expected text '{expected_text}', but got '{actual_text}'" if message else f"Expected text '{expected_text}', but got '{actual_text}'"
             assert actual_text == expected_text, error_msg
         except Exception as e:
@@ -201,8 +200,8 @@ class Assertions:
         """Element matni ichida boshqa matn borligini tekshirish"""
 
         try:
-            element = self.page.wait_for_element(locator, wait_type="visibility", error_message=False)
-            actual_text = element.text.strip()
+            # element = self.page.wait_for_element(locator, wait_type="visibility", error_message=False)
+            actual_text = self.page.get_text(locator)
             error_msg = f"{message}: Text '{expected_text}' not found in '{actual_text}'" if message else f"Text '{expected_text}' not found in '{actual_text}'"
             assert expected_text in actual_text, error_msg
         except Exception as e:
@@ -232,7 +231,8 @@ class Assertions:
 class SoftAssertions:
     """Soft assertion uchun klass - barcha xatolarni to'plab, oxirida ko'rsatadi"""
 
-    def __init__(self):
+    def __init__(self, page=None):
+        self.page = page
         self.errors = []
 
     # ==================================================================================================================
@@ -255,12 +255,15 @@ class SoftAssertions:
 
     # ==================================================================================================================
 
-    def assert_element_visible(self, driver, locator, message=""):
+    def assert_element_visible(self, locator, message=""):
         """Element ko'rinishini tekshirish (soft)"""
         try:
-            assertions = Assertions(driver)
+            assertions = Assertions(self.page)
             assertions.assert_element_visible(locator, message)
         except AssertionError as e:
+            self.errors.append(str(e))
+        except Exception as e:
+            # Agar element topilmasa yoki boshqa xatolik bo‘lsa
             self.errors.append(str(e))
 
     # ==================================================================================================================
