@@ -1,6 +1,6 @@
-from autotest.trade.intro.dashboard.dashboard_page import DashboardPage
-from autotest.core.md.base_page import BasePage
-from autotest.core.md.login_page import LoginPage
+from pages.trade.intro.dashboard.dashboard_page import DashboardPage
+from pages.core.md.base_page import BasePage
+from pages.core.md.login_page import LoginPage
 
 # ======================================================================================================================
 

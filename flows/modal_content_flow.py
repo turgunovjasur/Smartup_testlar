@@ -1,5 +1,5 @@
-from autotest.biruni.modal_content.modal_content import ModalContent
-from autotest.core.md.base_page import BasePage
+from pages.biruni.modal_content.modal_content import ModalContent
+from pages.core.md.base_page import BasePage
 
 # ----------------------------------------------------------------------------------------------------------------------
 

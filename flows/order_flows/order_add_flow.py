@@ -1,8 +1,8 @@
 import time
-from autotest.anor.mdeal.order.order_add.create_add_main import OrderAddMain
-from autotest.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
-from autotest.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
-from autotest.anor.mdeal.order.order_add.order_select.order_select import OrderSelect
+from pages.anor.mdeal.order.order_add.create_add_main import OrderAddMain
+from pages.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
+from pages.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
+from pages.anor.mdeal.order.order_add.order_select.order_select import OrderSelect
 
 # ======================================================================================================================
 

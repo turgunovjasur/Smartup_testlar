@@ -1,10 +1,10 @@
-from autotest.anor.mdeal.order.order_view.order_view import OrderView
-from autotest.anor.mkw.product_file_list.product_file_list import ProductFileList
-from autotest.core.md.base_page import BasePage
-from autotest.trade.tdeal.order.order_attach_data.order_attach_data import OrderAttachData
-from autotest.trade.tdeal.order.order_list.order_copy_modal import OrderCopyModal
-from autotest.trade.tdeal.order.order_list.orders_list import OrdersList
-from autotest.trade.tdeal.order.transactions.transactions import Transaction
+from pages.anor.mdeal.order.order_view.order_view import OrderView
+from pages.anor.mkw.product_file_list.product_file_list import ProductFileList
+from pages.core.md.base_page import BasePage
+from pages.trade.tdeal.order.order_attach_data.order_attach_data import OrderAttachData
+from pages.trade.tdeal.order.order_list.order_copy_modal import OrderCopyModal
+from pages.trade.tdeal.order.order_list.orders_list import OrdersList
+from pages.trade.tdeal.order.transactions.transactions import Transaction
 
 
 # ======================================================================================================================

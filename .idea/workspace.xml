@@ -4,51 +4,451 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added: status dropdown.py (19.09.2025)">
-      <change afterPath="$PROJECT_DIR$/tests_api/__init__.py" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added: test apis (29.09.2025)">
+      <change afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/spot/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/ui/test_return/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/ui/test_return_supplier/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/ui/test_stocktaking/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/ui/test_warehouse/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/ui/test_writeoff/__init__.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests_api/api_client.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests_api/data_mapper.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests_api/test_order_export.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests_api/test_order_import.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/utils/flow_runner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_add/filial_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/filial_add/filial_add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_list/filial_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/filial_list/filial_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_view/filial_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/filial_view/filial_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/template_list/template_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/anor/mr/template_list/template_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/autotest/core/md/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/apis/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/apis/base_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_add/action_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/action_add/action_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_edit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_edit/action_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/action_edit/action_edit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/action_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_list/action_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/action_list/action_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/action_edit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/action_view/action_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/action_view/action_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/action_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_add/overload_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/overload_add/overload_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_edit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/action_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_edit/overload_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/overload_edit/overload_edit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/overload_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_list/overload_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/overload_list/overload_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/overload_edit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mcg/overload_view/overload_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/overload_view/overload_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/overload_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mcg/overload_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/offset/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/offset/offset.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/offset/offset/offset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/offset_detail_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/offset/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/offset_detail_list/offset_detail_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/offset/offset_detail_list/offset_detail_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/offset_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/offset/offset/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/offset/offset_list/offset_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/offset/offset_list/offset_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/offset/offset_detail_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/create_add_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/create_add_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_add_final.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_add_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_add_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_request_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/offset/offset_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_request_add/order_request_add_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_request_add/order_request_add_final.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_request_add/order_request_add_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_request_add/order_request_add_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_request_add/order_request_add_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_request_add/order_request_add_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_request_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_request_view/order_request_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_request_view/order_request_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_select/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_request_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_add/order_select/order_select.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_select/order_select.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_edit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_request_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_edit/order_edit_final.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_edit/order_edit_final.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_edit/order_edit_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_edit/order_edit_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_edit/order_edit_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_edit/order_edit_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_request_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_add/order_select/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_request_list/order_request_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_request_list/order_request_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_edit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/order/order_view/order_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_view/order_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/return_/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_request_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/return_/return_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/order/order_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/return_/return_add/return_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/return_/return_add/return_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/return_/return_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/return_/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/return_/return_list/return_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/return_/return_list/return_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/return_/return_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/return_/return_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mdeal/return_/return_view/return_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/return_/return_view/return_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mk/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/return_/return_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mk/currency_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mdeal/return_/return_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mk/currency_list/currency_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mk/currency_list/currency_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mk/currency_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mk/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mk/currency_view/currency_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mk/currency_view/currency_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mk/currency_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/contract_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mk/currency_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/contract_add/contract_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkf/contract_add/contract_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/contract_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkf/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/contract_list/contract_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkf/contract_list/contract_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/contract_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkf/contract_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkf/contract_view/contract_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkf/contract_view/contract_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkf/contract_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/expense_article_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkf/contract_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/expense_article_add/expense_article_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/expense_article_add/expense_article_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/margin_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/margin_add/margin_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/margin_add/margin_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/margin_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/expense_article_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/margin_list/margin_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/margin_list/margin_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/margin_list_attach/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/margin_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/margin_list_attach/margin_list_attach.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/margin_list_attach/margin_list_attach.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/payment_type_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/margin_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/payment_type_list/payment_type_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/payment_type_list/payment_type_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/payment_type_list_attach/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/margin_list_attach/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/payment_type_list_attach/payment_type_list_attach.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/payment_type_list_attach/payment_type_list_attach.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_tag/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/payment_type_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_tag/price_tag.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_tag/price_tag.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/payment_type_list_attach/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_add/price_type_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_add/price_type_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_edit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_tag/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_edit/price_type_id.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_edit/price_type_id.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_list/price_type_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_list/price_type_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_list_attach/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_edit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_list_attach/price_type_list_attch.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_list_attach/price_type_list_attch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkr/price_type_view/price_type_id.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_view/price_type_id.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_list_attach/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/balance/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkr/price_type_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/balance/balance_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/balance/balance_list/balance_detail.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/balance/balance_list/balance_detail.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/balance/balance_list/balance_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/balance/balance_list/balance_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/balance/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_add/extra_cost_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/extra_cost_add/extra_cost_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/balance/balance_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_list/extra_cost_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/extra_cost_list/extra_cost_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_sharing/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/extra_cost_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_sharing/extra_cost_sharing.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/extra_cost_sharing/extra_cost_sharing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/extra_cost_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/extra_cost_view/extra_cost_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/extra_cost_view/extra_cost_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/init_balance/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/extra_cost_sharing/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/init_balance/init_inventory_balance_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/extra_cost_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/init_balance/init_inventory_balance_add/init_inventory_balance_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/init_balance/init_inventory_balance_add/init_inventory_balance_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/init_balance/init_inventory_balance_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/init_balance/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/init_balance/init_inventory_balance_list/init_inventory_balance_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/init_balance/init_inventory_balance_list/init_inventory_balance_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/input/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/init_balance/init_inventory_balance_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/input/input_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/init_balance/init_inventory_balance_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/input/input_add/input_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/input/input_add/input_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/input/input_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/input/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/input/input_list/input_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/input/input_list/input_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/input/input_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/input/input_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/input/input_view/input_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/input/input_view/input_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/movement/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/input/input_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/movement/movement_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/input/input_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/movement/movement_add/movement_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/movement/movement_add/movement_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/movement/movement_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/movement/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/movement/movement_list/movement_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/movement/movement_list/movement_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/movement/movement_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/movement/movement_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/movement/movement_view/movement_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/movement/movement_view/movement_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/product_file_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/movement/movement_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/product_file_list/product_file_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/product_file_list/product_file_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/purchase_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/movement/movement_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/purchase_add/purchase_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/purchase_add/purchase_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/purchase_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/product_file_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/purchase_list/purchase_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/purchase_list/purchase_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/purchase_list/purchase_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/purchase_list/purchase_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/purchase_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/purchase_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/purchase_view/purchase_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/purchase_view/purchase_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/purchase_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/return_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/purchase_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/return_add/return_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/return_supplier/return_add/return_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/return_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/return_supplier/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/return_list/return_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/return_supplier/return_list/return_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/return_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/return_supplier/return_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/return_supplier/return_view/return_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/return_supplier/return_view/return_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/return_supplier/return_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/stocktaking/stocktaking_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_complete.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/stocktaking/stocktaking_complete.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/stocktaking/stocktaking_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_select.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/stocktaking/stocktaking_select.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/stocktaking/stocktaking_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/stocktaking/stocktaking_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/supplier_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/return_supplier/return_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/supplier_add/supplier_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/supplier_add/supplier_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/supplier_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/stocktaking/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/supplier_list/supplier_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/supplier_list/supplier_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/supplier_product_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/supplier_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/supplier_product_list/supplier_product_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/supplier_product_list/supplier_product_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/supplier_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/supplier_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/supplier_view/supplier_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/supplier_view/supplier_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/warehouse_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/supplier_product_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/warehouse_add/warehouse_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/warehouse_add/warehouse_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/warehouse_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/supplier_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/warehouse_list/warehouse_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/warehouse_list/warehouse_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/warehouse_type_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/warehouse_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/warehouse_type_add/warehouse_type_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/warehouse_type_add/warehouse_type_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/warehouse_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/warehouse_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/warehouse_view/warehouse_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/warehouse_view/warehouse_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/writeoff/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/warehouse_type_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/writeoff/writeoff_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/writeoff/writeoff_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/writeoff/writeoff_expense.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/writeoff/writeoff_expense.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/writeoff/writeoff_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/writeoff/writeoff_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mkw/writeoff/writeoff_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/writeoff/writeoff_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/warehouse_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mkw/writeoff/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_add/filial_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/filial_add/filial_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_list/filial_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/filial_list/filial_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/filial_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/filial_view/filial_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/filial_view/filial_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/filial_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/filial_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_add/legal_person_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/legal_person_add/legal_person_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_list/legal_person_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/legal_person_list/legal_person_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/legal_person_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/legal_person_view/legal_person_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/legal_person_view/legal_person_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/legal_person_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_add/natural_person_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/natural_person_add/natural_person_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/legal_person_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_list/natural_person_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/natural_person_list/natural_person_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/natural_person_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/person/natural_person_view/natural_person_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/natural_person_view/natural_person_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/natural_person_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/natural_person_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_add/inventory_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/inventory_add/inventory_new.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_edit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_edit/product_id.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/inventory_edit/product_id.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/inventory_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_list/inventory_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/inventory_list/inventory_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/inventory_edit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/inventory_view/product_id.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/inventory_view/product_id.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/product_set_price/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/inventory_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/product_set_price/product_set_price.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/product_set_price/product_set_price.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/service_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/inventory_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/service_add/service_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/service_add/service_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/service_edit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/product_set_price/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/service_edit/product_id.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/service_edit/product_id.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/service_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/service_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/service_list/service_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/service_list/service_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/service_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/service_edit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/product/service_view/product_id.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/service_view/product_id.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/sector_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/service_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/sector_add/sector_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/sector_add/sector_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/sector_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/product/service_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/sector_list/sector_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/sector_list/sector_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/sector_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/sector_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/sector_view/sector_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/sector_view/sector_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/template_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/sector_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/template_list/template_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/template_list/template_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/user_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/sector_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/user_add/user_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/user_add/user_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/user_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/template_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/user_list/user_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/user_list/user_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/user_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/user_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mr/user_view/user_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/user_view/user_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/user_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/client_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/user_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/client_add/client_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/client_add/client_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/client_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/client_list/client_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/client_list/client_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/client_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/client_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/client_view/client_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/client_view/client_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/robot_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/client_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/robot_add/robot_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/robot_add/robot_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/robot_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/client_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/robot_list/robot_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/robot_list/robot_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/robot_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/robot_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/robot_view/robot_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/robot_view/robot_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/room_attachment/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/robot_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/room_attachment/room_attachment.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/room_attachment/room_attachment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/subfilial_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/robot_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/subfilial_add/subfilial_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/subfilial_add/subfilial_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/subfilial_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/room_attachment/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/subfilial_list/subfilial_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/subfilial_list/subfilial_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/van_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/subfilial_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/van_add/van_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/van_add/van_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/van_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/subfilial_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/mrf/van_list/van_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/van_list/van_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/rep/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/van_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/rep/mbi/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mrf/van_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/rep/mbi/tdeal/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/rep/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/rep/mbi/tdeal/order/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/rep/mbi/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/anor/rep/mbi/tdeal/order/write_off_report_constructor.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/rep/mbi/tdeal/order/write_off_report_constructor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/rep/mbi/tdeal/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/rep/mbi/tdeal/order/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/setting_add/setting_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/ker/setting_add/setting_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/template_role_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/ker/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/ker/template_role_list/template_role_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/ker/template_role_list/template_role_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/ker/setting_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/ker/template_role_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_list/license_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/kl/license_list/license_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_user_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/kl/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/kl/license_user_list/license_user_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/kl/license_user_list/license_user_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/md/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/kl/license_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/md/biruni/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/kl/license_user_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/md/biruni/grid_setting/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/md/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/md/biruni/grid_setting/grid_setting.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/md/biruni/grid_setting/grid_setting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/md/biruni/grid_setting/grid_setting_in_form.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/md/biruni/grid_setting/grid_setting_in_form.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/modal_content/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/md/biruni/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/biruni/modal_content/modal_content.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/modal_content/modal_content.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/README_CORE.md" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/README_CORE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/md/biruni/grid_setting/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/modal_content/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/change_password/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/change_password/change_password.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/change_password/change_password.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/company_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/company_add/company_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/company_add/company_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/company_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/change_password/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/company_list/company_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/company_list/company_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/company_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/company_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/company_view/company_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/company_view/company_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/login_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/login_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/role_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/company_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/core/md/role_view/role_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/role_view/role_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/company_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/role_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/dashboard_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/intro/dashboard/dashboard_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/main_navbar.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/intro/dashboard/main_navbar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/reference_navbar.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/intro/dashboard/reference_navbar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/sales_navbar.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/intro/dashboard/sales_navbar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/intro/dashboard/warehouse_navbar.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/intro/dashboard/warehouse_navbar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/pref/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/intro/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/pref/system_setting/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/intro/dashboard/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/pref/system_setting/system_setting.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/pref/system_setting/system_setting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/pref/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/pref/system_setting/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/cislink/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/cislink/cislink.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/cislink/cislink.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/integration_three/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/integration_three/integration_three.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/integration_three/integration_three.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/integration_two/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/cislink/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/integration_two/integration_two.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/integration_two/integration_two.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/optimum/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/integration_three/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/optimum/optimum.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/optimum/optimum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/integration_two/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/saleswork/saleswork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork_template_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/saleswork/saleswork_template_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/saleswork/saleswork_template_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/saleswork/saleswork_template_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/spot/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/optimum/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/spot/spot.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/spot/spot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/spot_template_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/saleswork/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/spot_template_add/spot_template_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/spot_template_add/spot_template_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/spot_template_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/spot/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/integration/spot_template_list/spot_template_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/spot_template_list/spot_template_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/mbi/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/spot_template_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/integration/spot_template_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/order/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/mbi/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/rep/mbi/tdeal/order/sales_report_constructor.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/mbi/tdeal/order/sales_report_constructor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/mbi/tdeal/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashin_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/rep/mbi/tdeal/order/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashin_add/cashin_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashin_add/cashin_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashin_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashin_list/cashin_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashin_list/cashin_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashin_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashin_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashin_view/cashin_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashin_view/cashin_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashout_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashin_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashout_add/cashout_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashout_add/cashout_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashout_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashin_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashout_list/cashout_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashout_list/cashout_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashout_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashout_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tcs/cashout_view/cashout_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashout_view/cashout_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashout_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tcs/cashout_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_attach_data/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_attach_data/order_attach_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_attach_data/order_attach_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_cancelled_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_cancelled_list/order_cancelled_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_cancelled_list/order_cancelled_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_history_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_attach_data/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_history_list/order_history_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_history_list/order_history_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_cancelled_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/order_b_grid_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_list/order_b_grid_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/order_copy_modal.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_list/order_copy_modal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/order_list/orders_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_list/orders_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/return_order/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_history_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/return_order/return_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/return_order/return_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/transactions/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/order_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tdeal/order/transactions/transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/transactions/transactions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tr/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/return_order/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tr/role_edit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tdeal/order/transactions/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tr/role_edit/role_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tr/role_edit/role_edit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tr/role_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tr/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/tr/role_list/role_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tr/role_list/role_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/trf/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tr/role_edit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/trf/room_add/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/tr/role_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/trf/room_add/room_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/trf/room_add/room_add.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/trf/room_list/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/trf/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/trf/room_list/room_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/trf/room_list/room_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/trf/room_view/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/trf/room_add/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autotest/trade/trf/room_view/room_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/trf/room_view/room_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_contract.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finance/test_contract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_currency.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finance/test_currency.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_input/test_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_input/test_input.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_license/test_license.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_license/test_license.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_movement/test_movement.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_movement/test_movement.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_offset/test_offset.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_offset/test_offset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_order/test_order_return.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_payment_to_suppliers/test_payment_to_suppliers.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_payment_to_suppliers/test_payment_to_suppliers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_purchase/test_extra_cost.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_purchase/test_extra_cost.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/legal_person_flows.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/legal_person_flows.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_action.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_natural_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_natural_person.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_reference/test_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_return_supplier/test_return_supplier.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_return_supplier/test_return_supplier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_stocktaking/test_stocktaking.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_stocktaking/test_stocktaking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/test_supplier.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_warehouse/test_supplier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/test_warehouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_warehouse/test_warehouse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_writeoff/test_writeoff.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_writeoff/test_writeoff.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/assertions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/assertions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/auth_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/auth_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/balance_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/balance_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/grid_setting_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/grid_setting_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/modal_content_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/modal_content_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_add_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/order_flows/order_list_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_cashin/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/trf/room_list/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_cashin/test_cashin.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_cashin/test_cashin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_finance/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/trade/trf/room_view/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_contract.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_finance/test_contract.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_finance/test_currency.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_finance/test_currency.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_input/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_input/flow_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_input/flow_input.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_input/test_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_input/test_input.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_license/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/legal_person/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_license/flow_license.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_license/flow_license.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_license/test_license.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_license/test_license.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_movement/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/legal_person/test_legal_person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_movement/test_movement.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_movement/test_movement.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_offset/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_offset/test_offset.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_offset/test_offset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_cashin/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_life_cycle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_change_status.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_order_change_status.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_order_edit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_order_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_order_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_order/test_order_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_order_return.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_payment_to_suppliers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_finance/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_payment_to_suppliers/flow_payment_to_suppliers.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_payment_to_suppliers/flow_payment_to_suppliers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_payment_to_suppliers/test_payment_to_suppliers.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_payment_to_suppliers/test_payment_to_suppliers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_purchase/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_input/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_purchase/flow_extra_cost.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_purchase/flow_extra_cost.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_purchase/flow_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_purchase/flow_purchase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_purchase/test_extra_cost.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_purchase/test_extra_cost.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_purchase/test_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_purchase/test_purchase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_license/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/flow_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/flow_action.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/flow_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/flow_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/legal_person_flows.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/legal_person_flows.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/test_action.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/test_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_legal_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/test_legal_person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_natural_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/test_natural_person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_reference/test_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/test_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_movement/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_offset/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/cislink/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/cislink/test_cislink.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/cislink/test_cislink.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_three/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_payment_to_suppliers/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_three/test_integration_three.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/integration_three/test_integration_three.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_two/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_purchase/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/integration_two/test_integration_two.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/integration_two/test_integration_two.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/optimum/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/optimum/test_optimum.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/optimum/test_optimum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/rep_main_funksiya.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/rep_main_funksiya.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/saleswork/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/saleswork/test_saleswork.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/saleswork/test_saleswork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/spot/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_rep/integration/spot/test_spot.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/spot/test_spot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_return/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/cislink/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_return/test_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_return/test_return.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_return_supplier/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/integration_three/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_return_supplier/test_return_supplier.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_return_supplier/test_return_supplier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_stocktaking/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/integration_two/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_stocktaking/stocktaking_flows.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_stocktaking/stocktaking_flows.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_stocktaking/test_stocktaking.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_stocktaking/test_stocktaking.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/optimum/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/test_supplier.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_warehouse/test_supplier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_warehouse/test_warehouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_warehouse/test_warehouse.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_writeoff/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_rep/integration/saleswork/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_writeoff/test_writeoff.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_writeoff/test_writeoff.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_writeoff/write_off_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_writeoff/write_off_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/test_state.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -275,48 +675,14 @@
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Smartup_testlar\tests\ui" />
       <recent name="D:\Smartup_testlar" />
       <recent name="D:\Smartup_testlar\tests" />
       <recent name="D:\Smartup_testlar\data" />
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\flows\order_flows" />
-      <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar" />
     </key>
   </component>
   <component name="RunManager" selected="Python tests.pytest for test_order_import.test_order_import_performance">
-    <configuration name="pytest for test_legal_person.test_add_legal_person" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_reference" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_legal_person.test_add_legal_person&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_legal_person.test_add_legal_person_by_supplier" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_reference" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_legal_person.test_add_legal_person_by_supplier&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="pytest for test_order_export.test_order_export_performance" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
@@ -351,37 +717,71 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_order_report.test_add_template_for_order_invoice_report" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for tests.ui.test_order.test_order_report.test_add_template_for_order_invoice_report" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/test_order" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/ui/test_order" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_order_report.test_add_template_for_order_invoice_report&quot;" />
+      <option name="_new_target" value="&quot;tests.ui.test_order.test_order_report.test_add_template_for_order_invoice_report&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for tests.ui.test_reference.test_legal_person.test_add_legal_person" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="Smartup_testlar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/ui/test_reference" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.ui.test_reference.test_legal_person.test_add_legal_person&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for tests.ui.test_reference.test_legal_person.test_add_legal_person_by_supplier" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="Smartup_testlar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/ui/test_reference" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.ui.test_reference.test_legal_person.test_add_legal_person_by_supplier&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.pytest for test_legal_person.test_add_legal_person" />
-      <item itemvalue="Python tests.pytest for test_legal_person.test_add_legal_person_by_supplier" />
+      <item itemvalue="Python tests.pytest for tests.ui.test_order.test_order_report.test_add_template_for_order_invoice_report" />
+      <item itemvalue="Python tests.pytest for tests.ui.test_reference.test_legal_person.test_add_legal_person" />
+      <item itemvalue="Python tests.pytest for tests.ui.test_reference.test_legal_person.test_add_legal_person_by_supplier" />
       <item itemvalue="Python tests.pytest for test_order_export.test_order_export_performance" />
       <item itemvalue="Python tests.pytest for test_order_import.test_order_import_performance" />
-      <item itemvalue="Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.pytest for test_order_import.test_order_import_performance" />
-        <item itemvalue="Python tests.pytest for test_legal_person.test_add_legal_person_by_supplier" />
+        <item itemvalue="Python tests.pytest for tests.ui.test_reference.test_legal_person.test_add_legal_person_by_supplier" />
         <item itemvalue="Python tests.pytest for test_order_export.test_order_export_performance" />
-        <item itemvalue="Python tests.pytest for test_legal_person.test_add_legal_person" />
-        <item itemvalue="Python tests.pytest for test_order_report.test_add_template_for_order_invoice_report" />
+        <item itemvalue="Python tests.pytest for tests.ui.test_reference.test_legal_person.test_add_legal_person" />
+        <item itemvalue="Python tests.pytest for tests.ui.test_order.test_order_report.test_add_template_for_order_invoice_report" />
       </list>
     </recent_temporary>
   </component>
@@ -400,14 +800,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741665237387</updated>
-    </task>
-    <task id="LOCAL-00001" summary="13.03.2025">
-      <option name="closed" value="true" />
-      <created>1741869958614</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1741869958614</updated>
     </task>
     <task id="LOCAL-00002" summary="09.04.2025">
       <option name="closed" value="true" />
@@ -793,7 +1185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758266590939</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Added: Qase.io (26.09.2025)">
+      <option name="closed" value="true" />
+      <created>1758889790182</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1758889790182</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -811,8 +1211,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="integration_report, requirements" />
-    <MESSAGE value="marker qoyildi va order berildi" />
     <MESSAGE value="no_ci marker qo'shildi" />
     <MESSAGE value="1) import pyautogui - funksiya ichida chaqirildi" />
     <MESSAGE value="fstring lar tog'irlandi" />
@@ -836,6 +1234,8 @@
     <MESSAGE value="Added: screen_recorder (10.09.2025)" />
     <MESSAGE value="Added: test_state.py (15.09.2025)" />
     <MESSAGE value="Added: status dropdown.py (19.09.2025)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added: status dropdown.py (19.09.2025)" />
+    <MESSAGE value="Added: Qase.io (26.09.2025)" />
+    <MESSAGE value="Added: test apis (29.09.2025)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added: test apis (29.09.2025)" />
   </component>
 </project>

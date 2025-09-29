@@ -8,8 +8,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from autotest.core.md.base_page import BasePage
-from tests.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
+from pages.core.md.base_page import BasePage
+from tests.ui.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
 from utils.flow_runner import FlowRunner
 from utils.assertions import SoftAssertions
 from utils.env_reader import get_env

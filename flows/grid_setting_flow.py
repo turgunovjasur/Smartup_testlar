@@ -1,6 +1,6 @@
 import time
-from autotest.biruni.md.biruni.grid_setting.grid_setting import GridSetting
-from autotest.biruni.md.biruni.grid_setting.grid_setting_in_form import GridSettingInForm
+from pages.biruni.md.biruni.grid_setting.grid_setting import GridSetting
+from pages.biruni.md.biruni.grid_setting.grid_setting_in_form import GridSettingInForm
 
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
-from autotest.anor.mkw.balance.balance_list.balance_detail import BalanceDetail
-from autotest.anor.mkw.balance.balance_list.balance_list import BalanceList
-from autotest.core.md.base_page import BasePage
+from pages.anor.mkw.balance.balance_list.balance_detail import BalanceDetail
+from pages.anor.mkw.balance.balance_list.balance_list import BalanceList
+from pages.core.md.base_page import BasePage
 
 
 def flow_get_balance(driver, **kwargs):
