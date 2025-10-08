@@ -21,11 +21,11 @@ class IntegrationTwo(BasePage):
         self._wait_for_all_loaders()
         self.click(self.generate_button)
     # ------------------------------------------------------------------------------------------------------------------
-    date_input = (By.XPATH, '//input[@ng-model="d.date"]')
+    begin_date_input = (By.XPATH, '//input[@ng-model="d.begin_date"]')
 
     def input_date(self):
         date = datetime.now().strftime("%d.%m.%Y")
-        self.input_text(self.date_input, date)
+        self.input_text(self.begin_date_input, date)
     # ------------------------------------------------------------------------------------------------------------------
     biruniAlert = (By.XPATH, '//div[@id="biruniAlert" and @class="modal fade show"]')
     modal = (By.XPATH, '//div[@id="biruniAlert"]//div[@class="modal-content"]')

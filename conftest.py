@@ -10,10 +10,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from pages.core.md.base_page import BasePage
 from tests.ui.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
-from utils.flow_runner import FlowRunner
 from utils.assertions import SoftAssertions
 from utils.env_reader import get_env
 
+# ----------------------------------------------------------------------------------------------------------------------
+# driver
 # ----------------------------------------------------------------------------------------------------------------------
 
 def _build_driver(request, test_data):
@@ -30,7 +31,6 @@ def _build_driver(request, test_data):
     headless = request.config.getoption("--headless", default=False)
     options = Options()
 
-    # ❗ Sizdagi sozlamalarni aynan saqlaymiz
     if headless or os.getenv("GITHUB_ACTIONS") == "true":
         options.add_argument("--headless=new")
 
@@ -60,7 +60,7 @@ def _build_driver(request, test_data):
 
     drv = webdriver.Chrome(service=service, options=options)
 
-    # 📌 Fayl yuklashga ruxsat (CDP) — sizdagi kabi
+    # 📌 Fayl yuklashga ruxsat (CDP)
     try:
         drv.execute_cdp_cmd(
             "Page.setDownloadBehavior",
@@ -73,8 +73,6 @@ def _build_driver(request, test_data):
     print(f"[driver] session_id={drv.session_id}")
     drv.get(url)
 
-    # 🔻 tozalash (finalizer): retry ichida biz qo‘lda .quit() qilamiz,
-    # lekin finalizer ham xavfsiz (ikkinchi marta quit qilsa ham xato bermaydi)
     def _finalize(d=drv, profile=user_data_dir):
         try:
             d.quit()
@@ -108,6 +106,8 @@ def driver(driver_factory):
     yield drv
 
 # ----------------------------------------------------------------------------------------------------------------------
+# test_data
+# ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.fixture(scope="session")
 def cod_generator():
@@ -119,7 +119,7 @@ def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
     cod = cod_generator
-    # cod = "Qase-2"
+    # cod = "8"
     save_data("cod", cod)
 
     base_data = {
@@ -130,6 +130,7 @@ def test_data(save_data, cod_generator):
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
         "code_input": get_env("CODE_INPUT"),
+        "project_code": "trade",
         "cod": cod,
         "url": get_env("URL"),
     }
@@ -137,6 +138,7 @@ def test_data(save_data, cod_generator):
         "email": f"admin@{base_data['code_input']}",
         "password": f"{base_data['password_company']}",
         "Administration_name": "Администрирование",
+        # "filial_id": 15567561,
         "filial_name": f"Test_filial-{base_data['cod']}",
         "login_user": f"test-{base_data['cod']}",
     }
@@ -201,6 +203,7 @@ def test_data(save_data, cod_generator):
         "error_massage_4": "H02-ANOR66-003",   # error -> sector
         "error_massage_5": "A02-02-039",       # error -> data
     }
+
     return {
         "data": {
             **base_data,
@@ -213,15 +216,16 @@ def test_data(save_data, cod_generator):
     }
 
 # ----------------------------------------------------------------------------------------------------------------------
+# save_data/load_data
+# ----------------------------------------------------------------------------------------------------------------------
 
-# Umumiy JSON fayl manzili
 DATA_STORE_FILE = os.path.join(os.path.dirname(__file__), "data_store.json")
 
 # Fayl manzilini aniqlovchi funksiya
 def get_data_file_path(request, file_name=None):
     base_dir = os.path.dirname(request.fspath)
 
-    if file_name:  # ✅ alohida nom berilgan bo‘lsa, test fayli yonida saqlanadi
+    if file_name:  # alohida nom berilgan bo‘lsa, test fayli yonida saqlanadi
         return os.path.join(base_dir, file_name)
 
     # default: umumiy data_store.json
@@ -268,6 +272,8 @@ def load_data(request):
     return _load
 
 # ----------------------------------------------------------------------------------------------------------------------
+# assertions
+# ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.fixture
 def base_page(driver):
@@ -283,16 +289,4 @@ def soft_assertions(base_page):
     """Soft assertion klassi uchun fixture"""
     return SoftAssertions(page=base_page)
 
-# ----------------------------------------------------------------------------------------------------------------------
-
-@pytest.fixture
-def flow_runner(request):
-    """
-    FlowRunner fixture:
-    - pytest-rerunfailures 'execution_count' orqali attempt ni oladi
-    - test nomini request.node.name dan oladi
-    """
-    attempt = getattr(request.node, "execution_count", 1)
-    test_name = request.node.name
-    return FlowRunner(test_name, attempt=attempt)
 # ----------------------------------------------------------------------------------------------------------------------

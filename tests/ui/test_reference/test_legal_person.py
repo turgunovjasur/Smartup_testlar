@@ -6,7 +6,7 @@ from tests.ui.test_reference.legal_person_flows import add_flow, view_flow, list
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def legal_person_add(driver, test_data, flow_runner, soft_assertions, person_name=None, admin_or_user=True):
+def legal_person_add(driver, test_data, soft_assertions, person_name=None, admin_or_user=True):
     """Test adding a legal person"""
 
     i = random.randint(10000, 99999)
@@ -68,10 +68,9 @@ def legal_person_add(driver, test_data, flow_runner, soft_assertions, person_nam
 
 @qase.id(164)
 @qase.title("Add Legal Person")
-@pytest.mark.dependency(name="t1")
 @pytest.mark.regression
 @pytest.mark.order(10)
-def test_add_legal_person(driver, test_data, flow_runner, soft_assertions, save_data):
+def test_add_legal_person(driver, test_data, soft_assertions, save_data):
     """
         Legal Person qo‘shish va tekshirish.
 
@@ -94,7 +93,7 @@ def test_add_legal_person(driver, test_data, flow_runner, soft_assertions, save_
 
     data = test_data["data"]
     legal_person = data['legal_person_name']
-    code = legal_person_add(driver, test_data, flow_runner, soft_assertions, person_name=legal_person)
+    code = legal_person_add(driver, test_data, soft_assertions, person_name=legal_person)
     save_data("legal_person_cod", code)
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -103,7 +102,7 @@ def test_add_legal_person(driver, test_data, flow_runner, soft_assertions, save_
 @qase.title("Add Legal Person by Supplier")
 @pytest.mark.regression
 @pytest.mark.order(530)
-def test_add_legal_person_by_supplier(driver, test_data, flow_runner, soft_assertions, save_data):
+def test_add_legal_person_by_supplier(driver, test_data, soft_assertions, save_data):
     """
         Supplier orqali sifatida Legal Person qo‘shish va tekshirish.
 
@@ -126,7 +125,7 @@ def test_add_legal_person_by_supplier(driver, test_data, flow_runner, soft_asser
 
     data = test_data["data"]
     supplier_name = data['supplier_name']
-    code = legal_person_add(driver, test_data, flow_runner, soft_assertions, person_name=supplier_name, admin_or_user=False)
+    code = legal_person_add(driver, test_data, soft_assertions, person_name=supplier_name, admin_or_user=False)
     save_data("supplier_cod", code)
 
 # ----------------------------------------------------------------------------------------------------------------------
