@@ -130,7 +130,6 @@ def test_data(save_data, cod_generator):
         "bank_name": "UZ BANK",
         "base_currency_cod": 860,
         "code_input": get_env("CODE_INPUT"),
-        "project_code": "trade",
         "cod": cod,
         "url": get_env("URL"),
     }
@@ -138,7 +137,6 @@ def test_data(save_data, cod_generator):
         "email": f"admin@{base_data['code_input']}",
         "password": f"{base_data['password_company']}",
         "Administration_name": "Администрирование",
-        # "filial_id": 15567561,
         "filial_name": f"Test_filial-{base_data['cod']}",
         "login_user": f"test-{base_data['cod']}",
     }

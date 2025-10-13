@@ -5,14 +5,15 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.auth import HTTPBasicAuth
 from urllib3.util.retry import Retry
-
 from utils.env_reader import get_env
 from utils.logger import get_test_name, configure_logging
 from apis.response_utils import detect_response_type, pretty_body
 
 
 class BaseAPI:
-    def __init__(self, load_data, **kwargs):
+    # ==================================================================================================================
+
+    def __init__(self, load_data,  **kwargs):
         """
         Constructor:
             - Session va header sozlamalarini yaratadi.
@@ -42,7 +43,7 @@ class BaseAPI:
             username = f"test_user@{get_env('CODE_INPUT')}"
             password = get_env("PASSWORD_USER")
         elif auth_profile:
-            raise ValueError(f"❌ Noma'lum auth_profile: {auth_profile}")
+            raise ValueError(f"Noma'lum auth_profile: {auth_profile}")
         else:
             username = password = None
 
@@ -52,12 +53,27 @@ class BaseAPI:
         self.session.headers.update(headers)
 
         # Retry (agar vaqtinchalik xato bo‘lsa, avtomatik qayta urinish)
-        retry = Retry(total=3, backoff_factor=0.3, status_forcelist=(500, 502, 503, 504))
-        adapter = HTTPAdapter(pool_connections=10, pool_maxsize=10, max_retries=retry)
+        retry_strategy = Retry(
+            total=5,
+            connect=3,
+            read=3,
+            status=3,
+            backoff_factor=0.5,
+            status_forcelist=[500, 502, 503, 504, 429],
+            allowed_methods=["HEAD", "GET", "OPTIONS", "POST"],
+            respect_retry_after_header=True,
+            raise_on_status=False,
+        )
+
+        adapter = HTTPAdapter(
+            max_retries=retry_strategy,
+            pool_connections=20,
+            pool_maxsize=20,
+        )
         self.session.mount("http://", adapter)
         self.session.mount("https://", adapter)
 
-    # ======================================================================
+    # ==================================================================================================================
 
     def log_api(self, resp, t_network, t_total, data=None):
         """
@@ -66,7 +82,7 @@ class BaseAPI:
         """
         size = len(resp.content or b"")
         self.logger.info(
-            f"✅ network={t_network:.2f}s | total={t_total:.2f}s "
+            f"network={t_network:.2f}s | total={t_total:.2f}s "
             f"| size={size}B | status={resp.status_code}"
         )
 
@@ -77,7 +93,7 @@ class BaseAPI:
                 short = str(data)[:2000]
             self.logger.debug(f"Javob (short): {short}...")
 
-    # ======================================================================
+    # ==================================================================================================================
 
     def log_error(self, resp, t_network, t_total, body=None):
         """
@@ -86,7 +102,7 @@ class BaseAPI:
             - Allure’ga ham attach qiladi.
         """
         self.logger.error(
-            f"❌ API Error: status={resp.status_code} "
+            f"API Error: status={resp.status_code} "
             f"| network={t_network:.2f}s | total={t_total:.2f}s"
         )
 
@@ -98,7 +114,7 @@ class BaseAPI:
             self.logger.error(f"Request body:\n{short_body}")
 
         raw_response = pretty_body(resp)
-        self.logger.error(f"Server response:\n{raw_response}")
+        self.logger.error(f"Server response:\n{raw_response[:2000]}")
 
         allure.attach(
             raw_response,
@@ -113,36 +129,41 @@ class BaseAPI:
                 attachment_type=allure.attachment_type.JSON
             )
 
-    # ======================================================================
+    # ==================================================================================================================
 
-    def handle_response(self, resp, t_network, t_total, body=None, expect_status=200):
+    def handle_response(self, resp, t_network, t_total, body=None, expect_status=200, allow_empty_response=False):
         """
-        Bu funksiya — barchasini boshqaradi.
-            - Agar status `expect_status` bo‘lsa → log_api()
+        Bu funksiya – barchasini boshqaradi.
+            - Agar status `expect_status` bo'lsa → log_api()
             - Aks holda → log_error() va AssertionError chiqaradi.
+            - allow_empty_response=True bo'lsa, bo'sh javobni qabul qiladi
         """
         if resp.status_code == expect_status:
-            data = resp.json()
-            self.log_api(resp, t_network, t_total, data)
-
-            allure.attach(
-                pretty_body(resp),
-                name=f"Response (OK, JSON)",
-                attachment_type=allure.attachment_type.JSON
-            )
-            return data
-
-        self.log_error(resp, t_network, t_total, body)
+            if not resp.content or len(resp.content) == 0:
+                if allow_empty_response:
+                    self.log_api(resp, t_network, t_total, data=None)
+                    return None
+                else:
+                    raise AssertionError("Empty response!")
+            try:
+                data = resp.json()
+                self.log_api(resp, t_network, t_total, data=data)
+                return data
+            except json.JSONDecodeError as e:
+                self.logger.error(f"JSON parse xatosi: {e}")
+                self.log_error(resp, t_network, t_total, body)
+                raise AssertionError(f"Invalid JSON response: {resp.text[:500]}")
 
         raise AssertionError(
-            f"\n❌ API failed:"
+            f"\nAPI failed:"
             f"\nExpected: {expect_status}, Got: {resp.status_code}"
             f"\nURL: {resp.url}"
             f"\nNetwork: {t_network:.2f}s | Total: {t_total:.2f}s"
             f"\nRequest body: {json.dumps(body, ensure_ascii=False) if body else '<empty>'}"
             f"\nResponse ({detect_response_type(resp)}):\n{pretty_body(resp)[:2000]}"
         )
-    # ======================================================================
+
+    # ==================================================================================================================
 
     def _post(self, path, body, timeout=(3.05, 60)):
         """
@@ -159,5 +180,4 @@ class BaseAPI:
 
         return resp, t_network, t_total
 
-    # ======================================================================
-
+    # ==================================================================================================================

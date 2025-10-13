@@ -1,8 +1,18 @@
-# apis/response_utils.py
 import json
 
+# ======================================================================================================================
+
 def detect_response_type(resp):
-    """Javob turini aniqlaydi: json | text | html | xml | binary"""
+    """
+    Javob turini aniqlaydi: json | text | html | xml | binary
+
+        "application/json" → "json"
+        "text/*"           → "text"
+        "html"             → "html"
+        "xml"              → "xml"
+        "octet-stream"     → try JSON, else "text"
+        boshqalar          → "binary"
+    """
     ctype_full = (resp.headers.get("Content-Type") or "").lower()
     ctype = ctype_full.split(";")[0].strip()
 
@@ -16,27 +26,15 @@ def detect_response_type(resp):
         return "xml"
     if "octet-stream" in ctype or ctype == "":
         try:
-            _ = resp.json()
+            resp.json()
             return "json"
-        except Exception:
-            return "text"
+        except (json.JSONDecodeError, ValueError):
+            return "binary"
     return "binary"
 
+# ======================================================================================================================
 
-# def parse_response(resp):
-#     """(data, rtype) qaytaradi."""
-#     rtype = detect_response_type(resp)
-#     try:
-#         if rtype == "json":
-#             return resp.json(), "json"
-#         if rtype in ("text", "html", "xml"):
-#             return resp.text, rtype
-#         return resp.content, "binary"
-#     except requests.exceptions.JSONDecodeError:
-#         return resp.text, "text"
-
-
-def pretty_body(resp) -> str:
+def pretty_body(resp):
     """Har doim server yuborgan asl body’ni qaytaradi."""
     try:
         rtype = detect_response_type(resp)
@@ -50,3 +48,5 @@ def pretty_body(resp) -> str:
             return f"<{ctype} {size} bytes>"
     except Exception:
         return resp.text or "<no response>"
+
+# ======================================================================================================================

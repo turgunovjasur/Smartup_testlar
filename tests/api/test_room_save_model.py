@@ -5,7 +5,7 @@ from apis.room_api import RoomAPI
 
 @pytest.mark.api
 @pytest.mark.order(5)
-def test_room_save(test_data, load_data, save_data):
+def test_room_save(load_data, save_data):
     api = RoomAPI(load_data, auth_profile="admin")
 
     code = load_data("api/code")
@@ -20,7 +20,7 @@ def test_room_save(test_data, load_data, save_data):
 
     resp, t_network, t_total = api.import_room(body)
 
-    data = api.handle_response(resp, t_network, t_total)
+    data = api.handle_response(resp, t_network, t_total, body=body)
 
     get_name = data["name"]
     assert room_name == get_name, f"room_name: {room_name} != get_name: {get_name}"
@@ -32,7 +32,7 @@ def test_room_save(test_data, load_data, save_data):
 
 @pytest.mark.api
 @pytest.mark.order(6)
-def test_room_model(test_data, load_data):
+def test_room_model(load_data):
     api = RoomAPI(load_data, auth_profile="admin")
 
     room_id = load_data("api/room_id")
@@ -43,7 +43,7 @@ def test_room_model(test_data, load_data):
 
     resp, t_network, t_total = api.export_room(body)
 
-    data = api.handle_response(resp, t_network, t_total)
+    data = api.handle_response(resp, t_network, t_total, body=body)
 
     get_room_id = data[2]["room_id"]
     assert room_id == get_room_id, f"room_id: {room_id} != get_room_id: {get_room_id}"

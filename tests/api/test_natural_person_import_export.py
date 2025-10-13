@@ -1,12 +1,11 @@
 import pytest
 from apis.natural_person_api import NaturalPersonAPI
-from conftest import save_data, load_data
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.api
 @pytest.mark.order(9)
-def test_natural_person_import(test_data, save_data, load_data):
+def test_natural_person_import(load_data):
     api = NaturalPersonAPI(load_data, auth_profile="admin")
 
     code = load_data("api/code")
@@ -31,7 +30,7 @@ def test_natural_person_import(test_data, save_data, load_data):
 
     resp, t_network, t_total = api.import_natural_person(body)
 
-    data = api.handle_response(resp, t_network, t_total)
+    data = api.handle_response(resp, t_network, t_total, body=body)
 
     get_code = data["successes"][0]["code"]
     assert code == get_code, f"code: {code} != get_code: {get_code}"
@@ -40,7 +39,7 @@ def test_natural_person_import(test_data, save_data, load_data):
 
 @pytest.mark.api
 @pytest.mark.order(10)
-def test_natural_person_export(test_data, save_data, load_data):
+def test_natural_person_export(save_data, load_data):
     api = NaturalPersonAPI(load_data, auth_profile="admin")
 
     code = load_data("api/code")
@@ -60,7 +59,7 @@ def test_natural_person_export(test_data, save_data, load_data):
 
     resp, t_network, t_total = api.export_natural_person(body)
 
-    data = api.handle_response(resp, t_network, t_total)
+    data = api.handle_response(resp, t_network, t_total, body=body)
 
     get_person_id = data["natural_person"][0]["person_id"]
     save_data("api/natural_person_id", get_person_id)

@@ -1,17 +1,15 @@
 import random
 import pytest
 from apis.legal_person_api import LegalPersonAPI
-from conftest import save_data, load_data
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.api
 @pytest.mark.order(1)
-def test_legal_person_import(test_data, save_data, load_data):
+def test_legal_person_import(save_data, load_data):
     api = LegalPersonAPI(load_data, auth_profile="admin")
 
-    code_int = random.randint(100000, 999999)
-    code = str(code_int)
+    code = str(random.randint(100000, 999999))
 
     body = {
         "legal_person": [{
@@ -29,7 +27,7 @@ def test_legal_person_import(test_data, save_data, load_data):
     resp, t_network, t_total = api.import_legal_person(body)
     save_data("api/code", code)
 
-    data = api.handle_response(resp, t_network, t_total)
+    data = api.handle_response(resp, t_network, t_total, body=body)
 
     get_code = data["successes"][0]["code"]
     assert code == get_code, f"code: {code} != get_code: {get_code}"
@@ -40,7 +38,7 @@ def test_legal_person_import(test_data, save_data, load_data):
 
 @pytest.mark.api
 @pytest.mark.order(2)
-def test_legal_person_export(test_data, save_data, load_data):
+def test_legal_person_export(save_data, load_data):
     api = LegalPersonAPI(load_data, auth_profile="admin")
 
     legal_person_code = load_data("api/legal_person_code")
@@ -62,7 +60,7 @@ def test_legal_person_export(test_data, save_data, load_data):
 
     resp, t_network, t_total = api.export_legal_person(body)
 
-    data = api.handle_response(resp, t_network, t_total)
+    data = api.handle_response(resp, t_network, t_total, body=body)
 
     get_legal_person_code = data["legal_person"][0]["code"]
     assert legal_person_code == get_legal_person_code, \

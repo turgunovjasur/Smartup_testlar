@@ -257,8 +257,10 @@ def test_add_template_for_order_invoice_report(driver, test_data):
     setting_add.click_template_input()
 
     report_path = get_data_file_path(filename, folder, subfolder)
+    time.sleep(2)
     pyautogui.write(os.path.dirname(report_path), interval=0.2)
     pyautogui.press('enter')
+    time.sleep(2)
     pyautogui.write("test_invoice_report.xlsx", interval=0.2)
     pyautogui.press('enter')
 

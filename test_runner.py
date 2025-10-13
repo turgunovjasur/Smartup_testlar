@@ -1,16 +1,16 @@
 # import allure
-# from tests.test_cashin.test_cashin import test_cashin_add_A
-# from tests.test_finance.test_contract import (
+# from tests.ui.test_cashin.test_cashin import test_cashin_add_A
+# from tests.ui.test_finance.test_contract import (
 #     test_add_contract_for_client_A_UZB,
 #     test_add_contract_for_client_B_UZB,
 #     test_add_contract_for_client_C_USA,
 # )
-# from tests.test_finance.test_currency import test_currency_add
-# from tests.test_input.test_input import test_add_input, test_add_input_with_extra_cost
-# from tests.test_license.test_license import test_add_user_license, test_add_purchase_license
-# from tests.test_movement.test_movement import test_add_internal_movement
-# from tests.test_offset.test_offset import test_offset_add_A, test_offset_add_B
-# from tests.test_order.test_life_cycle import (
+# from tests.ui.test_finance.test_currency import test_currency_add
+# from tests.ui.test_input.test_input import test_add_input, test_add_input_with_extra_cost
+# from tests.ui.test_license.test_license import test_add_user_license, test_add_purchase_license
+# from tests.ui.test_movement.test_movement import test_add_internal_movement
+# from tests.ui.test_offset.test_offset import test_offset_add_A, test_offset_add_B
+# from tests.ui.test_order.test_life_cycle import (
 #     test_adding_permissions_to_user,
 #     test_check_price_tag,
 #     test_filial_create,
@@ -30,83 +30,83 @@
 #     test_user_change_password,
 #     test_user_create,
 # )
-# from tests.test_order.test_order import (
+# from tests.ui.test_order.test_order import (
 #     test_add_order_for_action_demo,
 #     test_add_order_for_price_type_USA_demo,
 #     test_add_order_for_sub_filial_demo,
 #     test_add_order_with_consignment_demo,
 #     test_add_order_with_contract_demo,
 # )
-# from tests.test_order.test_order_change_status import (
+# from tests.ui.test_order.test_order_change_status import (
 #     test_change_status_draft_and_archive_demo,
 #     test_change_status_draft_and_delivered_demo,
 #     test_change_status_new_and_cancelled_demo,
 #     test_order_change_status_from_draft_to_cancelled_demo,
 # )
-# from tests.test_order.test_order_edit import (
+# from tests.ui.test_order.test_order_edit import (
 #     test_edit_order_for_action_demo,
 #     test_edit_order_for_price_type_USA_demo,
 #     test_edit_order_with_consignment_demo,
 # )
-# from tests.test_order.test_order_list import test_copy_search_filter_in_order_list_demo
-# from tests.test_order.test_order_report import (
+# from tests.ui.test_order.test_order_list import test_copy_search_filter_in_order_list_demo
+# from tests.ui.test_order.test_order_report import (
 #     test_add_template_for_order_invoice_report,
 #     test_check_invoice_report_for_order_list,
 #     test_check_report_for_order_history_list,
 #     test_check_report_for_order_list,
 #     test_sales_report_constructor_demo,
 # )
-# from tests.test_order.test_order_return import test_order_return
-# from tests.test_purchase.test_extra_cost import test_add_extra_cost
-# from tests.test_purchase.test_purchase import (
+# from tests.ui.test_order.test_order_return import test_order_return
+# from tests.ui.test_purchase.test_extra_cost import test_add_extra_cost
+# from tests.ui.test_purchase.test_purchase import (
 #     test_add_purchase,
 #     test_add_purchase_with_extra_cost_quantity,
 #     test_add_purchase_with_extra_cost_sum,
 #     test_add_purchase_with_extra_cost_weight_brutto,
 # )
-# from tests.test_reference.test_action import (
+# from tests.ui.test_reference.test_action import (
 #     test_add_action_cash_money,
 #     test_add_action_terminal,
 # )
-# from tests.test_reference.test_client import (
+# from tests.ui.test_reference.test_client import (
 #     test_client_add_A,
 #     test_client_add_B,
 #     test_client_add_C,
 # )
-# from tests.test_reference.test_legal_person import (
+# from tests.ui.test_reference.test_legal_person import (
 #     test_add_legal_person,
 #     test_add_legal_person_by_supplier,
 # )
-# from tests.test_reference.test_natural_person import (
+# from tests.ui.test_reference.test_natural_person import (
 #     test_natural_person_add,
 #     test_natural_person_client_add_A,
 #     test_natural_person_client_add_B,
 #     test_natural_person_client_add_C,
 # )
-# from tests.test_reference.test_product import (
+# from tests.ui.test_reference.test_product import (
 #     test_product_add_as_product_1,
 #     test_product_add_as_product_2,
 # )
-# from tests.test_rep.integration.cislink.test_cislink import test_check_report_cis_link
-# from tests.test_rep.integration.integration_three.test_integration_three import (
+# from tests.ui.test_rep.integration.cislink.test_cislink import test_check_report_cis_link
+# from tests.ui.test_rep.integration.integration_three.test_integration_three import (
 #     test_check_report_integration_three,
 # )
-# from tests.test_rep.integration.integration_two.test_integration_two import (
+# from tests.ui.test_rep.integration.integration_two.test_integration_two import (
 #     test_check_report_integration_two,
 # )
-# from tests.test_rep.integration.optimum.test_optimum import test_check_report_optimum
-# from tests.test_rep.integration.saleswork.test_saleswork import (
+# from tests.ui.test_rep.integration.optimum.test_optimum import test_check_report_optimum
+# from tests.ui.test_rep.integration.saleswork.test_saleswork import (
 #     test_check_report_sales_work,
 # )
-# from tests.test_rep.integration.spot.test_spot import test_check_report_spot_2d
-# from tests.test_return_supplier.test_return_supplier import (
+# from tests.ui.test_rep.integration.spot.test_spot import test_check_report_spot_2d
+# from tests.ui.test_return_supplier.test_return_supplier import (
 #     test_add_purchase_to_supplier,
 #     test_return_to_supplier,
 # )
-# from tests.test_stocktaking.test_stocktaking import test_add_stocktaking
-# from tests.test_warehouse.test_supplier import test_add_supplier
-# from tests.test_warehouse.test_warehouse import test_add_warehouse
-# from tests.test_writeoff.test_writeoff import (
+# from tests.ui.test_stocktaking.test_stocktaking import test_add_stocktaking
+# from tests.ui.test_warehouse.test_supplier import test_add_supplier
+# from tests.ui.test_warehouse.test_warehouse import test_add_warehouse
+# from tests.ui.test_writeoff.test_writeoff import (
 #     test_add_write_off,
 #     test_check_constructor_report_write_off,
 # )
