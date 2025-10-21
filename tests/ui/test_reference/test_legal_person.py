@@ -6,8 +6,34 @@ from tests.ui.test_reference.legal_person_flows import add_flow, view_flow, list
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def legal_person_add(driver, test_data, soft_assertions, person_name=None, admin_or_user=True):
-    """Test adding a legal person"""
+@qase.id(164)
+@qase.title("Add Legal Person")
+@pytest.mark.regression
+@pytest.mark.order(10)
+def test_add_legal_person(driver, test_data, soft_assertions, save_data):
+    """
+        Legal Person qo‘shish va tekshirish.
+
+        Preconditions:
+            - Admin sifatida login bo‘lishi kerak
+            - Legal Person list sahifasi ochiq bo‘lishi kerak
+
+        Checklist:
+        1. Admin login qilinadi
+        2. Legal Person list sahifasi ochilgani tekshiriladi
+        3. Add tugmasi bosiladi
+        4. Add formasi ochilgani tekshiriladi
+        5. Maydonlar to‘ldiriladi
+        6. Save tugmasi bosiladi va Yes tasdiqlanadi
+        7. Ro‘yxatda Code orqali qidiriladi
+        8. Yozuv topiladi
+        9. View tugmasi bosiladi
+        10. Qiymatlar tekshiriladi
+    """
+
+    data = test_data["data"]
+    person_name = data['legal_person_name']
+    short_name = f"short_name-{person_name}"
 
     i = random.randint(10000, 99999)
     main_phone = f"+99890000{i}"
@@ -24,13 +50,8 @@ def legal_person_add(driver, test_data, soft_assertions, person_name=None, admin
     web = f"https://web_legal_person_{i}.uz"
     barcode = f"barcode_{i}"
     zip_code = f"zip_code_{i}"
-    short_name = f"short_name-{person_name}"
 
-    url = 'anor/mr/person/legal_person_list'
-    if admin_or_user:
-        login_admin(driver, test_data, url=url)
-    else:
-        login_user(driver, test_data, url=url)
+    login_admin(driver, test_data, url='anor/mr/person/legal_person_list')
 
     list_flow(driver, add=True)
 
@@ -62,38 +83,6 @@ def legal_person_add(driver, test_data, soft_assertions, person_name=None, admin
               barcode=barcode,
               email=email)
 
-    return code
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-@qase.id(164)
-@qase.title("Add Legal Person")
-@pytest.mark.regression
-@pytest.mark.order(10)
-def test_add_legal_person(driver, test_data, soft_assertions, save_data):
-    """
-        Legal Person qo‘shish va tekshirish.
-
-        Preconditions:
-            - Admin sifatida login bo‘lishi kerak
-            - Legal Person list sahifasi ochiq bo‘lishi kerak
-
-        Checklist:
-        1. Admin login qilinadi
-        2. Legal Person list sahifasi ochilgani tekshiriladi
-        3. Add tugmasi bosiladi
-        4. Add formasi ochilgani tekshiriladi
-        5. Maydonlar to‘ldiriladi
-        6. Save tugmasi bosiladi va Yes tasdiqlanadi
-        7. Ro‘yxatda Code orqali qidiriladi
-        8. Yozuv topiladi
-        9. View tugmasi bosiladi
-        10. Qiymatlar tekshiriladi
-    """
-
-    data = test_data["data"]
-    legal_person = data['legal_person_name']
-    code = legal_person_add(driver, test_data, soft_assertions, person_name=legal_person)
     save_data("legal_person_cod", code)
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -124,8 +113,31 @@ def test_add_legal_person_by_supplier(driver, test_data, soft_assertions, save_d
     """
 
     data = test_data["data"]
-    supplier_name = data['supplier_name']
-    code = legal_person_add(driver, test_data, soft_assertions, person_name=supplier_name, admin_or_user=False)
+    person_name = data['supplier_name']
+    room_name = data['room_name']
+    short_name = f"short_name-{person_name}"
+
+    i = random.randint(10000, 99999)
+    code = f"code_{i}"
+
+    login_user(driver, test_data, url='anor/mr/person/legal_person_list')
+
+    list_flow(driver, add=True)
+
+    add_flow(driver,
+             state=True,
+             person_name=person_name,
+             short_name=short_name,
+             room_name=room_name,
+             code=code)
+
+    list_flow(driver, find_row=code, view=True)
+
+    view_flow(driver, soft_assertions,
+              person_name=person_name,
+              short_name=short_name,
+              code=code)
+
     save_data("supplier_cod", code)
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -8,7 +8,7 @@ from tests.ui.test_payment_to_suppliers.flow_payment_to_suppliers import list_fl
 
 
 @pytest.mark.regression
-@pytest.mark.skip(reason="Bu test hali implementatsiya qilinmagan")
+@pytest.mark.order(680)
 def test_payment_to_suppliers(driver, test_data, load_data, save_data):
     """Test adding a stocktaking"""
 
@@ -23,7 +23,7 @@ def test_payment_to_suppliers(driver, test_data, load_data, save_data):
                       cashout_number=cashout_number,
                       get_cashout_time=True)
 
-    current_date = date.today().strftime("%d.%m.%Y")  # 22.08.2025
+    current_date = date.today().strftime("%d.%m.%Y")
     assert current_date in result["get_cashout_time"]
 
     result = add_flow(driver,

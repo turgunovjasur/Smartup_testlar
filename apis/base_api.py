@@ -14,12 +14,6 @@ class BaseAPI:
     # ==================================================================================================================
 
     def __init__(self, load_data,  **kwargs):
-        """
-        Constructor:
-            - Session va header sozlamalarini yaratadi.
-            - Avtorizatsiyani (admin yoki user) tanlaydi.
-            - Retry mexanizmini yoqadi.
-        """
         self.base_url = get_env("URL")
         self.session = requests.Session()
         self.test_name = get_test_name()
@@ -40,7 +34,7 @@ class BaseAPI:
             username = f"admin@{get_env('CODE_INPUT')}"
             password = get_env("PASSWORD_COMPANY")
         elif auth_profile == "user":
-            username = f"test_user@{get_env('CODE_INPUT')}"
+            username = f"api_test-{load_data("api/code")}@{get_env('CODE_INPUT')}"
             password = get_env("PASSWORD_USER")
         elif auth_profile:
             raise ValueError(f"Noma'lum auth_profile: {auth_profile}")

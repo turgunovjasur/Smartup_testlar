@@ -18,6 +18,7 @@ def add_flow(driver, **kwargs):
 
     safe_input(add.input_name,         kwargs.get("person_name"))
     safe_input(add.input_short_name,   kwargs.get("short_name"))
+    safe_input(add.input_rooms,        kwargs.get("room_name"))
     safe_input(add.input_main_phone,   kwargs.get("main_phone"))
     safe_input(add.input_telegram,     kwargs.get("telegram"))
     safe_input(add.input_email,        kwargs.get("email"))
@@ -68,33 +69,43 @@ def view_flow(driver, soft_assertions, **kwargs):
     # View-form
     view.click_navbar(navbar_name="Основная информация")
 
-    get_name = view.get_input_value(input_name="Название")
-    soft_assertions.assert_equals(get_name, person_name)
+    if person_name:
+        get_name = view.get_input_value(input_name="Название")
+        soft_assertions.assert_equals(get_name, person_name)
 
-    get_short_name = view.get_input_value(input_name="Альтернативное название")
-    soft_assertions.assert_equals(get_short_name, short_name)
+    if short_name:
+        get_short_name = view.get_input_value(input_name="Альтернативное название")
+        soft_assertions.assert_equals(get_short_name, short_name)
 
-    get_code = view.get_input_value(input_name="Код")
-    soft_assertions.assert_equals(get_code, code)
+    if code:
+        get_code = view.get_input_value(input_name="Код")
+        soft_assertions.assert_equals(get_code, code)
 
-    get_barcode = view.get_input_value(input_name="Штрих-код")
-    soft_assertions.assert_equals(get_barcode, barcode)
+    if barcode:
+        get_barcode = view.get_input_value(input_name="Штрих-код")
+        soft_assertions.assert_equals(get_barcode, barcode)
 
     # View-card
-    get_email = view.get_card_value(card_name="Email")
-    soft_assertions.assert_equals(get_email, email)
+    if email:
+        get_email = view.get_card_value(card_name="Email")
+        soft_assertions.assert_equals(get_email, email)
 
-    get_name = view.get_card_value(card_name="Название")
-    soft_assertions.assert_equals(get_name, person_name)
+    if person_name:
+        get_name = view.get_card_value(card_name="Название")
+        soft_assertions.assert_equals(get_name, person_name)
 
-    get_short_name = view.get_card_value(card_name="Альтернативное название")
-    soft_assertions.assert_equals(get_short_name, short_name)
+    if short_name:
+        get_short_name = view.get_card_value(card_name="Альтернативное название")
+        soft_assertions.assert_equals(get_short_name, short_name)
 
-    get_code = view.get_card_value(card_name="Код")
-    soft_assertions.assert_equals(get_code, code)
+    if code:
+        get_code = view.get_card_value(card_name="Код")
+        soft_assertions.assert_equals(get_code, code)
 
-    get_barcode = view.get_card_value(card_name="Штрих-код")
-    soft_assertions.assert_equals(get_barcode, barcode)
+    if barcode:
+        get_barcode = view.get_card_value(card_name="Штрих-код")
+        soft_assertions.assert_equals(get_barcode, barcode)
+
     soft_assertions.assert_all()
 
 # ======================================================================================================================

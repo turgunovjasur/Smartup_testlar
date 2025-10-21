@@ -47,7 +47,7 @@ def test_add_purchase_license(driver, test_data, assertions):
     begin_date = today.strftime("%d%m%Y")  # 22.08.2025
 
     purchase_flow(driver,
-                  payer_name="TEST GWS FIZIK",
+                  payer_name="AUTOTEST GWS",
                   contract_name="Договор № bn от 01.01.2025",
                   begin_date=begin_date,
                   license_count=1)
@@ -64,7 +64,7 @@ def test_add_purchase_license(driver, test_data, assertions):
         first_day = date.today().replace(day=1).strftime("%d%m%Y")
 
         purchase_flow(driver,
-                      payer_name="TEST GWS FIZIK",
+                      payer_name="AUTOTEST GWS",
                       contract_name="Договор № bn от 01.01.2025",
                       begin_date=first_day,
                       license_count=0)
@@ -78,7 +78,7 @@ def test_add_purchase_license(driver, test_data, assertions):
     except AssertionError:
         pass
 
-    get_payer_balance_new = balance_flow(driver, navbar_name="Баланс", payer_name="TEST GWS FIZIK")
+    get_payer_balance_new = balance_flow(driver, navbar_name="Баланс", payer_name="AUTOTEST GWS")
     assertions.assert_equals(actual=round(get_payer_balance_new, 2),
                              expected=round(after_purchase_balance, 2),
                              message="License: Payer balance -> after purchase")

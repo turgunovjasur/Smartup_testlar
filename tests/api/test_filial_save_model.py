@@ -22,7 +22,7 @@ def test_filial_save(load_data, save_data):
         "excise_enabled": "N"
     }
 
-    resp, t_network, t_total = api.import_filial(body)
+    resp, t_network, t_total = api.filial_save(body)
 
     data = api.handle_response(resp, t_network, t_total, body=body)
 
@@ -45,7 +45,7 @@ def test_filial_model(load_data):
         "filial_id": filial_id
     }
 
-    resp, t_network, t_total = api.export_filial(body)
+    resp, t_network, t_total = api.filial_model(body)
 
     api.handle_response(resp, t_network, t_total, body=body)
 

@@ -4,27 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Added: test apis: legal_person_api.py, &#10;natural_person_api.py,&#10;room_api.py, robot_api.py (08.10.2025)">
-      <change afterPath="$PROJECT_DIR$/apis/role_api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/user_api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/api/test_role_save_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/api/test_user_save_model.py" afterDir="false" />
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="(13.10.2025)">
+      <change afterPath="$PROJECT_DIR$/apis/biruni_session_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apis/price_type_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apis/user_license_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/api_test_runner.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_biruni_session.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_price_type.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_user_license_attach.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests_api/api_client.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests_api/data_mapper.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests_api/test_order_export.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests_api/test_order_import.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/base_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/apis/base_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/response_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/apis/response_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/filial_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/apis/filial_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/user_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/apis/user_api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/anor/mr/person/legal_person_add/legal_person_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mr/person/legal_person_add/legal_person_add.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_runner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/api/test_filial_save_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_filial_save_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/test_legal_person_import_export.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_legal_person_import_export.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/test_natural_person_import_export.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_natural_person_import_export.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/test_robot_save_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_robot_save_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/test_room_save_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_room_save_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/ui/test_order/test_order_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_order_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/api/test_user_save_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_user_save_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ui/test_license/test_license.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_license/test_license.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ui/test_order/test_life_cycle.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_order/test_life_cycle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ui/test_payment_to_suppliers/test_payment_to_suppliers.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_payment_to_suppliers/test_payment_to_suppliers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ui/test_reference/legal_person_flows.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/legal_person_flows.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ui/test_reference/test_legal_person.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/test_legal_person.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/test_state.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +37,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExportTestResults" exportFormat="Xml" outputFolder="$PROJECT_DIR$" openResultsInEditor="true" userTempatePath="" />
+  <component name="ExportTestResults" outputFolder="$PROJECT_DIR$" openResultsInEditor="true" userTempatePath="" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -79,10 +84,12 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python tests.pytest for all_test_runner.test_all.executor": "Run",
+    "Python tests.pytest for api_test_runner.test_run_with_state.executor": "Run",
     "Python tests.pytest for conftest.test_data.executor": "Run",
     "Python tests.pytest for test_action.test_add_action.executor": "Run",
     "Python tests.pytest for test_action.test_add_action_cash_money.executor": "Run",
     "Python tests.pytest for test_action.test_add_action_terminal.executor": "Run",
+    "Python tests.pytest for test_biruni_session.test_biruni_session.executor": "Run",
     "Python tests.pytest for test_cashin.test_cashin_add_A.executor": "Run",
     "Python tests.pytest for test_cashin.test_offset_add_B.executor": "Run",
     "Python tests.pytest for test_cislink.test_check_report_cis_link.executor": "Run",
@@ -198,6 +205,8 @@
     "Python tests.pytest for test_order_report.test_check_report_for_order_list.executor": "Run",
     "Python tests.pytest for test_order_return.test_order_return.executor": "Run",
     "Python tests.pytest for test_payment_to_suppliers.test_payment_to_suppliers.executor": "Run",
+    "Python tests.pytest for test_price_type.test_price_type_uzb_import.executor": "Run",
+    "Python tests.pytest for test_price_type.test_price_type_uzb_save.executor": "Run",
     "Python tests.pytest for test_product.test_product_add_as_product_1.executor": "Run",
     "Python tests.pytest for test_product.test_product_add_as_product_2.executor": "Run",
     "Python tests.pytest for test_product.test_product_add_as_product_3.executor": "Run",
@@ -231,6 +240,12 @@
     "Python tests.pytest for test_spot.test_check_report_spot_2d.executor": "Run",
     "Python tests.pytest for test_stocktaking.test_add_stocktaking.executor": "Run",
     "Python tests.pytest for test_supplier.test_add_supplier.executor": "Run",
+    "Python tests.pytest for test_user_license_attach.test_balance_info.executor": "Run",
+    "Python tests.pytest for test_user_license_attach.test_get_purchase_info.executor": "Run",
+    "Python tests.pytest for test_user_license_attach.test_purchase_info.executor": "Run",
+    "Python tests.pytest for test_user_license_attach.test_purchase_license.executor": "Run",
+    "Python tests.pytest for test_user_license_attach.test_user_license_attach.executor": "Run",
+    "Python tests.pytest for test_user_license_attach.test_user_license_list.executor": "Run",
     "Python tests.pytest for test_user_save_model.test_user_export.executor": "Run",
     "Python tests.pytest for test_user_save_model.test_user_form_attach.executor": "Run",
     "Python tests.pytest for test_user_save_model.test_user_form_list.executor": "Run",
@@ -285,25 +300,8 @@
       <recent name="C:\Users\jasur.turgunov\Desktop\ish\Smartup_testlar\flows\order_flows" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_user_save_model.test_user_form_attach">
-    <configuration name="pytest for test_product.test_product_add_as_product_1" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/ui/test_reference" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_product.test_product_add_as_product_1&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_role_save_model.test_role_access_generate_all" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.pytest for test_price_type.test_price_type_uzb_save">
+    <configuration name="pytest for api_test_runner.test_run_with_state" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -316,11 +314,45 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_role_save_model.test_role_access_generate_all&quot;" />
+      <option name="_new_target" value="&quot;api_test_runner.test_run_with_state&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_role_save_model.test_role_view" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_order_export.test_order_export_performance" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="Smartup_testlar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests_api" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_order_export.test_order_export_performance&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_order_import.test_order_import_performance" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="Smartup_testlar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests_api" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_order_import.test_order_import_performance&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_price_type.test_price_type_uzb_import" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -333,11 +365,11 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_role_save_model.test_role_view&quot;" />
+      <option name="_new_target" value="&quot;test_price_type.test_price_type_uzb_import&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_user_save_model.test_user_form_attach" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_price_type.test_price_type_uzb_save" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="Smartup_testlar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -350,41 +382,24 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_user_save_model.test_user_form_attach&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_user_save_model.test_user_form_list" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="Smartup_testlar" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/api" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_user_save_model.test_user_form_list&quot;" />
+      <option name="_new_target" value="&quot;test_price_type.test_price_type_uzb_save&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.pytest for test_user_save_model.test_user_form_attach" />
-      <item itemvalue="Python tests.pytest for test_user_save_model.test_user_form_list" />
-      <item itemvalue="Python tests.pytest for test_product.test_product_add_as_product_1" />
-      <item itemvalue="Python tests.pytest for test_role_save_model.test_role_access_generate_all" />
-      <item itemvalue="Python tests.pytest for test_role_save_model.test_role_view" />
+      <item itemvalue="Python tests.pytest for test_price_type.test_price_type_uzb_import" />
+      <item itemvalue="Python tests.pytest for test_price_type.test_price_type_uzb_save" />
+      <item itemvalue="Python tests.pytest for test_order_export.test_order_export_performance" />
+      <item itemvalue="Python tests.pytest for test_order_import.test_order_import_performance" />
+      <item itemvalue="Python tests.pytest for api_test_runner.test_run_with_state" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_user_save_model.test_user_form_attach" />
-        <item itemvalue="Python tests.pytest for test_user_save_model.test_user_form_list" />
-        <item itemvalue="Python tests.pytest for test_role_save_model.test_role_access_generate_all" />
-        <item itemvalue="Python tests.pytest for test_role_save_model.test_role_view" />
-        <item itemvalue="Python tests.pytest for test_product.test_product_add_as_product_1" />
+        <item itemvalue="Python tests.pytest for test_price_type.test_price_type_uzb_save" />
+        <item itemvalue="Python tests.pytest for test_price_type.test_price_type_uzb_import" />
+        <item itemvalue="Python tests.pytest for test_order_export.test_order_export_performance" />
+        <item itemvalue="Python tests.pytest for test_order_import.test_order_import_performance" />
+        <item itemvalue="Python tests.pytest for api_test_runner.test_run_with_state" />
       </list>
     </recent_temporary>
   </component>
@@ -403,14 +418,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741665237387</updated>
-    </task>
-    <task id="LOCAL-00004" summary="15.04.2025">
-      <option name="closed" value="true" />
-      <created>1744721993901</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1744721993901</updated>
     </task>
     <task id="LOCAL-00005" summary="21.04.2025">
       <option name="closed" value="true" />
@@ -796,7 +803,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759924552564</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="(13.10.2025)">
+      <option name="closed" value="true" />
+      <created>1760351675614</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1760351675616</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -814,7 +829,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="1) import pyautogui - funksiya ichida chaqirildi" />
     <MESSAGE value="fstring lar tog'irlandi" />
     <MESSAGE value="driver - user template qo'shildi" />
     <MESSAGE value=".env - to'g'irlandi" />
@@ -839,6 +853,7 @@
     <MESSAGE value="Added: Qase.io (26.09.2025)" />
     <MESSAGE value="Added: test apis (29.09.2025)" />
     <MESSAGE value="Added: test apis: legal_person_api.py, &#10;natural_person_api.py,&#10;room_api.py, robot_api.py (08.10.2025)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added: test apis: legal_person_api.py, &#10;natural_person_api.py,&#10;room_api.py, robot_api.py (08.10.2025)" />
+    <MESSAGE value="(13.10.2025)" />
+    <option name="LAST_COMMIT_MESSAGE" value="(13.10.2025)" />
   </component>
 </project>

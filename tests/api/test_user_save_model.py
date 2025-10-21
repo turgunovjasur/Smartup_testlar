@@ -64,7 +64,7 @@ def test_user_view(load_data):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def get_user_form_list(load_data):
+def get_user_form_list(load_data, position=None):
     api = UserAPI(load_data, auth_profile="admin")
 
     user_id = load_data("api/user_id")
@@ -72,7 +72,8 @@ def get_user_form_list(load_data):
     body = {
       "d": {
         "user_id": user_id,
-        "attached": "N"
+        "attached": "N",
+        "position": position #  R, D, W, E
       },
       "p": {
         "column": [
@@ -92,21 +93,41 @@ def get_user_form_list(load_data):
 @pytest.mark.order(13)
 def test_user_form_attach(load_data):
     api = UserAPI(load_data, auth_profile="admin")
-
     user_id = load_data("api/user_id")
 
-    data = get_user_form_list(load_data)
+    positions = [None, "R", "D", "W", "E"]
 
-    # count = data["count"]
-    form_list = [form[0] for form in data["data"]]
+    for position in positions:
+
+        api.logger.info(f"Processing position: {position}")
+
+        data = get_user_form_list(load_data, position=position)
+        form_list = [form[0] for form in data["data"]]
+
+        body = {
+            "form": form_list,
+            "user_id": user_id
+        }
+
+        resp, t_network, t_total = api.user_form_attach(body)
+        api.handle_response(resp, t_network, t_total, expect_status=200, body=body, allow_empty_response=True)
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+@pytest.mark.api
+@pytest.mark.order(22)
+def test_user_change_password(load_data):
+    api = UserAPI(load_data, auth_profile="user")
+
+    password = get_env("PASSWORD_USER")
 
     body = {
-      "form": form_list,
-      "user_id": user_id
+        "current_password": password,
+        "new_password": password,
+        "rewritten_password": password
     }
 
-    resp, t_network, t_total = api.user_form_attach(body)
-
+    resp, t_network, t_total = api.user_change_password(body)
     api.handle_response(resp, t_network, t_total, expect_status=200, body=body, allow_empty_response=True)
 
 # ----------------------------------------------------------------------------------------------------------------------

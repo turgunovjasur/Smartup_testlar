@@ -724,8 +724,6 @@ def test_room_attachment(driver, test_data):
 @pytest.mark.order(220)
 def test_init_balance(driver, test_data):
     """Test initializing inventory balance."""
-    base_page = BasePage(driver)
-
     # Test data
     data = test_data["data"]
     product_name = data['product_name']

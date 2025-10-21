@@ -57,6 +57,7 @@
 #     test_sales_report_constructor_demo,
 # )
 # from tests.ui.test_order.test_order_return import test_order_return
+# from tests.ui.test_payment_to_suppliers.test_payment_to_suppliers import test_payment_to_suppliers
 # from tests.ui.test_purchase.test_extra_cost import test_add_extra_cost
 # from tests.ui.test_purchase.test_purchase import (
 #     test_add_purchase,
@@ -212,6 +213,7 @@
 #
 #     # Stocktaking
 #     {"name": "Add Stocktaking",                            "func": test_add_stocktaking},
+#     {"name": "Add Payment To Suppliers",                   "func": test_payment_to_suppliers},
 #
 #     # Report:
 #     {"name": "Check Report CisLink",                       "func": test_check_report_cis_link},

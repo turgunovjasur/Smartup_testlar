@@ -1,29 +1,25 @@
 from apis.base_api import BaseAPI
 
-class UserAPI(BaseAPI):
+class UserLicenseAPI(BaseAPI):
     # ------------------------------------------------------------------------------------------------------------------
 
-    def user_add(self, body):
-        return self._post("/b/anor/mr/user+add:save", body)
-
+    def balance_info(self, body):
+        return self._post("/b/biruni/kl/license_list:balance_info", body)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def user_view(self, body):
-        return self._post("/b/anor/mr/user_view:model", body)
-
+    def purchase_info(self, body):
+        return self._post("/b/biruni/kl/license_list:purchase_info", body)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def user_form_list(self, body):
-        return self._post("/b/biruni/md/user_form_list:form_table", body)
-
+    def purchase_license(self, body):
+        return self._post("/b/biruni/kl/license_list:purchase", body)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def user_form_attach(self, body):
-        return self._post("/b/biruni/md/user_form_list$attach", body)
-
+    def license_list(self, body):
+        return self._post("/b/biruni/kl/license_list:table_license", body)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def user_change_password(self, body):
-        return self._post("/b/biruni/md/change_password:save", body)
+    def license_user_attach(self, body):
+        return self._post("/b/biruni/kl/license_user_list$attach", body)
 
     # ------------------------------------------------------------------------------------------------------------------

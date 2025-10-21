@@ -20,6 +20,12 @@ class LegalPersonAdd(BasePage):
     def input_short_name(self, legal_person_short_name):
         self.input_text(self.short_name_input, legal_person_short_name)
     # ------------------------------------------------------------------------------------------------------------------
+    rooms_input = (By.XPATH, '//b-input[@name="rooms"]//input')
+    options_room = (By.XPATH, '//b-input[@name="rooms"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def input_rooms(self, room_name):
+        self.click_options(self.rooms_input, self.options_room, room_name)
+    # ------------------------------------------------------------------------------------------------------------------
     state_switch = (By.XPATH, '//input[@ng-model="d.state"]')
 
     def switch_state(self, state):
@@ -101,10 +107,10 @@ class LegalPersonAdd(BasePage):
         self.input_text(self.zip_code_input, zip_code)
     # ------------------------------------------------------------------------------------------------------------------
     legal_persons_input = (By.XPATH, '//b-input[@name="legal_persons"]//input[@ng-model="d.parent_person_name"]')
-    options_locator = (By.XPATH, '//b-input[@name="legal_persons"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
+    options_legal_person = (By.XPATH, '//b-input[@name="legal_persons"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]/div')
 
     def input_legal_persons(self, element):
-        self.click_options(self.legal_persons_input, self.options_locator, element)
+        self.click_options(self.legal_persons_input, self.options_legal_person, element)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
