@@ -40,46 +40,46 @@ def main_flow(driver, **kwargs):
 # ======================================================================================================================
 
 def product_flow(driver, **kwargs):
-    # --------------------------------------------------
-    order_grid_setting = kwargs.get("order_grid_setting", False)
+    product_page = OrderAddProduct(driver)
+    product_page.element_visible()
+
+    if kwargs.get("order_grid_setting", False):
+        product_page.click_setting_button()
+
+    if kwargs.get("ignore_balance", False):
+        product_page.click_ignore_balance_button()
+
     product_name = kwargs.get("product_name")
     warehouse_name = kwargs.get("warehouse_name")
     price_type_name = kwargs.get("price_type_name")
     clear_input = kwargs.get("clear_input", False)
-    product_quantity = kwargs.get("product_quantity")
-    margin = kwargs.get("margin")
-    next_step = kwargs.get("next_step", True)
-    # --------------------------------------------------
-
-    product_page = OrderAddProduct(driver)
-    product_page.element_visible()
-
-    if order_grid_setting:
-        product_page.click_setting_button()
-
     if product_name and warehouse_name and price_type_name:
         product_page.input_name_product(product_name, warehouse_name, price_type_name, clear_input)
 
-    if product_quantity:
-        product_page.input_quantity(product_quantity)
+    product_quantity = kwargs.get("product_quantity")
+    get_value = kwargs.get("get_value", False)
+    if product_quantity or get_value:
+        result = product_page.input_quantity(product_quantity, get_value)
+        if get_value:
+            return result
 
+    margin = kwargs.get("margin")
+    manual = kwargs.get("manual", False)
+    click = kwargs.get("click", False)
     if margin:
-        product_page.click_percent_value_button(margin)
+        product_page.click_percent_value_button(margin, manual, click)
 
-    if next_step:
+    if kwargs.get("next_step", True):
         product_page.click_next_step_button()
 
-# ----------------------------------------------------------------------------------------------------------------------
+# ======================================================================================================================
 
 def product_select_flow(driver, **kwargs):
-
+    # --------------------------------------------------
     warehouse_name = kwargs.get("warehouse_name")
     price_type_name = kwargs.get("price_type_name")
-    product_quantity = kwargs.get("product_quantity")
-    margin = kwargs.get("margin")
-
+    # --------------------------------------------------
     if warehouse_name and price_type_name:
-
         product_page = OrderAddProduct(driver)
         product_page.click_select_button()
 
@@ -87,13 +87,17 @@ def product_select_flow(driver, **kwargs):
         order_select_modal.element_visible()
         order_select_modal.input_warehouses(warehouse_name)
         order_select_modal.input_price_types(price_type_name)
-
+        # --------------------------------------------------
+        product_quantity = kwargs.get("product_quantity")
         if product_quantity:
             order_select_modal.input_product_quantity(product_quantity)
-
+        # --------------------------------------------------
+        margin = kwargs.get("margin")
+        manual = kwargs.get("manual", False)
+        click = kwargs.get("click", False)
         if margin:
-            product_page.click_percent_value_button(margin)
-
+            product_page.click_percent_value_button(margin, manual, click)
+        # --------------------------------------------------
         order_select_modal.input_collect_row_button()
         order_select_modal.click_close_button()
 
@@ -171,7 +175,7 @@ def final_input_value_flow(driver, **kwargs):
 
 def step_flow(driver, **kwargs):
     product_page = OrderAddProduct(driver)
-    product_page.element_visible()
+    # product_page.element_visible()
 
     if kwargs.get("next_step", False):
         product_page.click_next_step_button()

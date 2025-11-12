@@ -1,4 +1,3 @@
-# utils/screen_recorder.py
 import os, re, time, threading, logging, shutil, subprocess
 from datetime import datetime
 
@@ -8,7 +7,6 @@ try:
     import allure
 except Exception:
     allure = None
-
 
 def _even(x: int) -> int:
     return int(x) // 2 * 2

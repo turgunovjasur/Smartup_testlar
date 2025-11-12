@@ -5,7 +5,7 @@ from pages.core.md.base_page import BasePage
 
 class OrderAddProduct(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header_text = (By.XPATH, "//div/h3/t[contains(text(), 'ТМЦ')]")
+    header_text = (By.XPATH, '//div[@id="anor279-order-step-info"]/div[@ng-click="goToStep(1)" and @data-wizard-state="current"]')
 
     def element_visible(self):
         self.wait_for_element_visible(self.header_text)
@@ -50,16 +50,28 @@ class OrderAddProduct(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     quantity_input = (By.XPATH, "//input[@id='anor279_input-b_pg_col-quantity_0']")
 
-    def input_quantity(self, product_quantity):
-        self.input_text(self.quantity_input, product_quantity)
-    # ------------------------------------------------------------------------------------------------------------------
-    # margin_value_input = (By.XPATH, '//div[@ng-model="item.margin_value"]//span[@ng-click="$select.activate()"]')
-    margin_value_input = (By.XPATH, '//b-pg-grid//div[contains(@ng-model,".margin_value")]//span[@ng-click="$select.activate()"]')
+    def input_quantity(self, product_quantity=None, get_value=None):
+        if get_value:
+            return self.input_text(self.quantity_input, get_value=get_value)
 
-    def click_percent_value_button(self, percent_value):
-        self.click(self.margin_value_input)
-        percent_value_button = (By.XPATH, f'//b-pg-grid//div[contains(@ng-model,".margin_value")]//div[contains(@class,"ui-select-choices-row")]/span[contains(text(),"{percent_value}")]')
-        self.click(percent_value_button)
+        if product_quantity:
+            self.input_text(self.quantity_input, product_quantity)
+
+        return None
+    # ------------------------------------------------------------------------------------------------------------------
+    margin_value_input = (By.XPATH, '//b-pg-grid//div[contains(@ng-model,".margin_value")]//span[@ng-click="$select.activate()"]')
+    manual_margin_value_button = (By.XPATH, '//b-pg-grid//input[contains(@ng-model,".margin_value")]/..//button | (//b-pg-grid//div[contains(@ng-model,".margin_value")]/..//button)[1]')
+    manual_margin_value_input = (By.XPATH, '//b-pg-grid//input[@ng-model="item.margin_value"]')
+
+    def click_percent_value_button(self, margin, manual, click):
+        if click:
+            self.click(self.manual_margin_value_button)
+        if manual:
+            self.input_text(self.manual_margin_value_input, margin)
+        else:
+            self.click(self.margin_value_input)
+            percent_value_button = (By.XPATH, f'//b-pg-grid//div[contains(@ng-model,".margin_value")]//div[contains(@class,"ui-select-choices-row")]/span[contains(text(),"{margin}")]')
+            self.click(percent_value_button)
     # ------------------------------------------------------------------------------------------------------------------
     next_step_button = (By.XPATH, "//button[@id='anor279-button-next_step']")
 
@@ -86,14 +98,8 @@ class OrderAddProduct(BasePage):
     def click_select_button(self):
         self.click(self.select_button)
     # ------------------------------------------------------------------------------------------------------------------
-    check_overload = (By.XPATH, "(//div[@id='overload']//div[@class='col-sm-15'])[1]")
+    ignore_balance_button = (By.XPATH, '//div[contains(@id,"inventory_goods")]//button[@ng-click="changeIgnoreBalance()"]')
 
-    def overload_is_visible(self):
-        element = self.wait_for_element_visible(self.check_overload)
-        if element is None:
-            print('Overload inactive!')
-            return False
-        else:
-            print('Overload active!')
-            return True
+    def click_ignore_balance_button(self):
+        self.click(self.ignore_balance_button)
     # ------------------------------------------------------------------------------------------------------------------

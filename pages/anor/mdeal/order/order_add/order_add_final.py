@@ -5,10 +5,10 @@ from datetime import datetime, timedelta
 
 class OrderAddFinal(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header_text = (By.XPATH, "//div/h3/t[contains(text(), 'ТМЦ')]")
+    header = (By.XPATH, '//div[@id="anor279-order-step-info"]/div[@ng-click="goToStep(2)" and @data-wizard-state="current"]')
 
     def element_visible(self):
-        self.wait_for_element_visible(self.header_text)
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
 
     def get_input_value(self, input_name):
@@ -84,11 +84,6 @@ class OrderAddFinal(BasePage):
     def click_setting_button(self):
         self.click(self.setting_button)
         self.click(self.setting_tbl_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    # modal_content = (By.XPATH, '//div[@id="biruniConfirm"]//div[@class="modal-body"]/h4')
-    #
-    # def get_modal_content(self):
-    #     return self.get_text(self.modal_content)
     # ------------------------------------------------------------------------------------------------------------------
     margin_value_input = (By.XPATH, '//div[@ng-model="d.margin_value"]//span[@ng-click="$select.activate()"]')
 

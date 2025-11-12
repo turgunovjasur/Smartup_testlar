@@ -3,7 +3,6 @@ import random
 import time
 import pytest
 from qase.pytest import qase
-
 from pages.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from pages.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from pages.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
@@ -54,6 +53,7 @@ from flows.auth_flow import login_admin, login_user, logout
 from flows.balance_flow import flow_get_balance
 from tests.ui.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
 from utils.exception import ElementNotFoundError
+from utils.test_retry import retry_on_failure
 
 
 def test_company_create(driver, test_data):
@@ -408,104 +408,6 @@ def test_user_change_password(driver, test_data):
     change_password.click_save_button()
     time.sleep(2)
 
-# ----------------------------------------------------------------------------------------------------------------------
-
-def price_type_add(driver, test_data, price_type_name=None, currency_name=None, all_price=False,
-                   sub_filial=False, sub_filial_name=None):
-    """Test adding a price type"""
-    # Test data
-    data = test_data["data"]
-    room_name = data["room_name"]
-    price_type_name_UZB = data["price_type_name_UZB"]
-    price_type_name_USA = data["price_type_name_USA"]
-    price_type_name = price_type_name_USA if price_type_name else price_type_name_UZB
-    currency_name = currency_name or data["currency_name"]
-    sub_filial_name = sub_filial_name or data["sub_filial_name"]
-
-    # Login
-    login_user(driver, test_data, url='anor/mkr/price_type_list')
-
-    # Open Price Type List
-    price_type_list = PriceTypeList(driver)
-    price_type_list.element_visible()
-    price_type_list.click_add_button()
-
-    # Add Price Type
-    price_type_add = PriceTypeAdd(driver)
-    price_type_add.element_visible()
-    price_type_add.input_name(price_type_name)
-    price_type_add.input_rooms(room_name)
-    price_type_add.input_currency(currency_name)
-    if sub_filial:
-        price_type_add.input_sub_filial(sub_filial_name)
-    price_type_add.click_save_button()
-
-    # Verify in List
-    price_type_list.element_visible()
-    price_type_list.find_row(price_type_name)
-    price_type_list.click_view_button()
-
-    # Verify in View
-    price_type_view = PriceTypeIdView(driver)
-    price_type_view.element_visible()
-    text = price_type_view.get_elements()
-    assert text == price_type_name, f'Expected "{price_type_name}", got "{text}"'
-    price_type_view.click_close_button()
-
-    if all_price:
-        # Attach additional price types
-        price_type_list.element_visible()
-        price_type_list.click_add_dropdown_button()
-
-        # Attach price types
-        price_type_list_attach = PriceTypeListAttach(driver)
-
-        name_a = 'Промо'
-        price_type_list_attach.find_rows(name_a)
-
-        price_type_list.element_visible()
-        price_type_list.click_add_dropdown_button()
-        name_b = 'Акция'
-        price_type_list_attach.find_rows(name_b)
-
-        price_type_list.element_visible()
-        price_type_list.click_add_dropdown_button()
-        name_c = 'Возврат'
-        price_type_list_attach.find_rows(name_c)
-
-        price_type_list.element_visible()
-        price_type_list.click_add_dropdown_button()
-        name_d = 'Передача забаланс'
-        price_type_list_attach.find_rows(name_d)
-
-        price_type_list.element_visible()
-        price_type_list.click_add_dropdown_button()
-        name_e = 'Обмен'
-        price_type_list_attach.find_rows(name_e)
-
-        price_type_list.element_visible()
-        price_type_list.find_row(price_type_name)
-
-
-@pytest.mark.regression
-@pytest.mark.order(110)
-def test_price_type_add_UZB(driver, test_data):
-    """Test adding a UZB price type"""
-
-    currency_name = "Узбекский сум"
-    price_type_add(driver, test_data, currency_name=currency_name, all_price=True)
-
-
-@pytest.mark.regression
-@pytest.mark.order(120)
-def test_price_type_add_USA(driver, test_data):
-    """Test adding a USA price type"""
-
-    currency_name = "Доллар США"
-    price_type_add(driver, test_data, price_type_name=True, sub_filial=True, currency_name=currency_name)
-
-# ------------------------------------------------------------------------------------------------------------------
-
 @pytest.mark.regression
 @pytest.mark.order(130)
 def test_payment_type_add(driver, test_data):
@@ -679,7 +581,7 @@ def test_room_attachment(driver, test_data):
     room_attachment = RoomAttachment(driver)
     room_attachment.element_visible()
 
-    # Attach payment types
+    # Attach price types
     room_attachment.click_navbar_button(navbar_button=2)
     room_attachment.click_detach_button(detach_button=2)
     room_attachment.click_checkbox_all_price_type(attach_button=2)

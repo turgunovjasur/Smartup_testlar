@@ -5,30 +5,6 @@ from apis.user_license_api import UserLicenseAPI
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def get_balance_info(load_data):
-    api = UserLicenseAPI(load_data, auth_profile="admin", filial_id=load_data("api/administration_id"))
-
-    body = {}
-
-    resp, t_network, t_total = api.balance_info(body)
-
-    data = api.handle_response(resp, t_network, t_total, body=body)
-
-    get_balance = float(data["balances"][0]["balance"])
-    assert get_balance > 100, f"{get_balance} !> '100'"
-
-    get_person_name = data["balances"][0]["person_name"]
-    get_name = data["natural_persons"][0]["name"]
-    assert get_name == get_person_name, f"{get_name} != {get_person_name}"
-
-    person_id = data["natural_persons"][0]["person_id"]
-    contract_id = data["natural_persons"][0]["contracts"][0]["contract_id"]
-    api.logger.info(f"person_id: {person_id}, contract_id: {contract_id}")
-
-    return person_id, contract_id, get_balance
-
-# ----------------------------------------------------------------------------------------------------------------------
-
 @pytest.mark.api
 @pytest.mark.order(18)
 def test_get_purchase_info(load_data, save_data):

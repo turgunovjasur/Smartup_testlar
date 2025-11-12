@@ -138,6 +138,8 @@ class BaseAPI:
                     self.log_api(resp, t_network, t_total, data=None)
                     return None
                 else:
+                    self.logger.error(f"Empty response!")
+                    self.log_error(resp, t_network, t_total, body)
                     raise AssertionError("Empty response!")
             try:
                 data = resp.json()

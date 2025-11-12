@@ -16,6 +16,11 @@ class ActionAdd(BasePage):
     def input_name(self, action_name):
         self.input_text(self.name_input, action_name)
     # ------------------------------------------------------------------------------------------------------------------
+    start_date_input = (By.XPATH, '//div[@id="anor718-input-b_input-start_date"]/input')
+
+    def input_start_date(self, start_date):
+        self.input_text(self.start_date_input, start_date)
+    # ------------------------------------------------------------------------------------------------------------------
     end_date_input = (By.XPATH, "//div[@id='anor718-input-b_input-end_date']/input")
 
     def input_end_date(self, end_date):

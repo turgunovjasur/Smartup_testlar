@@ -7,6 +7,7 @@ from pages.trade.tdeal.order.return_order.return_order import ReturnOrder
 
 
 @pytest.mark.regression
+@pytest.mark.order_group_I
 @pytest.mark.order(520)
 def test_order_return(driver, test_data, load_data):
 

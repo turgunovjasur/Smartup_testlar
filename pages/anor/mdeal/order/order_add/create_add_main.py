@@ -4,7 +4,7 @@ from pages.core.md.base_page import BasePage
 
 class OrderAddMain(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
-    header = (By.XPATH, "//button[@id='anor279-button-next_step']")
+    header = (By.XPATH, '//div[@id="anor279-order-step-info"]/div[@ng-click="goToStep(0)" and @data-wizard-state="current"]')
 
     def element_visible(self):
         self.wait_for_element_visible(self.header)

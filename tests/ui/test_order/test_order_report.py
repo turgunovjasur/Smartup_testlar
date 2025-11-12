@@ -233,6 +233,7 @@ def get_data_file_path(filename, folder, subfolder):
 
 # Invoice report
 @pytest.mark.regression
+@pytest.mark.order_group_D
 @pytest.mark.order(440)
 def test_add_template_for_order_invoice_report(driver, test_data):
     # Test data
@@ -281,6 +282,7 @@ def test_add_template_for_order_invoice_report(driver, test_data):
 # ======================================================================================================================
 
 @pytest.mark.regression
+@pytest.mark.order_group_D
 @pytest.mark.order(460)
 def test_check_invoice_report_for_order_list(driver, test_data):
     data = test_data["data"]
@@ -304,9 +306,9 @@ def test_check_invoice_report_for_order_list(driver, test_data):
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(290)
-def test_sales_report_constructor_demo(driver, test_data, save_data, load_data):
+def test_sales_report_constructor(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_sales_report_constructor_demo")
+    base_page.logger.info("▶️ Running: test_sales_report_constructor")
 
     login_user(driver, test_data, url='trade/rep/mbi/tdeal/order')
 

@@ -18,11 +18,17 @@ class PriceTypeAPI(BaseAPI):
 
     # ------------------------------------------------------------------------------------------------------------------
 
+    def edit_price_type(self, body):
+        return self._post("/b/anor/mkr/price_type+edit:save", body)
+
+    # ------------------------------------------------------------------------------------------------------------------
+
     def save_price_type(self, body):
         return self._post("/b/anor/mkr/price_type+add:save", body)
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def edit_price_type(self, body):
-        return self._post("/b/anor/mkr/price_type+edit:save", body)
+    def model_price_type(self, body):
+        return self._post("/b/anor/mkr/price_type_view:model", body)
+
     # ------------------------------------------------------------------------------------------------------------------

@@ -54,7 +54,6 @@ def test_add_legal_person(driver, test_data, soft_assertions, save_data):
     login_admin(driver, test_data, url='anor/mr/person/legal_person_list')
 
     list_flow(driver, add=True)
-
     add_flow(driver,
              state=True,
              person_name=person_name,

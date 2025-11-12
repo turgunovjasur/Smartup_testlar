@@ -1,6 +1,8 @@
 from pages.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
+from utils.exception import ElementVisibilityError
+
 
 class LicenseList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
@@ -68,6 +70,15 @@ class LicenseList(BasePage):
 
     def input_end_date(self, end_date):
         self.input_text(self.end_date_input, end_date)
+    # ------------------------------------------------------------------------------------------------------------------
+    requirements_input = (By.XPATH, '//tr/td[text()="Подключение к системе (5x) (Обязательный пакет)"]')
+
+    def check_requirements_input(self):
+        try:
+            self.wait_for_element(self.requirements_input, timeout=3, wait_type="visibility")
+            return True
+        except ElementVisibilityError:
+            return False
     # ------------------------------------------------------------------------------------------------------------------
     license_count_input = (By.XPATH, '//tr/td[text()="Подключение к системе (5x)"]/../td/input[@ng-model="license.count"]')
 

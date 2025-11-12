@@ -8,9 +8,9 @@ from flows.order_flows.order_list_flow import order_list, order_view
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(300)
-def test_order_change_status_from_draft_to_cancelled_demo(driver, test_data, save_data, load_data):
+def test_order_change_status_from_draft_to_cancelled(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_order_change_status_from_draft_to_cancelled_demo")
+    base_page.logger.info("▶️ Running: test_order_change_status_from_draft_to_cancelled")
 
     data = test_data["data"]
 
@@ -75,9 +75,9 @@ def test_order_change_status_from_draft_to_cancelled_demo(driver, test_data, sav
 @pytest.mark.regression
 @pytest.mark.order_group_B
 @pytest.mark.order(370)
-def test_change_status_draft_and_archive_demo(driver, test_data, save_data, load_data):
+def test_change_status_draft_and_archive(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_change_status_draft_and_archive_demo")
+    base_page.logger.info("▶️ Running: test_change_status_draft_and_archive")
 
     data = test_data["data"]
 
@@ -101,10 +101,11 @@ def test_change_status_draft_and_archive_demo(driver, test_data, save_data, load
 # ======================================================================================================================
 
 @pytest.mark.regression
+@pytest.mark.order_group_D
 @pytest.mark.order(470)
-def test_change_status_new_and_cancelled_demo(driver, test_data, save_data, load_data):
+def test_change_status_new_and_cancelled(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_change_status_new_and_cancelled_demo")
+    base_page.logger.info("▶️ Running: test_change_status_new_and_cancelled")
 
     data = test_data["data"]
 
@@ -128,10 +129,11 @@ def test_change_status_new_and_cancelled_demo(driver, test_data, save_data, load
 # ======================================================================================================================
 
 @pytest.mark.regression
+@pytest.mark.order_group_I
 @pytest.mark.order(510)
-def test_change_status_draft_and_delivered_demo(driver, test_data, save_data, load_data):
+def test_change_status_draft_and_delivered(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_change_status_draft_and_delivered_demo")
+    base_page.logger.info("▶️ Running: test_change_status_draft_and_delivered")
 
     data = test_data["data"]
 

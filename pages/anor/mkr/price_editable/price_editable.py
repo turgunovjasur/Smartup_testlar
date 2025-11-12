@@ -2,24 +2,22 @@ from selenium.webdriver.common.by import By
 from pages.core.md.base_page import BasePage
 
 
-class PriceTypeListAttach(BasePage):
+class PriceEditable(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     header = (By.XPATH, '//button[@ng-click="page.close()"]')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
-    attach_many_button = (By.XPATH, '//button[@ng-click="attachMany()"]')
-    attach_button = (By.XPATH, '//button[@id="anor182-button-attach"]')
+    min_amount_input = (By.XPATH, '//input[@ng-model="d.min_amount"]')
+
+    def input_min_amount(self, amount):
+        self.input_text(self.min_amount_input, amount)
+    # ------------------------------------------------------------------------------------------------------------------
+    save_button = (By.XPATH, '//button[@ng-click="save()"]')
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 
-    def find_rows(self, price_type_name):
-        self.find_row_and_click(element_name=price_type_name, use_limit=False)
-        self.click(self.attach_button)
+    def click_save_button(self):
+        self.click(self.save_button)
         self.click(self.yes_button)
-    # ------------------------------------------------------------------------------------------------------------------
-    close_button = (By.XPATH, '//button[@ng-click="page.close()"]')
-
-    def click_close_button(self):
-        self.click(self.close_button)
     # ------------------------------------------------------------------------------------------------------------------

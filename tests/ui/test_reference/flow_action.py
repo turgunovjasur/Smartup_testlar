@@ -28,6 +28,14 @@ def add_flow(driver, **kwargs):
     if action_name:
         action_add.input_name(action_name)
 
+    start_date = kwargs.get("start_date")
+    if start_date:
+        action_add.input_start_date(start_date)
+
+    end_date = kwargs.get("end_date")
+    if end_date:
+        action_add.input_end_date(end_date)
+
     room_name = kwargs.get("room_name")
     if room_name:
         action_add.input_room(room_name)

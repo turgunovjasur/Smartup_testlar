@@ -4,7 +4,7 @@ from apis.price_type_api import PriceTypeAPI
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.api
-@pytest.mark.order(22)
+@pytest.mark.order(23)
 def test_price_type_uzb_import(save_data, load_data):
     api = PriceTypeAPI(load_data, auth_profile="user")
 
@@ -41,8 +41,8 @@ def test_price_type_uzb_import(save_data, load_data):
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.api
-@pytest.mark.order(23)
-def test_price_type_uzb_export(save_data, load_data):
+@pytest.mark.order(24)
+def test_price_type_uzb_export(load_data):
     api = PriceTypeAPI(load_data, auth_profile="user")
 
     price_type_uzb_code = load_data("api/price_type_uzb_code")
@@ -64,7 +64,7 @@ def test_price_type_uzb_export(save_data, load_data):
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.api
-@pytest.mark.order(24)
+@pytest.mark.order(25)
 def test_price_type_list(save_data, load_data):
     api = PriceTypeAPI(load_data, auth_profile="user")
 
@@ -99,7 +99,7 @@ def test_price_type_list(save_data, load_data):
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.api
-@pytest.mark.order(25)
+@pytest.mark.order(26)
 def test_price_type_uzb_edit(save_data, load_data):
     api = PriceTypeAPI(load_data, auth_profile="user")
 
@@ -133,7 +133,7 @@ def test_price_type_uzb_edit(save_data, load_data):
 # ----------------------------------------------------------------------------------------------------------------------
 
 @pytest.mark.api
-@pytest.mark.order(26)
+@pytest.mark.order(27)
 def test_price_type_use_save(save_data, load_data):
     api = PriceTypeAPI(load_data, auth_profile="user")
 
@@ -161,5 +161,26 @@ def test_price_type_use_save(save_data, load_data):
     get_price_type_id = data["price_type_id"]
 
     save_data("api/price_type_use_id", get_price_type_id)
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+@pytest.mark.api
+@pytest.mark.order(28)
+def test_price_type_use_model(load_data):
+    api = PriceTypeAPI(load_data, auth_profile="user")
+
+    price_type_use_id = load_data("api/price_type_use_id")
+
+    body = {
+      "price_type_id": price_type_use_id
+    }
+
+    resp, t_network, t_total = api.model_price_type(body)
+
+    data = api.handle_response(resp, t_network, t_total, body=body)
+
+    get_price_type_id = data[2]["price_type_id"]
+
+    assert get_price_type_id == price_type_use_id, f"{get_price_type_id} != {price_type_use_id}"
 
 # ----------------------------------------------------------------------------------------------------------------------

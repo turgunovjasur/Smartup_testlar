@@ -462,7 +462,7 @@ class BasePage:
                         locator=locator,
                         original=e,
                         step="_wait_for_presence_all",
-                        screenshot=True)
+                        screenshot=False)
 
         except Exception as e:
             self._raise(ElementInteractionError,
@@ -470,7 +470,7 @@ class BasePage:
                         locator=locator,
                         original=e,
                         step="_wait_for_presence_all",
-                        screenshot=True,
+                        screenshot=False,
                         log=True)
 
     # ==================================================================================================================
@@ -1091,6 +1091,14 @@ class BasePage:
 
     # ==================================================================================================================
 
+    def _find_input_and_open(self, input_locator):
+        # Input elementini topish va ochish
+        web_element = self.wait_for_element(input_locator, wait_type="clickable")
+        self._scroll_to_element(element=web_element, locator=input_locator, scroll_center=True)
+        self._click(web_element, input_locator) or self._click(web_element, input_locator, _click_js=True)
+
+    # ==================================================================================================================
+
     def click_options(self, input_locator, options_locator, element_text, scroll=30, screenshot=True):
         """
         Dropdown bilan ishlash uchun funksiya.
@@ -1104,10 +1112,12 @@ class BasePage:
             if self._is_choose_dropdown_option(input_locator, element_text):
                 return True
 
+            self._find_input_and_open(input_locator)
+
             # Input elementini topish va ochish
-            web_element = self.wait_for_element(input_locator, wait_type="clickable")
-            self._scroll_to_element(element=web_element, locator=input_locator, scroll_center=True)
-            self._click(web_element, input_locator) or self._click(web_element, input_locator, _click_js=True)
+            # web_element = self.wait_for_element(input_locator, wait_type="clickable")
+            # self._scroll_to_element(element=web_element, locator=input_locator, scroll_center=True)
+            # self._click(web_element, input_locator) or self._click(web_element, input_locator, _click_js=True)
 
             # Optionlarni kutish
             try:
@@ -1344,7 +1354,7 @@ class BasePage:
                         continue
 
                     else:
-                        message = f"Limit va Qidiruv da ham topilmadi"
+                        message = f"{'Limit va' if use_limit else ''} Qidiruv da topilmadi"
                         self.logger.error(message)
                         raise ElementNotFoundError(message, row_locator)
 

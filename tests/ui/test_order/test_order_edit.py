@@ -12,7 +12,7 @@ from tests.ui.test_cashin.test_cashin import test_cashin_add_C
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(270)
-def test_edit_order_with_consignment_demo(driver, test_data, save_data, load_data):
+def test_edit_order_with_consignment(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
     base_page.logger.info("▶️ Running: test_edit_order_with_consignment_demo")
 
@@ -44,9 +44,9 @@ def test_edit_order_with_consignment_demo(driver, test_data, save_data, load_dat
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(420)
-def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_data):
+def test_edit_order_for_price_type_USA(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_edit_order_for_price_type_USA_demo")
+    base_page.logger.info("▶️ Running: test_edit_order_for_price_type_USA")
 
     data = test_data["data"]
     product_name = data["product_name"]
@@ -63,8 +63,12 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_d
 
     main_flow(driver)
 
-    product_flow(driver, clear_input=True, product_name=product_name, warehouse_name=warehouse_name,
-                 price_type_name=price_type_name, product_quantity=product_quantity_edit)
+    product_flow(driver,
+                 clear_input=True,
+                 product_name=product_name,
+                 warehouse_name=warehouse_name,
+                 price_type_name=price_type_name,
+                 product_quantity=product_quantity_edit)
 
     final_flow(driver, status_name=data["Delivered"])
 
@@ -79,8 +83,12 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_d
 
     main_flow(driver)
 
-    product_flow(driver, clear_input=True, product_name=product_name, warehouse_name=warehouse_name,
-                 price_type_name=price_type_name, product_quantity=product_quantity_edit)
+    product_flow(driver,
+                 clear_input=True,
+                 product_name=product_name,
+                 warehouse_name=warehouse_name,
+                 price_type_name=price_type_name,
+                 product_quantity=product_quantity_edit)
 
     final_flow(driver, prepayment_amount=(prepayment_amount - 1), status_name=data["Processing"])
 
@@ -125,10 +133,11 @@ def test_edit_order_for_price_type_USA_demo(driver, test_data, save_data, load_d
 # ======================================================================================================================
 
 @pytest.mark.regression
+@pytest.mark.order_group_I
 @pytest.mark.order(500)
-def test_edit_order_for_action_demo(driver, test_data, save_data, load_data):
+def test_edit_order_for_action(driver, test_data, save_data, load_data):
     base_page = BasePage(driver)
-    base_page.logger.info("▶️ Running: test_edit_order_for_action_demo")
+    base_page.logger.info("▶️ Running: test_edit_order_for_action")
 
     data = test_data["data"]
     robot_name = data["robot_name"]

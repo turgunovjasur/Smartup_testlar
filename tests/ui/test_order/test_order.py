@@ -3,19 +3,21 @@ import pytest
 from conftest import soft_assertions
 from flows.auth_flow import login_user
 from flows.modal_content_flow import get_error_massage_flow
+from pages.anor.mdeal.order.order_add.order_add_final import OrderAddFinal
 from pages.anor.mdeal.order.order_add.order_add_product import OrderAddProduct
 from flows.grid_setting_flow import grid_setting_in_form
 from flows.modal_content_flow import get_biruni_confirm_flow
 from flows.order_flows.order_add_flow import (
     main_flow, product_flow, final_flow, step_flow, product_select_flow, final_input_value_flow)
 from flows.order_flows.order_list_flow import order_list, order_view, order_file, order_transaction, order_attach_data
+from pages.core.md.base_page import BasePage
 
 # ======================================================================================================================
 
 @pytest.mark.regression
 @pytest.mark.order_group_A
 @pytest.mark.order(250)
-def test_add_order_with_consignment_demo(driver, test_data, save_data, soft_assertions, assertions):
+def test_add_order_with_consignment(driver, test_data, save_data, soft_assertions, assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -99,7 +101,7 @@ def test_add_order_with_consignment_demo(driver, test_data, save_data, soft_asse
 @pytest.mark.regression
 @pytest.mark.order_group_B
 @pytest.mark.order(360)
-def test_add_order_with_contract_demo(driver, test_data, save_data, soft_assertions):
+def test_add_order_with_contract(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -166,7 +168,7 @@ def test_add_order_with_contract_demo(driver, test_data, save_data, soft_asserti
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(400)
-def test_add_order_for_price_type_USA_demo(driver, test_data, save_data, soft_assertions):
+def test_add_order_for_price_type_USA(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -234,8 +236,9 @@ def test_add_order_for_price_type_USA_demo(driver, test_data, save_data, soft_as
 # ======================================================================================================================
 
 @pytest.mark.regression
+@pytest.mark.order_group_D
 @pytest.mark.order(450)
-def test_add_order_for_sub_filial_demo(driver, test_data, save_data, soft_assertions):
+def test_add_order_for_sub_filial(driver, test_data, save_data, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -262,6 +265,8 @@ def test_add_order_for_sub_filial_demo(driver, test_data, save_data, soft_assert
               client_name=client_name,
               sub_filial_name=sub_filial_name,
               contract_name=contract_name)
+
+    product_flow(driver, next_step=False)
 
     product_select_flow(driver,
                         warehouse_name=warehouse_name,
@@ -301,8 +306,9 @@ def test_add_order_for_sub_filial_demo(driver, test_data, save_data, soft_assert
 # ======================================================================================================================
 
 @pytest.mark.regression
+@pytest.mark.order_group_I
 @pytest.mark.order(490)
-def test_add_order_for_action_demo(driver, test_data, save_data, assertions, soft_assertions):
+def test_add_order_for_action(driver, test_data, save_data, assertions, soft_assertions):
     data = test_data["data"]
     room_name = data["room_name"]
     robot_name = data["robot_name"]
@@ -396,5 +402,79 @@ def test_add_order_for_action_demo(driver, test_data, save_data, assertions, sof
     soft_assertions.assert_all()
 
     order_list(driver)
+
+# ======================================================================================================================
+
+@pytest.mark.regression
+@pytest.mark.order_group_C
+@pytest.mark.order(436)
+def test_min_order_amount(driver, test_data):
+    data = test_data["data"]
+    client_name = f"{data['client_name']}-B"
+
+    base = BasePage(driver)
+
+    login_user(driver, test_data, url='trade/tdeal/order/order_list')
+
+    order_list(driver, add=True)
+
+    main_flow(driver,
+              room_name=data["room_name"],
+              robot_name=data["robot_name"],
+              client_name=client_name
+              )
+    product_flow(driver,
+                 product_name=data["product_name"],
+                 warehouse_name=data["warehouse_name"],
+                 price_type_name=data["price_type_name_UZB"],
+                 product_quantity=8
+                 )
+    get_error_massage_flow(driver, error_massage_name="H02-ANOR279-010")
+
+    product_flow(driver, margin=500, manual=True, click=True)
+
+    final_flow(driver, payment_type_name=data["payment_type_name"], status_name=data["New"])
+
+    base.logger.info(f"[PASSED] Order successfully created")
+
+    order_list(driver, find_row=client_name, edit=True)
+
+    main_flow(driver)
+
+    product_flow(driver, product_quantity=990, next_step=False)
+
+    result = product_flow(driver, get_value=True)
+
+    if int(result) == 990:
+        base.logger.error(f"[ERROR] Not available in balance! But entered: {result}")
+        pytest.fail("[ERROR] Quantity should NOT be available without Ignore Balance")
+    else:
+        base.logger.info(f"[PASSED] Balance check working. Actual: {result}, Expected: 12")
+        product_flow(driver,
+                     ignore_balance=True,
+                     product_quantity=990,
+                     next_step=False
+                     )
+        result = product_flow(driver, get_value=True)
+        assert int(result) == 990, f"[ERROR] Ignore Balance {int(result)} != {990}"
+        base.logger.info(f"[PASSED] Ignore Balance")
+
+    product_flow(driver, margin=-12_000,  manual=True, click=False)
+
+    get_error_massage_flow(driver, error_massage_name="H02-ANOR279-010")
+
+    product_flow(driver, margin=data["percent_value"],  click=True,  manual=False)
+
+    final_flow(driver, save=False)
+
+    order_add_final = OrderAddFinal(driver)
+    get_status = base.input_text(locator=order_add_final.status_input, get_value=True)
+    assert get_status == data["Draft"], f"[ERROR] {get_status} != {data["Draft"]}"
+
+    final_flow(driver, save=True)
+
+    order_list(driver, find_row=client_name)
+
+    base.logger.info(f"[PASSED] Order successfully edited. get_status: {get_status}")
 
 # ======================================================================================================================
