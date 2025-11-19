@@ -32,8 +32,8 @@ class BasePage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.default_timeout = 30
-        self.page_load_timeout = 120
+        self.default_timeout = 20
+        self.page_load_timeout = 60
         self.test_name = get_test_name()
         self.actions = ActionChains(driver)
         self.logger = configure_logging(self.test_name)
@@ -45,7 +45,6 @@ class BasePage:
             screenshot_cb=self.take_screenshot)        # ixtiyoriy
 
     # ==================================================================================================================
-    # Xatolik uchun boy kontekst
 
     def _ctx(self, step=None, locator=None, extra=None):
         try:
@@ -80,7 +79,6 @@ class BasePage:
         test_name = self.test_name if self.test_name != "unknown_test" else "default"
 
         if filename:
-            # ❗ Noto‘g‘ri belgilarni olib tashlaymiz (Windows file name restrictions)
             filename = re.sub(r'[<>:"/\\|?*]', '_', filename)
             filename = f"{test_name}_{timestamp}_{filename}"
         else:
@@ -103,7 +101,7 @@ class BasePage:
 
     def _get_caller_chain(self, depth=5, invoker_name=False, log_name=None):
         """
-        1) _get_caller_chain()                -> zanjir stringini qaytaradi (default depth=5)
+        1) _get_caller_chain() -> zanjir stringini qaytaradi (default depth=5)
         2) _get_caller_chain(invoker_name=True)
            -> start/end header yozadi: "===== start: <method> - <invoker> ====="
         3) _get_caller_chain(log_name='payment')
@@ -1096,6 +1094,7 @@ class BasePage:
         web_element = self.wait_for_element(input_locator, wait_type="clickable")
         self._scroll_to_element(element=web_element, locator=input_locator, scroll_center=True)
         self._click(web_element, input_locator) or self._click(web_element, input_locator, _click_js=True)
+        return True
 
     # ==================================================================================================================
 
@@ -1112,12 +1111,8 @@ class BasePage:
             if self._is_choose_dropdown_option(input_locator, element_text):
                 return True
 
-            self._find_input_and_open(input_locator)
-
-            # Input elementini topish va ochish
-            # web_element = self.wait_for_element(input_locator, wait_type="clickable")
-            # self._scroll_to_element(element=web_element, locator=input_locator, scroll_center=True)
-            # self._click(web_element, input_locator) or self._click(web_element, input_locator, _click_js=True)
+            if not self._find_input_and_open(input_locator):
+                raise "Input ni click qilib bo'lmadi"
 
             # Optionlarni kutish
             try:
@@ -1126,7 +1121,7 @@ class BasePage:
             except ElementNotFoundError:
                 if self._is_choose_dropdown_option(input_locator, element_text):
                     return True
-                raise  # DOMda yo‘q va tanlanmagan
+                raise  "Option DOM yo'q va tanlanmagan"
 
             # Bo‘sh ro‘yxat holati
             if not options:

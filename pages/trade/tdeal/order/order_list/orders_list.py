@@ -46,17 +46,16 @@ class OrdersList(BasePage):
         self.click(self.copy_button)
     # ------------------------------------------------------------------------------------------------------------------
     report_one_button = (By.XPATH, '//button[@id="trade81-button-report_one"]')
-    options_report_one = (By.XPATH, '//button[@id="trade81-button-report_one"]/following-sibling::ul/li/a/span')
-
-    def click_report_one_button(self, report_name):
-        self.click_options(self.report_one_button, self.options_report_one, report_name)
-    # ------------------------------------------------------------------------------------------------------------------
 
     def click_reports_all_button(self, report_name, all_button=False):
         if all_button:
             self.click(self.report_one_button)
         options = (By.XPATH, f'//button[@id="trade81-button-report_one"]/following-sibling::ul/li//*[self::span or self::t][contains(text(),"{report_name}")]')
         self.click(options)
+
+    def verify_report_opened(self):
+        """Report to'liq ochilganligini tekshiradi"""
+        self.wait_for_element(locator=(By.XPATH, "//table[@class='bsr-table']"), wait_type="visibility")
     # ------------------------------------------------------------------------------------------------------------------
     invoice_report_one_button = (By.XPATH, '//div[@class="tbl-row-action"]//button/t[contains(text(),"Счет-фактуры")]')
 
@@ -74,17 +73,14 @@ class OrdersList(BasePage):
     def find_row(self, client_name):
         self.find_row_and_click(element_name=client_name)
     # ------------------------------------------------------------------------------------------------------------------
-    # change_status_one_button = (By.XPATH, "//button[@id='trade81-button-change_status_one']")
     change_status_one_button = (By.XPATH, '//div[@class="tbl-row open"]//div[@class="tbl-cell"]//div[@class="dropdown"]')
     yes_button = (By.XPATH, "//button[@ng-click='a.bConfirm.clickYes()']")
 
     def click_change_status_button(self, status_name):
         self.click(self.change_status_one_button)
-        # status_button = (By.XPATH, f"//button[@id='trade81-button-change_status_one']/following-sibling::div/a[contains(text(), '{status_name}')]")
         status_button = (By.XPATH, f'//div[@id="dropdown" and @class="dropdown show"]//button[contains(@onclick,"{status_name}")]')
         self.click(status_button)
         self.click(self.yes_button)
-
     # ==================================================================================================================
     # b-grid-controller
 

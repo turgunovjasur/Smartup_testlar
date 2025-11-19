@@ -1,15 +1,12 @@
 from pages.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-from utils.exception import LoaderTimeoutError
-
-
 class OrdersHistoryList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     header = (By.XPATH, '//div[@class="dropdown cursor-pointer"]//span')
 
     def element_visible(self):
-        return self.wait_for_element_visible(self.header)
+        self.wait_for_element_visible(self.header)
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, client_name):
@@ -31,20 +28,16 @@ class OrdersHistoryList(BasePage):
 
     def click_return_button(self):
         self.click(self.return_button)
-    # -----------------------------------------------------------------------------------------------------------------
-    report_one_button = (By.XPATH, '//button[@id="trade83-button-report_one"]')
-    options_report_one = (By.XPATH, '//button[@id="trade83-button-report_one"]/following-sibling::ul/li/a/span')
-
-    def click_report_one_button(self, report_name):
-        self.click_options(self.report_one_button, self.options_report_one, report_name)
     # ------------------------------------------------------------------------------------------------------------------
+    report_one_button = (By.XPATH, '//button[@id="trade83-button-report_one"]')
 
     def click_reports_all_button(self, report_name, all_button=False):
         if all_button:
             self.click(self.report_one_button)
-        try:
-            options = (By.XPATH, f'//button[@id="trade83-button-report_one"]/following-sibling::ul/li//*[self::span or self::t][contains(text(),"{report_name}")]')
-            self.click(options)
-        except LoaderTimeoutError:
-            pass
+        options = (By.XPATH, f'//button[@id="trade83-button-report_one"]/..//li[@ng-repeat="r in q.reports"]//span[contains(text(),"{report_name}")]')
+        self.click(options)
+
+    def verify_report_opened(self):
+        """Report to'liq ochilganligini tekshiradi"""
+        self.wait_for_element(locator=(By.XPATH, "//table[@class='bsr-table']"), wait_type="visibility")
     # -----------------------------------------------------------------------------------------------------------------

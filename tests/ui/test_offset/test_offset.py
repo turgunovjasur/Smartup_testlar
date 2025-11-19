@@ -51,7 +51,7 @@ def offset_add(driver, test_data, client_name=None, payment=False):
         # Offset Detail List
         offset = Offset(driver)
         offset.element_visible()
-        offset.find_row(client_name)
+        offset.find_row(client_name)  # click_button
         offset.input_cashboxes(cash_register_name)
         check_balance_payment = offset.check_balance_payment(client_name)
         offset.click_post_button()

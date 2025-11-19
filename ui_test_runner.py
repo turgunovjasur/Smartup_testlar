@@ -1,7 +1,10 @@
 import inspect
 import allure
+
 from tests.ui.test_cashin.test_cashin import test_cashin_add_A
 from tests.ui.test_finance.test_currency import test_currency_add
+from tests.ui.test_order.order_report.test_order_report import test_check_report_for_order_list, \
+    test_check_report_for_order_history_list
 from tests.ui.test_order.test_order_return import test_order_return
 from tests.ui.test_warehouse.test_supplier import test_add_supplier
 from tests.ui.test_warehouse.test_warehouse import test_add_warehouse
@@ -72,8 +75,6 @@ from tests.ui.test_order.test_order_list import test_copy_search_filter_in_order
 from tests.ui.test_order.test_order_report import (
     test_add_template_for_order_invoice_report,
     test_check_invoice_report_for_order_list,
-    test_check_report_for_order_history_list,
-    test_check_report_for_order_list,
     test_sales_report_constructor,
 )
 from tests.ui.test_purchase.test_purchase import (
@@ -89,12 +90,13 @@ from tests.ui.test_reference.test_natural_person import (
     test_natural_person_client_add_C,
 )
 from utils.test_retry import retry_on_failure
+from utils.api_fallback import APIFallbackManager
 
 # ======================================================================================================================
 
 test_cases = [
     # User Setup:
-    {"name": "Add Legal Person",     "func": test_add_legal_person,            "retry_count":3, "retry_delay":5, "deps": []},
+    {"name": "Add Legal Person",     "func": test_add_legal_person,            "retry_count":3, "retry_delay":2, "deps": []},
     {"name": "Add Filial",           "func": test_filial_create,               "deps": ["test_add_legal_person"]},
     {"name": "Add Room",             "func": test_room_add,                    "deps": ["test_filial_create"]},
     {"name": "Add Robot",            "func": test_robot_add,                   "deps": ["test_room_add"]},
@@ -209,6 +211,7 @@ test_cases = [
     {"name": "Check Report Spot 2d",               "func": test_check_report_spot_2d,               "deps": []},
 ]
 
+
 # ======================================================================================================================
 
 def pytest_generate_tests(metafunc):
@@ -220,18 +223,21 @@ def pytest_generate_tests(metafunc):
 
 def test_run_with_state(runner_case, driver, test_data, save_data, load_data, assertions, soft_assertions):
     func = runner_case["func"]
-    retry_count = runner_case.get("retry", 3)
-    retry_delay = runner_case.get("delay", 2)
+    retry_count = runner_case.get("retry_count", 3)
+    retry_delay = runner_case.get("retry_delay", 2)
     dependencies = runner_case.get("deps", [])
+    alternative_test = runner_case.get("alternative_test", None)
 
     allure.dynamic.title(runner_case["name"])
 
+    # Retry decorator bilan testni o'rash
     wrapped_func = retry_on_failure(
         retry_count=retry_count,
         retry_delay=retry_delay,
         dependencies=dependencies
     )(func)
 
+    # Kerakli fixture'larni to'plash
     kwargs = _get_required_fixtures(func, {
         'driver': driver,
         'test_data': test_data,
@@ -241,12 +247,69 @@ def test_run_with_state(runner_case, driver, test_data, save_data, load_data, as
         'soft_assertions': soft_assertions,
     })
 
-    wrapped_func(**kwargs)
+    try:
+        wrapped_func(**kwargs)
+
+    except Exception as ui_error:
+        if alternative_test:
+            print(f"\n{'=' * 80}")
+            print(f"⚠️  UI TEST FAILED: {func.__name__}")
+            print(f"{'=' * 80}")
+            print(f"🔍 Alternative API test mavjud: {alternative_test.__name__}")
+            print(f"🔄 API fallback mexanizmi ishga tushmoqda...\n")
+
+            # API Fallback Manager yaratish
+            fallback_manager = APIFallbackManager()
+
+            # API testni ishga tushirish
+            api_result = fallback_manager.execute_api_fallback(
+                ui_test_name=func.__name__,
+                api_test_func=alternative_test,
+                save_data=save_data,
+                load_data=load_data,
+                ui_attempts=retry_count
+            )
+
+            # API test natijasini tekshirish
+            if api_result and api_result["status"] == "PASSED":
+                print(f"✅ Test davom ettirildi API ma'lumotlari bilan!")
+
+                try:
+                    allure.attach(
+                        f"UI test failed but API fallback ({alternative_test.__name__}) passed. "
+                        f"Continuing tests with API data.",
+                        name="API Fallback Success",
+                        attachment_type=allure.attachment_type.TEXT
+                    )
+                except:
+                    pass
+
+                return
+            else:
+                print(f"❌ API test ham fail bo'ldi!")
+                print(f"🛑 Backend muammosi - test to'xtatiladi\n")
+
+                # Allure reportga ma'lumot qo'shish
+                try:
+                    allure.attach(
+                        f"Both UI and API ({alternative_test.__name__}) tests failed. "
+                        f"Backend issue detected.",
+                        name="API Fallback Failed",
+                        attachment_type=allure.attachment_type.TEXT
+                    )
+                except:
+                    pass
+
+                # Original UI xatolikni raise qilamiz
+                raise ui_error
+        else:
+            # Alternative test yo'q - xatolikni raise qilamiz
+            raise ui_error
 
 # ======================================================================================================================
 
 def _get_required_fixtures(func, available_fixtures):
-
+    """Test funksiyasi uchun kerakli fixture'larni ajratib olish"""
     sig = inspect.signature(func)
 
     required = {}

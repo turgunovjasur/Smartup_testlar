@@ -1,211 +1,207 @@
 import time
 import pyautogui
 import pytest
-import requests
-from selenium.common import TimeoutException
-from selenium.webdriver.support.wait import WebDriverWait
 from pages.anor.mr.template_list.template_list import TemplateList
 from pages.biruni.ker.setting_add.setting_add import SettingAdd
 from pages.biruni.ker.template_role_list.template_role_list import TemplateRoleList
 from pages.core.md.base_page import BasePage
 from pages.trade.rep.mbi.tdeal.order.sales_report_constructor import SalesReportConstructor
-from pages.trade.tdeal.order.order_history_list.order_history_list import OrdersHistoryList
 from flows.auth_flow import login_user, login_admin
 from pages.trade.tdeal.order.order_list.orders_list import OrdersList
 from tests.ui.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
 
 # ======================================================================================================================
 
-@pytest.mark.regression
-@pytest.mark.order_group_A
-@pytest.mark.order(260)
-def test_check_report_for_order_list(driver, test_data, timeout=60):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️Run test: test_check_report_for_order_list")
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-A"
-    report_names = [
-        "Загрузочный лист",
-        "Лист заказов № 3",
-        "Лист заказов № 6",
-        "Лист заказов №1",
-        "Накладная №3(2007)",
-        "Накладная №7",
-        "Общая сумма",
-        "Общая сумма возврата",
-        "Счет на оплату",
-        "Счет-фактура с НДС",
-        "Счет-фактура №1(2004)",
-        "ТТН",
-        "Требование на отпуск форма 1",
-    ]
-
-    errors = []
-    try:
-        driver.execute_script("WebGLRenderingContext = function() {};")
-        base_page.logger.info("🟢 GPU va WebGL temporarily deleted!")
-
-        login_user(driver, test_data, url='trade/tdeal/order/order_list')
-
-        order_list = OrdersList(driver)
-        order_list.element_visible()
-        order_list.find_row(client_name)
-
-        for index, report_name in enumerate(report_names):
-            old_windows = driver.window_handles
-            time.sleep(1)
-            order_list.click_reports_all_button(report_name=report_name, all_button=(index == 0))
-
-            # YANGI OYNA OCHILISHINI ANIQLASH UCHUN TO'G'RI JOY:
-            try:
-                WebDriverWait(driver, timeout).until(
-                    lambda d: len(d.window_handles) > len(old_windows),
-                    message=f"❌ -> ({report_name}) new window not open!")
-            except TimeoutException as e:
-                base_page.logger.error(str(e))
-                errors.append(str(e))
-                continue
-
-            new_windows = driver.window_handles
-            new_window = [w for w in new_windows if w not in old_windows][0]
-            driver.switch_to.window(new_window)
-
-            WebDriverWait(driver, timeout).until(lambda d: d.execute_script("return document.readyState") == "complete")
-
-            session = requests.Session()
-            cookies = driver.get_cookies()
-            for cookie in cookies:
-                session.cookies.set(cookie['name'], cookie['value'])
-
-            try:
-                time.sleep(1)
-                response = session.get(driver.current_url, timeout=timeout)
-                if response.status_code != 200:
-                    error_msg = f"❌ -> ({report_name}) report page not download! Status cod: {response.status_code}"
-                    base_page.logger.error(error_msg)
-                    errors.append(error_msg)
-                else:
-                    base_page.logger.info(f"✅ {report_name} report open!")
-
-            except requests.RequestException as e:
-                error_msg = f"❌ -> ({report_name}) report HTTP request error: {str(e)}"
-                base_page.logger.error(error_msg)
-                errors.append(error_msg)
-
-            driver.close()
-            driver.switch_to.window(old_windows[1])
-
-    except AssertionError as ae:
-        base_page.logger.error(f'Assertion error: {str(ae)}')
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-    except Exception as e:
-        pytest.fail(str(e))
-
-    finally:
-        driver.execute_script("WebGLRenderingContext = undefined;")
-        base_page.logger.info("🔴 GPU va WebGL restored!")
-        if errors:
-            errors_joined = "\n".join(errors)
-            base_page.logger.error(f"Test errors:\n{errors_joined}")
-            pytest.fail(f"Test_errors:\n{errors_joined}")
+# @pytest.mark.regression
+# @pytest.mark.order_group_A
+# @pytest.mark.order(260)
+# def test_check_report_for_order_list(driver, test_data, timeout=60):
+#     base_page = BasePage(driver)
+#     base_page.logger.info("▶️Run test: test_check_report_for_order_list")
+#
+#     data = test_data["data"]
+#     client_name = f"{data['client_name']}-A"
+#     report_names = [
+#         "Загрузочный лист",
+#         "Лист заказов № 3",
+#         "Лист заказов № 6",
+#         "Лист заказов №1",
+#         "Накладная №3(2007)",
+#         "Накладная №7",
+#         "Общая сумма",
+#         "Общая сумма возврата",
+#         "Счет на оплату",
+#         "Счет-фактура с НДС",
+#         "Счет-фактура №1(2004)",
+#         "ТТН",
+#         "Требование на отпуск форма 1",
+#     ]
+#
+#     errors = []
+#     try:
+#         driver.execute_script("WebGLRenderingContext = function() {};")
+#         base_page.logger.info("🟢 GPU va WebGL temporarily deleted!")
+#
+#         login_user(driver, test_data, url='trade/tdeal/order/order_list')
+#
+#         order_list = OrdersList(driver)
+#         order_list.element_visible()
+#         order_list.find_row(client_name)
+#
+#         for index, report_name in enumerate(report_names):
+#             old_windows = driver.window_handles
+#             time.sleep(1)
+#             order_list.click_reports_all_button(report_name=report_name, all_button=(index == 0))
+#
+#             # YANGI OYNA OCHILISHINI ANIQLASH UCHUN TO'G'RI JOY:
+#             try:
+#                 WebDriverWait(driver, timeout).until(
+#                     lambda d: len(d.window_handles) > len(old_windows),
+#                     message=f"❌ -> ({report_name}) new window not open!")
+#             except TimeoutException as e:
+#                 base_page.logger.error(str(e))
+#                 errors.append(str(e))
+#                 continue
+#
+#             new_windows = driver.window_handles
+#             new_window = [w for w in new_windows if w not in old_windows][0]
+#             driver.switch_to.window(new_window)
+#
+#             WebDriverWait(driver, timeout).until(lambda d: d.execute_script("return document.readyState") == "complete")
+#
+#             session = requests.Session()
+#             cookies = driver.get_cookies()
+#             for cookie in cookies:
+#                 session.cookies.set(cookie['name'], cookie['value'])
+#
+#             try:
+#                 time.sleep(1)
+#                 response = session.get(driver.current_url, timeout=timeout)
+#                 if response.status_code != 200:
+#                     error_msg = f"❌ -> ({report_name}) report page not download! Status cod: {response.status_code}"
+#                     base_page.logger.error(error_msg)
+#                     errors.append(error_msg)
+#                 else:
+#                     base_page.logger.info(f"✅ {report_name} report open!")
+#
+#             except requests.RequestException as e:
+#                 error_msg = f"❌ -> ({report_name}) report HTTP request error: {str(e)}"
+#                 base_page.logger.error(error_msg)
+#                 errors.append(error_msg)
+#
+#             driver.close()
+#             driver.switch_to.window(old_windows[1])
+#
+#     except AssertionError as ae:
+#         base_page.logger.error(f'Assertion error: {str(ae)}')
+#         base_page.take_screenshot("assertion_error")
+#         pytest.fail(str(ae))
+#     except Exception as e:
+#         pytest.fail(str(e))
+#
+#     finally:
+#         driver.execute_script("WebGLRenderingContext = undefined;")
+#         base_page.logger.info("🔴 GPU va WebGL restored!")
+#         if errors:
+#             errors_joined = "\n".join(errors)
+#             base_page.logger.error(f"Test errors:\n{errors_joined}")
+#             pytest.fail(f"Test_errors:\n{errors_joined}")
 
 # ======================================================================================================================
 
-@pytest.mark.regression
-@pytest.mark.order_group_A
-@pytest.mark.order(310)
-def test_check_report_for_order_history_list(driver, test_data, timeout=60):
-    base_page = BasePage(driver)
-    base_page.logger.info("▶️Run test: test_check_invoices_report_for_order_history_list")
-
-    data = test_data["data"]
-    client_name = f"{data['client_name']}-A"
-    report_names = [
-        "Загрузочный лист",
-        "Лист заказов № 3",
-        "Лист заказов № 6",
-        "Лист заказов №1",
-        "Накладная №3(2007)",
-        "Накладная №7",
-        "Общая сумма",
-        "Общая сумма возврата",
-        "Счет на оплату",
-        "Счет-фактура с НДС",
-        "Счет-фактура №1(2004)",
-        "ТТН",
-        "Требование на отпуск форма 1",
-    ]
-
-    errors = []
-    try:
-        driver.execute_script("WebGLRenderingContext = function() {};")
-        base_page.logger.info("🟢 GPU va WebGL temporarily deleted!")
-
-        login_user(driver, test_data, url='trade/tdeal/order/order_history_list')
-
-        order_history_list = OrdersHistoryList(driver)
-        order_history_list.element_visible()
-        order_history_list.find_row(client_name)
-
-        for index, report_name in enumerate(report_names):
-            old_windows = driver.window_handles
-            order_history_list.click_reports_all_button(report_name=report_name, all_button=(index == 0))
-
-            try:
-                time.sleep(1)
-                WebDriverWait(driver, timeout).until(
-                    lambda d: len(d.window_handles) > len(old_windows),
-                    message=f"❌ -> ({report_name}) new window not open!")
-            except TimeoutException as e:
-                base_page.logger.error(str(e))
-                errors.append(str(e))
-                continue
-
-            new_windows = driver.window_handles
-            new_window = [w for w in new_windows if w not in old_windows][0]
-            driver.switch_to.window(new_window)
-            time.sleep(1)
-            WebDriverWait(driver, timeout).until(lambda d: d.execute_script("return document.readyState") == "complete")
-
-            session = requests.Session()
-            cookies = driver.get_cookies()
-            for cookie in cookies:
-                session.cookies.set(cookie['name'], cookie['value'])
-
-            try:
-                response = session.get(driver.current_url, timeout=timeout)
-                if response.status_code != 200:
-                    error_msg = f"❌ -> ({report_name}) report page not download! Status cod: {response.status_code}"
-                    base_page.logger.error(error_msg)
-                    errors.append(error_msg)
-                else:
-                    base_page.logger.info(f"✅ {report_name} report open!")
-
-            except requests.RequestException as e:
-                error_msg = f"❌ -> ({report_name}) report HTTP request error: {str(e)}"
-                base_page.logger.error(error_msg)
-                errors.append(error_msg)
-
-            driver.close()
-            driver.switch_to.window(old_windows[1])
-
-    except AssertionError as ae:
-        base_page.logger.error(f'Assertion error: {str(ae)}')
-        base_page.take_screenshot("assertion_error")
-        pytest.fail(str(ae))
-    except Exception as e:
-        pytest.fail(str(e))
-
-    finally:
-        driver.execute_script("WebGLRenderingContext = undefined;")
-        base_page.logger.info("🔴 GPU va WebGL restored!")
-
-        if errors:
-            errors_joined = "\n".join(errors)
-            base_page.logger.error(f"Test errors:\n{errors_joined}")
-            pytest.fail(f"Test_errors:\n{errors_joined}")
+# @pytest.mark.regression
+# @pytest.mark.order_group_A
+# @pytest.mark.order(310)
+# def test_check_report_for_order_history_list(driver, test_data, timeout=60):
+#     base_page = BasePage(driver)
+#     base_page.logger.info("▶️Run test: test_check_invoices_report_for_order_history_list")
+#
+#     data = test_data["data"]
+#     client_name = f"{data['client_name']}-A"
+#     report_names = [
+#         "Загрузочный лист",
+#         "Лист заказов № 3",
+#         "Лист заказов № 6",
+#         "Лист заказов №1",
+#         "Накладная №3(2007)",
+#         "Накладная №7",
+#         "Общая сумма",
+#         "Общая сумма возврата",
+#         "Счет на оплату",
+#         "Счет-фактура с НДС",
+#         "Счет-фактура №1(2004)",
+#         "ТТН",
+#         "Требование на отпуск форма 1",
+#     ]
+#
+#     errors = []
+#     try:
+#         driver.execute_script("WebGLRenderingContext = function() {};")
+#         base_page.logger.info("🟢 GPU va WebGL temporarily deleted!")
+#
+#         login_user(driver, test_data, url='trade/tdeal/order/order_history_list')
+#
+#         order_history_list = OrdersHistoryList(driver)
+#         order_history_list.element_visible()
+#         order_history_list.find_row(client_name)
+#
+#         for index, report_name in enumerate(report_names):
+#             old_windows = driver.window_handles
+#             order_history_list.click_reports_all_button(report_name=report_name, all_button=(index == 0))
+#
+#             try:
+#                 time.sleep(1)
+#                 WebDriverWait(driver, timeout).until(
+#                     lambda d: len(d.window_handles) > len(old_windows),
+#                     message=f"❌ -> ({report_name}) new window not open!")
+#             except TimeoutException as e:
+#                 base_page.logger.error(str(e))
+#                 errors.append(str(e))
+#                 continue
+#
+#             new_windows = driver.window_handles
+#             new_window = [w for w in new_windows if w not in old_windows][0]
+#             driver.switch_to.window(new_window)
+#             time.sleep(1)
+#             WebDriverWait(driver, timeout).until(lambda d: d.execute_script("return document.readyState") == "complete")
+#
+#             session = requests.Session()
+#             cookies = driver.get_cookies()
+#             for cookie in cookies:
+#                 session.cookies.set(cookie['name'], cookie['value'])
+#
+#             try:
+#                 response = session.get(driver.current_url, timeout=timeout)
+#                 if response.status_code != 200:
+#                     error_msg = f"❌ -> ({report_name}) report page not download! Status cod: {response.status_code}"
+#                     base_page.logger.error(error_msg)
+#                     errors.append(error_msg)
+#                 else:
+#                     base_page.logger.info(f"✅ {report_name} report open!")
+#
+#             except requests.RequestException as e:
+#                 error_msg = f"❌ -> ({report_name}) report HTTP request error: {str(e)}"
+#                 base_page.logger.error(error_msg)
+#                 errors.append(error_msg)
+#
+#             driver.close()
+#             driver.switch_to.window(old_windows[1])
+#
+#     except AssertionError as ae:
+#         base_page.logger.error(f'Assertion error: {str(ae)}')
+#         base_page.take_screenshot("assertion_error")
+#         pytest.fail(str(ae))
+#     except Exception as e:
+#         pytest.fail(str(e))
+#
+#     finally:
+#         driver.execute_script("WebGLRenderingContext = undefined;")
+#         base_page.logger.info("🔴 GPU va WebGL restored!")
+#
+#         if errors:
+#             errors_joined = "\n".join(errors)
+#             base_page.logger.error(f"Test errors:\n{errors_joined}")
+#             pytest.fail(f"Test_errors:\n{errors_joined}")
 
 # ======================================================================================================================
 import os

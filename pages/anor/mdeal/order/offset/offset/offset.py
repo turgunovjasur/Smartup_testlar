@@ -11,7 +11,8 @@ class Offset(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
 
     def find_row(self, client_name):
-        check_row = (By.XPATH, f"//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']/ancestor::div[@class='tbl-cell']/following-sibling::div[9]//button")
+        # check_row = (By.XPATH, f"//div[contains(@class, 'tbl')]//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']/ancestor::div[@class='tbl-cell']/following-sibling::div[9]//button")
+        check_row = (By.XPATH, f'//b-pg-grid[@name="payments" or @name="offsets"]//label[text()=\'{client_name}\']/../../div/div[@class="text-center"]/button')
         self.click(check_row)
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -21,7 +22,8 @@ class Offset(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
 
     def check_balance_payment(self, client_name):
-        get_balance_payment = (By.XPATH, f"//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']""/ancestor::div[@class='tbl-cell']/following-sibling::div[7]/div")
+        # get_balance_payment = (By.XPATH, f"//div[contains(@class, 'tbl-cell')]//label[normalize-space(text())='{client_name}']""/ancestor::div[@class='tbl-cell']/following-sibling::div[7]/div")
+        get_balance_payment = (By.XPATH, f"(//b-pg-grid[@name=\"payments\"]//label[text()='{client_name}']/../../div)[9]")
         return self.get_numeric_value(get_balance_payment)
     # ------------------------------------------------------------------------------------------------------------------
     post_button = (By.XPATH, '//button[@ng-click="post()"]')

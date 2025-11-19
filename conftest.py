@@ -12,10 +12,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from pages.core.md.base_page import BasePage
 from tests.ui.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
+from utils.api_fallback import APIFallbackManager
 from utils.assertions import SoftAssertions
 from utils.env_reader import get_env
 from utils.logger import configure_logging
 from utils.email import send_email_report, format_test_results
+from utils.test_retry import TestStateManager, print_test_states
 
 # ======================================================================================================================
 
@@ -28,8 +30,6 @@ test_results = {
     'end_time': None
 }
 
-# ======================================================================================================================
-# pytest hooks - test natijalarini yig'ish
 # ======================================================================================================================
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -62,140 +62,6 @@ def pytest_runtest_makereport(item, call):
         }
         test_results['errors'].append(test_info)
 
-# ======================================================================================================================
-# Yangi: Driver yaratish va tozalash funksiyalari (test_retry uchun)
-# ======================================================================================================================
-
-def create_driver(test_name, test_data):
-    """Yangi driver yaratish (eski fixture logikasiga o'xshash, lekin request o'rniga test_name)."""
-    logger = configure_logging(test_name)
-
-    logger.info("=" * 80)
-    logger.info(f"DRIVER YARATISH BOSHLANDI: {test_name}")
-    logger.info("=" * 80)
-
-    start_time = time.time()
-    drv = None
-    user_data_dir = None
-
-    try:
-        # Test ma'lumotlarini olish
-        data = test_data["data"]
-        url = data["url"]
-        logger.info(f"Test URL: {url}")
-
-        # ChromeDriver o'rnatish
-        driver_path = ChromeDriverManager().install()
-        service = ChromeService(driver_path)
-        logger.debug(f"ChromeDriver o'rnatildi: {driver_path}")
-
-        # Headless rejim - faqat environment variable orqali
-        headless = os.getenv("GITHUB_ACTIONS") == "true"
-        if headless:
-            logger.info("Headless rejim yoqildi")
-        else:
-            logger.info("Normal rejim (GUI)")
-
-        # Chrome options sozlash
-        options = Options()
-
-        if headless:
-            options.add_argument("--headless=new")
-
-        # Vaqtinchalik profil yaratish
-        user_data_dir = tempfile.mkdtemp()
-        logger.debug(f"Vaqtinchalik profil yaratildi: {user_data_dir}")
-        options.add_argument(f"--user-data-dir={user_data_dir}")
-
-        # Barcha argumentlarni qo'shish
-        options.add_argument("--start-maximized")
-        options.add_argument("--force-device-scale-factor=0.90")
-        options.add_argument("--ignore-ssl-errors=yes")
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--incognito")
-        options.add_argument("--disable-features=AutofillServerCommunication,PasswordManagerEnabled,PasswordCheck")
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-
-        # Preferences sozlash
-        all_prefs = {
-            "credentials_enable_service": False,
-            "profile.password_manager_enabled": False,
-            "download.default_directory": DOWNLOAD_DIR,
-            "download.prompt_for_download": False,
-            "download.directory_upgrade": True,
-            "safebrowsing.enabled": True
-        }
-        options.add_experimental_option("prefs", all_prefs)
-        logger.debug(f"Yuklab olish katalogi: {DOWNLOAD_DIR}")
-
-        # Chrome driver yaratish
-        drv = webdriver.Chrome(service=service, options=options)
-        logger.info(f"Browser ishga tushdi. Session ID: {drv.session_id}")
-
-        # CDP orqali fayl yuklash sozlamalari
-        try:
-            drv.execute_cdp_cmd(
-                "Page.setDownloadBehavior",
-                {"behavior": "allow", "downloadPath": DOWNLOAD_DIR}
-            )
-        except Exception as e:
-            logger.warning(f"CDP sozlashda xatolik: {e}")
-
-        # Timeout sozlash
-        drv.set_page_load_timeout(120)
-
-        # URL ochish
-        logger.info(f"URL ochilmoqda: {url}")
-        drv.get(url)
-
-        setup_time = time.time() - start_time
-        logger.info("=" * 80)
-        logger.info(f"DRIVER TAYYOR! Setup vaqti: {setup_time:.2f} sekund")
-        logger.info("=" * 80)
-
-        return drv, user_data_dir, start_time
-
-    except WebDriverException as e:
-        logger.error("=" * 80)
-        logger.error(f"WEBDRIVER XATOLIK: {e}")
-        logger.error("=" * 80)
-        raise
-    except Exception as e:
-        logger.error("=" * 80)
-        logger.error(f"KUTILMAGAN XATOLIK: {e}")
-        logger.error("=" * 80)
-        raise
-
-# ======================================================================================================================
-
-def cleanup_driver(drv, user_data_dir, logger, start_time, test_name):
-    """Driver ni tozalash."""
-    if drv:
-        try:
-            drv.quit()
-            logger.info("Browser yopildi")
-        except Exception as e:
-            logger.warning(f"Browser yopishda xatolik: {e}")
-    else:
-        logger.warning("Driver yaratilmagan edi")
-
-    if user_data_dir:
-        try:
-            shutil.rmtree(user_data_dir)
-            logger.info("Vaqtinchalik profil o'chirildi")
-        except Exception as e:
-            logger.warning(f"Profil o'chirishda xatolik: {user_data_dir} - {e}")
-
-    total_time = time.time() - start_time
-    logger.info("=" * 80)
-    logger.info(f"DRIVER SESSION TUGADI. Umumiy vaqt: {total_time:.2f} sekund")
-    logger.info("=" * 80)
-
-# ======================================================================================================================
-# driver
 # ======================================================================================================================
 
 @pytest.fixture(scope="function")
@@ -325,8 +191,6 @@ def driver(request, test_data):
         logger.info("=" * 80)
 
 # ======================================================================================================================
-# test_data
-# ======================================================================================================================
 
 @pytest.fixture(scope="session")
 def cod_generator():
@@ -337,9 +201,9 @@ def cod_generator():
 def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
-    cod = cod_generator
-    # cod = "xtest"
-    # cod = "xtest-1"
+    # cod = cod_generator
+    # cod = "13_11_12_54"
+    cod = "ui-2"
     save_data("cod", cod)
 
     base_data = {
@@ -435,8 +299,6 @@ def test_data(save_data, cod_generator):
     }
 
 # ======================================================================================================================
-# save_data/load_data
-# ======================================================================================================================
 
 DATA_STORE_FILE = os.path.join(os.path.dirname(__file__), "data_store.json")
 
@@ -493,8 +355,6 @@ def load_data(request):
     return _load
 
 # ======================================================================================================================
-# assertions
-# ======================================================================================================================
 
 @pytest.fixture
 def base_page(driver):
@@ -509,8 +369,6 @@ def soft_assertions(base_page):
     return SoftAssertions(page=base_page)
 
 # ======================================================================================================================
-
-from utils.test_retry import TestStateManager, get_test_summary, print_test_states
 
 def pytest_sessionstart(session):
     """Test sessiyasi boshlanishida - mavjud kodni yangilang"""
@@ -529,40 +387,48 @@ def pytest_sessionstart(session):
 
 def pytest_sessionfinish(session, exitstatus):
     """Test sessiyasi tugaganda - mavjud kodni yangilang"""
-    test_results['end_time'] = time.time()
-    total_duration = test_results['end_time'] - test_results['start_time']
+    try:
+        test_results['end_time'] = time.time()
+        total_duration = test_results['end_time'] - test_results['start_time']
 
-    print("\n" + "=" * 70)
-    print("🏁 TEST SESSIYASI TUGADI")
-    print("=" * 70)
+        print("\n" + "=" * 70)
+        print("🏁 TEST SESSIYASI TUGADI")
+        print("=" * 70)
 
-    # Natijalarni hisoblash
-    passed_count = len(test_results['passed'])
-    failed_count = len(test_results['failed'])
-    skipped_count = len(test_results['skipped'])
-    errors_count = len(test_results['errors'])
+        # Natijalarni hisoblash
+        passed_count = len(test_results['passed'])
+        failed_count = len(test_results['failed'])
+        skipped_count = len(test_results['skipped'])
+        errors_count = len(test_results['errors'])
 
-    print_test_states()
-    get_test_summary()
+        print_test_states()
 
-    # Email uchun sarlavha
-    status = "✅ PASSED" if failed_count == 0 and errors_count == 0 else "❌ FAILED"
-    subject = f"{status} - Automation Test Natijalari ({datetime.now().strftime('%Y-%m-%d %H:%M')})"
+        # Email uchun sarlavha
+        status = "✅ PASSED" if failed_count == 0 and errors_count == 0 else "❌ FAILED"
+        subject = f"{status} - Automation Test Natijalari ({datetime.now().strftime('%Y-%m-%d %H:%M')})"
 
-    # Email uchun body
-    body = format_test_results(
-        passed=passed_count,
-        failed=failed_count,
-        skipped=skipped_count,
-        errors=errors_count,
-        total_duration=total_duration,
-        test_details=test_results
-    )
+        # Email uchun body
+        body = format_test_results(
+            passed=passed_count,
+            failed=failed_count,
+            skipped=skipped_count,
+            errors=errors_count,
+            total_duration=total_duration,
+            test_details=test_results
+        )
 
-    # Emailni yuborish
-    print("\n📧 Email yuborilmoqda...")
-    send_email_report(subject, body)
-    print("✅ Email yuborish jarayoni tugadi\n")
+        # Emailni yuborish
+        print("\n📧 Email yuborilmoqda...")
+        send_email_report(subject, body)
+        print("✅ Email yuborish jarayoni tugadi\n")
+    except Exception as e:
+        print(f"⚠️  Email hisobot xatoligi: {e}")
+
+    try:
+        fallback_manager = APIFallbackManager()
+        fallback_manager.print_fallback_report()
+    except Exception as e:
+        print(f"⚠️  Fallback hisobot xatoligi: {e}")
 
 # ======================================================================================================================
 
