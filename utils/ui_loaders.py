@@ -172,7 +172,7 @@ class UILoaders:
         self._fail("Spinner/overlay", deadline, t0)
 
     # ==================================================================================================================
-    # --- Helpers ---
+
     def _fail(self, what, deadline, t0, locator=None):
         msg = f"{what} {self.page_load_timeout:.0f}s ichida yo‘qolmadi! (Jami: {time.time()-t0:.2f}s)"
         self.logger.error(msg)

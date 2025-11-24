@@ -32,3 +32,27 @@ class SettingAdd(BasePage):
     def click_save_button(self):
         self.click(self.save_button)
     # ------------------------------------------------------------------------------------------------------------------
+    FILE_INPUT_LOCATOR = (By.CSS_SELECTOR, "input[type='file']")
+
+    def upload_template_file(self, file_path):
+        """Template faylini yuklash"""
+        try:
+            file_input = self.wait_for_element(self.FILE_INPUT_LOCATOR, wait_type="presence")
+
+            # Agar element yashirilgan bo'lsa
+            self.driver.execute_script("""
+                arguments[0].style.display = 'block';
+                arguments[0].style.visibility = 'visible';
+                arguments[0].style.opacity = '1';
+                arguments[0].style.height = 'auto';
+                arguments[0].style.width = 'auto';
+            """,
+            file_input)
+
+            file_input.send_keys(file_path)
+            self.logger.info(f"[UPLOAD FILE]: {file_path}")
+
+        except Exception as e:
+            self.logger.error(f"[UPLOAD ERROR]: {e}")
+            raise
+    # ------------------------------------------------------------------------------------------------------------------

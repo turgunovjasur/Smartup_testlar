@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 import inspect
 import sys
 import threading
 import time
-
 
 # Pytest va tizim freymlarini tashlash uchun filtrlar
 _IGNORED_FUNCS = {

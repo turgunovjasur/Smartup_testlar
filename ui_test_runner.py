@@ -3,6 +3,8 @@ import allure
 
 from tests.ui.test_cashin.test_cashin import test_cashin_add_A
 from tests.ui.test_finance.test_currency import test_currency_add
+from tests.ui.test_order.order_invoice_report.test_order_invoice_report import \
+    test_add_template_for_order_invoice_report
 from tests.ui.test_order.order_report.test_order_report import test_check_report_for_order_list, \
     test_check_report_for_order_history_list
 from tests.ui.test_order.test_order_return import test_order_return
@@ -73,7 +75,6 @@ from tests.ui.test_order.test_order_edit import (
 )
 from tests.ui.test_order.test_order_list import test_copy_search_filter_in_order_list
 from tests.ui.test_order.test_order_report import (
-    test_add_template_for_order_invoice_report,
     test_check_invoice_report_for_order_list,
     test_sales_report_constructor,
 )
@@ -210,7 +211,6 @@ test_cases = [
     {"name": "Check Report Sales Work",            "func": test_check_report_sales_work,            "deps": []},
     {"name": "Check Report Spot 2d",               "func": test_check_report_spot_2d,               "deps": []},
 ]
-
 
 # ======================================================================================================================
 

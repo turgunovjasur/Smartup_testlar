@@ -3,7 +3,7 @@ import pytest
 from pages.core.md.base_page import BasePage
 from pages.trade.rep.integration.integration_two.integration_two import IntegrationTwo
 from flows.auth_flow import login_admin
-from tests.ui.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
+from utils.download_manager import clear_old_download, generate_and_verify_download, DOWNLOAD_DIR
 
 
 @pytest.mark.regression

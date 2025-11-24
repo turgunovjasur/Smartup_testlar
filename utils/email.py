@@ -7,12 +7,12 @@ from email import encoders
 import os
 
 # ==================== EMAIL KONFIGURATSIYASI ====================
+
 EMAIL_SENDER = 'tjasur224@gmail.com'
 EMAIL_PASSWORD = 'tulq nero mjac xtih'
 EMAIL_RECIPIENTS = ['tjasur224@gmail.com']
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
-
 
 # ==================== EMAIL YUBORISH FUNKTSIYASI ====================
 def send_email_report(subject, body, attachment_path=None):

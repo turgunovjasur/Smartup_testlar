@@ -14,10 +14,7 @@ from pages.anor.mkr.margin_list_attach.margin_list_attach import MarginListAttac
 from pages.anor.mkr.payment_type_list.payment_type_list import PaymentTypeList
 from pages.anor.mkr.payment_type_list_attach.payment_type_list_attach import PaymentTypeListAttach
 from pages.anor.mkr.price_tag.price_tag import PriceTag
-from pages.anor.mkr.price_type_add.price_type_add import PriceTypeAdd
 from pages.anor.mkr.price_type_list.price_type_list import PriceTypeList
-from pages.anor.mkr.price_type_list_attach.price_type_list_attch import PriceTypeListAttach
-from pages.anor.mkr.price_type_view.price_type_id import PriceTypeIdView
 from pages.anor.mkw.init_balance.init_inventory_balance_add.init_inventory_balance_add import InitInventoryBalanceAdd
 from pages.anor.mkw.init_balance.init_inventory_balance_list.init_inventory_balance_list import InitInventoryBalanceList
 from pages.anor.mr.filial_add.filial_add import FilialAdd
@@ -51,9 +48,8 @@ from pages.trade.trf.room_list.room_list import RoomList
 from pages.trade.trf.room_view.room_view import RoomView
 from flows.auth_flow import login_admin, login_user, logout
 from flows.balance_flow import flow_get_balance
-from tests.ui.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
+from utils.download_manager import clear_old_download, generate_and_verify_download, DOWNLOAD_DIR
 from utils.exception import ElementNotFoundError
-from utils.test_retry import retry_on_failure
 
 
 def test_company_create(driver, test_data):

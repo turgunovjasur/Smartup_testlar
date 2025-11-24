@@ -24,6 +24,7 @@ from selenium.common.exceptions import (
     JavascriptException)
 
 from utils.ui_loaders import UILoaders
+from config.test_settings import WaitTimeouts
 
 init(autoreset=True)
 
@@ -32,17 +33,16 @@ class BasePage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.default_timeout = 20
-        self.page_load_timeout = 60
+        self.default_timeout = WaitTimeouts.DEFAULT_TIMEOUT
         self.test_name = get_test_name()
         self.actions = ActionChains(driver)
         self.logger = configure_logging(self.test_name)
         self.assertions = Assertions(page=self, timeout=self.default_timeout)
         self._loaders = UILoaders(
-            driver=self.driver, logger=self.logger,
-            page_load_timeout=self.page_load_timeout,  # umumiy limit
-            block_ui_absence_window=0.5,               # Block UI barqaror yo'qligi
-            screenshot_cb=self.take_screenshot)        # ixtiyoriy
+            driver=self.driver,
+            logger=self.logger,
+            page_load_timeout=WaitTimeouts.UI_PAGE_LOADER_TIMEOUT
+        )
 
     # ==================================================================================================================
 
@@ -116,14 +116,12 @@ class BasePage:
 
     # ==================================================================================================================
 
-    def _wait_for_all_loaders(self, page_load_timeout=None, block_ui_absence_window=None):
+    def _wait_for_all_loaders(self):
         """
         Loader kutish funksiyasi — agar timeoutlar berilsa, vaqtincha ularni qo‘llaydi.
         """
         try:
-            return self._loaders.wait_for_all_loaders(
-                page_load_timeout=page_load_timeout,
-                block_ui_absence_window=block_ui_absence_window)
+            return self._loaders.wait_for_all_loaders()
         except LoaderTimeoutError as e:
             msg = str(e)
             # Faqat Block UI timeout bo‘lsa re-login qilamiz
@@ -151,10 +149,7 @@ class BasePage:
                 self.logger.info("Re-login bajarildi, loaderlarni qayta kutamiz.")
 
                 # Loaderlarni qayta kutish
-                return self._loaders.wait_for_all_loaders(
-                    page_load_timeout=page_load_timeout,
-                    block_ui_absence_window=block_ui_absence_window
-                )
+                return self._loaders.wait_for_all_loaders()
 
             except Exception as ex:
                 self.logger.error(f"Re-login urinishda xatolik: {ex}")

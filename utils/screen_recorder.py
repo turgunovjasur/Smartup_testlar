@@ -1,7 +1,14 @@
 import os, re, time, threading, logging, shutil, subprocess
 from datetime import datetime
 
-import cv2, numpy as np
+try:
+    import cv2
+    import numpy as np
+    RECORDING_AVAILABLE = True
+except ImportError:
+    RECORDING_AVAILABLE = False
+    cv2 = None
+    np = None
 
 try:
     import allure

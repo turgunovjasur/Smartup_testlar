@@ -6,7 +6,7 @@ from pages.trade.rep.integration.saleswork.saleswork import SalesWork
 from pages.trade.rep.integration.saleswork.saleswork_template_add import SalesWorkTemplateAdd
 from pages.trade.rep.integration.saleswork.saleswork_template_list import SalesWorkTemplateList
 from flows.auth_flow import login_admin
-from tests.ui.test_rep.integration.rep_main_funksiya import generate_and_verify_download, clear_old_download, DOWNLOAD_DIR
+from utils.download_manager import clear_old_download, generate_and_verify_download, DOWNLOAD_DIR
 
 
 @pytest.mark.regression

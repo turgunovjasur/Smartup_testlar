@@ -7,9 +7,10 @@ from selenium.common import WebDriverException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from tests.ui.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
+from utils.download_manager import DOWNLOAD_DIR
 from utils.logger import configure_logging
 
+# ======================================================================================================================
 
 def create_driver(test_name, test_data):
     """Yangi driver yaratish (eski fixture logikasiga o'xshash, lekin request o'rniga test_name)."""
@@ -114,6 +115,7 @@ def create_driver(test_name, test_data):
         logger.error("=" * 80)
         raise
 
+# ======================================================================================================================
 
 def cleanup_driver(drv, user_data_dir, logger, start_time, test_name):
     """Driver ni tozalash."""
@@ -137,3 +139,5 @@ def cleanup_driver(drv, user_data_dir, logger, start_time, test_name):
     logger.info("=" * 80)
     logger.info(f"DRIVER SESSION TUGADI. Umumiy vaqt: {total_time:.2f} sekund")
     logger.info("=" * 80)
+
+# ======================================================================================================================

@@ -1,7 +1,7 @@
 import allure
 from tests.api.test_biruni_session import test_biruni_session
 from tests.api.test_filial_save_model import test_filial_save, test_filial_model
-from tests.api.test_inventory import test_inventory_save
+from tests.api.test_inventory import test_inventory_save, test_inventory_model
 from tests.api.test_legal_person_import_export import test_legal_person_import, test_legal_person_export
 from tests.api.test_natural_person_import_export import test_natural_person_import, test_natural_person_export
 from tests.api.test_payment_type import test_payment_type_attach, test_payment_type_attach_to_room
@@ -75,6 +75,7 @@ test_cases = [
     {"name": "Sector [MODEL]", "func": test_sector_model},
 
     {"name": "Inventory [SAVE]", "func": test_inventory_save},
+    {"name": "Inventory [MODEL]", "func": test_inventory_model},
 ]
 
 # ======================================================================================================================

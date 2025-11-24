@@ -11,7 +11,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from pages.core.md.base_page import BasePage
-from tests.ui.test_rep.integration.rep_main_funksiya import DOWNLOAD_DIR
+from utils.download_manager import DOWNLOAD_DIR
 from utils.api_fallback import APIFallbackManager
 from utils.assertions import SoftAssertions
 from utils.env_reader import get_env
@@ -203,7 +203,7 @@ def test_data(save_data, cod_generator):
 
     # cod = cod_generator
     # cod = "13_11_12_54"
-    cod = "ui-2"
+    cod = "ui-3"
     save_data("cod", cod)
 
     base_data = {
