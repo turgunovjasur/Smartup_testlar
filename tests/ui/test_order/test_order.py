@@ -469,7 +469,7 @@ def test_min_order_amount(driver, test_data):
 
     order_add_final = OrderAddFinal(driver)
     get_status = base.input_text(locator=order_add_final.status_input, get_value=True)
-    assert get_status == data["Draft"], f"[ERROR] {get_status} != {data["Draft"]}"
+    assert get_status == data["Draft"], f'[ERROR] {get_status} != {data["Draft"]}'
 
     final_flow(driver, save=True)
 
