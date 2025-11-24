@@ -327,7 +327,7 @@ def print_test_states():
     state_manager = TestStateManager()
 
     if not state_manager.states:
-        print("ℹ️  Holatlar topilmadi")
+        print("Holatlar topilmadi")
         return
 
     print(f"\n{'=' * 80}")
@@ -345,14 +345,14 @@ def print_test_states():
         }.get(state.get("status"), "❓")
 
         print(f"\n{emoji} {test_name}")
-        print(f"   Status: {state.get('status')}")
-        print(f"   Attempt: {state.get('attempt')}")
+        print(f"Status: {state.get('status')}")
+        print(f"Attempt: {state.get('attempt')}")
 
         if state.get('duration'):
-            print(f"   Duration: {state.get('duration'):.2f}s")
+            print(f"Duration: {state.get('duration'):.2f}s")
 
         if "api_fallback" in state:
             fb = state["api_fallback"]
-            print(f"   API Fallback: {fb.get('api_status')} ({fb.get('api_duration', 0):.2f}s)")
+            print(f"API Fallback: {fb.get('api_status')} ({fb.get('api_duration', 0):.2f}s)")
 
     print(f"\n{'=' * 80}\n")

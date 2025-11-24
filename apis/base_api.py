@@ -34,7 +34,7 @@ class BaseAPI:
             username = f"admin@{get_env('CODE_INPUT')}"
             password = get_env("PASSWORD_COMPANY")
         elif auth_profile == "user":
-            username = f"api_test-{load_data("api/code")}@{get_env('CODE_INPUT')}"
+            username = f'api_test-{load_data("api/code")}@{get_env("CODE_INPUT")}'
             password = get_env("PASSWORD_USER")
         elif auth_profile:
             raise ValueError(f"Noma'lum auth_profile: {auth_profile}")
