@@ -77,7 +77,7 @@ class TestStateManager:
             return self._dep_info(False, status, has_fb, fb_passed, "Test fail" + (", API yo'q" if not has_fb else ""))
 
         elif status == "SKIPPED":
-            return self._dep_info(False, status, False, False, f"Skip: {state.get('error', 'Noma\'lum')}")
+            return self._dep_info(False, status, False, False, f"Skip: {state.get('error', 'Nomalum')}")
 
         return self._dep_info(False, status or "UNKNOWN", has_fb, fb_passed, f"Noma'lum: {status}")
 
