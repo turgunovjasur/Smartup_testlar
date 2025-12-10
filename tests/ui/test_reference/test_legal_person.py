@@ -41,7 +41,7 @@ def test_add_legal_person(driver, test_data, soft_assertions, save_data):
     email = f"email_{i}@gmail.uz"
     address = f"O'zbekiston, Toshkent sh, Beshyog'och, 22_({i})"
     post_address=f"info@greenwhite_{i}.uz"
-    tin = f"tin_{i}"
+    tin = f"{i}"
     cea = f"cea_{i}"
     vat_code = f"vat_code_{i}"
     lat_lng = "41.31127920445961,69.23851132392885,12"
