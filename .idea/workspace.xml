@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="change: tin in legal person form">
-      <change afterPath="$PROJECT_DIR$/apis/price_tag_excel_api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/api/test_price_tag_excel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/base_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/apis/base_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/product_set_price_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/apis/product_set_price_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/test_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/test_settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flows/grid_setting_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/flows/grid_setting_flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/anor/mk/currency_view/currency_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/anor/mk/currency_view/currency_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/biruni/md/biruni/grid_setting/grid_setting.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/biruni/md/biruni/grid_setting/grid_setting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/core/md/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/core/md/base_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/api_test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/api_test_runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/test_product_set_price.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_product_set_price.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/test_user_license_attach.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_user_license_attach.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/ui/test_finance/test_currency.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_finance/test_currency.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/ui/test_license/test_license.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_license/test_license.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/ui/test_reference/test_price_type.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/test_price_type.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/ui/test_reference/test_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ui/test_reference/test_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui_test_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui_test_runner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/api_fallback.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/api_fallback.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/screen_recorder.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/screen_recorder.py" afterDir="false" />
-    </list>
+    <list default="true" id="fd46229e-47ef-4392-a8a2-9cc1f01fd497" name="Changes" comment="Change: Lincenziya form" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -440,14 +417,6 @@
       <option name="presentableId" value="Default" />
       <updated>1741665237387</updated>
     </task>
-    <task id="LOCAL-00014" summary="26.06.2025 -&gt; 2">
-      <option name="closed" value="true" />
-      <created>1750933678940</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1750933678940</updated>
-    </task>
     <task id="LOCAL-00015" summary="&quot;Fix syntax error in f-string (Штат key)&quot;">
       <option name="closed" value="true" />
       <created>1750934110459</created>
@@ -832,7 +801,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765360471653</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="Change: Lincenziya form">
+      <option name="closed" value="true" />
+      <created>1769061672643</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1769061672645</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -850,7 +827,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added flow extra cost 07.08.2025" />
     <MESSAGE value="Added flow input 07.08.2025" />
     <MESSAGE value="Added balance_flow 08.08.2025" />
     <MESSAGE value="Added: Assertion (12.08.2025)" />
@@ -875,6 +851,7 @@
     <MESSAGE value="(24.11.2025)-requirements.txt" />
     <MESSAGE value="(24.11.2025)-\'" />
     <MESSAGE value="change: tin in legal person form" />
-    <option name="LAST_COMMIT_MESSAGE" value="change: tin in legal person form" />
+    <MESSAGE value="Change: Lincenziya form" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change: Lincenziya form" />
   </component>
 </project>
