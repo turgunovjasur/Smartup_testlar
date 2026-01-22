@@ -8,6 +8,6 @@ class ProductSetPriceAPI(BaseAPI):
     # ------------------------------------------------------------------------------------------------------------------
 
     def model_product_set_price(self, body):
-        return self._post("/b/anor/mkf/product_price_audit:table", body)
+        return self._post("/b/anor/mr/product/product_set_price:model", body)
 
     # ------------------------------------------------------------------------------------------------------------------

@@ -73,7 +73,7 @@ class APIFallbackManager:
         summary = self.get_fallback_summary()
 
         if summary["total_fallbacks"] == 0:
-            print("\nℹ️  Hech qanday API fallback bajarilmagan\n")
+            print("ℹ️ Hech qanday API fallback bajarilmagan")
             return
 
         print(f"\n{'='*80}")

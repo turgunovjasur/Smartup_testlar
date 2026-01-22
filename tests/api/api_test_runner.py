@@ -5,6 +5,8 @@ from tests.api.test_inventory import test_inventory_save, test_inventory_model
 from tests.api.test_legal_person_import_export import test_legal_person_import, test_legal_person_export
 from tests.api.test_natural_person_import_export import test_natural_person_import, test_natural_person_export
 from tests.api.test_payment_type import test_payment_type_attach, test_payment_type_attach_to_room
+from tests.api.test_price_tag_excel import test_price_tag_excel_download
+from tests.api.test_product_set_price import test_product_set_price_save, test_product_set_price_model
 from tests.api.test_robot_save_model import test_robot_save, test_robot_model
 from tests.api.test_role_save_model import test_role_edit, test_role_view, test_role_access_generate_all
 from tests.api.test_room_save_model import test_room_save, test_room_model
@@ -54,9 +56,9 @@ test_cases = [
 
     {"name": "Biruni Session [INFO]", "func": test_biruni_session},
 
-    {"name": "License [INFO]", "func": test_get_purchase_info},
+    {"name": "License Purchase [INFO]", "func": test_get_purchase_info},
     {"name": "License [SAVE]", "func": test_purchase_license},
-    {"name": "License [INFO]", "func": test_user_license_list},
+    {"name": "License User [LIST]", "func": test_user_license_list},
     {"name": "License [ATTACH USER]", "func": test_user_license_attach},
 
     {"name": "User Change Password", "func": test_user_change_password},
@@ -76,6 +78,11 @@ test_cases = [
 
     {"name": "Inventory [SAVE]", "func": test_inventory_save},
     {"name": "Inventory [MODEL]", "func": test_inventory_model},
+
+    {"name": "Product Set Price [SAVE]", "func": test_product_set_price_save},
+    {"name": "Product Set Price [MODEL]", "func": test_product_set_price_model},
+
+    {"name": "Price Tag Excel Download [LOAD]", "func": test_price_tag_excel_download},
 ]
 
 # ======================================================================================================================

@@ -1,6 +1,5 @@
 from pages.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
-from datetime import datetime, timedelta
 
 
 class CurrencyView(BasePage):
@@ -40,4 +39,56 @@ class CurrencyView(BasePage):
 
     def click_close_button(self):
         self.click(self.close_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    refresh_rate_button = (By.XPATH, '//button[@ng-click="refreshRate()"]')
+    yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
+
+    def click_refresh_rate_button(self):
+        self.click(self.refresh_rate_button)
+        self.click(self.yes_button)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def get_currency_rate_with_xpath(self):
+        """
+        Jadvaldan 'Курс валют' ustunini XPATH yordamida aniqlab, qiymatini oladi.
+        """
+
+        # 1-QADAM: Headerlarni XPATH orqali olish
+        # Ma'nosi: classida 'tbl-header-cell' so'zi qatnashgan barcha divlarni top
+        xpath_headers = "//div[contains(@class, 'tbl-header')]//div[contains(@class, 'tbl-header-cell')]"
+        headers = self._wait_for_presence_all((By.XPATH, xpath_headers))
+
+        target_index = -1
+
+        if headers:
+            for index, header in enumerate(headers):
+                # Header matnini tekshiramiz
+                if "Курс валют" in header.text:
+                    target_index = index
+                    break
+
+        if target_index == -1:
+            self.logger.warning("'Курс валют' sarlavhasi topilmadi.")
+            return None
+
+        # 2-QADAM: 1-qatordagi kataklarni XPATH orqali olish
+        # Ma'nosi: tbl-body ichidagi birinchi tbl-row ni top va uning ichidagi barcha div farzandlarini ol
+        # Eslatma: XPath da indekslash [1] dan boshlanadi
+        xpath_first_row_cells = "//div[contains(@class, 'tbl-body')]//div[contains(@class, 'tbl-row')][1]/div"
+        cells = self._wait_for_presence_all((By.XPATH, xpath_first_row_cells))
+
+        # 3-QADAM: Indeks bo'yicha qiymatni olish
+        if cells and len(cells) > target_index:
+            target_cell = cells[target_index]
+
+            # Scroll qilamiz (BasePage funksiyasi)
+            self._scroll_to_element(target_cell, (By.XPATH, xpath_first_row_cells))
+
+            result_value = target_cell.text
+            self.logger.info(f"Natija (XPath orqali): {result_value}")
+            return result_value
+
+        self.logger.error("Jadval kataklari topilmadi.")
+        return None
     # ------------------------------------------------------------------------------------------------------------------

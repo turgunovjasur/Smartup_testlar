@@ -2,7 +2,6 @@ import time
 from pages.biruni.md.biruni.grid_setting.grid_setting import GridSetting
 from pages.biruni.md.biruni.grid_setting.grid_setting_in_form import GridSettingInForm
 
-
 # ----------------------------------------------------------------------------------------------------------------------
 
 def grid_setting(driver, option_name=None, search_type=None, save_as_default=False):

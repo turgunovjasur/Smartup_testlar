@@ -177,3 +177,13 @@ class BaseAPI:
         return resp, t_network, t_total
 
     # ==================================================================================================================
+
+    def get(self, url, params=None):
+        """GET request"""
+        start = time.time()
+        response = self.session.get(url, params=params)
+        t_network = time.time() - start
+        t_total = time.time() - start
+        return response, t_network, t_total
+    
+    # ==================================================================================================================

@@ -18,7 +18,7 @@ class GridSetting(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
 
     def click_options_button(self, option_name):
-        option = (By.XPATH, f'//ul[contains(@class, "gs-extra-list ui-sortable")]/li[@id="{option_name}"]/div')
+        option = (By.XPATH, f'//ul[contains(@class, "ui-sortable")]/li[@id="{option_name}"]/div')
         self.click(option)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')

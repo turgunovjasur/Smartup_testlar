@@ -23,11 +23,13 @@ def test_get_purchase_info(load_data, save_data):
     service_id = None
 
     for row in data['licenses']:
-        if row['service_name'] == "Подключение к системе (5x)":
+        # if row['service_name'] == "Подключение к системе (5x)":
+        if row['service_name'] == "Smartup ERP: Базовый пользователь (Обязательный)":
             service_id = row['service_id']
             break
 
-    assert service_id is not None, "Service 'Подключение к системе (5x)' not found!"
+    # assert service_id is not None, "Service 'Подключение к системе (5x)' not found!"
+    assert service_id is not None, "Service 'Smartup ERP: Базовый пользователь (Обязательный)' not found!"
 
     file_name = "license_data_store"
 

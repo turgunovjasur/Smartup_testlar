@@ -769,7 +769,7 @@ class BasePage:
             str: Qisqa URL → base_path + user_id (masalan: https://smartup.online/#!/6lybkj03t/)
 
         Raises:
-            ElementInteractionError: Agar URL noto‘g‘ri bo‘lsa yoki kesib bo‘lmasa
+            ElementInteractionError: Agar URL noto'g'ri bo'lsa yoki kesib bo'lmasa
         """
 
         self.logger.debug(f"{self._get_caller_chain()}")
@@ -779,8 +779,17 @@ class BasePage:
 
         for attempt in range(6):
             try:
+                # URL to'liq yuklanishini kutish
+                WebDriverWait(self.driver, 10).until(
+                    lambda d: '#' in d.current_url and '/!' in d.current_url
+                )
+
                 current_url = self.driver.current_url
-                self.logger.info(f"current_url: {current_url}/")
+                self.logger.info(f"current_url: {current_url}")
+
+                # URL formatini tekshirish
+                if '#' not in current_url or '/!' not in current_url:
+                    raise ValueError(f"URL noto'g'ri formatda: {current_url}")
 
                 base_path = current_url.split('#')[0]  # https://smartup.online
                 after_hash = current_url.split('#')[1]  # /!6lybkj03t/anor/mdeal/return/return_list
@@ -792,12 +801,23 @@ class BasePage:
                 self.logger.info(f"Kesilgan short_url: {short_url}")
                 return short_url
 
-            except Exception as e:
-                self.logger.warning(f"[{attempt + 1}/6] cut_url bajarishda xatolik: {str(e)}")
-                time.sleep(1)
+            except TimeoutException as e:
+                last_error = e
+                self.logger.warning(f"[{attempt + 1}/6] URL yuklanishini kutishda timeout: {str(e)}")
+                time.sleep(2)
 
-        # 6 urinishdan keyin ham bo‘lmasa
-        message = f"server_name va user_id ni kesib bo‘lmadi (6 urinishdan keyin)"
+            except (ValueError, IndexError) as e:
+                last_error = e
+                self.logger.warning(f"[{attempt + 1}/6] URL ni parse qilishda xatolik: {str(e)}")
+                time.sleep(2)
+
+            except Exception as e:
+                last_error = e
+                self.logger.warning(f"[{attempt + 1}/6] cut_url bajarishda xatolik: {str(e)}")
+                time.sleep(2)
+
+        # 6 urinishdan keyin ham bo'lmasa
+        message = f"server_name va user_id ni kesib bo'lmadi (6 urinishdan keyin). Oxirgi URL: {self.driver.current_url}"
         self._raise(
             ElementInteractionError,
             message=message,

@@ -76,8 +76,8 @@ def test_price_type_add_USA(driver, test_data):
 @pytest.mark.regression
 @pytest.mark.order_group_C
 @pytest.mark.order(435)
-def test_price_type_setting(driver, test_data):
-    """Test try a UZB price type limit"""
+def test_price_type_min_amount_on(driver, test_data):
+    """Test try a UZB price type limit On"""
 
     data = test_data["data"]
     price_type_name = data["price_type_name_UZB"]
@@ -89,6 +89,28 @@ def test_price_type_setting(driver, test_data):
     price_editable = PriceEditable(driver)
     price_editable.element_visible()
     price_editable.input_min_amount(amount=100_000)
+    price_editable.click_save_button()
+
+    list_flow(driver)
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+@pytest.mark.regression
+@pytest.mark.order_group_C
+@pytest.mark.order(437)
+def test_price_type_min_amount_off(driver, test_data):
+    """Test try a UZB price type limit Off"""
+
+    data = test_data["data"]
+    price_type_name = data["price_type_name_UZB"]
+
+    login_user(driver, test_data, url='anor/mkr/price_type_list')
+
+    list_flow(driver, find_row=price_type_name, setting=True)
+
+    price_editable = PriceEditable(driver)
+    price_editable.element_visible()
+    price_editable.input_min_amount(amount="")
     price_editable.click_save_button()
 
     list_flow(driver)

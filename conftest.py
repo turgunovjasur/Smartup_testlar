@@ -201,9 +201,8 @@ def cod_generator():
 def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
-    # cod = cod_generator
-    # cod = "13_11_12_54"
-    cod = "ui-3"
+    cod = cod_generator
+    # cod = "ui-23"
     save_data("cod", cod)
 
     base_data = {
@@ -240,6 +239,7 @@ def test_data(save_data, cod_generator):
         "sector_name": f"Test_sector-{base_data['cod']}",
         "product_name": f"Test_product-{base_data['cod']}",
         "product_name_2": f"Test_product-{base_data['cod']}-2",
+        "product_name_3": f"Test_product-{base_data['cod']}-3",
         "template_name": f"Test_invoice_report-{base_data['cod']}",
         "expense_article_name": f"Test_expense_article-{base_data['cod']}",
         "role_name": "Админ",
@@ -437,4 +437,67 @@ def test_state_manager():
     """Test state manager fixture - barcha testlar uchun umumiy"""
     return TestStateManager()
 
+# ======================================================================================================================
+
+# """
+# conftest.py - Video Recording bilan
+# Bu faylni pytest konfiguratsiyangizdagi conftest.py ga qo'shing
+# """
+# import pytest
+# from utils.screen_recorder import ScreenRecorder
+#
+#
+# @pytest.fixture(scope="function")
+# def video_recorder(driver, request):
+#     """
+#     Har bir test uchun avtomatik video yozuv fixture.
+#
+#     Usage:
+#         def test_example(driver, video_recorder):
+#             # Test kodlari...
+#             pass
+#     """
+#     test_name = request.node.name
+#     recorder = ScreenRecorder(
+#         driver,
+#         filename=f"{test_name}_{{ts}}.mp4",
+#         output_dir="artifacts/videos",
+#         fps=10.0,
+#         prefer="h264",  # yoki "vp9" WebM uchun
+#         draw_info=True,  # Videoda vaqt, test nomi, URL ko'rsatish
+#         attach_to_allure=True,
+#         keep_on_success=True,
+#         test_name=test_name
+#     )
+#
+#     # Recording boshlash
+#     recorder.start()
+#
+#     yield recorder
+#
+#     # Test tugagandan keyin to'xtatish
+#     recorder.stop()
+#
+#
+# # Yoki avtomatik useDependencies fixture:
+# @pytest.fixture(scope="function", autouse=False)
+# def auto_record_video(driver, request):
+#     """
+#     Barcha testlar uchun avtomatik video yozish.
+#     autouse=True qilsangiz, har bir testda avtomatik ishga tushadi.
+#     """
+#     test_name = request.node.name
+#     recorder = ScreenRecorder(
+#         driver,
+#         filename=f"{test_name}_{{ts}}.mp4",
+#         fps=8.0,
+#         attach_to_allure=True,
+#         keep_on_success=True,
+#         test_name=test_name
+#     )
+#     recorder.start()
+#
+#     yield
+#
+#     recorder.stop()
 # ======================================================================================================================

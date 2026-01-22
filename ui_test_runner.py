@@ -2,7 +2,7 @@ import inspect
 import allure
 
 from tests.ui.test_cashin.test_cashin import test_cashin_add_A
-from tests.ui.test_finance.test_currency import test_currency_add
+from tests.ui.test_finance.test_currency import test_currency_add_USA
 from tests.ui.test_order.order_invoice_report.test_order_invoice_report import \
     test_add_template_for_order_invoice_report
 from tests.ui.test_order.order_report.test_order_report import test_check_report_for_order_list, \
@@ -22,8 +22,6 @@ from tests.ui.test_license.test_license import test_add_user_license, test_add_p
 from tests.ui.test_rep.integration.saleswork.test_saleswork import test_check_report_sales_work
 from tests.ui.test_payment_to_suppliers.test_payment_to_suppliers import test_payment_to_suppliers
 from tests.ui.test_reference.test_action import test_add_action_cash_money, test_add_action_terminal
-from tests.ui.test_reference.test_price_type import test_price_type_add_UZB, test_price_type_add_USA, \
-    test_price_type_setting
 from tests.ui.test_reference.test_client import test_client_add_A, test_client_add_B, test_client_add_C
 from tests.ui.test_writeoff.test_writeoff import test_add_write_off, test_check_constructor_report_write_off
 from tests.ui.test_reference.test_product import test_product_add_as_product_1, test_product_add_as_product_2
@@ -31,10 +29,11 @@ from tests.ui.test_reference.test_legal_person import test_add_legal_person, tes
 from tests.ui.test_rep.integration.integration_two.test_integration_two import test_check_report_integration_two
 from tests.ui.test_return_supplier.test_return_supplier import test_add_purchase_to_supplier, test_return_to_supplier
 from tests.ui.test_rep.integration.integration_three.test_integration_three import test_check_report_integration_three
+from tests.ui.test_reference.test_price_type import (
+    test_price_type_add_UZB, test_price_type_add_USA, test_price_type_min_amount_on, test_price_type_min_amount_off
+)
 from tests.ui.test_finance.test_contract import (
-    test_add_contract_for_client_A_UZB,
-    test_add_contract_for_client_B_UZB,
-    test_add_contract_for_client_C_USA,
+    test_add_contract_for_client_A_UZB, test_add_contract_for_client_B_UZB, test_add_contract_for_client_C_USA,
 )
 from tests.ui.test_order.test_life_cycle import (
     test_adding_permissions_to_user,
@@ -114,7 +113,7 @@ test_cases = [
     {"name": "Add Sector",           "func": test_sector_add,                  "deps": ["test_room_add"]},
     {"name": "Add Product-1",        "func": test_product_add_as_product_1,    "deps": ["test_sector_add", "test_price_type_add_UZB", "test_price_type_add_USA"]},
     {"name": "Check Price Tag",      "func": test_check_price_tag,             "deps": ["test_price_type_add_UZB"]},
-    {"name": "Add Currency",         "func": test_currency_add,                "deps": []},
+    {"name": "Add Currency",         "func": test_currency_add_USA,            "deps": []},
     {"name": "Add Margin",           "func": test_margin_add,                  "deps": []},
     {"name": "Add Natural Person-A", "func": test_natural_person_client_add_A, "deps": []},
     {"name": "Add Natural Person-B", "func": test_natural_person_client_add_B, "deps": []},
@@ -154,8 +153,9 @@ test_cases = [
     {"name": "(Group-C) Edit Order For Price Type USA-C", "func": test_edit_order_for_price_type_USA,      "deps": ["test_setting_prepayment_on", "test_add_order_for_price_type_USA"]},
     {"name": "(Group-C) Off Test Setting Prepayment",     "func": test_setting_prepayment_off,             "deps": []},
 
-    {"name": "(Group-C) Price Type Setting",              "func": test_price_type_setting,                 "deps": ["test_price_type_add_UZB"]},
-    {"name": "(Group-C) Min Order Amount",                "func": test_min_order_amount,                   "deps": ["test_price_type_setting"]},
+    {"name": "(Group-C) Price Type Min Amount On",        "func": test_price_type_min_amount_on,           "deps": ["test_price_type_add_UZB"]},
+    {"name": "(Group-C) Min Order Amount",                "func": test_min_order_amount,                   "deps": ["test_price_type_min_amount_on"]},
+    {"name": "(Group-C) Price Type Min Amount Off",       "func": test_price_type_min_amount_off,          "deps": ["test_min_order_amount"]},
 
     # (Group-D) Order with Sub Filial:
     {"name": "(Group-D) Add Template For Order Invoice Report", "func": test_add_template_for_order_invoice_report, "deps": ["test_sub_filial_add"]},

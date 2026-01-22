@@ -40,6 +40,8 @@ def test_product_set_price_model(save_data, load_data):
     api = ProductSetPriceAPI(load_data, auth_profile="user")
 
     product_id = load_data("api/product_id")
+    price_type_uzb_id = load_data("api/price_type_uzb_id")
+    price_type_use_id = load_data("api/price_type_use_id")
 
     body = {
         "product_id": product_id
@@ -51,5 +53,27 @@ def test_product_set_price_model(save_data, load_data):
 
     get_product_id = data[2]["product_id"]
     assert get_product_id == product_id, f"get_product_id: {get_product_id} != product_id: {product_id}"
+
+    prices = data[2]["prices"]
+
+    # Kutilayotgan narxlar map'i
+    expected_prices = {
+        price_type_uzb_id: "12000",  # UZS narxi
+        price_type_use_id: "12"      # USD narxi
+    }
+    # Har bir price type uchun tekshirish
+    for price_item in prices:
+        price_id = price_item[0]  # price ID
+        price_value = price_item[5]  # price value
+
+        if price_id in expected_prices:
+            expected_value = expected_prices[price_id]
+            assert price_value == expected_value, \
+                f"Price ID {price_id} uchun narx noto'g'ri: kutilgan {expected_value}, lekin {price_value} keldi"
+
+
+        if price_id in expected_prices:
+            assert price_value == expected_prices[price_id], \
+                f"Price ID {price_id} uchun narx noto'g'ri: kutilgan {expected_prices[price_id]}, lekin {price_value} keldi"
 
 # ----------------------------------------------------------------------------------------------------------------------

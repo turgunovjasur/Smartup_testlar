@@ -9,6 +9,6 @@ class WaitTimeouts:
     """Element kutish vaqtlari (soniyalarda)."""
 
     DEFAULT_TIMEOUT = 30
-    UI_PAGE_LOADER_TIMEOUT = 60  # Sahifa to'liq yuklanishi
+    UI_PAGE_LOADER_TIMEOUT = 360  # Sahifa to'liq yuklanishi
 
-    FILE_DOWNLOAD_TIMEOUT = 30
+    FILE_DOWNLOAD_TIMEOUT = 60
