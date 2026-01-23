@@ -1,6 +1,5 @@
 from pages.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
-
 from utils.exception import ElementVisibilityError
 
 
@@ -8,7 +7,6 @@ class LicenseList(BasePage):
     # ------------------------------------------------------------------------------------------------------------------
     # balance
     # ------------------------------------------------------------------------------------------------------------------
-    # header = (By.XPATH, '(//div[@class="card-header"]//div[@class="card-title"]//t[contains(text(),"Баланс")])[1]')
 
     def element_visible(self):
         self.assertions.assert_url_contains(expected_url_part="/biruni/kl/license_list")
@@ -71,16 +69,14 @@ class LicenseList(BasePage):
     def input_end_date(self, end_date):
         self.input_text(self.end_date_input, end_date)
     # ------------------------------------------------------------------------------------------------------------------
-    requirements_input = (By.XPATH, '//tr/td[text()="Подключение к системе (5x) (Обязательный пакет)"]')
+    license_count_input = (By.XPATH, '//tr/td[text()="Smartup ERP: Базовый пользователь"]/../td/input[@ng-model="license.count"]')
 
     def check_requirements_input(self):
         try:
-            self.wait_for_element(self.requirements_input, timeout=3, wait_type="visibility")
+            self.wait_for_element(self.license_count_input, timeout=3, wait_type="visibility")
             return True
         except ElementVisibilityError:
             return False
-    # ------------------------------------------------------------------------------------------------------------------
-    license_count_input = (By.XPATH, '//tr/td[text()="Подключение к системе (5x)"]/../td/input[@ng-model="license.count"]')
 
     def input_license_count(self, license_count):
         self.input_text(self.license_count_input, license_count)
