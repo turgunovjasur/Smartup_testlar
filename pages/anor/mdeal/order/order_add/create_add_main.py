@@ -20,6 +20,7 @@ class OrderAddMain(BasePage):
         return self.input_text(self.delivery_date_input, get_value=True)
     # ------------------------------------------------------------------------------------------------------------------
     rooms_input = (By.XPATH, "//div[@id='anor279-input-b_input-room_name']//input")
+    # rooms_input = (By.XPATH, "(//div[@id='anor279-input-b_input-room_name']//input)[2]")
     options_room = (By.XPATH, '//div[@id="anor279-input-b_input-room_name"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def click_rooms_input(self, room_name):

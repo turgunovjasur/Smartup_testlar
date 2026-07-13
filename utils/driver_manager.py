@@ -2,11 +2,9 @@ import os
 import time
 import shutil
 import tempfile
-from selenium import webdriver
 from selenium.common import WebDriverException
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from utils.chromedriver_resolver import create_chrome_driver
 from utils.download_manager import DOWNLOAD_DIR
 from utils.logger import configure_logging
 
@@ -29,11 +27,6 @@ def create_driver(test_name, test_data):
         data = test_data["data"]
         url = data["url"]
         logger.info(f"Test URL: {url}")
-
-        # ChromeDriver o'rnatish
-        driver_path = ChromeDriverManager().install()
-        service = ChromeService(driver_path)
-        logger.debug(f"ChromeDriver o'rnatildi: {driver_path}")
 
         # Headless rejim - faqat environment variable orqali
         headless = os.getenv("GITHUB_ACTIONS") == "true"
@@ -78,7 +71,8 @@ def create_driver(test_name, test_data):
         logger.debug(f"Yuklab olish katalogi: {DOWNLOAD_DIR}")
 
         # Chrome driver yaratish
-        drv = webdriver.Chrome(service=service, options=options)
+        drv, driver_path, driver_source = create_chrome_driver(options, logger)
+        logger.debug(f"ChromeDriver manbasi: {driver_source} | Path: {driver_path}")
         logger.info(f"Browser ishga tushdi. Session ID: {drv.session_id}")
 
         # CDP orqali fayl yuklash sozlamalari

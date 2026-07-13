@@ -1,21 +1,28 @@
 import os
 import json
+import random
 import time
 import shutil
 import pytest
 import tempfile
 from datetime import datetime
-from selenium import webdriver
 from selenium.common import WebDriverException
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from pages.core.md.base_page import BasePage
+from utils.chromedriver_resolver import create_chrome_driver
 from utils.download_manager import DOWNLOAD_DIR
 from utils.api_fallback import APIFallbackManager
 from utils.assertions import SoftAssertions
-from utils.env_reader import get_env
-from utils.logger import configure_logging
+from utils.env_reader import get_dotenv_path, get_env
+from utils.logger import (
+    build_log_run_timestamp,
+    configure_logging,
+    get_active_log_run_dir,
+    reset_active_test_name,
+    resolve_request_test_name,
+    set_active_log_run_dir,
+    set_active_test_name,
+)
 from utils.email import send_email_report, format_test_results
 from utils.test_retry import TestStateManager, print_test_states
 
@@ -29,6 +36,21 @@ test_results = {
     'start_time': None,
     'end_time': None
 }
+
+# ======================================================================================================================
+
+def pytest_sessionstart(session):
+    """Har pytest run uchun alohida log katalogini yaratish."""
+    run_log_dir = build_log_run_timestamp()
+    set_active_log_run_dir(run_log_dir)
+    os.makedirs(os.path.join("logs", run_log_dir), exist_ok=True)
+
+# ======================================================================================================================
+
+def pytest_sessionfinish(session, exitstatus):
+    """Session tugagach run katalog kontekstini tozalash."""
+    if get_active_log_run_dir():
+        set_active_log_run_dir(None)
 
 # ======================================================================================================================
 
@@ -64,11 +86,22 @@ def pytest_runtest_makereport(item, call):
 
 # ======================================================================================================================
 
+@pytest.fixture(autouse=True)
+def active_test_logging_context(request):
+    """Barcha fixture va helper'lar uchun yagona test log kontekstini o'rnatadi."""
+    token = set_active_test_name(resolve_request_test_name(request))
+    try:
+        yield
+    finally:
+        reset_active_test_name(token)
+
+# ======================================================================================================================
+
 @pytest.fixture(scope="function")
 def driver(request, test_data):
     """Driver yaratish, sozlash va tozalashning yagona joyi."""
     # Logger sozlash
-    test_name = request.node.name
+    test_name = resolve_request_test_name(request)
     logger = configure_logging(test_name)
 
     logger.info("=" * 80)
@@ -83,11 +116,6 @@ def driver(request, test_data):
         # Test ma'lumotlarini olish
         data = test_data["data"]
         url = data["url"]
-
-        # ChromeDriver o'rnatish
-        driver_path = ChromeDriverManager().install()
-        service = ChromeService(driver_path)
-        logger.debug(f"ChromeDriver o'rnatildi: {driver_path}")
 
         # Headless rejimni tekshirish
         headless = request.config.getoption("--headless", default=False)
@@ -130,7 +158,8 @@ def driver(request, test_data):
         logger.debug(f"Yuklab olish katalogi: {DOWNLOAD_DIR}")
 
         # Chrome driver yaratish
-        drv = webdriver.Chrome(service=service, options=options)
+        drv, driver_path, driver_source = create_chrome_driver(options, logger)
+        logger.debug(f"ChromeDriver manbasi: {driver_source} | Path: {driver_path}")
         logger.info(f"Browser ishga tushdi. Session ID: {drv.session_id}")
 
         # CDP orqali fayl yuklash sozlamalari
@@ -195,15 +224,32 @@ def driver(request, test_data):
 @pytest.fixture(scope="session")
 def cod_generator():
     """Test sessiyasi uchun yagona cod qiymati"""
-    return datetime.today().strftime("%d_%m_%H_%M")
+    # return datetime.today().strftime("%d_%m_%H_%M")
+    return random.randint(1000, 9999)
 
 @pytest.fixture(scope="function")
 def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
-    cod = cod_generator
-    # cod = "ui-23"
+    # cod = cod_generator
+    cod = "1504"
     save_data("cod", cod)
+
+    required_env_vars = [
+        "EMAIL_COMPANY",
+        "PASSWORD_COMPANY",
+        "CODE_INPUT",
+        "URL",
+        "PASSWORD_USER",
+    ]
+    missing_env_vars = [name for name in required_env_vars if not get_env(name)]
+    if missing_env_vars:
+        dotenv_path = get_dotenv_path() or ".env topilmadi"
+        raise pytest.UsageError(
+            "Majburiy environment variable topilmadi: "
+            f"{', '.join(missing_env_vars)}. "
+            f"Yuklangan .env: {dotenv_path}"
+        )
 
     base_data = {
         "email_company": get_env("EMAIL_COMPANY"),
@@ -314,7 +360,7 @@ def get_data_file_path(request, file_name=None):
 
 @pytest.fixture
 def save_data(request):
-    logger = configure_logging(request.node.name)
+    logger = configure_logging(resolve_request_test_name(request))
 
     def _save(key, value, file_name=None):
         file_path = get_data_file_path(request, file_name=f"{file_name}.json" if file_name else None)

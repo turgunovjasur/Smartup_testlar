@@ -3,6 +3,11 @@ from apis.base_api import BaseAPI
 class RoleAPI(BaseAPI):
     # ------------------------------------------------------------------------------------------------------------------
 
+    def role_list(self, body):
+        return self._post("/b/trade/tr/role_list:table", body)
+
+    # ------------------------------------------------------------------------------------------------------------------
+
     def role_edit(self, body):
         return self._post("/b/trade/tr/role+edit:save", body)
 

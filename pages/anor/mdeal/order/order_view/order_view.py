@@ -19,7 +19,7 @@ class OrderView(BasePage):
         if data_type not in data_types:
             raise ValueError(f"Incorrect data_type: {data_type}. Allowed values: 'numeric', 'text'")
 
-        locator = (By.XPATH, f'//t[contains(text(),"{input_name}")]/../../span')
+        locator = (By.XPATH, f'(//t[contains(text(),"{input_name}")]/../../span)[last()]')
         return data_types[data_type](locator)
     # ------------------------------------------------------------------------------------------------------------------
     setting_button = (By.XPATH, '//b-pg-controller[@name="goods_items_view"]//div[@role="group"]/button')

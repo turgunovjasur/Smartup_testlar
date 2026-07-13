@@ -23,10 +23,9 @@ def document_flow(driver, **kwargs):
     _list.licence_and_document_visible()
 
     element_name = kwargs.get("element_name")
-    data = kwargs.get("data")
-    if element_name and data:
-        _list.click_tbl_row_button(element_name, data)
-        _list.click_attach_users_button(element_name, data)
+    if element_name:
+        _list.click_tbl_row_button(element_name)
+        _list.click_attach_users_button(element_name)
 
 # ======================================================================================================================
 

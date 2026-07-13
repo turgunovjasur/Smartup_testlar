@@ -3,6 +3,10 @@ from apis.base_api import BaseAPI
 class PaymentTypeAPI(BaseAPI):
     # ------------------------------------------------------------------------------------------------------------------
 
+    def list_attach_payment_types(self, body):
+        return self._post("/b/anor/mkr/payment_type_list+attach:table", body)
+    # ------------------------------------------------------------------------------------------------------------------
+
     def attach_payment_type(self, body):
         return self._post("/b/anor/mkr/payment_type_list+attach$attach", body)
     # ------------------------------------------------------------------------------------------------------------------

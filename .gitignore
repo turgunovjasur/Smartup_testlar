@@ -165,6 +165,9 @@ cython_debug/
 .DS_Store
 qase.lock
 
+# Claude Code local settings
+.claude/
+
 **/screenshot_dir/
 
 data_store.json/

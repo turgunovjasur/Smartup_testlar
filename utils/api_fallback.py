@@ -10,7 +10,7 @@ class APIFallbackManager:
 
     def __init__(self, state_file="test_state.json"):
         self.state_file = Path(state_file)
-        self.logger = configure_logging("APIFallbackManager")
+        self.logger = None
 
     # ==================================================================================================================
     # PUBLIC API
@@ -24,6 +24,7 @@ class APIFallbackManager:
         --------
         dict or None: API test natijasi yoki None
         """
+        self.logger = configure_logging(ui_test_name)
         self._log_fallback_start(ui_test_name, api_test_func.__name__, ui_attempts)
 
         start_time = time.time()
@@ -106,7 +107,10 @@ class APIFallbackManager:
             with open(self.state_file, 'w', encoding='utf-8') as f:
                 json.dump(states, f, indent=4, ensure_ascii=False)
         except IOError as e:
-            self.logger.error(f"State saqlashda xatolik: {e}")
+            if self.logger:
+                self.logger.error(f"State saqlashda xatolik: {e}")
+            else:
+                print(f"⚠️ State saqlashda xatolik: {e}")
 
     def _update_state(self, ui_test_name, api_test_name, api_status, duration, ui_attempts, error=None):
         """State'ni yangilash."""

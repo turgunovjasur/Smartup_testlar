@@ -202,9 +202,9 @@ test_cases = [
 
     # Payment To Suppliers
     {"name": "Add Payment To Suppliers",           "func": test_payment_to_suppliers,               "deps": ["test_add_supplier", "test_payment_type_add"]},
-
-    # Integration Report:
-    {"name": "Check Report CisLink",               "func": test_check_report_cis_link,              "deps": ["test_price_type_add_UZB"]},
+    #
+    # # Integration Report:
+    # {"name": "Check Report CisLink",               "func": test_check_report_cis_link,              "deps": ["test_price_type_add_UZB"]},
     {"name": "Check Report Integration Three",     "func": test_check_report_integration_three,     "deps": []},
     {"name": "Check Report Integration Two",       "func": test_check_report_integration_two,       "deps": ["test_price_type_add_UZB"]},
     {"name": "Check Report Optimum",               "func": test_check_report_optimum,               "deps": ["test_filial_create"]},

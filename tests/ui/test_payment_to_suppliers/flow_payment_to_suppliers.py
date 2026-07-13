@@ -1,3 +1,5 @@
+import time
+
 from pages.core.md.base_page import BasePage
 from pages.trade.tcs.cashout_add.cashout_add import CashoutAdd
 from pages.trade.tcs.cashout_list.cashout_list import CashoutList
@@ -56,6 +58,7 @@ def add_flow(driver, **kwargs):
         c_add.input_cashboxes(cash_register_name)
 
     if kwargs.get("get_balance"):
+        time.sleep(2)
         result["get_balance"] = c_add.get_balance()
 
     input_amount = kwargs.get("input_amount")

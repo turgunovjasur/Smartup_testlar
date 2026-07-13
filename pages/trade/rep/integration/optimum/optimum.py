@@ -29,7 +29,7 @@ class Optimum(BasePage):
     filial_options = (By.XPATH, '//b-input[@name="filials"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def input_filial(self, filial_name):
-        self.click_options(self.filial_input, self.filial_options, filial_name)
+        self.click_options(self.filial_input, self.filial_options, filial_name, search=True)
     # ------------------------------------------------------------------------------------------------------------------
     # Setting
     # ------------------------------------------------------------------------------------------------------------------

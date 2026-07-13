@@ -12,12 +12,14 @@ def test_inventory_save(save_data, load_data):
     name = f"api_product-{code}"
     product_code = f"api_product_code-{code}"
     sector_id = load_data("api/sector_id")
+    measure_id = _get_measure_id(api, "Количество")
+    box_type_id = _get_box_type_id(api, "Коробка")
 
     body = {
       "name": name,
       "short_name": name,
-      "measure_id": "19619",
-      "box_type_id": "16354",
+      "measure_id": measure_id,
+      "box_type_id": box_type_id,
       "box_quant": "10",
       "barcodes": [],
       "breakage_id": [],
@@ -46,6 +48,50 @@ def test_inventory_save(save_data, load_data):
 
     get_product_id = data["product_id"]
     save_data("api/product_id", get_product_id)
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def _get_measure_id(api, measure_name):
+    body = {
+        "p": {
+            "column": ["measure_id", "name", "short_name"],
+            "filter": ["name", "=", measure_name],
+            "limit": 1,
+            "offset": 0,
+            "sort": []
+        }
+    }
+
+    resp, t_network, t_total = api.list_measures(body)
+    data = api.handle_response(resp, t_network, t_total, body=body)
+    rows = data.get("data") or []
+
+    if not rows:
+        raise AssertionError(f"Measure topilmadi: {measure_name}")
+
+    return rows[0][0]
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def _get_box_type_id(api, box_type_name):
+    body = {
+        "p": {
+            "column": ["box_type_id", "name"],
+            "filter": ["name", "=", box_type_name],
+            "limit": 1,
+            "offset": 0,
+            "sort": []
+        }
+    }
+
+    resp, t_network, t_total = api.list_box_types(body)
+    data = api.handle_response(resp, t_network, t_total, body=body)
+    rows = data.get("data") or []
+
+    if not rows:
+        raise AssertionError(f"Box type topilmadi: {box_type_name}")
+
+    return rows[0][0]
 
 # ----------------------------------------------------------------------------------------------------------------------
 

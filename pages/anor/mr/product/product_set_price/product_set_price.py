@@ -1,3 +1,5 @@
+import time
+
 from pages.core.md.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -26,4 +28,5 @@ class ProductSetPrice(BasePage):
     def click_save_button(self):
         self.click(self.save_button)
         self.click(self.yes_button)
+        time.sleep(2)
     # ------------------------------------------------------------------------------------------------------------------

@@ -35,7 +35,13 @@ class FilialAdd(BasePage):
     person_options = (By.XPATH, '//b-input[@name="legal_persons"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def input_person_name(self, legal_person_name):
-        self.click_options(self.person_name_input, self.person_options, legal_person_name)
+        # search=True: dropdown da ko'p option bo'lganda inputga yozib filter qiladi, scroll erta tugashidan qochadi
+        self.click_options(
+            self.person_name_input,
+            self.person_options,
+            legal_person_name,
+            search=True,
+        )
     # ------------------------------------------------------------------------------------------------------------------
     add_button = (By.XPATH, '//b-input[@model="d.person_name"]//div/a[@ng-click="_$bInput.onAddClick()"]')
 

@@ -30,7 +30,7 @@ def test_add_user_license(driver, test_data):
 
     balance_flow(driver, navbar_name="Лицензии и документы")
 
-    document_flow(driver, element_name="ERP users", data="31.01.2026")
+    document_flow(driver, element_name="ERP users")
 
     attach_user_flow(driver, find_row=data['natural_person_name'])
 
@@ -69,5 +69,6 @@ def test_add_purchase_license(driver, test_data, assertions):
         return
 
     get_modal_content_flow(driver)
+    time.sleep(20)
 
 # ======================================================================================================================

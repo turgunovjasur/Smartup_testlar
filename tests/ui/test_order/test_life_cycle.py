@@ -3,6 +3,8 @@ import random
 import time
 import pytest
 from qase.pytest import qase
+
+from flows.modal_content_flow import get_error_massage_flow
 from pages.anor.mdeal.order.order_add.order_request_add.order_request_add_final import OrderRequestAddFinal
 from pages.anor.mdeal.order.order_add.order_request_add.order_request_add_main import OrderRequestAddMain
 from pages.anor.mdeal.order.order_add.order_request_add.order_request_add_product import OrderRequestAddProduct
@@ -162,6 +164,8 @@ def test_filial_create(driver, test_data):
     filial_view.click_project_checkbox()
     filial_view.click_checkbox_button()
     filial_view.click_save_button()
+    # get_error_massage_flow(driver, "A01-01006")
+
     filial_view.click_close_button()
 
     # Verify in List

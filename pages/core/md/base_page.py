@@ -4,7 +4,6 @@ import os
 import re
 import time
 import allure
-from datetime import datetime
 from selenium.webdriver import Keys
 from colorama import init
 from selenium.webdriver.common.by import By
@@ -14,7 +13,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from utils.assertions import Assertions
 from utils.env_reader import get_env
 from utils.log_helpers import log_start_end_for_current_method, get_caller_chain
-from utils.logger import get_test_name, configure_logging
+from utils.logger import get_test_name, configure_logging, ensure_active_log_run_dir
 from utils.exception import *
 from selenium.common.exceptions import (
     TimeoutException,
@@ -73,22 +72,19 @@ class BasePage:
     # ==================================================================================================================
 
     def take_screenshot(self, filename=None):
-        """Fayl nomiga vaqt va test nomini qo'shib, screenshot saqlash."""
+        """Screenshot'ni run/test papkasi ichiga saqlash."""
 
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        run_dir = ensure_active_log_run_dir()
         test_name = self.test_name if self.test_name != "unknown_test" else "default"
+        test_dir_name = re.sub(r'[<>:"/\\|?*]', '_', test_name)
+        image_name = filename or "screenshot"
+        image_name = re.sub(r'[<>:"/\\|?*]', '_', image_name)
 
-        if filename:
-            filename = re.sub(r'[<>:"/\\|?*]', '_', filename)
-            filename = f"{test_name}_{timestamp}_{filename}"
-        else:
-            filename = f"{test_name}_{timestamp}"
-
-        screenshot_dir = "screenshot_dir"
+        screenshot_dir = os.path.join("screenshot_dir", run_dir, test_dir_name)
         if not os.path.exists(screenshot_dir):
             os.makedirs(screenshot_dir)
 
-        screenshot_path = os.path.join(screenshot_dir, f"{filename}.png")
+        screenshot_path = os.path.join(screenshot_dir, f"{image_name}.png")
         self.driver.save_screenshot(screenshot_path)
         self.logger.info(f"Screenshot saved at {screenshot_path}")
 
@@ -780,7 +776,7 @@ class BasePage:
         for attempt in range(6):
             try:
                 # URL to'liq yuklanishini kutish
-                WebDriverWait(self.driver, 10).until(
+                WebDriverWait(self.driver, 120).until(
                     lambda d: '#' in d.current_url and '/!' in d.current_url
                 )
 
@@ -1113,7 +1109,7 @@ class BasePage:
 
     # ==================================================================================================================
 
-    def click_options(self, input_locator, options_locator, element_text, scroll=30, screenshot=True):
+    def click_options(self, input_locator, options_locator, element_text, scroll=30, screenshot=True, search=False):
         """
         Dropdown bilan ishlash uchun funksiya.
         options_locator = (By.XPATH, '//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
@@ -1128,6 +1124,10 @@ class BasePage:
 
             if not self._find_input_and_open(input_locator):
                 raise "Input ni click qilib bo'lmadi"
+
+            if search:
+                # Dropdown qidiruvini majburan ishga tushirish
+                self.input_text(input_locator, element_text)
 
             # Optionlarni kutish
             try:
@@ -1154,15 +1154,16 @@ class BasePage:
 
             for attempt in range(scroll):
                 self.driver.execute_script("arguments[0].scrollTop += arguments[0].offsetHeight;", dropdown_container)
+                time.sleep(0.15)  # Lazy/virtual list uchun DOM yangilanishiga vaqt
                 options = self._wait_for_presence_all(options_locator, visible_only=True)
                 if self._find_and_click_option(element_text, options, options_locator):
                     if self._check_dropdown_closed(options_locator):
                         return True
 
-                # Scroll tugaganligini aniqlash
+                # Scroll tugaganligini aniqlash (max_scroll <= 0 bo'lsa virtual list bo'lishi mumkin, break qilmaymiz)
                 current_scroll = self.driver.execute_script("return arguments[0].scrollTop;", dropdown_container)
                 max_scroll = self.driver.execute_script("return arguments[0].scrollHeight - arguments[0].clientHeight;", dropdown_container)
-                if current_scroll >= max_scroll:
+                if max_scroll > 0 and current_scroll >= max_scroll:
                     self.logger.info(f"Scroll oxiriga yetdi.")
                     break
 
@@ -1326,7 +1327,7 @@ class BasePage:
         click = kwargs.get("click", True)
         checkbox = kwargs.get("checkbox", False)
 
-        row_locator = (By.XPATH, xpath_pattern or f"//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{element_name}')]")
+        row_locator = (By.XPATH, xpath_pattern or f"//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{element_name}')]/../div[2]")
         limit_change_button = (By.XPATH, limit_pattern or '//button[@class="btn btn-default rounded-0 ng-binding"]')
         limit_option = (By.XPATH, limit_option_pattern or '//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
         checkbox_locator = (By.XPATH, f"//div[contains(@class, 'tbl-row') and .//div[text()='{element_name}']]//span")

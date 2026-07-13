@@ -46,6 +46,11 @@ class StocktakingComplete(BasePage):
         amount_input = (By.XPATH, f'(//input[@ng-model="corr.amount"])[{index}]')
         self.input_text(amount_input, product_amount)
     # ------------------------------------------------------------------------------------------------------------------
+
+    def click_input_amount(self, index=1):
+        amount_input = (By.XPATH, f'(//input[@ng-model="corr.amount"])[{index}]/..//button')
+        self.click(amount_input)
+    # ------------------------------------------------------------------------------------------------------------------
     finish_button = (By.XPATH, '//button[@ng-click="finish()"]')
     yes_button = (By.XPATH, '//button[@ng-click="a.bConfirm.clickYes()"]')
 

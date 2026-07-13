@@ -26,13 +26,13 @@ class FilialView(BasePage):
         self.click(self.navbar_button)
     # ------------------------------------------------------------------------------------------------------------------
     project_trade_checkbox = (By.XPATH, '//b-subpage[@name="filial_projects"]//div[@class="card-header"]//span[text()="trade"]/ancestor::label/input[@type="checkbox"]')
-    project_anor_checkbox = (By.XPATH, '//b-subpage[@name="filial_projects"]//div[@class="card-header"]//span[text()="anor"]/ancestor::label/input[@type="checkbox"]')
+    # project_anor_checkbox = (By.XPATH, '//b-subpage[@name="filial_projects"]//div[@class="card-header"]//span[text()="anor"]/ancestor::label/input[@type="checkbox"]')
 
     def click_project_checkbox(self):
-        try:
-            self.click_checkbox(self.project_anor_checkbox, state=False)
-        except Exception as e:
-            self.logger.warning(f"Anor proectni ochirishda xatolik: {str(e)}")
+        # try:
+        #     self.click_checkbox(self.project_anor_checkbox, state=False)
+        # except Exception as e:
+        #     self.logger.warning(f"Anor proectni ochirishda xatolik: {str(e)}")
         self.click_checkbox(self.project_trade_checkbox, state=True)
     # ------------------------------------------------------------------------------------------------------------------
     def click_checkbox_button(self):

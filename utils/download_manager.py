@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 from config.test_settings import WaitTimeouts
 
-DOWNLOAD_DIR = os.path.join(os.environ["USERPROFILE"], "Downloads")
+DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
 
 # ======================================================================================================================
 

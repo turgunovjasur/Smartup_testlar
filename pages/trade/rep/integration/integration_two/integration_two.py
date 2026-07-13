@@ -75,7 +75,7 @@ class IntegrationTwo(BasePage):
 
     def input_price_types(self, price_type_name):
         self.clear_element(self.price_types_input)
-        self.click_options(self.price_types_input, self.price_type_options, price_type_name)
+        self.click_options(self.price_types_input, self.price_type_options, price_type_name, search=True)
     # ------------------------------------------------------------------------------------------------------------------
     edit_person_button= (By.XPATH, '//input[@ng-model="d.edit_person"]')
 

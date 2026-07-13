@@ -1,3 +1,5 @@
+import time
+
 import pytest
 from pages.core.md.base_page import BasePage
 from flows.auth_flow import login_user

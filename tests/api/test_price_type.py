@@ -1,5 +1,6 @@
 import pytest
 from apis.price_type_api import PriceTypeAPI
+from tests.api.currency_utils import get_currency_id
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -109,6 +110,7 @@ def test_price_type_uzb_edit(save_data, load_data):
     short_name = f"price_type_uzb_short_name-{code}"
     price_type_uzb_id = load_data("api/price_type_uzb_id")
     room_id = load_data("api/room_id")
+    currency_id = load_data("api/base_currency_id") or get_currency_id(load_data, "860")
 
     body = {
           "name": name,
@@ -118,7 +120,7 @@ def test_price_type_uzb_edit(save_data, load_data):
           "price_type_id": price_type_uzb_id,
           "price_type_kind": "S",
           "room_ids": [room_id],
-          "currency_id": "12434",
+          "currency_id": currency_id,
           "state": "A"
         }
 
@@ -142,6 +144,7 @@ def test_price_type_use_save(save_data, load_data):
     price_type_use_code = f"api/price_type_use_code-{code}"
     short_name = f"price_type_use_short_name-{code}"
     room_id = load_data("api/room_id")
+    currency_id = load_data("api/usd_currency_id") or get_currency_id(load_data, "840")
 
     body = {
           "name": name,
@@ -150,7 +153,7 @@ def test_price_type_use_save(save_data, load_data):
           "short_name": short_name,
           "price_type_kind": "S",
           "room_ids": [room_id],
-          "currency_id": "12435",
+          "currency_id": currency_id,
           "state": "A"
         }
 

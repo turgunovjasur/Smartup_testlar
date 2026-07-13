@@ -200,7 +200,8 @@ def complete_flow(driver, **kwargs):
     complete.click_corr_kind_radio_button()
 
     complete.input_templates(template_name="Прочие операционные расходы", index=2)
-    complete.input_amount(product_amount=get_sum_minority, index=2)
+    # complete.input_amount(product_amount=get_sum_minority, index=2)
+    complete.click_input_amount(index=2)
 
     complete.click_finish_button()
 

@@ -1076,10 +1076,10 @@ pytest tests/ui/test_order/test_order.py::test_add_order \
 
 ```bash
 # Barcha testlarni ketma-ket ishga tushirish
-pytest tests/ui/ui_test_runner.py -v
+pytest test_ui_runner.py -v
 
 # Qisqa output bilan
-pytest tests/ui/ui_test_runner.py -q --no-header --no-summary
+pytest test_ui_runner.py -q --no-header --no-summary
 ```
 
 ---

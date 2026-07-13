@@ -1,5 +1,6 @@
 import pytest
 from apis.filial_api import FilialAPI
+from tests.api.currency_utils import get_currency_id
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -12,13 +13,15 @@ def test_filial_save(load_data, save_data):
 
     code = load_data("api/code")
     filial_name = f"api_filial-{code}"
+    base_currency_id = get_currency_id(load_data, "860")
+    usd_currency_id = get_currency_id(load_data, "840")
 
     body = {
         "filial_id": legal_person_id,
         "name": filial_name,
         "state": "A",
         "vat_enabled": "N",
-        "base_currency_id": "12434",
+        "base_currency_id": base_currency_id,
         "excise_enabled": "N"
     }
 
@@ -31,6 +34,8 @@ def test_filial_save(load_data, save_data):
 
     get_filial_id = data["filial_id"]
     save_data("api/filial_id", get_filial_id)
+    save_data("api/base_currency_id", base_currency_id)
+    save_data("api/usd_currency_id", usd_currency_id)
 
 # ----------------------------------------------------------------------------------------------------------------------
 

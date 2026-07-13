@@ -31,13 +31,13 @@ class LicenseList(BasePage):
         self.assertions.assert_element_visible(self.header_licence, message="License: License and Purchase page")
     # ------------------------------------------------------------------------------------------------------------------
 
-    def click_tbl_row_button(self, element_name, data):
-        locator = f"//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{element_name}')]/..//div[text()='{data}']"
+    def click_tbl_row_button(self, element_name):
+        locator = f"//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{element_name}')]"
         self.find_row_and_click(element_name, xpath_pattern=locator)
     # ------------------------------------------------------------------------------------------------------------------
 
-    def click_attach_users_button(self, element_name, data):
-        locator = (By.XPATH, f"//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{element_name}')]/..//div[text()='{data}']/..//button")
+    def click_attach_users_button(self, element_name):
+        locator = (By.XPATH, f"//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{element_name}')]/..//button")
         self.click(locator)
     # ------------------------------------------------------------------------------------------------------------------
     # purchase

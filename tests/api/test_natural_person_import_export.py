@@ -18,12 +18,7 @@ def test_natural_person_import(load_data):
           "code": code,
           "is_budgetarian": "N",
           "state": "A",
-          "groups": [
-            {
-              "group_code": "PRSGR:4",
-              "type_code": ""
-            }
-          ]
+          "groups": []
         }
       ]
     }

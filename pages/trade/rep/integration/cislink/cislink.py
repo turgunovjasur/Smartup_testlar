@@ -47,13 +47,13 @@ class CisLink(BasePage):
     options_filial = (By.XPATH, '//b-input[@name="filials"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def input_filial(self, filial_name):
-        self.click_options(self.filial_input, self.options_filial, filial_name)
+        self.click_options(self.filial_input, self.options_filial, filial_name, search=True)
     # ------------------------------------------------------------------------------------------------------------------
     price_types_input = (By.XPATH, '//b-input[@name="price_types"]//input')
     options_price_types = (By.XPATH, '//b-input[@name="price_types"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
 
     def input_price_types(self, price_types_name):
-        self.click_options(self.price_types_input, self.options_price_types, price_types_name)
+        self.click_options(self.price_types_input, self.options_price_types, price_types_name, search=True)
     # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
 
