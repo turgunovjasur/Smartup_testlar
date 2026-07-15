@@ -8,6 +8,9 @@ from tests.ui.test_order.order_invoice_report.test_order_invoice_report import \
 from tests.ui.test_order.order_report.test_order_report import test_check_report_for_order_list, \
     test_check_report_for_order_history_list
 from tests.ui.test_order.test_order_return import test_order_return
+# TEMPORARY DELIVERY DATE PERMISSION — dev default checkboxni tuzatgach olib tashlang.
+from tests.ui.test_order.test_temp_delivery_date_permission import \
+    test_temp_setting_delivery_date_change_permission
 from tests.ui.test_warehouse.test_supplier import test_add_supplier
 from tests.ui.test_warehouse.test_warehouse import test_add_warehouse
 from tests.ui.test_purchase.test_extra_cost import test_add_extra_cost
@@ -148,7 +151,9 @@ test_cases = [
 
     # (Group-C) Order with Price Type USA:
     {"name": "(Group-C) Add Contract For Client USA-C",   "func": test_add_contract_for_client_C_USA,      "deps": ["test_client_add_C", "test_price_type_add_USA"]},
-    {"name": "(Group-C) Add Order With Price Type-C",     "func": test_add_order_for_price_type_USA,       "deps": ["test_add_contract_for_client_C_USA"]},
+    # TEMPORARY DELIVERY DATE PERMISSION — dev default checkboxni tuzatgach ushbu case va dependency'ni olib tashlang.
+    {"name": "(Group-C) Set Delivery Date Permission-C",  "func": test_temp_setting_delivery_date_change_permission, "deps": ["test_add_contract_for_client_C_USA"]},
+    {"name": "(Group-C) Add Order With Price Type-C",     "func": test_add_order_for_price_type_USA,       "deps": ["test_add_contract_for_client_C_USA", "test_temp_setting_delivery_date_change_permission"]},
     {"name": "(Group-C) On Test Setting Prepayment",      "func": test_setting_prepayment_on,              "deps": []},
     {"name": "(Group-C) Edit Order For Price Type USA-C", "func": test_edit_order_for_price_type_USA,      "deps": ["test_setting_prepayment_on", "test_add_order_for_price_type_USA"]},
     {"name": "(Group-C) Off Test Setting Prepayment",     "func": test_setting_prepayment_off,             "deps": []},
