@@ -14,6 +14,16 @@ class CisLink(BasePage):
     def click_show_setting(self):
         self.click(self.show_setting_button)
     # ------------------------------------------------------------------------------------------------------------------
+    templates_button = (By.XPATH, '//button[@ng-click="fi.templates()"]')
+
+    def click_templates_button(self):
+        self.click(self.templates_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    add_button = (By.XPATH, '//button[@ng-click="add()"]')
+
+    def click_add_button(self):
+        self.click(self.add_button)
+    # ------------------------------------------------------------------------------------------------------------------
     generate_button = (By.XPATH, '//button[@ng-click="generate()"]')
 
     def click_generate(self):
@@ -25,6 +35,11 @@ class CisLink(BasePage):
 
     def element_visible_setting(self):
         return self.wait_for_element_visible(self.header_setting)
+    # ------------------------------------------------------------------------------------------------------------------
+    template_name_input = (By.XPATH, '//input[@ng-model="d.name"]')
+
+    def input_template_name(self, template_name):
+        self.input_text(self.template_name_input, template_name)
     # ------------------------------------------------------------------------------------------------------------------
     identification_code_input = (By.XPATH, '//input[@ng-model="d.identification_code"]')
 
@@ -55,8 +70,19 @@ class CisLink(BasePage):
     def input_price_types(self, price_types_name):
         self.click_options(self.price_types_input, self.options_price_types, price_types_name, search=True)
     # ------------------------------------------------------------------------------------------------------------------
+    templates_input = (By.XPATH, '//b-input[@name="templates"]//input')
+    options_templates = (By.XPATH, '//b-input[@name="templates"]//div[contains(@class,"hint-item")]//div[contains(@class,"form-row")]')
+
+    def input_templates(self, template_name):
+        self.click_options(self.templates_input, self.options_templates, template_name, search=True)
+    # ------------------------------------------------------------------------------------------------------------------
     save_button = (By.XPATH, '//button[@ng-click="save()"]')
 
     def click_save(self):
         self.click(self.save_button)
+    # ------------------------------------------------------------------------------------------------------------------
+    close_button = (By.XPATH, '//button[@ng-click="page.close()"]')
+
+    def click_close_button(self):
+        self.click(self.close_button)
     # ------------------------------------------------------------------------------------------------------------------

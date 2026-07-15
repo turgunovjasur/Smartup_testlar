@@ -57,7 +57,7 @@ class OrdersList(BasePage):
         """Report to'liq ochilganligini tekshiradi"""
         self.wait_for_element(locator=(By.XPATH, "//table[@class='bsr-table']"), wait_type="visibility")
     # ------------------------------------------------------------------------------------------------------------------
-    invoice_report_one_button = (By.XPATH, '//div[@class="tbl-row-action"]//button/t[contains(text(),"Счет-фактуры")]')
+    invoice_report_one_button = (By.XPATH, '//div[@class="tbl-row-action"]//button/t[contains(text(),"Счёт-фактуры")]')
 
     def click_invoice_reports_all_button(self, invoice_report_name):
         self.click(self.invoice_report_one_button)

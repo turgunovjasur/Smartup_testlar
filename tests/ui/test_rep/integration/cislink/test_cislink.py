@@ -8,24 +8,30 @@ from utils.download_manager import clear_old_download, generate_and_verify_downl
 
 @pytest.mark.regression
 @pytest.mark.integration_report
-def test_check_report_cis_link(driver, test_data):
+def test_check_report_cis_link(driver, test_data, load_data):
     data = test_data["data"]
     price_types_name = data["price_type_name_UZB"]
     filial_name = data["filial_name"]
+    cod = load_data("cod")
 
     login_admin(driver, test_data, url='trade/rep/integration/cislink')
 
     cis_link = CisLink(driver)
     cis_link.element_visible()
-    cis_link.click_show_setting()
+    cis_link.click_templates_button()
+    cis_link.click_add_button()
     cis_link.element_visible_setting()
+    cis_link.input_template_name(template_name=f"template-{cod}")
     cis_link.input_identification_code(identification_code_name='test')
     cis_link.input_person_groups(person_groups_name='Группа')
     cis_link.input_product_groups(product_group_name='Группа')
     cis_link.input_filial(filial_name)
     cis_link.input_price_types(price_types_name)
     cis_link.click_save()
+
     cis_link.element_visible()
+    cis_link.click_close_button()
+    cis_link.input_templates(template_name=f"template-{cod}")
 
     base_page = BasePage(driver)
     clear_old_download(base_page, expected_name="cislink", file_type="zip")
