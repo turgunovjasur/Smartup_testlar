@@ -19,7 +19,10 @@ class OrderView(BasePage):
         if data_type not in data_types:
             raise ValueError(f"Incorrect data_type: {data_type}. Allowed values: 'numeric', 'text'")
 
-        locator = (By.XPATH, f'(//t[contains(text(),"{input_name}")]/../../span)[last()]')
+        # View formda "Проект" uchun ikkita qiymat mavjud: avval subfilial,
+        # keyin shartnomaga bog'langan loyiha. Test subfilialni tekshiradi.
+        position = "1" if input_name == "Проект" else "last()"
+        locator = (By.XPATH, f'(//t[contains(text(),"{input_name}")]/../../span)[{position}]')
         return data_types[data_type](locator)
     # ------------------------------------------------------------------------------------------------------------------
     setting_button = (By.XPATH, '//b-pg-controller[@name="goods_items_view"]//div[@role="group"]/button')
