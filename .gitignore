@@ -170,7 +170,8 @@ qase.lock
 
 **/screenshot_dir/
 
-data_store.json/
+/data_store.json
+/test_state.json
 
 allure-report/
 allure-results/

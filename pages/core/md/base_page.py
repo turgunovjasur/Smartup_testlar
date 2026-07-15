@@ -1321,6 +1321,7 @@ class BasePage:
 
         xpath_pattern = kwargs.get("xpath_pattern")
         limit_pattern = kwargs.get("limit_pattern")
+        search_pattern = kwargs.get("search_pattern")
         limit_option_pattern = kwargs.get("limit_option_pattern")
         use_limit = kwargs.get("use_limit", True)
         use_search = kwargs.get("use_search", True)
@@ -1331,7 +1332,7 @@ class BasePage:
         limit_change_button = (By.XPATH, limit_pattern or '//button[@class="btn btn-default rounded-0 ng-binding"]')
         limit_option = (By.XPATH, limit_option_pattern or '//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4]')
         checkbox_locator = (By.XPATH, f"//div[contains(@class, 'tbl-row') and .//div[text()='{element_name}']]//span")
-        search_input = (By.XPATH, '//b-grid-controller//input[@type="search"]')
+        search_input = (By.XPATH, search_pattern or '//b-grid-controller//input[@type="search"]')
 
         show_more = use_limit
         search_used = use_search

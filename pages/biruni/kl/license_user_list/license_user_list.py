@@ -48,11 +48,13 @@ class LicenseUserList(BasePage):
         row_locator = f"(//div[contains(@class, 'tbl-row')]//div[contains(@class, 'tbl-cell') and contains(.,'{natural_person_name}')])[last()]"
         limit_locator = f'(//button[@class="btn btn-default rounded-0 ng-binding"])[last()]'
         limit_option_locator = f'(//button[@class="btn btn-default rounded-0 ng-binding"]/following-sibling::div/a[4])[last()]'
+        search_pattern = '(//b-grid-controller//input[@type="search"])[2]'
 
         self.find_row_and_click(element_name=natural_person_name,
                                 xpath_pattern=row_locator,
                                 limit_pattern=limit_locator,
-                                limit_option_pattern=limit_option_locator)
+                                limit_option_pattern=limit_option_locator,
+                                search_pattern=search_pattern)
     # ------------------------------------------------------------------------------------------------------------------
     attach_button = (By.XPATH, '//button[@ng-click="attach(row)"]')
 

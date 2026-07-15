@@ -40,17 +40,21 @@ test_results = {
 # ======================================================================================================================
 
 def pytest_sessionstart(session):
-    """Har pytest run uchun alohida log katalogini yaratish."""
+    """Test sessiyasi boshlanishi: log katalogini tayyorlash va holatlarni tozalash."""
+    # Har pytest run uchun alohida log katalogi
     run_log_dir = build_log_run_timestamp()
     set_active_log_run_dir(run_log_dir)
     os.makedirs(os.path.join("logs", run_log_dir), exist_ok=True)
 
-# ======================================================================================================================
+    test_results['start_time'] = time.time()
+    print("\n" + "=" * 70)
+    print("🚀 TEST SESSIYASI BOSHLANDI")
+    print("=" * 70)
 
-def pytest_sessionfinish(session, exitstatus):
-    """Session tugagach run katalog kontekstini tozalash."""
-    if get_active_log_run_dir():
-        set_active_log_run_dir(None)
+    # ✨ Har yangi run boshida test holatlarini tozalash
+    state_manager = TestStateManager()
+    state_manager.reset_all_states()
+    print("🔄 Test holatlari qayta tiklandi\n")
 
 # ======================================================================================================================
 
@@ -231,8 +235,8 @@ def cod_generator():
 def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
-    # cod = cod_generator
-    cod = "1504"
+    cod = cod_generator
+    # cod = "3066"
     save_data("cod", cod)
 
     required_env_vars = [
@@ -416,21 +420,6 @@ def soft_assertions(base_page):
 
 # ======================================================================================================================
 
-def pytest_sessionstart(session):
-    """Test sessiyasi boshlanishida - mavjud kodni yangilang"""
-    test_results['start_time'] = time.time()
-    print("\n" + "=" * 70)
-    print("🚀 TEST SESSIYASI BOSHLANDI")
-    print("=" * 70)
-
-    # ✨ YANGI: Test state faylini tozalash (ixtiyoriy)
-    # Agar har safar yangi boshdan boshlashni istasangiz:
-    # state_manager = TestStateManager()
-    # state_manager.reset_all_states()
-    # print("🔄 Test holatlari qayta tiklandi\n")
-
-# ======================================================================================================================
-
 def pytest_sessionfinish(session, exitstatus):
     """Test sessiyasi tugaganda - mavjud kodni yangilang"""
     try:
@@ -475,6 +464,10 @@ def pytest_sessionfinish(session, exitstatus):
         fallback_manager.print_fallback_report()
     except Exception as e:
         print(f"⚠️  Fallback hisobot xatoligi: {e}")
+
+    # Session tugagach run katalog kontekstini tozalash
+    if get_active_log_run_dir():
+        set_active_log_run_dir(None)
 
 # ======================================================================================================================
 

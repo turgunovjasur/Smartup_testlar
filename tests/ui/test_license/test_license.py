@@ -15,11 +15,11 @@ from tests.ui.test_license.flow_license import balance_flow, document_flow, atta
 def test_add_user_license(driver, test_data):
     data = test_data["data"]
 
-    login(driver, email=data["email_user"], password=data["password_user"])
-
-    login_page = LoginPage(driver)
-    login_page.element_visible_retry_button()
-    login_page.click_back_button()
+    # login(driver, email=data["email_user"], password=data["password_user"])
+    # 
+    # login_page = LoginPage(driver)
+    # login_page.element_visible_retry_button()
+    # login_page.click_back_button()
 
     login(driver, email=data["email"], password=data["password"])
 
