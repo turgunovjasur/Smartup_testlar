@@ -426,16 +426,38 @@ class BasePage:
         self.logger.debug(f"{self._get_caller_chain()}: {locator}")
         timeout = timeout or self.default_timeout
 
+        # Angular b-input (dropdown) qidiruvdan keyin option ro'yxatini qayta render qiladi.
+        # Shu sabab presence_of_all_elements_located element topgach, is_displayed() filtri
+        # ishlash paytida element stale bo'lib qolishi mumkin. Bunday holatda darhol yiqilmasdan,
+        # timeout budjeti ichida ro'yxatni qayta olamiz.
+        deadline = time.monotonic() + timeout
+        last_stale = None
+
         try:
-            elements = WebDriverWait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    # Budjet stale retry'lar bilan tugadi — mos xatoni tashlaymiz
+                    raise last_stale if last_stale is not None else TimeoutException(
+                        "presence_of_all_elements_located timeout")
 
-            if visible_only:
-                elements = [el for el in elements if el.is_displayed()]
-                if not elements:
-                    self.logger.warning(f"Elementlar ro'yxati bo‘sh: {locator}")
-                    return []
+                try:
+                    elements = WebDriverWait(self.driver, remaining).until(
+                        EC.presence_of_all_elements_located(locator))
 
-            return elements
+                    if visible_only:
+                        elements = [el for el in elements if el.is_displayed()]
+                        if not elements:
+                            self.logger.warning(f"Elementlar ro'yxati bo‘sh: {locator}")
+                            return []
+
+                    return elements
+
+                except StaleElementReferenceException as e:
+                    last_stale = e
+                    self.logger.warning(f"Elementlar ro'yxati stale bo'ldi, qayta olinmoqda: {locator}")
+                    time.sleep(0.15)
+                    continue
 
         except StaleElementReferenceException as e:
             self._raise(ElementStaleError,
