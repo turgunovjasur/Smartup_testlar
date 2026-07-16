@@ -1202,17 +1202,35 @@ class BasePage:
     # ==================================================================================================================
 
     def _find_and_click_option(self, element, options, options_locator):
-        """Element topish va bosish funksiyasi."""
+        """Element topish va bosish funksiyasi (DOM qayta render / stale element'ga chidamli)."""
 
         element_str = str(element).strip().lower()
+        current_options = options
 
-        for option in options:
-            # Text olish
+        index = 0
+        while index < len(current_options):
+            option = current_options[index]
+
+            # Text olish. Angular dropdown qidiruvdan keyin ro'yxatni qayta render qilishi mumkin,
+            # shu sabab stale bo'lsa ro'yxatni qayta olib, o'sha indeksdan davom etamiz.
+            option_text = ""
             for _ in range(3):
-                option_text = option.text.strip()
-                if option_text:
+                try:
+                    option_text = option.text.strip()
+                    if not option_text:
+                        option_text = (option.get_attribute("innerText") or "").strip()
+                    if option_text:
+                        break
+                except StaleElementReferenceException:
+                    self.logger.warning("Option stale bo'ldi, ro'yxat qayta olinmoqda...")
+                    refreshed = self._wait_for_presence_all(options_locator, visible_only=True)
+                    if refreshed:
+                        current_options = refreshed
+                        if index < len(current_options):
+                            option = current_options[index]
+                            continue
                     break
-                option_text = option.get_attribute("innerText") or ""
+
                 self.logger.warning(f"Option text topilmadi, qayta uriniladi...")
                 time.sleep(0.1)
 
@@ -1226,6 +1244,8 @@ class BasePage:
                 self.logger.info(f"Element topildi: '{option_text}', click qilinadi...")
                 if self._click(option, options_locator) or self._click(option, options_locator, _click_js=True):
                     return True
+
+            index += 1
         return False
 
     # ==================================================================================================================
