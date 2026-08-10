@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+"""Smartup run kataloglarini resolve qilib, haqiqiy Allure CLI'ga uzatadi."""
+
+from __future__ import annotations
+
+import os
+import shutil
+import sys
+from pathlib import Path
+
+
+def _project_root() -> Path:
+    configured_root = os.environ.get("SMARTUP_PROJECT_ROOT")
+    if configured_root:
+        return Path(configured_root).expanduser().resolve()
+    return Path(__file__).resolve().parent.parent
+
+
+def _real_allure() -> str:
+    configured_binary = os.environ.get("SMARTUP_REAL_ALLURE")
+    if configured_binary:
+        return configured_binary
+
+    wrapper_dir = str(Path(__file__).resolve().parent)
+    search_path = os.pathsep.join(
+        entry for entry in os.environ.get("PATH", "").split(os.pathsep)
+        if entry and str(Path(entry).resolve()) != wrapper_dir
+    )
+    real_binary = shutil.which("allure", path=search_path)
+    if not real_binary:
+        raise RuntimeError("Haqiqiy Allure CLI topilmadi. `brew install allure` orqali o'rnating.")
+    return real_binary
+
+
+def _resolve_results(project_root: Path, cod: str | None) -> Path:
+    runs_root = project_root / "test_runs"
+    pattern = f"*_cod-{cod}" if cod else "*_cod-*"
+    candidates = sorted(
+        (
+            run_dir
+            for run_dir in runs_root.glob(pattern)
+            if run_dir.is_dir() and (run_dir / "allure-results").is_dir()
+        ),
+        key=lambda path: path.name,
+        reverse=True,
+    )
+
+    if not candidates:
+        if cod:
+            raise FileNotFoundError(f"cod={cod} uchun Allure result topilmadi: {runs_root}")
+        legacy_results = project_root / "allure-results"
+        if legacy_results.is_dir():
+            return legacy_results
+        raise FileNotFoundError(f"Allure resultli test run topilmadi: {runs_root}")
+
+    return candidates[0] / "allure-results"
+
+
+def _rewrite_serve_args(args: list[str], project_root: Path) -> list[str]:
+    if len(args) < 2 or args[0] != "serve":
+        return args
+
+    result_alias = args[1].rstrip("/")
+    if result_alias not in {"allure-results", "./allure-results"}:
+        return args
+
+    cod = None
+    remaining_args = args[2:]
+    if remaining_args and remaining_args[0].isdigit():
+        cod = remaining_args.pop(0)
+
+    selected_results = _resolve_results(project_root, cod)
+    print(f"📊 Allure result: {selected_results}", flush=True)
+    return ["serve", str(selected_results), *remaining_args]
+
+
+def main() -> int:
+    try:
+        args = _rewrite_serve_args(sys.argv[1:], _project_root())
+        real_allure = _real_allure()
+    except (FileNotFoundError, RuntimeError) as error:
+        print(f"❌ {error}", file=sys.stderr)
+        return 2
+
+    os.execv(real_allure, [real_allure, *args])
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

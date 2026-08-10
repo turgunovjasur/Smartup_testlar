@@ -3,7 +3,7 @@ import os
 
 import allure
 import pytest
-from conftest import DATA_STORE_FILE
+from conftest import get_data_file_path
 from tests.api.test_biruni_session import test_biruni_session as _test_biruni_session
 from tests.api.test_filial_save_model import test_filial_save as _test_filial_save, test_filial_model as _test_filial_model
 from tests.api.test_inventory import test_inventory_save as _test_inventory_save, test_inventory_model as _test_inventory_model
@@ -55,12 +55,14 @@ from tests.api.test_price_type import (
 
 
 @pytest.fixture(scope="module", autouse=True)
-def clear_api_state():
+def clear_api_state(request):
     """Runner yangi API flow boshlashi uchun oldingi run'dan qolgan api/* state'ni tozalaydi."""
-    if not os.path.exists(DATA_STORE_FILE):
+    data_store_file = get_data_file_path(request)
+
+    if not os.path.exists(data_store_file):
         return
 
-    with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
+    with open(data_store_file, "r", encoding="utf-8") as f:
         try:
             data = json.load(f)
         except json.JSONDecodeError:
@@ -69,7 +71,7 @@ def clear_api_state():
     cleaned_data = {key: value for key, value in data.items() if not key.startswith("api/")}
 
     if cleaned_data != data:
-        with open(DATA_STORE_FILE, "w", encoding="utf-8") as f:
+        with open(data_store_file, "w", encoding="utf-8") as f:
             json.dump(cleaned_data, f, indent=4, ensure_ascii=False)
 
 # All ------------------------------------------------------------------------------------------------------------------

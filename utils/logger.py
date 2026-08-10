@@ -43,11 +43,12 @@ def get_active_log_run_dir():
 
 
 def ensure_active_log_run_dir():
-    """Agar run katalog hali o'rnatilmagan bo'lsa, yaratib qaytaradi."""
+    """Barcha artefaktlar saqlanadigan joriy run katalogini qaytaradi."""
     run_dir = get_active_log_run_dir()
     if not run_dir:
-        run_dir = build_log_run_timestamp()
+        run_dir = os.path.abspath(os.path.join("test_runs", build_log_run_timestamp()))
         set_active_log_run_dir(run_dir)
+    os.makedirs(run_dir, exist_ok=True)
     return run_dir
 
 
@@ -95,9 +96,9 @@ def configure_logging(test_name):
     """
     active_test_name = get_active_test_name()
     log_target_name = active_test_name or test_name
-    run_log_dir = ensure_active_log_run_dir()
+    run_dir = ensure_active_log_run_dir()
 
-    log_dir = os.path.join("logs", run_log_dir)
+    log_dir = os.path.join(run_dir, "logs")
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
 

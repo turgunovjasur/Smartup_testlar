@@ -1101,8 +1101,11 @@ pytest -m regression --alluredir=allure-results
 **2. Allure report generatsiya qilish:**
 
 ```bash
-# Report generatsiya va ochish
+# Eng oxirgi run resultini ochish
 allure serve allure-results
+
+# Muayyan run cod'i bo'yicha resultni ochish
+allure serve allure-results 345678
 
 # Faqat generatsiya
 allure generate allure-results -o allure-report --clean

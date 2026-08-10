@@ -6,6 +6,20 @@ from pathlib import Path
 from utils.driver_manager import cleanup_driver, create_driver
 from utils.logger import configure_logging
 
+
+_active_state_file = Path("test_state.json")
+
+
+def set_active_test_state_file(state_file):
+    """Joriy pytest run uchun test state faylini belgilash."""
+    global _active_state_file
+    _active_state_file = Path(state_file)
+
+
+def get_active_test_state_file():
+    """Joriy pytest run test state faylini qaytarish."""
+    return _active_state_file
+
 # ======================================================================================================================
 # Test State Manager
 # ======================================================================================================================
@@ -13,8 +27,8 @@ from utils.logger import configure_logging
 class TestStateManager:
     """Test holatlarini boshqarish."""
 
-    def __init__(self, state_file="test_state.json"):
-        self.state_file = Path(state_file)
+    def __init__(self, state_file=None):
+        self.state_file = Path(state_file) if state_file else get_active_test_state_file()
         self.states = self._load_states()
 
     # PUBLIC API =======================================================================================================

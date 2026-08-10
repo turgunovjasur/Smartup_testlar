@@ -161,7 +161,7 @@ class BaseAPI:
 
     # ==================================================================================================================
 
-    def _post(self, path, body, timeout=(3.05, 60)):
+    def _post(self, path, body, timeout=(3.05, 120)):
         """
         Serverga POST so‘rov yuboradi:
             - vaqtni o‘lchaydi

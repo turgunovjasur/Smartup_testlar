@@ -80,7 +80,7 @@ class BasePage:
         image_name = filename or "screenshot"
         image_name = re.sub(r'[<>:"/\\|?*]', '_', image_name)
 
-        screenshot_dir = os.path.join("screenshot_dir", run_dir, test_dir_name)
+        screenshot_dir = os.path.join(run_dir, "screenshots", test_dir_name)
         if not os.path.exists(screenshot_dir):
             os.makedirs(screenshot_dir)
 

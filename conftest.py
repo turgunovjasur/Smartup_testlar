@@ -24,7 +24,7 @@ from utils.logger import (
     set_active_test_name,
 )
 from utils.email import send_email_report, format_test_results
-from utils.test_retry import TestStateManager, print_test_states
+from utils.test_retry import TestStateManager, print_test_states, set_active_test_state_file
 
 # ======================================================================================================================
 
@@ -39,21 +39,53 @@ test_results = {
 
 # ======================================================================================================================
 
+@pytest.hookimpl(tryfirst=True)
+def pytest_configure(config):
+    """Barcha session artefaktlari uchun sana va cod bilan yagona run katalogini tayyorlash."""
+    if hasattr(config, "_smartup_run_dir"):
+        return
+
+    run_cod = random.randint(100000, 999999)
+    run_timestamp = build_log_run_timestamp()
+    run_name = f"{run_timestamp}_cod-{run_cod}"
+    run_dir = os.path.join(os.path.dirname(__file__), "test_runs", run_name)
+
+    config._smartup_run_cod = run_cod
+    config._smartup_run_dir = run_dir
+    config._smartup_data_store_file = os.path.join(run_dir, f"data_store_{run_cod}.json")
+
+    for artifact_dir in ("allure-results", "logs", "screenshots"):
+        os.makedirs(os.path.join(run_dir, artifact_dir), exist_ok=True)
+
+    set_active_log_run_dir(run_dir)
+    set_active_test_state_file(os.path.join(run_dir, f"test_state_{run_cod}.json"))
+
+    # Allure pytest_configure hook'i ishlashidan oldin uning report katalogini almashtirish.
+    if hasattr(config.option, "allure_report_dir"):
+        config.option.allure_report_dir = os.path.join(run_dir, "allure-results")
+
+# ======================================================================================================================
+
 def pytest_sessionstart(session):
     """Test sessiyasi boshlanishi: log katalogini tayyorlash va holatlarni tozalash."""
-    # Har pytest run uchun alohida log katalogi
-    run_log_dir = build_log_run_timestamp()
-    set_active_log_run_dir(run_log_dir)
-    os.makedirs(os.path.join("logs", run_log_dir), exist_ok=True)
-
     test_results['start_time'] = time.time()
     print("\n" + "=" * 70)
     print("🚀 TEST SESSIYASI BOSHLANDI")
     print("=" * 70)
 
+    run_cod = session.config._smartup_run_cod
+    run_dir = session.config._smartup_run_dir
+    data_store_file = session.config._smartup_data_store_file
+
+    # Session cod run boshidayoq data store'ga saqlanadi.
+    with open(data_store_file, "w", encoding="utf-8") as file:
+        json.dump({"cod": run_cod}, file, indent=4, ensure_ascii=False)
+
     # ✨ Har yangi run boshida test holatlarini tozalash
     state_manager = TestStateManager()
     state_manager.reset_all_states()
+    print(f"🆔 Run cod: {run_cod}")
+    print(f"📁 Run katalogi: {run_dir}")
     print("🔄 Test holatlari qayta tiklandi\n")
 
 # ======================================================================================================================
@@ -226,17 +258,15 @@ def driver(request, test_data):
 # ======================================================================================================================
 
 @pytest.fixture(scope="session")
-def cod_generator():
-    """Test sessiyasi uchun yagona cod qiymati"""
-    # return datetime.today().strftime("%d_%m_%H_%M")
-    return random.randint(1000, 9999)
+def cod_generator(request):
+    """Run boshida yaratilgan yagona 6 xonali cod qiymatini qaytaradi."""
+    return request.config._smartup_run_cod
 
 @pytest.fixture(scope="function")
 def test_data(save_data, cod_generator):
     """Dinamik test ma'lumotlari"""
 
     cod = cod_generator
-    # cod = "3066"
     save_data("cod", cod)
 
     required_env_vars = [
@@ -352,13 +382,17 @@ def test_data(save_data, cod_generator):
 
 DATA_STORE_FILE = os.path.join(os.path.dirname(__file__), "data_store.json")
 
+
+def get_run_data_store_file(config):
+    """Joriy run cod'i qo'shilgan default data store faylini qaytarish."""
+    return getattr(config, "_smartup_data_store_file", DATA_STORE_FILE)
+
 def get_data_file_path(request, file_name=None):
-    base_dir = os.path.dirname(request.fspath)
-
     if file_name:
-        return os.path.join(base_dir, file_name)
+        run_dir = os.path.dirname(get_run_data_store_file(request.config))
+        return os.path.join(run_dir, file_name)
 
-    return DATA_STORE_FILE
+    return get_run_data_store_file(request.config)
 
 # ======================================================================================================================
 

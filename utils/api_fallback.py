@@ -3,13 +3,14 @@ import time
 from datetime import datetime
 from pathlib import Path
 from utils.logger import configure_logging
+from utils.test_retry import get_active_test_state_file
 
 
 class APIFallbackManager:
     """UI test fail bo'lganda API test bilan integratsiya."""
 
-    def __init__(self, state_file="test_state.json"):
-        self.state_file = Path(state_file)
+    def __init__(self, state_file=None):
+        self.state_file = Path(state_file) if state_file else get_active_test_state_file()
         self.logger = None
 
     # ==================================================================================================================

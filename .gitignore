@@ -172,6 +172,9 @@ qase.lock
 
 /data_store.json
 /test_state.json
+/data_store_*.json
+/test_state_*.json
+/test_runs/
 
 allure-report/
 allure-results/
